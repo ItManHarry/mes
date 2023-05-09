@@ -1,0 +1,17 @@
+<h1 style="color:blue">This mail come from mail app template!</h1>
+<table style="border: 1px solid #ccc;" width="100%">
+    <thead>
+        <tr>
+            <th>字典代码</th>
+            <th>字典名称</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for wordbook in wordbooks%}
+            <tr>
+                <td>{{wordbook.code}}</td>
+                <td>{{wordbook.name}}</td>
+            </tr>
+        {%endfor%}
+    </tbody>
+</table>

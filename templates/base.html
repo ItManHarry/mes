@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+{%load static%}
+<head>
+    <meta charset="UTF-8">
+    <title>{%block title%}Base{%endblock%}</title>
+    {%block links%}
+    <link rel="icon" type="image/x-icon" href="{%static 'images/icon/sys.ico'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/bootstrap.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/bootstrap-icons.css'%}">
+    <link rel="stylesheet" type="text/css" href="{%static 'css/jquery-confirm.min.css'%}">
+    {%endblock%}
+    {%block styles%}{%endblock%}
+</head>
+<body>
+<header>{%block header%}{%include 'head.html'%}{%endblock%}</header>
+{%block main%}
+<main>
+  <div class="container-fluid" style="margin-top:10px;">
+    {%block content%}{%endblock%}
+  </div>
+</main>
+{%endblock%}
+<footer>{%block footer%}{%endblock%}</footer>
+{%block assets%}
+<script type="text/javascript" src="{%static 'js/jquery-3.6.1.min.js'%}"></script>
+<script type="text/javascript" src="{%static 'js/bootstrap.bundle.min.js'%}"></script>
+<script type="text/javascript" src="{%static 'js/jquery-confirm.min.js'%}"></script>
+{%endblock%}
+<script>
+{%block scripts%}
+    var csrf_token = "{{ csrf_token }}" //CSRF Token
+    $(function(){
+        //add csrf validation for ajax
+        $.ajaxSetup({
+            beforeSend: function (xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader('X-CSRFToken', csrf_token);
+                }
+            },
+            complete:function(XMLHttpRequest, textStatus){
+              var login_timeout = XMLHttpRequest.getResponseHeader("login_timeout"); //通过XMLHttpRequest取得响应头，sessionstatus，
+                if(login_timeout == "Y"){  //如果超时提示并跳转至登录页
+                    $.alert({
+                       type:'red',
+                       title:'系统提示',
+                       content: '登录超时，请重新登录系统！！！',
+                       onClose:function(){
+                          window.location = '{%url 'sys_sign:login'%}'
+                       }
+                    })
+                }
+            }
+        })
+    })
+{%endblock%}
+</script>
+</body>
+</html>

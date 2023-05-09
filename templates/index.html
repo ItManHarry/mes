@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{%block title%}MES系统{%endblock%}
+{%block content%}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h1>MES System</h1>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block scripts%}
+    {{block.super}}
+    //alert('ok')
+    $(function(){
+        //alert('{%url 'sys_sign:json'%}')
+        $.post('/sys_sign/json/', function(data){
+            //alert(data.items)
+            //alert(data.status)
+            //alert(data.message)
+        }, 'json')
+    })
+{%endblock%}
