@@ -5,6 +5,9 @@ from django.http import JsonResponse
 from .models import SysLogin
 from datetime import timedelta
 def json_req(request):
+    name = request.POST['name']
+    age = request.POST['age']
+    print('I am {}, {} years old.'.format(name, age))
     return JsonResponse(
         {'items': [1, 2, 3], 'status': 1, 'message': 'Succeeded!!!'}
     )
@@ -24,7 +27,7 @@ def do_login(request):
             login(request, user)
             request.session['username'] = username
             # 设置session过期时间-> 30分钟
-            request.session.set_expiry(timedelta(minutes=1))
+            request.session.set_expiry(timedelta(minutes=30))
             # 登录IP地址
             ip = request.META.get('REMOTE_ADDR')
             # 记录登录日志

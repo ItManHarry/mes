@@ -1,7 +1,8 @@
 {% extends 'base.html'%}
 {%block title%}MES系统{%endblock%}
 {%block content%}
-<div class="container">
+<hr>
+<div class="container-fluid">
     <div class="row">
         <div class="col">
             <h1>MES System</h1>
@@ -17,7 +18,7 @@
         //alert('{%url 'sys_sign:json'%}')
         $('#test').click(function(){
             alert('test')
-            $.post('/sys_sign/json/', function(data){
+            $.post('/sys_sign/json/', {'name':'Harry', 'age':35}, function(data){
                 alert(data.items)
                 //alert(data.status)
                 //alert(data.message)
