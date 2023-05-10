@@ -6,7 +6,7 @@
     <div class="col-md-4 offset-md-4 text-center">
         <form action="{%url 'sys_sign:login'%}" method="post">
             {% csrf_token %}
-            <input type="hidden" name="next" value="{{next}}">
+<!--            <input type="hidden" name="next" value="{{next}}">-->
             <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
             <div class="form-floating">
               <input type="text" class="form-control" name="username" id="username" placeholder="User name ...">
@@ -28,10 +28,10 @@
     {{block.super}}
     $(function(){
         //alert('{%url 'sys_sign:json'%}')
-        $.post('/sys_sign/json/', function(data){
+        //$.post('/sys_sign/json/', function(data){
             //alert(data.items)
             //alert(data.status)
             //alert(data.message)
-        }, 'json')
+        //}, 'json')
     })
 {%endblock%}

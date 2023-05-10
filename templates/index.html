@@ -5,6 +5,7 @@
     <div class="row">
         <div class="col">
             <h1>MES System</h1>
+            <button class="btn btn-primary" id="test">Ajax Test</button>
         </div>
     </div>
 </div>
@@ -14,10 +15,14 @@
     //alert('ok')
     $(function(){
         //alert('{%url 'sys_sign:json'%}')
-        $.post('/sys_sign/json/', function(data){
-            //alert(data.items)
-            //alert(data.status)
-            //alert(data.message)
-        }, 'json')
+        $('#test').click(function(){
+            alert('test')
+            $.post('/sys_sign/json/', function(data){
+                alert(data.items)
+                //alert(data.status)
+                //alert(data.message)
+            }, 'json')
+        })
     })
+
 {%endblock%}

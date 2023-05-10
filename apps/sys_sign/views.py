@@ -3,26 +3,31 @@ from django.contrib.auth import authenticate, login, logout
 from mes.system.email import send_mail
 from django.http import JsonResponse
 from .models import SysLogin
+from datetime import timedelta
 def json_req(request):
     return JsonResponse(
         {'items': [1, 2, 3], 'status': 1, 'message': 'Succeeded!!!'}
     )
 def do_login(request):
     login_message = ''
-    try:
-        next = request.GET['next']
-    except:
-        next = ''
+    # try:
+    #     next = request.GET['next']
+    # except:
+    #     next = ''
     # print('Next page is : ', next)
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
-        next = request.POST['next']
+        # next = request.POST['next']
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
             request.session['username'] = username
-            ip = request.META.get('REMOTE_ADDR')        # 登录IP地址
+            # 设置session过期时间-> 30分钟
+            request.session.set_expiry(timedelta(minutes=1))
+            # 登录IP地址
+            ip = request.META.get('REMOTE_ADDR')
+            # 记录登录日志
             login_log = SysLogin(user=user, ip=ip, created_by=user.id, updated_by=user.id)
             login_log.save()
             print('{} authenticate succeeded!!!'.format(username))
@@ -35,11 +40,12 @@ def do_login(request):
             #           'Email text body.', 'd:/data.xls')
             # if next:
             #     return redirect(next)
-            return render(request, 'index.html', context=dict(login_message=login_message))
+            return redirect(reverse('index'))
         else:
             print('Authenticate failed!!!')
             login_message = 'User name or password is not correct!'
-    return render(request, 'sys_sign/login.html', context=dict(login_message=login_message, next=next))
+    # return render(request, 'sys_sign/login.html', context=dict(login_message=login_message, next=next))
+    return render(request, 'sys_sign/login.html', context=dict(login_message=login_message))
 def do_logout(request):
     logout(request)
     return redirect(reverse('sys_sign:login'))
