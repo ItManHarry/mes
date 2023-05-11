@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth import authenticate, login, logout
-from mes.system.email import send_mail
+from mes.sys.email import send_mail
 from django.http import JsonResponse
 from .models import SysLogin
 from datetime import timedelta

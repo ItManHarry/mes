@@ -1,4 +1,4 @@
-from mes.system.db import models, BaseModel
+from mes.sys.db import models, BaseModel
 from django.contrib.auth.models import User
 
 class SysLog(BaseModel):

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from mes.system.db import BaseModel
+from mes.sys.db import BaseModel
 class SysLogin(BaseModel):
     user = models.ForeignKey(User, on_delete=models.CASCADE)    # 登录用户ID
     ip = models.CharField(max_length=32, null=True)             # 登录IP地址

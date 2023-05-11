@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'mes.system.middlewares.session_check',
+    'mes.sys.middleware.session_check',
 ]
 
 ROOT_URLCONF = 'mes.urls'
