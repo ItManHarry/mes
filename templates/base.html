@@ -14,13 +14,11 @@
 </head>
 <body>
 <header>{%block header%}{%include 'head.html'%}{%endblock%}</header>
-{%block main%}
 <main>
-  <div class="container-fluid" style="margin-top:10px;">
+  <div class="container-fluid">
     {%block content%}{%endblock%}
   </div>
 </main>
-{%endblock%}
 <footer>{%block footer%}{%endblock%}</footer>
 {%block assets%}
 <script type="text/javascript" src="{%static 'js/jquery-3.6.1.min.js'%}"></script>

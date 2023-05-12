@@ -1,17 +1,38 @@
-&nbsp;&nbsp;
-<button class="btn btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#sysmenu" aria-controls="sysmenu">
-  <i class="bi bi-gear-wide-connected"></i>&nbsp;&nbsp;设置
-</button>
-<div class="offcanvas offcanvas-start" tabindex="-1" id="sysmenu" aria-labelledby="sysmenulabel">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="sysmenulabel">系统设置</h5>
-    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <div class="row">
-      <div class="col text-center">
-        <a href="{%url 'sys_sign:logout'%}"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;Logout</a>
-      </div>
+<!--<button class="btn btn-outline-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#sysmenu" aria-controls="sysmenu">-->
+<!--  <i class="bi bi-gear-wide-connected"></i>&nbsp;&nbsp;设置-->
+<!--</button>-->
+<!--<div class="offcanvas offcanvas-start" tabindex="-1" id="sysmenu" aria-labelledby="sysmenulabel">-->
+<!--  <div class="offcanvas-header">-->
+<!--    <h5 class="offcanvas-title" id="sysmenulabel">系统设置</h5>-->
+<!--    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>-->
+<!--  </div>-->
+<!--  <div class="offcanvas-body">-->
+<!--    <div class="row">-->
+<!--      <div class="col text-center">-->
+<!--        <a href="{%url 'sys_sign:logout'%}"><i class="bi bi-box-arrow-right"></i>&nbsp;&nbsp;Logout</a>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<nav class="navbar" style="background-color: cornflowerblue;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">MES</a>
+        <span class="navbar-text">
+            {{request.session.username}}
+        </span>&nbsp;
+        <a href="#" class="btn btn-outline-dark btn-sm"><i class="bi bi-person-gear"></i></a>
     </div>
-  </div>
-</div>
+
+<!--  <table class="table" >-->
+<!--      <tr>-->
+<!--          <td width="45%"><a class="navbar-brand" href="#">MES</a></td>-->
+<!--          <td width="10%"><input type="text" class="form-control" placeholder="code"></td>-->
+<!--          <td width="45%" class="text-end">-->
+<!--              <span class="navbar-text">-->
+<!--                {{request.session.username}}-->
+<!--              </span>&nbsp;-->
+<!--              <a href="#" class="btn btn-outline-dark btn-sm"><i class="bi bi-person-gear"></i></a>-->
+<!--          </td>-->
+<!--      </tr>-->
+<!--  </table>-->
+</nav>
