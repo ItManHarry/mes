@@ -3,6 +3,7 @@ from django.shortcuts import redirect, reverse
 from django.http import HttpResponse
 from common.models import SysLog
 from django.contrib.auth.models import User
+from datetime import timedelta
 def session_check(get_response):
     def check(request):
         # 是否是Ajax请求
@@ -18,17 +19,28 @@ def session_check(get_response):
         exclude = False
         if request.path in exclude_urls or 'static' in request.path:
             exclude = True
-        if not exclude:
+        if exclude:
+            print('<', request.path, '>不执行session超时检查!')
+        else:
             print('<', request.path, '>检查session是否超时!')
             if time_out:
+                '''
+                    已超时：
+                        1. Ajax请求返回Response，并标识session已超时
+                        2. 非Ajax请求跳转至登录页
+                '''
                 if ajax_request:
                     response = HttpResponse()
                     response.headers['login_timeout'] = 'Y'
                     return response
                 else:
                     return redirect(reverse('sys_sign:login'))
-        else:
-            print('<', request.path, '>不执行session超时检查!')
+            else:
+                '''
+                若未超时，session续时间
+                '''
+                # pass
+                request.session.set_expiry(timedelta(minutes=30))
         print('Do the session check before the request ...')
         response = get_response(request)
         print('Do the session check after the request ...')
