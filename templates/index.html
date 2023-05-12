@@ -1,29 +1,99 @@
 {% extends 'base.html'%}
 {%block title%}MES系统{%endblock%}
 {%block content%}
-<hr>
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">SIMS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            系统管理
+          </a>
+          <ul class="dropdown-menu">
+            <li><button class="dropdown-item" onclick="add_tab('user-index', '用户清单', '{%url 'sys_sign:login'%}')">用户清单</button></li>
+            <li><button class="dropdown-item" onclick="add_tab('user-add', '用户添加', '{%url 'sys_sign:login'%}')">用户添加</button></li>
+            <li><button class="dropdown-item" onclick="add_tab('user-edit', '用户编辑', '{%url 'sys_sign:login'%}')">用户编辑</button></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
 <div class="container-fluid">
-    <div class="row">
-        <div class="col">
-            <h1>MES System</h1>
-            <button class="btn btn-primary" id="test">Ajax Test</button>
+    <ul class="nav nav-underline" id="sysTab" role="tablist" style="border-bottom:1px solid #ccc">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true"><small>首页</small></button>
+      </li>
+    </ul>
+    <div class="tab-content" id="sysTabContent">
+        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+            <div class="ratio ratio-21x9">
+              <iframe src="{%url 'sys_sign:login'%}" allowfullscreen></iframe>
+            </div>
         </div>
     </div>
 </div>
 {%endblock%}
 {%block scripts%}
     {{block.super}}
-    //alert('ok')
-    $(function(){
-        //alert('{%url 'sys_sign:json'%}')
-        $('#test').click(function(){
-            alert('test')
-            $.post('/sys_sign/json/', {'name':'Harry', 'age':35}, function(data){
-                alert(data.items)
-                //alert(data.status)
-                //alert(data.message)
-            }, 'json')
+    /*
+        添加Tab ->
+        参数：
+            id: Tab id
+            name: Tab名称
+            url: 显示内容对应的URL地址
+    */
+    function add_tab(id, name, url){
+        /* 初始化所有的Tab & Tab Pane */
+        $('#sysTab').find('button').each(function(){
+            $(this).removeClass('active')
         })
-    })
-
+        $('#sysTabContent').children().each(function(){
+            $(this).removeClass('show active')
+        })
+        /* 判断是否存在，不存在添加 */
+        var tab_exist = false
+        $('#sysTab').find('button').each(function(){
+            if($(this).attr('id') == id)
+                tab_exist = true
+        })
+        if(!tab_exist){
+            var tab = "<li class='nav-item' role='presentation'>"+
+                "<button class='nav-link' id='"+id+"' data-bs-toggle='tab' data-bs-target='#"+id+"-pane' type='button' role='tab' aria-controls='profile-tab-pane' aria-selected='false'><small>"+name+"&nbsp;&nbsp;<i class='bi bi-x' onclick=\"close_tab(\'"+id+"\')\"></i></small></button>"+
+                "</li>"
+            var tabContent = "<div class='tab-pane fade' id=\""+id+"-pane\" role=\"tabpanel\" aria-labelledby=\""+id+"\" tabindex=\"0\">"+
+                "<div class='ratio ratio-21x9'>"+
+                "  <iframe src=\""+url+"\" allowfullscreen></iframe>"+
+                "</div></div>"
+            $('#sysTab').append(tab)
+            $('#sysTabContent').append(tabContent)
+        }
+        /* 激活并显示Tab & Tab Pane */
+        $('#'+id).addClass('active')
+        $('#'+id+'-pane').addClass('show active')
+    }
+    /*
+        关闭Tab ->
+        参数：
+            id: 要关闭的Tab id
+    */
+    function close_tab(id){
+        /* 判断要激活的Tab */
+        var tab_ids = []
+        $('#sysTab').find('button').each(function(){
+            tab_ids.push($(this).attr('id'))
+        })
+        /* 获取要激活的Tab id:关闭当前Tab，激活前面的Tab */
+        var close_index = $.inArray(id, tab_ids)
+        var active_id = tab_ids[close_index-1]
+        /* 移除Tab & Tab Pane */
+        $('#'+id).parent().remove()
+        $('#'+id+'-pane').remove()
+        /* 激活并显示Tab & Tab Pane, 触发click即可 */
+        $('#'+active_id).click()
+    }
 {%endblock%}
