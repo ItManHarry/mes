@@ -41,8 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'common.apps.CommonConfig',     # 系统公共模块
+    'common.apps.CommonConfig',     # 系统公共模块(创建公共表)
     'sys_sign.apps.SysSignConfig',  # 系统登录模块
+    'sys_auth.apps.SysAuthConfig',  # 系统权限模块(角色&菜单)
     'org_com.apps.OrgComConfig',    # 组织模块-公司
     'org_dep.apps.OrgDepConfig',    # 组织模块-部门
     'org_emp.apps.OrgEmpConfig',    # 组织模块-雇员
