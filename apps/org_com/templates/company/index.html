@@ -4,7 +4,7 @@
 {%block content%}
 <div class="row">
     <div class="col text-end">
-        <a href="{%url 'org_com:company_add'%}" class="btn btn-outline-primary"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
+        <a href="{%url 'org_com:company_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
     </div>
 </div>
 <table class="table table-hover">
@@ -12,7 +12,7 @@
         <tr>
             <th width="45%">公司代码</th>
             <th width="45%">公司名称</th>
-            <th width="10%">Action</th>
+            <th width="10%" class="text-end">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -21,8 +21,8 @@
         <tr>
             <td>{{company.code}}</td>
             <td>{{company.name}}</td>
-            <td>
-                <a href="{%url 'org_com:company_edit' company.id%}" class="btn btn-sm btn-outline-info"><i class="bi bi-pencil-square"></i>&nbsp;编辑</a>
+            <td class="text-end">
+                <a href="{%url 'org_com:company_edit' company.id%}" class="btn btn-sm btn-link text-info"><i class="bi bi-pencil-square"></i>&nbsp;编辑</a>
             </td>
         </tr>
     {%endfor%}

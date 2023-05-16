@@ -15,7 +15,7 @@ def session_check(get_response):
             request.session['username']
         except:
             time_out = True
-        exclude_urls = ['/sys_sign/login/', '/sys_sign/logout/']
+        exclude_urls = ['/sys_sign/login/', '/sys_sign/logout/', '/sys_sign/relogin/']
         exclude = False
         if request.path in exclude_urls or 'static' in request.path:
             exclude = True
@@ -34,7 +34,7 @@ def session_check(get_response):
                     response.headers['login_timeout'] = 'Y'
                     return response
                 else:
-                    return redirect(reverse('sys_sign:login'))
+                    return redirect(reverse('sys_sign:relogin'))
             else:
                 '''
                 若未超时，session续时间

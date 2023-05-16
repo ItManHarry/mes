@@ -52,3 +52,5 @@ def do_login(request):
 def do_logout(request):
     logout(request)
     return redirect(reverse('sys_sign:login'))
+def re_login(request):
+    return render(request, 'sys_sign/relogin.html', context={})
