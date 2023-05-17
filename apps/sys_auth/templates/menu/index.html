@@ -10,10 +10,9 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th width="10%">菜单代码</th>
+            <th width="15%">菜单代码</th>
             <th width="20%">菜单名称</th>
-            <th width="10%">菜单URL</th>
-            <th width="10%">菜单图标</th>
+            <th width="15%">菜单URL</th>
             <th width="30%">菜单说明</th>
             <th width="10%">状态</th>
             <th width="10%" class="text-end">Action</th>
@@ -26,8 +25,7 @@
             <td>{{menu.code}}</td>
             <td>{{menu.name}}</td>
             <td>{{menu.url}}</td>
-            <td>{{menu.icon}}</td>
-            <td>{{menu.remark}}</td>
+            <td>{%if menu.remark%}{{menu.remark}}{%else%}-{%endif%}</td>
             <td>{%if menu.active%}<span class="text-success">在用</span>{%else%}<span class="text-danger">停用</span>{%endif%}</td>
             <td class="text-end">
                 <a href="{%url 'sys_auth:menu_edit' menu.id%}" class="btn btn-sm btn-link text-info"><i class="bi bi-pencil-square"></i>&nbsp;编辑</a>
