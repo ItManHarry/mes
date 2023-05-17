@@ -15,7 +15,7 @@ def session_check(get_response):
             request.session['username']
         except:
             time_out = True
-        exclude_urls = ['/sys_sign/login/', '/sys_sign/logout/', '/sys_sign/relogin/']
+        exclude_urls = ['/sys_sign/login/', '/sys_sign/logout/', '/sys_sign/relogin/', '/']
         exclude = False
         if request.path in exclude_urls or 'static' in request.path:
             exclude = True

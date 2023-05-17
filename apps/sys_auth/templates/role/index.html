@@ -1,0 +1,36 @@
+{% extends 'base.html'%}
+{%block title%}&nbsp;{%endblock%}
+{%block header%}&nbsp;{%endblock%}
+{%block content%}
+<div class="row">
+    <div class="col text-end">
+        <a href="{%url 'sys_auth:role_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
+    </div>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th width="45%">角色代码</th>
+            <th width="45%">角色名称</th>
+            <th width="10%" class="text-end">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {%if roles%}
+    {%for role in roles%}
+        <tr>
+            <td>{{role.code}}</td>
+            <td>{{role.name}}</td>
+            <td class="text-end">
+                <a href="{%url 'sys_auth:role_edit' role.id%}" class="btn btn-sm btn-link text-info"><i class="bi bi-pencil-square"></i>&nbsp;编辑</a>
+            </td>
+        </tr>
+    {%endfor%}
+    {%else%}
+    <tr>
+        <td colspan="3" class="text-info text-center">没有数据！</td>
+    </tr>
+    {%endif%}
+    </tbody>
+</table>
+{%endblock%}

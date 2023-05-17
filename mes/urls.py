@@ -19,9 +19,11 @@ from django.urls import path, include
 from .sys import views
 
 urlpatterns = [
+    path('', views.root, name='root'),
     path('admin/', admin.site.urls),
     path('index/', views.index, name='index'),
     path('home/', views.home, name='home'),
     path('sys_sign/', include('sys_sign.urls')),
     path('org_com/', include('org_com.urls')),
+    path('sys_auth/', include('sys_auth.urls'))
 ]

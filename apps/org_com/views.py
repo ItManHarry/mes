@@ -13,6 +13,7 @@ def company_add(request):
         form = CompanyForm(request.POST)
         if form.is_valid():
             company = form.save(commit=False)
+            company.code = company.code.upper()
             user = request.user
             if user:
                 company.created_by = user.id
@@ -28,6 +29,7 @@ def company_edit(request, id):
         form = CompanyForm(request.POST, instance=company)
         if form.is_valid():
             company = form.save(commit=False)
+            company.code = company.code.upper()
             company.updated_on = timezone.now()
             user = request.user
             if user:
