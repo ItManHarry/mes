@@ -97,35 +97,32 @@
                }
            })
         else
-            $.post('/sys_auth/role/auth/'+role_id, {'menu_ids':menu_ids}, function(data){
-                alert(data.code)
-            }, 'json')
-<!--            $.ajax({-->
-<!--                type:'post',-->
-<!--                url:'/sys_auth/role/auth/'+role_id,-->
-<!--                data:{menu_ids:menu_ids},-->
-<!--                success:function(data){-->
-<!--                    if(data.code == 1)-->
-<!--                        $.alert({-->
-<!--                           type:'green',-->
-<!--                           title:'系统提示',-->
-<!--                           content: data.message,-->
-<!--                           onClose:function(){-->
-<!--                                $('#authModal').modal('hide')-->
-<!--                           }-->
-<!--                       })-->
+            $.ajax({
+                type:'post',
+                url:'/sys_auth/role/auth/'+role_id,
+                data:{menu_ids:menu_ids},
+                success:function(data){
+                    if(data.code == 1)
+                        $.alert({
+                           type:'green',
+                           title:'系统提示',
+                           content: data.message,
+                           onClose:function(){
+                                $('#authModal').modal('hide')
+                           }
+                       })
 
-<!--                },-->
-<!--                error:function(){-->
-<!--                    $.alert({-->
-<!--                       type:'red',-->
-<!--                       title:'系统提示',-->
-<!--                       content: '系统错误,请联系管理员',-->
-<!--                       onClose:function(){-->
+                },
+                error:function(){
+                    $.alert({
+                       type:'red',
+                       title:'系统提示',
+                       content: '系统错误,请联系管理员',
+                       onClose:function(){
 
-<!--                       }-->
-<!--                   })-->
-<!--                }-->
-<!--            })-->
+                       }
+                   })
+                }
+            })
     }
 {%endblock%}

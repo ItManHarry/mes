@@ -93,15 +93,16 @@ def get_role_menus(request, id):
     })
 @login_required
 def auth_role_menus(request, id):
+    params = request.POST
+    print(params)
     role = Role.objects.get(pk=id)
     print(role)
     # 清空已授权菜单
     # role.menus.clear()
     # # 重新授权菜单
-    menu_ids = request.POST.get('menu_ids')
+    menu_ids = params.get('menu_ids')
     print(menu_ids)
     # print(menu_ids)
-
     return JsonResponse({
         'code': '1',
         'message': 'Success',
