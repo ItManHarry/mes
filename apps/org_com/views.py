@@ -4,11 +4,11 @@ from .forms import CompanyForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 @login_required
-def company_index(request):
+def index(request):
     companies = Company.objects.all()
     return render(request, 'company/index.html', context=dict(companies=companies))
 @login_required
-def company_add(request):
+def add(request):
     if request.method == 'POST':
         form = CompanyForm(request.POST)
         if form.is_valid():
@@ -18,12 +18,12 @@ def company_add(request):
             if user:
                 company.created_by = user.id
             company.save()
-            return redirect(reverse('org_com:company_index'))
+            return redirect(reverse('org_com:index'))
     else:
         form = CompanyForm()
     return render(request, 'company/edit.html', context=dict(form=form, nav='新增公司信息'))
 @login_required
-def company_edit(request, id):
+def edit(request, id):
     company = Company.objects.get(pk=id)
     if request.method == 'POST':
         form = CompanyForm(request.POST, instance=company)
@@ -35,7 +35,7 @@ def company_edit(request, id):
             if user:
                 company.updated_by = user.id
             company.save()
-            return redirect(reverse('org_com:company_index'))
+            return redirect(reverse('org_com:index'))
     else:
         form = CompanyForm(instance=company)
         # print('Code is {} name is {}'.format(form.code, form.name))

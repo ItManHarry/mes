@@ -28,7 +28,7 @@
             <td>{%if menu.remark%}{{menu.remark}}{%else%}-{%endif%}</td>
             <td>{%if menu.active%}<span class="text-success">在用</span>{%else%}<span class="text-danger">停用</span>{%endif%}</td>
             <td class="text-end">
-                <a href="{%url 'sys_auth:menu_edit' menu.id%}" class="btn btn-sm btn-link text-info"><i class="bi bi-pencil-square"></i>&nbsp;编辑</a>
+                <a href="{%url 'sys_auth:menu_edit' menu.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
             </td>
         </tr>
     {%endfor%}

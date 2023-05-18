@@ -3,6 +3,7 @@ from .models import Role, Menu
 from .forms import RoleForm, MenuForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 @login_required
 def role_index(request):
     roles = Role.objects.all().order_by('code')
@@ -78,3 +79,30 @@ def menu_edit(request, id):
         form = MenuForm(instance=menu)
         # print('Code is {} name is {}'.format(form.code, form.name))
     return render(request, 'menu/edit.html', context=dict(form=form, nav='编辑菜单信息'))
+@login_required
+def get_role_menus(request, id):
+    role = Role.objects.get(pk=id)
+    all_menus = [(menu.id, '({})-{}'.format(menu.code, menu.name)) for menu in Menu.objects.all().order_by('code')]
+    print('Type is : ', type(role.menus))
+    authed_menus = [menu.id for menu in role.menus.all()]
+    return JsonResponse({
+        'code': '1',
+        'message': 'Success',
+        'all_menus': all_menus,
+        'authed_menus': authed_menus
+    })
+@login_required
+def auth_role_menus(request, id):
+    role = Role.objects.get(pk=id)
+    print(role)
+    # 清空已授权菜单
+    # role.menus.clear()
+    # # 重新授权菜单
+    menu_ids = request.POST.get('menu_ids')
+    print(menu_ids)
+    # print(menu_ids)
+
+    return JsonResponse({
+        'code': '1',
+        'message': 'Success',
+    })

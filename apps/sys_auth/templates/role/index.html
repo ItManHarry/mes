@@ -24,7 +24,8 @@
             <td>{{role.name}}</td>
             <td>{{role.company}}</td>
             <td class="text-end">
-                <a href="{%url 'sys_auth:role_edit' role.id%}" class="btn btn-sm btn-link text-info"><i class="bi bi-pencil-square"></i>&nbsp;编辑</a>
+                <a href="{%url 'sys_auth:role_edit' role.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+                <button class="btn btn-link text-success" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="菜单权限" onclick="get_menus('{{role.name}}', '{{role.id}}')"><i class="bi bi-menu-button"></i></button>
             </td>
         </tr>
     {%endfor%}
@@ -35,4 +36,96 @@
     {%endif%}
     </tbody>
 </table>
+{%include './_menus.html'%}
+{%endblock%}
+{%block scripts%}
+    {{block.super}}
+    var role_id = ''
+    function get_menus(name, id){
+        $('#modalTitle').text(name)
+        role_id = id
+        //alert('Role is : '+role_id)
+        $.post('/sys_auth/role/menus/'+id, {}, function(data){
+            $('#menus').empty()
+                if(data.all_menus.length == 0){
+                    $('#menus').append("<li class='list-group-item'>尚未创建菜单！</li>")
+                }else{
+                    var authed = false
+                    for(var i = 0; i < data.all_menus.length; i++){
+                        //alert(i + ' menu id : ' + data.all_menus[i][0] + ', authed menus : ' + data.authed_menus)
+                        if($.inArray(data.all_menus[i][0], data.authed_menus) >= 0)
+                            authed = true
+                        else
+                            authed = false
+                        //alert(authed)
+                        if(authed)
+                            $('#menus').append(
+                                "<li class='list-group-item list-group-item-action'><div class='form-check'>"+
+                                "<input class='form-check-input' type='checkbox' value='"+data.all_menus[i][0]+"' id='"+data.all_menus[i][0]+"' checked>"+
+                                "<label class='form-check-label' for='"+data.all_menus[i][0]+"'>"+
+                                data.all_menus[i][1]+
+                                "</label>"+
+                                "</div></li>")
+                        else
+                            $('#menus').append(
+                                "<li class='list-group-item list-group-item-action'><div class='form-check'>"+
+                                "<input class='form-check-input' type='checkbox' value='"+data.all_menus[i][0]+"' id='"+data.all_menus[i][0]+"'>"+
+                                "<label class='form-check-label' for='"+data.all_menus[i][0]+"'>"+
+                                data.all_menus[i][1]+
+                                "</label>"+
+                                "</div></li>")
+                    }
+                }
+                $('#authModal').modal('show')
+        }, 'json')
+    }
+    //执行授权
+    function do_auth(){
+        var menu_ids = []
+        $(':checkbox').each(function(){
+            if($(this).is(':checked'))
+                menu_ids.push($(this).val())
+        })
+        alert(menu_ids)
+        if(menu_ids.length == 0)
+            $.alert({
+               type:'red',
+               title:'系统提示',
+               content: '请选择菜单！',
+               onClose:function(){
+
+               }
+           })
+        else
+            $.post('/sys_auth/role/auth/'+role_id, {'menu_ids':menu_ids}, function(data){
+                alert(data.code)
+            }, 'json')
+<!--            $.ajax({-->
+<!--                type:'post',-->
+<!--                url:'/sys_auth/role/auth/'+role_id,-->
+<!--                data:{menu_ids:menu_ids},-->
+<!--                success:function(data){-->
+<!--                    if(data.code == 1)-->
+<!--                        $.alert({-->
+<!--                           type:'green',-->
+<!--                           title:'系统提示',-->
+<!--                           content: data.message,-->
+<!--                           onClose:function(){-->
+<!--                                $('#authModal').modal('hide')-->
+<!--                           }-->
+<!--                       })-->
+
+<!--                },-->
+<!--                error:function(){-->
+<!--                    $.alert({-->
+<!--                       type:'red',-->
+<!--                       title:'系统提示',-->
+<!--                       content: '系统错误,请联系管理员',-->
+<!--                       onClose:function(){-->
+
+<!--                       }-->
+<!--                   })-->
+<!--                }-->
+<!--            })-->
+    }
 {%endblock%}

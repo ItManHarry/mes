@@ -27,6 +27,10 @@
 {%endblock%}
 <script>
 {%block scripts%}
+    var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl)
+    })
     var csrf_token = "{{ csrf_token }}" //CSRF Token
     $(function(){
         //add csrf validation for ajax
