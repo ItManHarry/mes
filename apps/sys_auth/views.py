@@ -95,6 +95,8 @@ def get_role_menus(request, id):
 def auth_role_menus(request, id):
     params = request.POST
     print(params)
+    for k, v in params.items():
+        print('key is : ', k, ', value is : ', v)
     role = Role.objects.get(pk=id)
     print(role)
     # 清空已授权菜单

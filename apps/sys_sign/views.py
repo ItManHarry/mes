@@ -5,8 +5,10 @@ from django.http import JsonResponse
 from .models import SysLogin
 from datetime import timedelta
 def json_req(request):
-    name = request.POST['name']
-    age = request.POST['age']
+    params = request.POST
+    print(params)
+    name = params.get('name')
+    age = params.get('age')
     print('I am {}, {} years old.'.format(name, age))
     return JsonResponse(
         {'items': [1, 2, 3], 'status': 1, 'message': 'Succeeded!!!'}
