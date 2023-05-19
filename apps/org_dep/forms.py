@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django.db.models import Q
 from django import forms
 from .models import Department
-from org_com.models import Company
+from django.core.exceptions import ValidationError
 class DepartmentForm(ModelForm):
     class Meta:
         model = Department
@@ -17,8 +17,8 @@ class DepartmentForm(ModelForm):
             'id': forms.HiddenInput(),
             'code': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'company': forms.Select(attrs={'class': 'form-control'}, choices=[(company.id, company.name) for company in Company.objects.all()]),
-            'parent': forms.Select(attrs={'class': 'form-control'}, choices=[(department.id, department.name) for department in Department.objects.all().order_by('code')]),
+            'company': forms.Select(attrs={'class': 'form-control'}),
+            'parent': forms.Select(attrs={'class': 'form-control'}),
         }
 
     def clean(self):
@@ -26,6 +26,7 @@ class DepartmentForm(ModelForm):
         id = cleaned_data['id']
         code = cleaned_data['code']
         company = cleaned_data['company']
+        print('ID : {}, code : {} company : {}.'.format(id, code, company))
         code_exist = False  # 部门代码是否存在
         try:
             department = Department.objects.get(pk=id)
@@ -40,3 +41,11 @@ class DepartmentForm(ModelForm):
                 code_exist = True
         if code_exist:
             self.add_error('code', '部门代码已存在!')
+    def clean_parent(self):
+        id = self.cleaned_data['id']
+        parent = self.cleaned_data['parent']
+        company = self.cleaned_data['company']
+        print('Parent id is : ', parent.id, ', self id is : ', id, ', company is :', company.id)
+        if parent.id == id:
+            raise ValidationError('上级部门不能选择自身!')
+        return parent
