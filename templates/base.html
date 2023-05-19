@@ -48,7 +48,7 @@
                        title:'系统提示',
                        content: '登录超时，请重新登录系统！！！',
                        onClose:function(){
-                          window.location = '{%url 'sys_sign:login'%}'
+                          window.top.location = '{%url 'sys_sign:login'%}'
                        }
                     })
                 }
