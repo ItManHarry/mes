@@ -95,9 +95,9 @@ def get_role_menus(request, id):
 def auth_role_menus(request, id):
     # 接收参数
     params = request.POST
-    print(params)
-    for k, v in params.items():
-        print('key is : ', k, ', value is : ', v)
+    # print(params)
+    # for k, v in params.items():
+    #     print('key is : ', k, ', value is : ', v)
     menu_ids = params.get('menu_ids')
     end = len(menu_ids) - 1
     # 剔除'[]'及引号'"'

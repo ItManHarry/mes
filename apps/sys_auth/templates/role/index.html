@@ -97,14 +97,11 @@
 
                }
            })
-        else{
-            var data = {}
-            data['menu_ids'] = JSON.stringify(menu_ids)
-            data['name'] = 'Harry'
+        else
             $.ajax({
                 type:'post',
                 url:'/sys_auth/role/auth/'+role_id,
-                data:data,
+                data:{menu_ids: JSON.stringify(menu_ids)},  //列表需要序列化后传递
                 success:function(data){
                     if(data.code == 1)
                         $.alert({
@@ -128,6 +125,5 @@
                    })
                 }
             })
-        }
     }
 {%endblock%}
