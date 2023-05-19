@@ -83,7 +83,7 @@ def menu_edit(request, id):
 def get_role_menus(request, id):
     role = Role.objects.get(pk=id)
     all_menus = [(menu.id, '({})-{}'.format(menu.code, menu.name)) for menu in Menu.objects.all().order_by('code')]
-    print('Type is : ', type(role.menus))
+    # print('Type is : ', type(role.menus))
     authed_menus = [menu.id for menu in role.menus.all()]
     return JsonResponse({
         'code': '1',
@@ -93,19 +93,26 @@ def get_role_menus(request, id):
     })
 @login_required
 def auth_role_menus(request, id):
+    # 接收参数
     params = request.POST
     print(params)
     for k, v in params.items():
         print('key is : ', k, ', value is : ', v)
+    menu_ids = params.get('menu_ids')
+    end = len(menu_ids) - 1
+    # 剔除'[]'及引号'"'
+    menu_ids = menu_ids[1:end].replace('"', '')
+    menu_ids = menu_ids.split(',')
+    # 选择的菜单清单
+    menus = Menu.objects.filter(id__in=menu_ids)
     role = Role.objects.get(pk=id)
     print(role)
     # 清空已授权菜单
-    # role.menus.clear()
-    # # 重新授权菜单
-    menu_ids = params.get('menu_ids')
-    print(menu_ids)
-    # print(menu_ids)
+    role.menus.clear()
+    # 重新授权菜单
+    for menu in menus:
+        role.menus.add(menu)
     return JsonResponse({
         'code': '1',
-        'message': 'Success',
+        'message': '菜单授权成功！',
     })

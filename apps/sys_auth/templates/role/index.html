@@ -13,7 +13,7 @@
             <th width="30%">角色代码</th>
             <th width="30%">角色名称</th>
             <th width="30%">法人所属</th>
-            <th width="10%" class="text-end">Action</th>
+            <th width="10%" class="text-center">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -26,6 +26,7 @@
             <td class="text-end">
                 <a href="{%url 'sys_auth:role_edit' role.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
                 <button class="btn btn-link text-success" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="菜单权限" onclick="get_menus('{{role.name}}', '{{role.id}}')"><i class="bi bi-menu-button"></i></button>
+                <button class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="用户" onclick="get_menus('{{role.name}}', '{{role.id}}')"><i class="bi bi-people"></i></button>
             </td>
         </tr>
     {%endfor%}
@@ -86,7 +87,7 @@
             if($(this).is(':checked'))
                 menu_ids.push($(this).val())
         })
-        alert(menu_ids)
+        //alert(menu_ids)
         if(menu_ids.length == 0)
             $.alert({
                type:'red',
@@ -96,11 +97,14 @@
 
                }
            })
-        else
+        else{
+            var data = {}
+            data['menu_ids'] = JSON.stringify(menu_ids)
+            data['name'] = 'Harry'
             $.ajax({
                 type:'post',
                 url:'/sys_auth/role/auth/'+role_id,
-                data:{menu_ids:menu_ids},
+                data:data,
                 success:function(data){
                     if(data.code == 1)
                         $.alert({
@@ -124,5 +128,6 @@
                    })
                 }
             })
+        }
     }
 {%endblock%}
