@@ -28,19 +28,41 @@
     <br>
     <div class="row">
         <div class="col-6">
-            {{form.company.label_tag}}
-            {{form.company}}
-            {%if form.company.errors%}
-                {%for error in form.company.errors%}
+            {{form.url.label_tag}}
+            {{form.url}}
+            {%if form.url.errors%}
+                {%for error in form.url.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
         </div>
-    </div><br>
+        <div class="col-6">
+            {{form.icon.label_tag}}
+            {{form.icon}}
+            {%if form.icon.errors%}
+                {%for error in form.icon.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-6">
+            {{form.remark.label_tag}}
+            {{form.remark}}
+            {%if form.remark.errors%}
+                {%for error in form.remark.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div>
+    <br>
     <div class="row">
         <div class="col text-end">
             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
-            <a class="btn btn-outline-secondary" href="{%url 'sys_auth:role_index'%}">返回</a>
+            <a class="btn btn-outline-secondary" href="{%url 'sys_auth:menu_index'%}">返回</a>
         </div>
     </div>
 </form>

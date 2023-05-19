@@ -5,15 +5,15 @@ from .models import Company
 class CompanyForm(ModelForm):
     class Meta:
         model = Company
-        fields = ['name', 'code', 'id']
+        fields = ['id', 'name', 'code']
         labels = {
             'code': '公司代码',
             'name': '公司名称',
         }
         widgets = {
+            'id': forms.HiddenInput(),
             'code': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'id': forms.HiddenInput(),
         }
 
     def clean(self):

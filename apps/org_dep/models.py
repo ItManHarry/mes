@@ -7,7 +7,7 @@ class Department(BaseModel):
     name = models.CharField(max_length=512)
     code = models.CharField(max_length=32)
     company = models.ForeignKey(Company, on_delete=models.CASCADE)
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
 
     @property
     def children(self):

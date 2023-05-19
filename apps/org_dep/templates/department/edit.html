@@ -36,6 +36,15 @@
                 {%endfor%}
             {%endif%}
         </div>
+        <div class="col-6">
+            {{form.parent.label_tag}}
+            {{form.parent}}
+            {%if form.parent.errors%}
+                {%for error in form.parent.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
     </div><br>
     <div class="row">
         <div class="col text-end">

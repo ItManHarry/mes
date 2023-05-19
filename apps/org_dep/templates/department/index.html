@@ -1,0 +1,40 @@
+{% extends 'base.html'%}
+{%block title%}&nbsp;{%endblock%}
+{%block header%}&nbsp;{%endblock%}
+{%block content%}
+<div class="row">
+    <div class="col text-end">
+        <a href="{%url 'org_dep:add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
+    </div>
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th width="30%">所属公司</th>
+            <th width="20%">部门代码</th>
+            <th width="20%">部门名称</th>
+            <th width="20%">上级部门</th>
+            <th width="10%" class="text-end">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {%if departments%}
+    {%for department in departments%}
+        <tr>
+            <td>{{department.company}}</td>
+            <td>{{department.code}}</td>
+            <td>{{department.name}}</td>
+            <td>{%if department.parent%}{{department.parent}}{%else%}-{%endif%}</td>
+            <td class="text-end">
+                <a href="{%url 'org_dep:edit' department.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+            </td>
+        </tr>
+    {%endfor%}
+    {%else%}
+    <tr>
+        <td colspan="5" class="text-info text-center">没有数据！</td>
+    </tr>
+    {%endif%}
+    </tbody>
+</table>
+{%endblock%}
