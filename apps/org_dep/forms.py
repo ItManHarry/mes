@@ -44,8 +44,6 @@ class DepartmentForm(ModelForm):
     def clean_parent(self):
         id = self.cleaned_data['id']
         parent = self.cleaned_data['parent']
-        company = self.cleaned_data['company']
-        print('Parent id is : ', parent.id, ', self id is : ', id, ', company is :', company.id)
         if parent.id == id:
             raise ValidationError('上级部门不能选择自身!')
         return parent
