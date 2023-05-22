@@ -1,0 +1,101 @@
+{% extends 'base.html'%}
+{%block title%}&nbsp;{%endblock%}
+{%block header%}&nbsp;{%endblock%}
+{%block content%}
+<form method="post">
+    {% csrf_token %}
+    {{form.id}}
+    <div class="row">
+        <div class="col-6">
+            {{form.code.label_tag}}
+            {{form.code}}
+            {%if form.code.errors%}
+                {%for error in form.code.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
+            {{form.name.label_tag}}
+            {{form.name}}
+            {%if form.name.errors%}
+                {%for error in form.name.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-6">
+            {{form.email.label_tag}}
+            {{form.email}}
+            {%if form.email.errors%}
+                {%for error in form.email.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
+            {{form.phone.label_tag}}
+            {{form.phone}}
+            {%if form.phone.errors%}
+                {%for error in form.phone.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-6">
+            {{form.department.label_tag}}
+            {{form.department}}
+            {%if form.department.errors%}
+                {%for error in form.department.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-6">
+            {{form.company.label_tag}}
+            {{form.company}}
+            {%if form.company.errors%}
+                {%for error in form.company.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
+            {{form.parent.label_tag}}
+            {{form.parent}}
+            {%if form.parent.errors%}
+                {%for error in form.parent.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col text-end">
+            <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
+            <a class="btn btn-outline-secondary" href="{%url 'org_emp:index'%}">返回</a>
+        </div>
+    </div>
+</form>
+{%endblock%}
+{%block scripts%}
+{{block.super}}
+$(function(){
+    $('#id_company').change(function(){
+        var id = $(this).val()
+        var department_id = $('#id_id').val()
+        $.post('/org_com/company/department/'+id, {department_id:department_id}, function(data){
+            $('#id_parent').html(data)
+        }, 'html')
+    })
+})
+{%endblock%}
