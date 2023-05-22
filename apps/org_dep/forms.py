@@ -2,8 +2,60 @@ from django.forms import ModelForm
 from django.db.models import Q
 from django import forms
 from .models import Department
+from org_com.models import Company
 from django.core.exceptions import ValidationError
+'''
+递归获取子部门
+'''
+def get_sub_departments(parent_id, sub_departments):
+    departments = Department.objects.filter(parent_id=parent_id)
+    if departments:
+        for department in departments:
+            sub_departments.append(department.id)
+            # 递归
+            get_sub_departments(department.id, sub_departments)
+    else:
+        return sub_departments
 class DepartmentForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(DepartmentForm, self).__init__(*args, **kwargs)
+        # 设置上级部门
+        department_id = self.instance.pk
+        try:
+            department = Department.objects.get(pk=department_id)
+        except:
+            department = None
+        if department:
+            # 编辑时剔除自身及子部门(递归)
+            sub_ids = [department_id]
+            get_sub_departments(department_id, sub_ids)
+            self.fields['parent'].queryset = self.instance.company.department_set.filter(
+                ~Q(id=department_id) & ~Q(parent_id__in=sub_ids)).order_by('code')
+        else:
+            self.fields['parent'].queryset = Department.objects.none()
+        # 前端选择公司Ajax变更上级部门提交时，将对应的上级部门赋值,提交保存时使用
+        if 'company' in self.data:
+            # print('Selected company is : ', self.data['company'])
+            self.fields['parent'].queryset = Department.objects.filter(company_id=self.data['company'])
+    # def __init__(self, p_id, *args, **kwargs):
+    #     self.p_id = p_id
+    #     super(DepartmentForm, self).__init__(*args, **kwargs)
+    #     if self.p_id:
+    #         # 上级部门剔除自身及所有下级部门-递归获取子子部门
+    #         sub_ids = [self.p_id]
+    #         self.get_sub_ids(self.p_id, sub_ids)
+    #         # print('Sub ids are >>>>>>>>>>>>', sub_ids)
+    #         self.fields['parent'].queryset = Department.objects.filter(~Q(id=self.p_id) & ~Q(parent_id__in=sub_ids))
+    # def get_sub_ids(self, parent_id, sub_ids):
+    #     # print('ID is >>>>>>>>>>>>>>>>>>>>>>>', parent_id)
+    #     departments = Department.objects.filter(parent_id=parent_id)
+    #     if departments:
+    #         for department in departments:
+    #             sub_ids.append(department.id)
+    #             # 递归
+    #             self.get_sub_ids(department.id, sub_ids)
+    #     else:
+    #         return sub_ids
     class Meta:
         model = Department
         fields = ['id', 'name', 'code', 'company', 'parent']
@@ -44,6 +96,6 @@ class DepartmentForm(ModelForm):
     def clean_parent(self):
         id = self.cleaned_data['id']
         parent = self.cleaned_data['parent']
-        if parent.id == id:
+        if parent and parent.id == id:
             raise ValidationError('上级部门不能选择自身!')
         return parent

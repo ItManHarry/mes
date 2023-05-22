@@ -54,3 +54,15 @@
     </div>
 </form>
 {%endblock%}
+{%block scripts%}
+{{block.super}}
+$(function(){
+    $('#id_company').change(function(){
+        var id = $(this).val()
+        var department_id = $('#id_id').val()
+        $.post('/org_com/company/department/'+id, {department_id:department_id}, function(data){
+            $('#id_parent').html(data)
+        }, 'html')
+    })
+})
+{%endblock%}
