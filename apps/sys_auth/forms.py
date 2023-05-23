@@ -80,9 +80,10 @@ class UserForm(forms.Form):
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     is_staff = forms.BooleanField(label='全职雇员', widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), initial=True, required=False)
     is_superuser = forms.BooleanField(label='超级管理员', widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), initial=False, required=False)
-    username = forms.CharField(label='账号', max_length=24, widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
+    username = forms.CharField(label='账号', max_length=24, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}), required=True)
     password = forms.CharField(label='密码', max_length=32, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
     email = forms.EmailField(label='电子邮箱', widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    employee = forms.CharField(label='雇员', max_length=32, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))
     employee_id = forms.CharField(widget=forms.HiddenInput(), required=False)
 
     def clean_username(self):
