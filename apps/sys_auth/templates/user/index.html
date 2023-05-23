@@ -4,31 +4,33 @@
 {%block content%}
 <div class="row">
     <div class="col text-end">
-        <a href="{%url 'sys_auth:menu_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
+        <a href="{%url 'sys_auth:user_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
     </div>
 </div>
 <table class="table table-hover">
     <thead>
         <tr>
-            <th width="15%">登录账号</th>
+            <th width="10%">登录账号</th>
             <th width="20%">用户姓名</th>
             <th width="15%">邮箱地址</th>
-            <th width="30%">电话号码</th>
-            <th width="10%">状态</th>
+            <th width="25%">电话号码</th>
+            <th width="10%" class="text-center">超级管理员</th>
+            <th width="10%" class="text-center">状态</th>
             <th width="10%" class="text-end">Action</th>
         </tr>
     </thead>
     <tbody>
-    {%if menus%}
-    {%for menu in menus%}
+    {%if users%}
+    {%for user in users%}
         <tr>
-            <td>{{menu.code}}</td>
-            <td>{{menu.name}}</td>
-            <td>{{menu.url}}</td>
-            <td>{%if menu.remark%}{{menu.remark}}{%else%}-{%endif%}</td>
-            <td>{%if menu.active%}<span class="text-success">在用</span>{%else%}<span class="text-danger">停用</span>{%endif%}</td>
+            <td>{{user.username}}</td>
+            <td>{%if user.is_staff%}{{user.employee.name}}{%else%}-{%endif%}</td>
+            <td>{{user.email}}</td>
+            <td>{%if user.is_staff%}{{user.employee.phone}}{%else%}-{%endif%}</td>
+            <td class="text-center">{%if user.is_superuser%}<span class="text-warning">Y</span>{%else%}<span class="text-success">N</span>{%endif%}</td>
+            <td class="text-center">{%if user.is_active%}<span class="text-success">在用</span>{%else%}<span class="text-danger">停用</span>{%endif%}</td>
             <td class="text-end">
-                <a href="{%url 'sys_auth:menu_edit' menu.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+                <a href="{%url 'sys_auth:user_edit' user.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
             </td>
         </tr>
     {%endfor%}

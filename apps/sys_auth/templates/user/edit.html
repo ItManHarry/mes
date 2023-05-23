@@ -5,21 +5,34 @@
 <form method="post">
     {% csrf_token %}
     {{form.id}}
+    {{form.employee_id}}
     <div class="row">
         <div class="col-6">
-            {{form.code.label_tag}}
-            {{form.code}}
-            {%if form.code.errors%}
-                {%for error in form.code.errors%}
-                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
-                {%endfor%}
-            {%endif%}
+            <div class="form-check">
+            {{form.is_staff.label_tag}}
+            {{form.is_staff}}
+            </div>
         </div>
         <div class="col-6">
-            {{form.name.label_tag}}
-            {{form.name}}
-            {%if form.name.errors%}
-                {%for error in form.name.errors%}
+            <div class="form-check">
+            {{form.is_superuser.label_tag}}
+            {{form.is_superuser}}
+            </div>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-6">
+            <label for="employee">雇员:</label><br>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="雇员">
+                <button class="btn btn-outline-secondary" type="button" id="employee"><i class="bi bi-search"></i></button>
+            </div>
+        </div>
+        <div class="col-6">
+            {{form.username.label_tag}}
+            {{form.username}}
+            {%if form.username.errors%}
+                {%for error in form.username.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
@@ -28,19 +41,19 @@
     <br>
     <div class="row">
         <div class="col-6">
-            {{form.url.label_tag}}
-            {{form.url}}
-            {%if form.url.errors%}
-                {%for error in form.url.errors%}
+            {{form.password.label_tag}}
+            {{form.password}}
+            {%if form.password.errors%}
+                {%for error in form.password.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
         </div>
         <div class="col-6">
-            {{form.icon.label_tag}}
-            {{form.icon}}
-            {%if form.icon.errors%}
-                {%for error in form.icon.errors%}
+            {{form.email.label_tag}}
+            {{form.email}}
+            {%if form.email.errors%}
+                {%for error in form.email.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
@@ -49,20 +62,14 @@
     <br>
     <div class="row">
         <div class="col-6">
-            {{form.remark.label_tag}}
-            {{form.remark}}
-            {%if form.remark.errors%}
-                {%for error in form.remark.errors%}
-                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
-                {%endfor%}
-            {%endif%}
+            &nbsp;
         </div>
     </div>
     <br>
     <div class="row">
         <div class="col text-end">
             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
-            <a class="btn btn-outline-secondary" href="{%url 'sys_auth:menu_index'%}">返回</a>
+            <a class="btn btn-outline-secondary" href="{%url 'sys_auth:user_index'%}">返回</a>
         </div>
     </div>
 </form>

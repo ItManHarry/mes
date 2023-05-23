@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, reverse
 from .models import Role, Menu
-from .forms import RoleForm, MenuForm
+from .forms import RoleForm, MenuForm, UserForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.contrib.auth.models import User
 @login_required
 def role_index(request):
     roles = Role.objects.all().order_by('code')
@@ -116,3 +117,23 @@ def auth_role_menus(request, id):
         'code': '1',
         'message': '菜单授权成功！',
     })
+@login_required
+def user_index(request):
+    users = User.objects.all().order_by('username')
+    return render(request, 'user/index.html', context=dict(users=users))
+@login_required
+def user_add(request):
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            print('User name is {}, email {}.'.format(data['username'], data['email']))
+            return redirect(reverse('sys_auth:user_index'))
+        else:
+            print('Validate failed!!!')
+    else:
+        form = UserForm()
+    return render(request, 'user/edit.html', context=dict(form=form))
+@login_required
+def user_edit(request, id):
+    return render(request, 'user/edit.html', context=dict())

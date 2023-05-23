@@ -2,7 +2,8 @@ from django.forms import ModelForm
 from django.db.models import Q
 from django import forms
 from .models import Role, Menu
-from org_com.models import Company
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 class RoleForm(ModelForm):
     class Meta:
         model = Role
@@ -75,3 +76,23 @@ class MenuForm(ModelForm):
                 code_exist = True
         if code_exist:
             self.add_error('code', '菜单代码已存在!')
+class UserForm(forms.Form):
+    id = forms.CharField(widget=forms.HiddenInput(), required=False)
+    is_staff = forms.BooleanField(label='全职雇员', widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), initial=True, required=False)
+    is_superuser = forms.BooleanField(label='超级管理员', widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), initial=False, required=False)
+    username = forms.CharField(label='账号', max_length=24, widget=forms.TextInput(attrs={'class': 'form-control'}), required=True)
+    password = forms.CharField(label='密码', max_length=32, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(label='电子邮箱', widget=forms.EmailInput(attrs={'class': 'form-control'}))
+    employee_id = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if self.cleaned_data['id']:
+            id = int(self.cleaned_data['id'])
+            if User.objects.filter(~Q(id=id) & Q(username=username.upper())):
+                raise ValidationError('用户已存在！')
+        else:
+            print('Add user')
+            if User.objects.filter(username=username.upper()):
+                raise ValidationError('用户已存在！')
+        return username

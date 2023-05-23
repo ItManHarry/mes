@@ -10,4 +10,7 @@ urlpatterns = [
     path('menu/index/', views.menu_index, name='menu_index'),
     path('menu/add/', views.menu_add, name='menu_add'),
     path('menu/edit/<id>', views.menu_edit, name='menu_edit'),
+    path('user/index/', views.user_index, name='user_index'),
+    path('user/add/', views.user_add, name='user_add'),
+    path('user/edit/<id>', views.user_edit, name='user_edit'),
 ]
