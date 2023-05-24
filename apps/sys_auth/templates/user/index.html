@@ -31,6 +31,7 @@
             <td class="text-center">{%if user.is_active%}<span class="text-success">在用</span>{%else%}<span class="text-danger">停用</span>{%endif%}</td>
             <td class="text-end">
                 <a href="{%url 'sys_auth:user_edit' user.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+                <button class="btn btn-link text-success" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="权限" onclick="get_menus('{{role.name}}', '{{role.id}}')"><i class="bi bi-mortarboard"></i></button>
             </td>
         </tr>
     {%endfor%}

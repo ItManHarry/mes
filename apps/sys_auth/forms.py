@@ -2,6 +2,7 @@ from django.forms import ModelForm
 from django.db.models import Q
 from django import forms
 from .models import Role, Menu
+from sys_auth.models import Role
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 class RoleForm(ModelForm):
@@ -77,6 +78,9 @@ class MenuForm(ModelForm):
         if code_exist:
             self.add_error('code', '菜单代码已存在!')
 class UserForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        # self.fields['roles'].choices = [(role.id, role.name) for role in Role.objects.all().order_by('code')]
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     is_staff = forms.BooleanField(label='全职雇员', widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), initial=True, required=False)
     is_superuser = forms.BooleanField(label='超级管理员', widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), initial=False, required=False)
@@ -86,6 +90,7 @@ class UserForm(forms.Form):
     email = forms.EmailField(label='电子邮箱', widget=forms.EmailInput(attrs={'class': 'form-control'}))
     employee = forms.CharField(label='雇员', max_length=32, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))
     employee_id = forms.CharField(widget=forms.HiddenInput(), required=False)
+    # roles = forms.ChoiceField(label='角色', widget=forms.Select(attrs={'class': 'form-control'}), choices=[(role.id, role.name) for role in Role.objects.all().order_by('code')])
 
     def clean_username(self):
         username = self.cleaned_data['username']

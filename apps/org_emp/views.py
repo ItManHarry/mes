@@ -51,12 +51,11 @@ def search_employee(request):
     else:
         name = request.GET['name']
     name = name.strip()
-    print('Search employee name is : ', name)
+    # print('Search employee name is : ', name)
     if len(name) > 0:
-        print('Name is not empty...')
+        # print('Name is not empty...')
         employees = Employee.objects.filter(name__icontains=name).order_by('name')
     else:
-        print('Get all employees...')
+        # print('Get all employees...')
         employees = Employee.objects.all().order_by('name')
-    # employees = Employee.objects.all().order_by('name')
     return render(request, 'employee/_search.html', context=dict(employees=employees))
