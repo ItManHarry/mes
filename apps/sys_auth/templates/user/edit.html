@@ -41,6 +41,15 @@
     <br>
     <div class="row">
         <div class="col-6">
+            {{form.name.label_tag}}
+            {{form.name}}
+            {%if form.name.errors%}
+                {%for error in form.name.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
             {{form.password.label_tag}}
             {{form.password}}
             {%if form.password.errors%}
@@ -49,6 +58,9 @@
                 {%endfor%}
             {%endif%}
         </div>
+    </div>
+    <br>
+    <div class="row">
         <div class="col-6">
             {{form.email.label_tag}}
             {{form.email}}
@@ -61,16 +73,41 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-6">
-            &nbsp;
-        </div>
-    </div>
-    <br>
-    <div class="row">
         <div class="col text-end">
             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
             <a class="btn btn-outline-secondary" href="{%url 'sys_auth:user_index'%}">返回</a>
         </div>
     </div>
 </form>
+{%include 'employee/_select.html'%}
+{%endblock%}
+{%block scripts%}
+{{block.super}}
+$(function(){
+    $('#id_is_staff').click(function(){
+        $('#id_employee').val('')
+        $('#id_username').val('')
+        $('#id_name').val('')
+        $('#id_email').val('')
+        $('#id_employee_id').val('')
+        if($(this).is(':checked')){
+            $('#employee').removeAttr('disabled')
+            $('#id_username').attr('readonly', true)
+            $('#id_name').attr('readonly', true)
+
+        }else{
+            $('#employee').attr('disabled', 'disabled')
+            $('#id_username').removeAttr('readonly')
+            $('#id_name').removeAttr('readonly')
+        }
+    })
+    $('#employee').click(function(){
+        e_id = 'id_employee_id'
+        e_code = 'id_username'
+        e_name = 'id_name'
+        e_all = 'id_employee'
+        e_email = 'id_email'
+        $('#employeeModal').modal('show')
+    })
+})
 {%endblock%}

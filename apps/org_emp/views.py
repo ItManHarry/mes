@@ -44,3 +44,19 @@ def edit(request, id):
         # form = EmployeeForm(p_id=id, instance=employee)
         # print('Code is {} name is {}'.format(form.code, form.name))
     return render(request, 'employee/edit.html', context=dict(form=form, nav='编辑雇员信息'))
+@login_required
+def search_employee(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+    else:
+        name = request.GET['name']
+    name = name.strip()
+    print('Search employee name is : ', name)
+    if len(name) > 0:
+        print('Name is not empty...')
+        employees = Employee.objects.filter(name__icontains=name).order_by('name')
+    else:
+        print('Get all employees...')
+        employees = Employee.objects.all().order_by('name')
+    # employees = Employee.objects.all().order_by('name')
+    return render(request, 'employee/_search.html', context=dict(employees=employees))
