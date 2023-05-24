@@ -16,7 +16,6 @@
                             <button onclick="get_employees()" class="input-group-text"><i class="bi bi-search"></i></button>
                         </div>
                         <ul class="list-group" id="employees"></ul>
-                        <small class="text-danger" id="message"></small>
                     </td>
                 </tr>
               </tbody>
@@ -31,9 +30,7 @@
     var e_name = ''         //要设置雇员姓名的element
     var e_all = ''          //要设置雇员职号&姓名的element
     var e_email = ''        //要设置雇员邮箱的element
-    $(function(){
-        $('#message').text('')
-    })
+
     function search_employees(event){
         if (event.keyCode == 13){
              get_employees()
@@ -43,34 +40,6 @@
         $.post('/org_emp/employee/search/', {name: $.trim($('#p_employee').val())}, function(data){
             $('#employees').html(data)
         }, 'html')
-<!--        $.ajax({-->
-<!--            type:'post',-->
-<!--            url:'/employee/get_employees',-->
-<!--            data:JSON.stringify({name: $.trim($('#employee').val())}),-->
-<!--            contentType:'application/json;charset=UTF-8',-->
-<!--            success:function(data){-->
-<!--                $('#employees').empty()-->
-<!--                var employees = data.employees-->
-<!--                if(employees.length > 0){-->
-<!--                    $('#message').text('')-->
-<!--                    for(var i = 0; i < employees.length; i++){-->
-<!--                        $('#employees').append("")-->
-<!--                    }-->
-<!--                }else{-->
-<!--                    $('#message').text('人员信息不存在！！！')-->
-<!--                }-->
-<!--            },-->
-<!--            error:function(){-->
-<!--                $.alert({-->
-<!--                   type:'red',-->
-<!--                   title:'系统提示',-->
-<!--                   content: '系统错误,请联系管理员',-->
-<!--                   onClose:function(){-->
-
-<!--                   }-->
-<!--               })-->
-<!--            }-->
-<!--        })-->
     }
     function set_employee(e){
         //alert($(e).data('code')+':'+$(e).data('name'))

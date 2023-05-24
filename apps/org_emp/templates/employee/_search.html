@@ -1,3 +1,7 @@
-{%for employee in employees%}
-<button onclick='set_employee(this)' data-name='{{employee.name}}' data-code='{{employee.code}}' data-email='{{employee.email}}' id='{{employee.id}}' class='list-group-item list-group-item-action'><span class='text-success'><i class='bi bi-check2-circle'></i>&nbsp;&nbsp;</span>{{employee.name}}({{employee.code}})</button>
-{%endfor%}
+{%if employees%}
+    {%for employee in employees%}
+    <button onclick='set_employee(this)' data-name='{{employee.name}}' data-code='{{employee.code}}' data-email='{{employee.email}}' id='{{employee.id}}' class='list-group-item list-group-item-action'><span class='text-success'><i class='bi bi-check2-circle'></i>&nbsp;&nbsp;</span>{{employee.name}}({{employee.code}})</button>
+    {%endfor%}
+{%else%}
+    <li class="list-group-item text-danger"><i class="bi bi-exclamation-triangle">&nbsp;&nbsp;雇员信息不存在</i></li>
+{%endif%}
