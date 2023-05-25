@@ -83,12 +83,12 @@ class UserForm(forms.Form):
         # self.fields['roles'].choices = [(role.id, role.name) for role in Role.objects.all().order_by('code')]
     id = forms.CharField(widget=forms.HiddenInput(), required=False)
     is_staff = forms.BooleanField(label='全职雇员', widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), initial=True, required=False)
-    is_superuser = forms.BooleanField(label='超级管理员', widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), initial=False, required=False)
+    # is_superuser = forms.BooleanField(label='超级管理员', widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), initial=False, required=False)
     username = forms.CharField(label='账号', max_length=24, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}), required=True)
     name = forms.CharField(label='姓名', max_length=24, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}), required=True)
-    password = forms.CharField(label='密码', max_length=32, widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+    password = forms.CharField(label='密码', max_length=32, widget=forms.PasswordInput(attrs={'class': 'form-control'}), required=False)
     email = forms.EmailField(label='电子邮箱', widget=forms.EmailInput(attrs={'class': 'form-control'}))
-    employee = forms.CharField(label='雇员', max_length=32, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}))
+    employee = forms.CharField(label='雇员', max_length=32, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': True}), required=False)
     employee_id = forms.CharField(widget=forms.HiddenInput(), required=False)
     # roles = forms.ChoiceField(label='角色', widget=forms.Select(attrs={'class': 'form-control'}), choices=[(role.id, role.name) for role in Role.objects.all().order_by('code')])
 
@@ -103,3 +103,10 @@ class UserForm(forms.Form):
             if User.objects.filter(username=username.upper()):
                 raise ValidationError('用户已存在！')
         return username
+    def clean_password(self):
+        password = self.cleaned_data['password']
+        # 新增时校验密码是否输入
+        if not self.cleaned_data['id']:
+            if not password.strip():
+                raise ValidationError('请输入密码！')
+        return password

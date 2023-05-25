@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .models import Role, Menu
+from org_emp.models import Employee
 from .forms import RoleForm, MenuForm, UserForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -127,13 +128,53 @@ def user_add(request):
         form = UserForm(request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            print('User name is {}, email {}.'.format(data['username'], data['email']))
+            # 保存
+            user = User(username=data['username'], first_name=data['name'][1:], last_name=data['name'][:1], email=data['email'], is_superuser=False, is_staff=data['is_staff'])
+            user.set_password(data['password'])
+            user.save()
+            # 关联雇员
+            if data['is_staff']:
+                employee = Employee.objects.get(pk=data['employee_id'])
+                employee.user = user
+                employee.save()
             return redirect(reverse('sys_auth:user_index'))
-        else:
-            print('Validate failed!!!')
     else:
         form = UserForm()
     return render(request, 'user/edit.html', context=dict(form=form))
 @login_required
 def user_edit(request, id):
-    return render(request, 'user/edit.html', context=dict())
+    user = User.objects.get(pk=id)
+    if request.method == 'POST':
+        form = UserForm(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            # 保存
+            user.username = data['username']
+            user.first_name = data['name'][1:]
+            user.last_name = data['name'][:1]
+            user.email = data['email']
+            user.is_staff = data['is_staff']
+            if data['password'].strip():
+                user.set_password(data['password'])
+            user.save()
+            # 关联雇员
+            if data['is_staff']:
+                employee = Employee.objects.get(pk=data['employee_id'])
+                employee.user = user
+                employee.save()
+            # 当前用户密码修改后，必须重新登录系统，否则系统报错
+            if request.user == user and data['password'].strip():
+                return redirect(reverse('sys_sign:relogin'))
+            return redirect(reverse('sys_auth:user_index'))
+    else:
+        form = UserForm({
+            'id': user.id,
+            'is_staff': user.is_staff,
+            'username': user.username,
+            'name': user.last_name+user.first_name,
+            'password': '',
+            'email': user.email,
+            'employee': user.employee.name if hasattr(user, 'employee') else '',
+            'employee_id': user.employee.id if hasattr(user, 'employee') else '',
+        })
+    return render(request, 'user/edit.html', context=dict(form=form))

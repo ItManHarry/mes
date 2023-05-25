@@ -8,7 +8,7 @@ $(function(){
     $.alert({
        type:'red',
        title:'系统提示',
-       content: '登录超时，请重新登录系统！！！',
+       content: '登录超时或当前用户密码已重置，请重新登录系统！！！',
        onClose:function(){
           window.top.location = '{%url 'sys_sign:login'%}'
        }
