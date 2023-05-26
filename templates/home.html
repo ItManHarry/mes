@@ -4,13 +4,13 @@
 {%block content%}
 <div class="row">
     <div class="col">
-        <small><i class="bi bi-chevron-down" id="recent" data-dir="1" style="cursor:pointer"></i>&nbsp;&nbsp;最近使用({{rencent_used_menus|length}})</small>
+        <small><i class="bi bi-chevron-down" id="recent" data-dir="1" style="cursor:pointer"></i>&nbsp;&nbsp;最近使用({{recent_used_menus|length}})</small>
     </div>
 </div>
 <hr>
 <div class="row" id="recent_m">
-    {%if rencent_used_menus%}
-        {%for menu in rencent_used_menus%}
+    {%if recent_used_menus%}
+        {%for menu in recent_used_menus%}
             <div class="col-1" style="padding:10px;">
                 <div class="card text-center">
                   <div class="card-body">
