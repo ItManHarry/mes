@@ -4,167 +4,47 @@
 {%block content%}
 <div class="row">
     <div class="col">
-        <small><i class="bi bi-chevron-down" id="recent" data-dir="1" style="cursor:pointer"></i>&nbsp;&nbsp;最近使用(12)</small>
+        <small><i class="bi bi-chevron-down" id="recent" data-dir="1" style="cursor:pointer"></i>&nbsp;&nbsp;最近使用({{rencent_used_menus|length}})</small>
     </div>
 </div>
 <hr>
 <div class="row" id="recent_m">
-    <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <button  class="btn text-secondary" onclick="window.parent.add_tab('aaaa', '公司信息', '{%url 'org_com:index'%}')">
-              <span style="font-size:3rem;"><i class="bi bi-buildings"></i></span><br>
-              <small>公司信息</small>
-             </button>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary" onclick="window.parent.add_tab('bbbb', '系统角色', '{%url 'sys_auth:role_index'%}')">
-              <span style="font-size:3rem;"><i class="bi bi-mortarboard"></i></span><br>
-              <small>系统角色</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary" onclick="window.parent.add_tab('cccc', '系统菜单', '{%url 'sys_auth:menu_index'%}')">
-              <span style="font-size:3rem;"><i class="bi bi-menu-button"></i></span><br>
-              <small>系统菜单</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary" onclick="window.parent.add_tab('fffff', '用户设置', '{%url 'sys_auth:user_index'%}')">
-              <span style="font-size:3rem;"><i class="bi bi-people"></i></span><br>
-              <small>用户设置</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary" onclick="window.parent.add_tab('dddd', '部门管理', '{%url 'org_dep:index'%}')">
-              <span style="font-size:3rem;"><i class="bi bi-diagram-3"></i></span><br>
-              <small>部门管理</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary"  onclick="window.parent.add_tab('eeee', '雇员管理', '{%url 'org_emp:index'%}')">
-              <span style="font-size:3rem;"><i class="bi bi-person"></i></span><br>
-              <small>雇员管理</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary">
-              <span style="font-size:3rem;"><i class="bi bi-arrows-fullscreen"></i></span><br>
-              <small>系统设置</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary">
-              <span style="font-size:3rem;"><i class="bi bi-arrows-fullscreen"></i></span><br>
-              <small>系统设置</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary">
-              <span style="font-size:3rem;"><i class="bi bi-arrows-fullscreen"></i></span><br>
-              <small>系统设置</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary">
-              <span style="font-size:3rem;"><i class="bi bi-arrows-fullscreen"></i></span><br>
-              <small>系统设置</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary">
-              <span style="font-size:3rem;"><i class="bi bi-arrows-fullscreen"></i></span><br>
-              <small>系统设置</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary">
-              <span style="font-size:3rem;"><i class="bi bi-arrows-fullscreen"></i></span><br>
-              <small>系统设置</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary">
-              <span style="font-size:3rem;"><i class="bi bi-arrows-fullscreen"></i></span><br>
-              <small>系统设置</small>
-             </a>
-          </div>
-        </div>
-    </div>
-     <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-          <div class="card-body">
-             <a href="#" class="btn btn-link text-secondary">
-              <span style="font-size:3rem;"><i class="bi bi-arrows-fullscreen"></i></span><br>
-              <small>系统设置</small>
-             </a>
-          </div>
-        </div>
-    </div>
+    {%if rencent_used_menus%}
+        {%for menu in rencent_used_menus%}
+            <div class="col-1" style="padding:10px;">
+                <div class="card text-center">
+                  <div class="card-body">
+                     <button class="btn btn-link text-secondary"  onclick="window.parent.add_tab('{{menu.id}}', '{{menu.name}}', '{%url menu.url%}')">
+                      <span style="font-size:3rem;"><i class="{{menu.icon}}"></i></span><br>
+                      <small>{{menu.name}}</small>
+                     </button>
+                  </div>
+                </div>
+            </div>
+        {%endfor%}
+    {%endif%}
 </div><br>
 <div class="row">
     <div class="col">
-        <small><i class="bi bi-chevron-up" id="all" data-dir="0" style="cursor:pointer"></i>&nbsp;&nbsp;全部(25)</small>
+        <small><i class="bi bi-chevron-up" id="all" data-dir="0" style="cursor:pointer"></i>&nbsp;&nbsp;全部({{all_menus|length}})</small>
     </div>
 </div>
 <hr>
 <div class="row" id="all_m">
-    <div class="col-1" style="padding:10px;">
-        <div class="card text-center">
-            <div class="card-body">
-                <p class="card-text text-center"><i class="bi bi-arrows-fullscreen" style="font-size:3rem;"></i></p>
-                <button class="btn btn-primary btn-block"><small>试运转</small></button>
+    {%if all_menus%}
+        {%for menu in all_menus%}
+            <div class="col-1" style="padding:10px;">
+                <div class="card text-center">
+                  <div class="card-body">
+                     <button class="btn btn-link text-secondary"  onclick="window.parent.add_tab('{{menu.id}}', '{{menu.name}}', '{%url menu.url%}')">
+                      <span style="font-size:3rem;"><i class="{{menu.icon}}"></i></span><br>
+                      <small>{{menu.name}}</small>
+                     </button>
+                  </div>
+                </div>
             </div>
-        </div>
-    </div>
+        {%endfor%}
+    {%endif%}
 </div>
 {%endblock%}
 {%block scripts%}

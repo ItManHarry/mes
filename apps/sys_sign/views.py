@@ -21,15 +21,19 @@ def do_login(request):
     #     next = ''
     # print('Next page is : ', next)
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        params = request.POST
+        username = params.get('username')
+        password = params.get('password')
+        role_id = params.get('role_id', None)
         # next = request.POST['next']
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            request.session['username'] = username
-            # 设置session过期时间-> 30分钟
-            request.session.set_expiry(timedelta(minutes=30))
+            # 设置session
+            request.session['username'] = username                  # 用户账号
+            if not user.is_superuser:
+                request.session['role_id'] = role_id                # 非超级管理员设置角色登录角色ID
+            request.session.set_expiry(timedelta(minutes=30))       # 设置session过期时间-> 30分钟
             # 登录IP地址
             ip = request.META.get('REMOTE_ADDR')
             # 记录登录日志
