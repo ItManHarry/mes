@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from .models import Role, Menu
+from django.db.models import Q
 from org_emp.models import Employee
 from .forms import RoleForm, MenuForm, UserForm
 from django.utils import timezone
@@ -94,6 +95,26 @@ def get_role_menus(request, id):
         'authed_menus': authed_menus
     })
 @login_required
+def get_roles(request, user_id):
+    # 待授权用户
+    auth_user = User.objects.get(pk=user_id)
+    auth_user_roles = auth_user.role_set.all()
+    authed_roles = [role.id for role in auth_user_roles]
+    print('Auth user is : ', auth_user, ', authed rules : ', auth_user_roles)
+    # 当前用户
+    current_user = request.user
+    if current_user.is_superuser:
+        current_user_roles = Role.objects.filter(~Q(id__in=authed_roles)).order_by('name')
+    else:
+        current_user_roles = current_user.role_set.filter(~Q(id__in=authed_roles)).order_by('name')
+    print('Current user is : ', current_user, ', authed rules : ', current_user_roles)
+    return JsonResponse({
+        'code': 1,
+        'message': 'OK',
+        'for_select': [(role.id, role.company.name+'-'+role.name) for role in current_user_roles],    # 所有当前用户可授权角色清单
+        'selected': [(role.id, role.company.name+'-'+role.name) for role in auth_user_roles],         # 待授权用户已授权角色清单
+    })
+@login_required
 def auth_role_menus(request, id):
     # 接收参数
     params = request.POST
@@ -178,3 +199,25 @@ def user_edit(request, id):
             'employee_id': user.employee.id if hasattr(user, 'employee') else '',
         })
     return render(request, 'user/edit.html', context=dict(form=form))
+@login_required
+def auth_user_roles(request, id):
+    user = User.objects.get(pk=id)
+    # 接收参数
+    params = request.POST
+    roles = params.get('roles')
+    end = len(roles) - 1
+    # 剔除'[]'及引号'"'
+    roles = roles[1:end].replace('"', '')
+    roles = roles.split(',')
+    # 选择的角色清单
+    roles = Role.objects.filter(id__in=roles)
+    print('Selected roles are : ', roles)
+    # 清空已授权角色
+    user.role_set.clear()
+    # 重新授权
+    for role in roles:
+        user.role_set.add(role)
+    return JsonResponse({
+        'code': '1',
+        'message': '用户授权成功！',
+    })

@@ -6,7 +6,7 @@
     <div class="col text-end">
         <a href="{%url 'sys_auth:user_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
     </div>
-</div>
+</div><br>
 <table class="table table-hover">
     <thead>
         <tr>
@@ -31,7 +31,7 @@
             <td class="text-center">{%if user.is_active%}<span class="text-success">在用</span>{%else%}<span class="text-danger">停用</span>{%endif%}</td>
             <td class="text-end">
                 <a href="{%url 'sys_auth:user_edit' user.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
-                <button class="btn btn-link text-success" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="权限" onclick="get_menus('{{role.name}}', '{{role.id}}')"><i class="bi bi-mortarboard"></i></button>
+                <button class="btn btn-link text-success" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="权限" onclick="auth({{user.id}})"><i class="bi bi-mortarboard"></i></button>
             </td>
         </tr>
     {%endfor%}
@@ -42,4 +42,66 @@
     {%endif%}
     </tbody>
 </table>
+{%include './_roles.html'%}
+{%endblock%}
+{%block scripts%}
+    {{block.super}}
+    var user_id = 0
+    function auth(id){
+        user_id = id
+        $.post('/sys_auth/role/user/'+id, {user_id: id}, function(data){
+            $('#for_select').empty()
+            $('#selected').empty()
+            var for_select = data.for_select, selected = data.selected
+            for(var i = 0; i < for_select.length; i++){
+                $('#for_select').append("<option value='"+for_select[i][0]+"'>"+for_select[i][1]+"</option>")
+            }
+            for(var i = 0; i < selected.length; i++){
+                $('#selected').append("<option value='"+selected[i][0]+"'>"+selected[i][1]+"</option>")
+            }
+            $('#roleModal').modal('show')
+        },'json')
+    }
+    function do_move(action){
+        var option = null
+        if(action == 1){    //若为1执行增加审批人
+            $('#for_select option').each(function(){
+                if($(this).is(':checked')){
+                    $('#selected').append("<option value='"+$(this).val()+"'>"+$(this).text()+"</option>")
+                    $(this).remove()
+                }
+            })
+        }else{              //若为0执行移除审批人
+            $('#selected option').each(function(){
+                if($(this).is(':checked')){
+                    $('#for_select').append("<option value='"+$(this).val()+"'>"+$(this).text()+"</option>")
+                    $(this).remove()
+                }
+            })
+        }
+    }
+    function do_save(){
+        var roles = []
+        $('#selected option').each(function(){
+            roles.push($(this).val())
+        })
+        if(roles.length == 0)
+            $.alert({
+               type:'red',
+               title:'系统提示',
+               content: '请添加系统权限！',
+               onClose:function(){}
+            })
+        else
+            $.post('/sys_auth/user/role/'+user_id, {roles: JSON.stringify(roles)}, function(data){
+                $.alert({
+                   type:'green',
+                   title:'系统提示',
+                   content: data.message,
+                   onClose:function(){
+                       $('#roleModal').modal('hide')
+                   }
+                })
+            }, 'json')
+    }
 {%endblock%}
