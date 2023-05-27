@@ -16,11 +16,40 @@
               <input type="password" class="form-control" name="password" id="password" placeholder="Password ...">
               <label for="password">Password</label>
             </div><br>
-            <div class="form-floating">
+            <div class="form-floating" id="role">
+                <select id="role_id" name="role_id" class="form-control"></select>
+                <label for="role_id">Role</label>
+            </div>
+            <div class="form-floating" id="message">
               {%if login_message%}<small class="text-danger"><i class="bi bi-exclamation-triangle"></i>&nbsp;&nbsp;{{login_message}}</small>{%endif%}
             </div><br>
             <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
         </form>
     </div>
 </div>
+{%endblock%}
+{%block scripts%}
+{{block.super}}
+$(function(){
+    //alert($('#username').val().length)
+    if($('#username').val().length > 0)
+        get_roles($('#username').val())
+    $('#username').blur(function(){
+        get_roles($(this).val())
+    })
+})
+function get_roles(username){
+//alert('user is : '+ username)
+    $.post('/sys_sign/roles/', {username: username}, function(data){
+        $('#role_id').empty()
+        if(data.code == 0){
+            $('#message').html("<small class='text-danger'><i class='bi bi-exclamation-triangle'></i>&nbsp;&nbsp;User does not exist!</small>")
+        }else{
+            var roles = data.roles
+            //alert(roles)
+            for(var i = 0; i < roles.length; i++)
+                $('#role_id').append("<option value='"+roles[i][0]+"'>"+roles[i][1]+"</option>")
+        }
+    }, 'json')
+}
 {%endblock%}

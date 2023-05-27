@@ -4,6 +4,7 @@ from mes.sys.email import send_mail
 from django.http import JsonResponse
 from .models import SysLogin
 from datetime import timedelta
+from django.contrib.auth.models import User
 def json_req(request):
     params = request.POST
     print(params)
@@ -13,6 +14,22 @@ def json_req(request):
     return JsonResponse(
         {'items': [1, 2, 3], 'status': 1, 'message': 'Succeeded!!!'}
     )
+def get_roles(request):
+    params = request.POST
+    username = params.get('username')
+    print('User name is : ', username)
+    users = User.objects.filter(username__iexact=username)
+    if users:
+        user = users[0]
+        print(user, '------------------')
+        return JsonResponse(
+            {'code': 1, 'roles': [('', 'Super Administrator')] if user.is_superuser else [(role.id, role.name) for role in user.role_set.all().order_by('name')]}
+        )
+    else:
+        print('user not found......')
+        return JsonResponse(
+            {'code': 0}
+        )
 def do_login(request):
     login_message = ''
     # try:

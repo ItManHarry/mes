@@ -148,7 +148,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'D:/Development/Python/logs.log',
+            'filename': 'logs.log',
         },
     },
     'loggers': {
