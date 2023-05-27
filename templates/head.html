@@ -3,10 +3,10 @@
     <a class="navbar-brand"><i class="bi bi-house-gear"></i>&nbsp;&nbsp;MES</a>
     <input  type="text" id="f_code" placeholder="FUNCTION CODE">
     <span class="navbar-text">
-      <div class="btn-group">
-        <button type="button" class="btn">{{request.session.username}}&nbsp;&nbsp;<i class="bi bi-person"></i></button>
+    <div class="dropdown-center">
+        <span>{{request.session.username}}({{request.session.role_name}})</span>
         <button type="button" class="btn  dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-          <span class="visually-hidden">Toggle Dropdown</span>
+          <i class="bi bi-person"></i>
         </button>
         <ul class="dropdown-menu">
           <li class="text-center"><a class="dropdown-item" href="{%url 'sys_sign:logout'%}">Logout&nbsp;&nbsp;<i class="bi bi-box-arrow-right"></i></a></li>

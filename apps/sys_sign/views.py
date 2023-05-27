@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from .models import SysLogin
 from datetime import timedelta
 from django.contrib.auth.models import User
+from sys_auth.models import Role
 def json_req(request):
     params = request.POST
     print(params)
@@ -50,6 +51,10 @@ def do_login(request):
             request.session['username'] = username                  # 用户账号
             if not user.is_superuser:
                 request.session['role_id'] = role_id                # 非超级管理员设置角色登录角色ID
+                role = Role.objects.get(pk=role_id)
+                request.session['role_name'] = role.name
+            else:
+                request.session['role_name'] = 'Administrator'
             request.session.set_expiry(timedelta(minutes=30))       # 设置session过期时间-> 30分钟
             # 登录IP地址
             ip = request.META.get('REMOTE_ADDR')
