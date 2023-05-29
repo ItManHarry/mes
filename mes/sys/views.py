@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, reverse
 from django.http import JsonResponse
-from django.contrib.auth.models import User
+from django.utils import timezone
 from sys_auth.models import RecentUsedMenu, Role, Menu
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
@@ -31,17 +31,25 @@ def func(request):
         authed = False
         if user.is_superuser:
             authed = True
-            rum = RecentUsedMenu.objects.filter(menu=menu, user=user)
-            if not rum:
+            rums = RecentUsedMenu.objects.filter(menu=menu, user=user)
+            if not rums:
                 RecentUsedMenu.objects.create(menu=menu, user=user)
+            else:
+                rum = rums[0]
+                rum.updated_on = timezone.now()
+                rum.save()
         else:
             role_id = request.session['role_id']
             role = Role.objects.get(pk=role_id)
             if menu in role.menus.all():
                 authed = True
-                rum = RecentUsedMenu.objects.filter(menu=menu, user=user, role=role)
-                if not rum:
+                rums = RecentUsedMenu.objects.filter(menu=menu, user=user, role=role)
+                if not rums:
                     RecentUsedMenu.objects.create(menu=menu, user=user, role=role)
+                else:
+                    rum = rums[0]
+                    rum.updated_on = timezone.now()
+                    rum.save()
         if authed:
             tab = {'id': menu.id, 'name': menu.name, 'url': reverse(menu.url)}
             return JsonResponse({
