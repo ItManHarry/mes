@@ -43,6 +43,21 @@ input {
 {%block scripts%}
     {{block.super}}
     $(function(){
+        $('#f_code').keypress(function(event){
+            var code = $(this).val()
+            if (event.keyCode == 13)
+                $.post('/func/', {code: code}, function(data){
+                    if(data.code == 0)
+                        $.alert({
+                           type:'red',
+                           title:'系统提示',
+                           content: data.message,
+                           onClose:function(){}
+                        })
+                    else
+                        add_tab(data.tab.id, data.tab.name, data.tab.url)
+                }, 'json')
+        })
         //$.post('/sys_sign/json/', {name: 'Harry', age: 35}, function(data){
             //alert(data.items)
             //alert(data.status)

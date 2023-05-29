@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('index/', views.index, name='index'),
     path('home/', views.home, name='home'),
+    path('func/', views.func, name='func'),
     path('sys_sign/', include('sys_sign.urls')),
     path('org_com/', include('org_com.urls')),
     path('org_dep/', include('org_dep.urls')),
