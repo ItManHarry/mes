@@ -18,16 +18,16 @@ def json_req(request):
 def get_roles(request):
     params = request.POST
     username = params.get('username')
-    print('User name is : ', username)
+    # print('User name is : ', username)
     users = User.objects.filter(username__iexact=username)
     if users:
         user = users[0]
-        print(user, '------------------')
+        # print(user, '------------------')
         return JsonResponse(
             {'code': 1, 'roles': [('', 'Super Administrator')] if user.is_superuser else [(role.id, role.name) for role in user.role_set.all().order_by('name')]}
         )
     else:
-        print('user not found......')
+        # print('user not found......')
         return JsonResponse(
             {'code': 0}
         )
