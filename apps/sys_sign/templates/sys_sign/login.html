@@ -28,7 +28,7 @@
 </div><br>
 <div class="row">
     <div class="col-md-4 offset-md-4 text-center">
-        <button class="w-100 btn btn-lg btn-primary" id="signin">Sign in</button>
+        <button class="w-100 btn btn-lg btn-primary" id="signin" disabled>Sign in</button>
     </div>
 </div>
 {%endblock%}
@@ -65,6 +65,7 @@ function get_roles(username){
             //alert(roles)
             for(var i = 0; i < roles.length; i++)
                 $('#role_id').append("<option value='"+roles[i][0]+"'>"+roles[i][1]+"</option>")
+            $('#signin').removeAttr('disabled')
         }
     }, 'json')
 }
