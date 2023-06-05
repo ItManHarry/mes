@@ -59,6 +59,9 @@
 $(function(){
     $('#id_company').change(function(){
         var id = $(this).val()
+        if(!id)
+            id = '000000000'
+        //alert('Company id is : '+id)
         var department_id = $('#id_id').val()
         $.post('/org_com/company/department/'+id, {department_id:department_id}, function(data){
             $('#id_parent').html(data)

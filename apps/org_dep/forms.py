@@ -17,8 +17,14 @@ def get_sub_departments(parent_id, sub_departments):
     else:
         return sub_departments
 class DepartmentForm(ModelForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, company_id, *args, **kwargs):
+        self.company_id = company_id
         super(DepartmentForm, self).__init__(*args, **kwargs)
+        # 设置法人
+        if self.company_id:
+            self.fields['company'].queryset = Company.objects.filter(id=self.company_id).order_by('name')
+        else:
+            self.fields['company'].queryset = Company.objects.all().order_by('name')
         # 设置上级部门
         department_id = self.instance.pk
         try:

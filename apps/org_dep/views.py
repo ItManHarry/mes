@@ -5,13 +5,18 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 @login_required
 def index(request):
-    departments = Department.objects.all().order_by('code')
+    user = request.user
+    if user.is_superuser:
+        departments = Department.objects.all().order_by('code')
+    else:
+        departments = Department.objects.filter(company_id=request.session['company_id']).order_by('code')
     return render(request, 'department/index.html', context=dict(departments=departments))
 @login_required
 def add(request):
+    company_id = request.session['company_id']
     if request.method == 'POST':
-        form = DepartmentForm(request.POST)
-        # form = DepartmentForm(None, request.POST)
+        # form = DepartmentForm(request.POST)
+        form = DepartmentForm(company_id, request.POST)
         if form.is_valid():
             department = form.save(commit=False)
             department.code = department.code.upper()
@@ -21,15 +26,16 @@ def add(request):
             department.save()
             return redirect(reverse('org_dep:index'))
     else:
-        form = DepartmentForm()
-        # form = DepartmentForm(None)
+        # form = DepartmentForm()
+        form = DepartmentForm(company_id)
     return render(request, 'department/edit.html', context=dict(form=form, nav='新增部门信息'))
 @login_required
 def edit(request, id):
     department = Department.objects.get(pk=id)
+    company_id = request.session['company_id']
     if request.method == 'POST':
-        form = DepartmentForm(request.POST, instance=department)
-        # form = DepartmentForm(request.POST, p_id=id, instance=department)
+        # form = DepartmentForm(request.POST, instance=department)
+        form = DepartmentForm(request.POST, company_id=company_id, instance=department)
         if form.is_valid():
             department = form.save(commit=False)
             department.code = department.code.upper()
@@ -40,7 +46,7 @@ def edit(request, id):
             department.save()
             return redirect(reverse('org_dep:index'))
     else:
-        form = DepartmentForm(instance=department)
-        # form = DepartmentForm(p_id=id, instance=department)
+        # form = DepartmentForm(instance=department)
+        form = DepartmentForm(company_id=company_id, instance=department)
         # print('Code is {} name is {}'.format(form.code, form.name))
     return render(request, 'department/edit.html', context=dict(form=form, nav='编辑部门信息'))

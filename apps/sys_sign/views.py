@@ -48,14 +48,16 @@ def do_login(request):
         if user:
             login(request, user)
             # 设置session
-            request.session['username'] = username                  # 用户账号
+            request.session['username'] = username                      # 用户账号
             if not user.is_superuser:
-                request.session['role_id'] = role_id                # 非超级管理员设置角色登录角色ID
+                request.session['role_id'] = role_id                    # 非超级管理员设置角色登录角色ID-用于加载对应的菜单
                 role = Role.objects.get(pk=role_id)
-                request.session['role_name'] = role.name
+                request.session['role_name'] = role.name                # 仅做Head显示
+                request.session['company_id'] = str(role.company.id)    # 用于数据法人别区分&表单法人过滤
             else:
-                request.session['role_name'] = 'Administrator'
-            request.session.set_expiry(timedelta(minutes=30))       # 设置session过期时间-> 30分钟
+                request.session['role_name'] = 'Administrator'          # 仅做Head显示
+                request.session['company_id'] = ''                      # 用于表单法人过滤
+            request.session.set_expiry(timedelta(minutes=30))           # 设置session过期时间-> 30分钟
             # 登录IP地址
             ip = request.META.get('REMOTE_ADDR')
             # 记录登录日志
