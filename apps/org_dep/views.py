@@ -35,7 +35,7 @@ def edit(request, id):
     company_id = request.session['company_id']
     if request.method == 'POST':
         # form = DepartmentForm(request.POST, instance=department)
-        form = DepartmentForm(request.POST, company_id=company_id, instance=department)
+        form = DepartmentForm(company_id, request.POST, instance=department)
         if form.is_valid():
             department = form.save(commit=False)
             department.code = department.code.upper()

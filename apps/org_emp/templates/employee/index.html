@@ -10,11 +10,12 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th width="20%">职号</th>
-            <th width="20%">姓名</th>
+            <th width="15%">职号</th>
+            <th width="10%">姓名</th>
             <th width="20%">邮箱</th>
             <th width="20%">部门</th>
-            <th width="10%">状态</th>
+            <th width="20%">法人</th>
+            <th width="5%">状态</th>
             <th width="10%" class="text-end">Action</th>
         </tr>
     </thead>
@@ -26,6 +27,7 @@
             <td>{{employee.name}}</td>
             <td>{{employee.email}}</td>
             <td>{{employee.department}}</td>
+            <td>{{employee.department.company}}</td>
             <td>{%if employee.active%}<span class="text-success">在职</span>{%else%}<span class="text-danger">离职</span>{%endif%}</td>
             <td class="text-end">
                 <a href="{%url 'org_emp:edit' employee.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>

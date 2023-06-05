@@ -51,9 +51,10 @@ def get_departments(request, id):
     except:
         company = None
     if company:
-        department_id = request.POST['department_id']
-        print('Department id is : ', department_id)
+        department_id = ''
         try:
+            department_id = request.POST['department_id']
+            print('Department id is : ', department_id)
             department = Department.objects.get(pk=department_id)
         except:
             department = None

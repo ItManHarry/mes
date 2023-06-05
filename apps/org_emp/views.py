@@ -5,13 +5,18 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 @login_required
 def index(request):
-    employees = Employee.objects.all().order_by('code')
+    user = request.user
+    if user.is_superuser:
+        employees = Employee.objects.all().order_by('code')
+    else:
+        employees = Employee.objects.filter(department__company_id=request.session['company_id']).order_by('code')
     return render(request, 'employee/index.html', context=dict(employees=employees))
 @login_required
 def add(request):
+    company_id = request.session['company_id']
     if request.method == 'POST':
-        form = EmployeeForm(request.POST)
-        # form = EmployeeForm(None, request.POST)
+        # form = EmployeeForm(request.POST)
+        form = EmployeeForm(company_id, request.POST)
         if form.is_valid():
             employee = form.save(commit=False)
             employee.code = employee.code.upper()
@@ -21,15 +26,17 @@ def add(request):
             employee.save()
             return redirect(reverse('org_emp:index'))
     else:
-        form = EmployeeForm()
-        # form = EmployeeForm(None)
+        # form = EmployeeForm()
+        form = EmployeeForm(company_id)
     return render(request, 'employee/edit.html', context=dict(form=form, nav='新增雇员信息'))
 @login_required
 def edit(request, id):
+    company_id = request.session['company_id']
     employee = Employee.objects.get(pk=id)
     if request.method == 'POST':
-        form = EmployeeForm(request.POST, instance=employee)
-        # form = EmployeeForm(request.POST, p_id=id, instance=employee)
+        # form = EmployeeForm(request.POST, instance=employee)
+        form = EmployeeForm(company_id, request.POST, instance=employee)
+        # form.company_id = company_id
         if form.is_valid():
             employee = form.save(commit=False)
             employee.code = employee.code.upper()
@@ -40,8 +47,8 @@ def edit(request, id):
             employee.save()
             return redirect(reverse('org_emp:index'))
     else:
-        form = EmployeeForm(instance=employee)
-        # form = EmployeeForm(p_id=id, instance=employee)
+        # form = EmployeeForm(instance=employee)
+        form = EmployeeForm(company_id=company_id, instance=employee)
         # print('Code is {} name is {}'.format(form.code, form.name))
     return render(request, 'employee/edit.html', context=dict(form=form, nav='编辑雇员信息'))
 @login_required

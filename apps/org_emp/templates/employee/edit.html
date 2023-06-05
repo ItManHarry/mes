@@ -49,18 +49,6 @@
     <br>
     <div class="row">
         <div class="col-6">
-            {{form.department.label_tag}}
-            {{form.department}}
-            {%if form.department.errors%}
-                {%for error in form.department.errors%}
-                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
-                {%endfor%}
-            {%endif%}
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-6">
             {{form.company.label_tag}}
             {{form.company}}
             {%if form.company.errors%}
@@ -70,10 +58,10 @@
             {%endif%}
         </div>
         <div class="col-6">
-            {{form.parent.label_tag}}
-            {{form.parent}}
-            {%if form.parent.errors%}
-                {%for error in form.parent.errors%}
+            {{form.department.label_tag}}
+            {{form.department}}
+            {%if form.department.errors%}
+                {%for error in form.department.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
@@ -92,9 +80,8 @@
 $(function(){
     $('#id_company').change(function(){
         var id = $(this).val()
-        var department_id = $('#id_id').val()
-        $.post('/org_com/company/department/'+id, {department_id:department_id}, function(data){
-            $('#id_parent').html(data)
+        $.post('/org_com/company/department/'+id, {}, function(data){
+            $('#id_department').html(data)
         }, 'html')
     })
 })

@@ -1,9 +1,35 @@
 from django import forms
 from .models import Employee
+from org_com.models import Company
+from org_dep.models import Department
 from django.db.models import Q
 from django.core.exceptions import ValidationError
 
 class EmployeeForm(forms.ModelForm):
+    def __init__(self, company_id, *args, **kwargs):
+        self.company_id = company_id
+        super(EmployeeForm, self).__init__(*args, **kwargs)
+        # 设置法人
+        if self.company_id:
+            self.fields['company'].choices = [('000000000', '---------')]+[(company.id, company.name) for company in Company.objects.filter(id=self.company_id).order_by('name')]
+        else:
+            self.fields['company'].choices = [('000000000', '---------')]+[(company.id, company.name) for company in Company.objects.all().order_by('name')]
+        employee_id = self.instance.pk
+        try:
+            employee = Employee.objects.get(pk=employee_id)
+        except:
+            employee = None
+        if employee:    # 编辑
+            self.fields['company'].initial = employee.department.company.id
+            company = employee.department.company
+            # print('Company is : ', company)
+            self.fields['department'].queryset = company.department_set.all()
+        else:           # 新增
+            self.fields['department'].queryset = Department.objects.none()
+        # 前端选择公司Ajax变更上级部门提交时，将对应的上级部门赋值,提交保存时使用
+        if 'company' in self.data:
+            # print('Selected company is : ', self.data['company'])
+            self.fields['department'].queryset = Department.objects.filter(company_id=self.data['company'])
     class Meta:
         model = Employee
         fields = ['id', 'name', 'code', 'email', 'phone', 'department']
@@ -22,6 +48,7 @@ class EmployeeForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
             'department': forms.Select(attrs={'class': 'form-control'}),
         }
+    company = forms.ChoiceField(label='所属公司', widget=forms.Select(attrs={'class': 'form-control'}))
     def clean_code(self):
         id = self.cleaned_data['id']
         code = self.cleaned_data['code']
