@@ -47,6 +47,6 @@ def edit(request, id):
             return redirect(reverse('org_dep:index'))
     else:
         # form = DepartmentForm(instance=department)
-        form = DepartmentForm(company_id=company_id, instance=department)
+        form = DepartmentForm(company_id, instance=department)
         # print('Code is {} name is {}'.format(form.code, form.name))
     return render(request, 'department/edit.html', context=dict(form=form, nav='编辑部门信息'))

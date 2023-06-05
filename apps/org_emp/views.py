@@ -48,7 +48,7 @@ def edit(request, id):
             return redirect(reverse('org_emp:index'))
     else:
         # form = EmployeeForm(instance=employee)
-        form = EmployeeForm(company_id=company_id, instance=employee)
+        form = EmployeeForm(company_id, instance=employee)
         # print('Code is {} name is {}'.format(form.code, form.name))
     return render(request, 'employee/edit.html', context=dict(form=form, nav='编辑雇员信息'))
 @login_required

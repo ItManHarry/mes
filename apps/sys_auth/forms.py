@@ -3,9 +3,20 @@ from django.db.models import Q
 from django import forms
 from .models import Role, Menu
 from sys_auth.models import Role
+from org_com.models import Company
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 class RoleForm(ModelForm):
+
+    def __init__(self, company_id, *args, **kwargs):
+        self.company_id = company_id
+        super(RoleForm, self).__init__(*args, **kwargs)
+        # 设置法人
+        if self.company_id:
+            self.fields['company'].queryset = Company.objects.filter(id=self.company_id).order_by('name')
+        else:
+            self.fields['company'].queryset = Company.objects.all().order_by('name')
+
     class Meta:
         model = Role
         fields = ['id', 'name', 'code', 'company']

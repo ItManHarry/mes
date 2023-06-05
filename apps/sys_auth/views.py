@@ -9,12 +9,17 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 @login_required
 def role_index(request):
-    roles = Role.objects.all().order_by('code')
+    user = request.user
+    if user.is_superuser:
+        roles = Role.objects.all().order_by('code')
+    else:
+        roles = Role.objects.filter(company_id=request.session['company_id']).order_by('code')
     return render(request, 'role/index.html', context=dict(roles=roles))
 @login_required
 def role_add(request):
+    company_id = request.session['company_id']
     if request.method == 'POST':
-        form = RoleForm(request.POST)
+        form = RoleForm(company_id, request.POST)
         if form.is_valid():
             role = form.save(commit=False)
             role.code = role.code.upper()
@@ -24,13 +29,14 @@ def role_add(request):
             role.save()
             return redirect(reverse('sys_auth:role_index'))
     else:
-        form = RoleForm()
+        form = RoleForm(company_id)
     return render(request, 'role/edit.html', context=dict(form=form, nav='新增角色信息'))
 @login_required
 def role_edit(request, id):
     role = Role.objects.get(pk=id)
+    company_id = request.session['company_id']
     if request.method == 'POST':
-        form = RoleForm(request.POST, instance=role)
+        form = RoleForm(company_id, request.POST, instance=role)
         if form.is_valid():
             role = form.save(commit=False)
             role.code = role.code.upper()
@@ -41,7 +47,7 @@ def role_edit(request, id):
             role.save()
             return redirect(reverse('sys_auth:role_index'))
     else:
-        form = RoleForm(instance=role)
+        form = RoleForm(company_id, instance=role)
         # print('Code is {} name is {}'.format(form.code, form.name))
     return render(request, 'role/edit.html', context=dict(form=form, nav='编辑角色信息'))
 
@@ -85,7 +91,13 @@ def menu_edit(request, id):
 @login_required
 def get_role_menus(request, id):
     role = Role.objects.get(pk=id)
-    all_menus = [(menu.id, '({})-{}'.format(menu.code, menu.name)) for menu in Menu.objects.all().order_by('code')]
+    user = request.user
+    if user.is_superuser:   # 超级管理员
+        all_menus = [(menu.id, '({})-{}'.format(menu.code, menu.name)) for menu in Menu.objects.all().order_by('code')]
+    else:                   # 当前登录角色具备的菜单权限进行下发
+        current_role_id = request.session['role_id']
+        current_role = Role.objects.get(pk=current_role_id)
+        all_menus = [(menu.id, '({})-{}'.format(menu.code, menu.name)) for menu in current_role.menus.all().order_by('code')]
     # print('Type is : ', type(role.menus))
     authed_menus = [menu.id for menu in role.menus.all()]
     return JsonResponse({
