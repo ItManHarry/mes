@@ -28,5 +28,6 @@ urlpatterns = [
     path('org_com/', include('org_com.urls')),
     path('org_dep/', include('org_dep.urls')),
     path('org_emp/', include('org_emp.urls')),
-    path('sys_auth/', include('sys_auth.urls'))
+    path('sys_auth/', include('sys_auth.urls')),
+    path('sys_dict/', include('sys_dict.urls')),
 ]

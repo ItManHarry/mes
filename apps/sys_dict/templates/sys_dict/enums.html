@@ -1,0 +1,72 @@
+{% extends 'base.html'%}
+{%block title%}&nbsp;{%endblock%}
+{%block header%}&nbsp;{%endblock%}
+{%block content%}
+<hr>
+<h3>字典 : {{sys_dict}}</h3>
+<hr>
+<form method="post">
+    {% csrf_token %}
+    <div class="row">
+        <div class="col-6">
+            {{form.code.label_tag}}
+            {{form.code}}
+            {%if form.code.errors%}
+                {%for error in form.code.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
+            {{form.name.label_tag}}
+            {{form.name}}
+            {%if form.name.errors%}
+                {%for error in form.name.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col text-end">
+            <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
+            <a class="btn btn-outline-secondary" href="{%url 'sys_dict:dict_index'%}">返回</a>
+
+        </div>
+    </div>
+</form>
+<hr>
+<div class="row">
+    <div class="col">
+        <a href="{%url 'sys_dict:enum_add' sys_dict.id%}" class="btn btn-outline-info"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
+    </div>
+</div>
+<hr>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th width="47%">代码</th>
+            <th width="47%">名称</th>
+            <th width="6%">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {%if enums%}
+    {%for enum in enums%}
+        <tr>
+            <td>{{enum.code}}</td>
+            <td>{{enum.name}}</td>
+            <td>
+                <a href="{%url 'sys_dict:enum_edit' dict_id=enum.sys_dict.id enum_id=enum.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+            </td>
+        </tr>
+    {%endfor%}
+    {%else%}
+    <tr>
+        <td colspan="3" class="text-info text-center">没有数据！</td>
+    </tr>
+    {%endif%}
+    </tbody>
+</table>
+{%endblock%}
