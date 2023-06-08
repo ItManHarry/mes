@@ -1,5 +1,5 @@
 <nav aria-label="Page navigation example">
-  <small>共计{{ items.paginator.num_pages }}页,当前第{{ items.number }}页;共计{{ items.paginator.count }}条!</small>
+  <span class="navbar-text">共计{{ items.paginator.num_pages }}页,当前第{{ items.number }}页;共计{{ items.paginator.count }}条!</span>
   <ul class="pagination justify-content-end">
     {% if items.has_previous %}
       <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
