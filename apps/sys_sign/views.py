@@ -76,7 +76,7 @@ def do_login(request):
             return redirect(reverse('index'))
         else:
             print('Authenticate failed!!!')
-            login_message = 'User name or password is not correct!'
+            login_message = '认证失败,账号密码有误或账号已停用!'
     # return render(request, 'sys_sign/login.html', context=dict(login_message=login_message, next=next))
     return render(request, 'sys_sign/login.html', context=dict(login_message=login_message))
 def do_logout(request):
