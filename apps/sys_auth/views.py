@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 @login_required
 def role_index(request):
     user = request.user
@@ -154,7 +155,10 @@ def auth_role_menus(request, id):
 @login_required
 def user_index(request):
     users = User.objects.all().order_by('username')
-    return render(request, 'user/index.html', context=dict(users=users))
+    paginator = Paginator(users, 5)
+    page = request.GET.get('page', 1)
+    items = paginator.get_page(page)
+    return render(request, 'user/index.html', context=dict(items=items))
 @login_required
 def user_add(request):
     if request.method == 'POST':
