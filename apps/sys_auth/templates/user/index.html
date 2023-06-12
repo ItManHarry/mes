@@ -13,10 +13,10 @@
             <th width="10%">登录账号</th>
             <th width="20%">用户姓名</th>
             <th width="15%">邮箱地址</th>
-            <th width="25%">电话号码</th>
+            <th width="10%">电话号码</th>
             <th width="10%" class="text-center">超级管理员</th>
             <th width="10%" class="text-center">状态</th>
-            <th width="10%" class="text-end">Action</th>
+            <th width="25%" class="text-center">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -29,9 +29,10 @@
             <td>{%if user.is_staff%}{{user.employee.phone}}{%else%}-{%endif%}</td>
             <td class="text-center">{%if user.is_superuser%}<span class="text-warning">Y</span>{%else%}<span class="text-success">N</span>{%endif%}</td>
             <td class="text-center">{%if user.is_active%}<span class="text-success">在用</span>{%else%}<span class="text-danger">停用</span>{%endif%}</td>
-            <td class="text-end">
+            <td class="text-center">
                 <a href="{%url 'sys_auth:user_edit' user.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
                 <button class="btn btn-link text-success" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="权限" onclick="auth({{user.id}})"><i class="bi bi-mortarboard"></i></button>
+                <button class="btn btn-link text-warning" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="重置密码" onclick="reset_pwd({{user.id}})" {%if not user.is_active%}disabled{%endif%}><i class="bi bi-key"></i></button>
             </td>
         </tr>
     {%endfor%}
@@ -44,6 +45,7 @@
 </table>
 {%include 'common/paginator.html'%}
 {%include './_roles.html'%}
+{%include './_pwd.html'%}
 {%endblock%}
 {%block scripts%}
     {{block.super}}
@@ -104,5 +106,44 @@
                    }
                 })
             }, 'json')
+    }
+    function reset_pwd(id){
+        user_id = id
+        $('#pwdModal').modal('show')
+    }
+    function do_reset(){
+        if($.trim($('#new_pwd').val()) == ''){
+            $.alert({
+               type:'red',
+               title:'系统提示',
+               content: '请输入新密码！',
+               onClose:function(){}
+            })
+        }else if($.trim($('#confirm_pwd').val()) == ''){
+            $.alert({
+               type:'red',
+               title:'系统提示',
+               content: '请确认新密码！',
+               onClose:function(){}
+            })
+        }else if($('#new_pwd').val() != $('#confirm_pwd').val()){
+            $.alert({
+               type:'red',
+               title:'系统提示',
+               content: '两次输入密码不一致！',
+               onClose:function(){}
+            })
+        }else{
+            $.post('/sys_auth/user/pwd/reset/'+user_id, {pwd:$('#new_pwd').val()}, function(data){
+                $.alert({
+                   type:'green',
+                   title:'系统提示',
+                   content: data.message,
+                   onClose:function(){
+                        $('#pwdModal').modal('hide')
+                   }
+                })
+            }, 'json')
+        }
     }
 {%endblock%}

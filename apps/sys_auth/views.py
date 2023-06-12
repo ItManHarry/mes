@@ -237,3 +237,13 @@ def auth_user_roles(request, id):
         'code': '1',
         'message': '用户授权成功！',
     })
+@login_required
+def reset_password(request, id):
+    user = User.objects.get(pk=id)
+    pwd = request.POST['pwd']
+    user.set_password(pwd)
+    user.save()
+    return JsonResponse({
+        'code': '1',
+        'message': '密码重置成功！'
+    })

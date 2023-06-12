@@ -1,0 +1,27 @@
+<!-- Modal -->
+<div class="modal fade" id="pwdModal" data-bs-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="pwdModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalTitle">重置密码</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col">
+            <input type="password" class="form-control" placeholder="新密码" id="new_pwd" required>
+          </div>
+        </div><br>
+        <div class="row">
+          <div class="col">
+            <input type="password" class="form-control" placeholder="确认新密码" id="confirm_pwd" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <button type="button" class="btn btn-primary" onclick="do_reset()">重置</button>
+      </div>
+    </div>
+  </div>
+</div>
