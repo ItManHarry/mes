@@ -247,3 +247,13 @@ def reset_password(request, id):
         'code': '1',
         'message': '密码重置成功！'
     })
+@login_required
+def user_status(request, id, status):
+    user = User.objects.get(pk=id)
+    print('User id is : ', id, ', status is : ', status)
+    user.is_active = True if status == 1 else False
+    user.save()
+    return JsonResponse({
+        'code': '1',
+        'message': '用户状态修改完成！'
+    })
