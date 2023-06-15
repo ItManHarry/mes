@@ -65,3 +65,10 @@ class EmployeeForm(forms.ModelForm):
             if Employee.objects.filter(code=code.upper()):
                 raise ValidationError('职号已存在!')
         return code
+    def clean_photo(self):
+        photo = self.cleaned_data['photo']
+        print('Photo is : ', photo.name)
+        file_extend = photo.name.split('.')[1]
+        if file_extend not in ['jpg', 'png', 'gif', 'jpeg']:
+            raise ValidationError('文件扩展名必须是(jpg,png,gif,jpeg)')
+        return photo
