@@ -27,10 +27,12 @@ def add(request):
         if form.is_valid():
             employee = form.save(commit=False)
             employee.code = employee.code.upper()
-            file = request.FILES['photo']
-            photo_path = handle_uploaded_file(file, 'employee')
-            print('Uploaded file path is : ', photo_path)
-            employee.photo_path = photo_path
+            if 'photo' in request.FILES:
+                file = request.FILES['photo']
+                photo_path = handle_uploaded_file(file, 'employee')
+                print('Uploaded file path is : ', photo_path)
+                if photo_path:
+                    employee.photo_path = photo_path
             user = request.user
             if user:
                 employee.created_by = user.id
@@ -51,10 +53,12 @@ def edit(request, id):
         if form.is_valid():
             employee = form.save(commit=False)
             employee.code = employee.code.upper()
-            file = request.FILES['photo']
-            photo_path = handle_uploaded_file(file, 'employee')
-            print('Uploaded file path is : ', photo_path)
-            employee.photo_path = photo_path
+            if 'photo' in request.FILES:
+                file = request.FILES['photo']
+                photo_path = handle_uploaded_file(file, 'employee')
+                print('Uploaded file path is : ', photo_path)
+                if photo_path:
+                    employee.photo_path = photo_path
             employee.updated_on = timezone.now()
             user = request.user
             if user:

@@ -49,7 +49,7 @@ class EmployeeForm(forms.ModelForm):
             'department': forms.Select(attrs={'class': 'form-control'}),
         }
     company = forms.ChoiceField(label='所属公司', widget=forms.Select(attrs={'class': 'form-control'}))
-    photo = forms.FileField(label='照片')
+    photo = forms.FileField(label='照片', required=False)
     def clean_code(self):
         id = self.cleaned_data['id']
         code = self.cleaned_data['code']
@@ -67,8 +67,9 @@ class EmployeeForm(forms.ModelForm):
         return code
     def clean_photo(self):
         photo = self.cleaned_data['photo']
-        print('Photo is : ', photo.name)
-        file_extend = photo.name.split('.')[1]
-        if file_extend not in ['jpg', 'png', 'gif', 'jpeg']:
-            raise ValidationError('文件扩展名必须是(jpg,png,gif,jpeg)')
+        if photo:
+            print('Photo is : ', photo.name)
+            file_extend = photo.name.split('.')[1]
+            if file_extend not in ['jpg', 'png', 'gif', 'jpeg']:
+                raise ValidationError('文件扩展名必须是(jpg,png,gif,jpeg)')
         return photo
