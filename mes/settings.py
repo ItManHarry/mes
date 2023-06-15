@@ -19,7 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 # 系统登录地址,配置后在login_required拦截后会自动跳转至对应的登录页面
 LOGIN_URL = '/sys_sign/login/'
-
+# 文件上传地址
+UPLOAD_FILE_PATH = 'E:/attachments'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 

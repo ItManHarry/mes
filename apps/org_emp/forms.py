@@ -49,6 +49,7 @@ class EmployeeForm(forms.ModelForm):
             'department': forms.Select(attrs={'class': 'form-control'}),
         }
     company = forms.ChoiceField(label='所属公司', widget=forms.Select(attrs={'class': 'form-control'}))
+    photo = forms.FileField(label='照片')
     def clean_code(self):
         id = self.cleaned_data['id']
         code = self.cleaned_data['code']

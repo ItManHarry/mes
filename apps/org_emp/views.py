@@ -3,6 +3,9 @@ from .models import Employee
 from .forms import EmployeeForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from mes.sys.upload import handle_uploaded_file
+from django.conf import settings
+import os
 @login_required
 def index(request):
     user = request.user
@@ -16,10 +19,14 @@ def add(request):
     company_id = request.session['company_id']
     if request.method == 'POST':
         # form = EmployeeForm(request.POST)
-        form = EmployeeForm(company_id, request.POST)
+        form = EmployeeForm(company_id, request.POST, request.FILES)
         if form.is_valid():
             employee = form.save(commit=False)
             employee.code = employee.code.upper()
+            file = request.FILES['photo']
+            photo_path = handle_uploaded_file(file, 'employee')
+            print('Uploaded file path is : ', photo_path)
+            employee.photo_path = photo_path
             user = request.user
             if user:
                 employee.created_by = user.id
@@ -35,11 +42,15 @@ def edit(request, id):
     employee = Employee.objects.get(pk=id)
     if request.method == 'POST':
         # form = EmployeeForm(request.POST, instance=employee)
-        form = EmployeeForm(company_id, request.POST, instance=employee)
+        form = EmployeeForm(company_id, request.POST, request.FILES, instance=employee)
         # form.company_id = company_id
         if form.is_valid():
             employee = form.save(commit=False)
             employee.code = employee.code.upper()
+            file = request.FILES['photo']
+            photo_path = handle_uploaded_file(file, 'employee')
+            print('Uploaded file path is : ', photo_path)
+            employee.photo_path = photo_path
             employee.updated_on = timezone.now()
             user = request.user
             if user:
@@ -50,7 +61,7 @@ def edit(request, id):
         # form = EmployeeForm(instance=employee)
         form = EmployeeForm(company_id, instance=employee)
         # print('Code is {} name is {}'.format(form.code, form.name))
-    return render(request, 'employee/edit.html', context=dict(form=form, nav='编辑雇员信息'))
+    return render(request, 'employee/edit.html', context=dict(form=form, employee=employee, nav='编辑雇员信息'))
 @login_required
 def search_employee(request):
     if request.method == 'POST':

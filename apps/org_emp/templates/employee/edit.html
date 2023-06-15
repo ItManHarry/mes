@@ -2,7 +2,7 @@
 {%block title%}&nbsp;{%endblock%}
 {%block header%}&nbsp;{%endblock%}
 {%block content%}
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{form.id}}
     <div class="row">
@@ -62,6 +62,20 @@
             {{form.department}}
             {%if form.department.errors%}
                 {%for error in form.department.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-6">
+            {%if employee and employee.photo_path%}
+            <img src="/org_emp/{{employee.photo_path}}" class="rounded" width="200" height="200">
+            {%endif%}
+            {{form.photo.label_tag}}
+            {{form.photo}}
+            {%if form.photo.errors%}
+                {%for error in form.photo.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
