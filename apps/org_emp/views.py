@@ -30,7 +30,6 @@ def add(request):
             if 'photo' in request.FILES:
                 file = request.FILES['photo']
                 photo_path = handle_uploaded_file(file, 'employee')
-                print('Uploaded file path is : ', photo_path)
                 if photo_path:
                     employee.photo_path = photo_path
             user = request.user
@@ -56,7 +55,6 @@ def edit(request, id):
             if 'photo' in request.FILES:
                 file = request.FILES['photo']
                 photo_path = handle_uploaded_file(file, 'employee')
-                print('Uploaded file path is : ', photo_path)
                 if photo_path:
                     employee.photo_path = photo_path
             employee.updated_on = timezone.now()

@@ -70,7 +70,7 @@
     <div class="row">
         <div class="col-6">
             {%if employee and employee.photo_path%}
-            <img src="/org_emp/{{employee.photo_path}}" class="rounded" width="200" height="200">
+            <img src="/org_emp/{{employee.photo_path}}" class="rounded" width="200" height="200"><br>
             {%endif%}
             {{form.photo.label_tag}}
             {{form.photo}}
