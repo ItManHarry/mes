@@ -21,6 +21,8 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'apps'))
 LOGIN_URL = '/sys_sign/login/'
 # 文件上传地址
 UPLOAD_FILE_PATH = 'E:/attachments'
+# 分页-每页数据量
+PAGE_ITEMS = 10
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 

@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from mes.sys.upload import handle_uploaded_file
 from django.conf import settings
+from django.core.paginator import Paginator
 import os
 @login_required
 def index(request):
@@ -13,7 +14,10 @@ def index(request):
         employees = Employee.objects.all().order_by('code')
     else:
         employees = Employee.objects.filter(department__company_id=request.session['company_id']).order_by('code')
-    return render(request, 'employee/index.html', context=dict(employees=employees))
+    paginator = Paginator(employees, settings.PAGE_ITEMS)
+    page_num = request.GET.get('page', 1)
+    page = paginator.page(page_num)
+    return render(request, 'employee/index.html', context=dict(employees=page.object_list, page=page))
 @login_required
 def add(request):
     company_id = request.session['company_id']
