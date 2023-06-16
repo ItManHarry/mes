@@ -50,14 +50,15 @@ def enum_add(request, dict_id):
     sys_dict = SysDict.objects.get(pk=dict_id)
     enums = sys_dict.sysenum_set.order_by('code').all()
     if request.method == 'POST':
-        form = SysEnumForm(request.POST)
+        form = SysEnumForm(dict_id, request.POST)
         if form.is_valid():
             enum = form.save(commit=False)
+            enum.code = enum.code.lower()
             enum.sys_dict = sys_dict
             enum.save()
             return redirect(reverse('sys_dict:enum_add', args=(dict_id, )))
     else:
-        form = SysEnumForm()
+        form = SysEnumForm(dict_id)
     return render(request, 'sys_dict/enums.html', context=dict(enums=enums, form=form, sys_dict=sys_dict))
 @login_required
 def enum_edit(request, dict_id, enum_id):
@@ -65,12 +66,13 @@ def enum_edit(request, dict_id, enum_id):
     enums = sys_dict.sysenum_set.order_by('code').all()
     enum = SysEnum.objects.get(pk=enum_id)
     if request.method == 'POST':
-        form = SysEnumForm(request.POST, instance=enum)
+        form = SysEnumForm(dict_id, request.POST, instance=enum)
         if form.is_valid():
             enum = form.save(commit=False)
+            enum.code = enum.code.lower()
             enum.updated_on = timezone.now()
             enum.save()
             return redirect(reverse('sys_dict:enum_edit', args=(dict_id, enum_id, )))
     else:
-        form = SysEnumForm(instance=enum)
+        form = SysEnumForm(dict_id, instance=enum)
     return render(request, 'sys_dict/enums.html', context=dict(enums=enums, form=form, sys_dict=sys_dict))
