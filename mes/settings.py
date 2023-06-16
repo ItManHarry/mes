@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_apscheduler',           # 定时任务插件-APScheduler
     'jobs.apps.JobsConfig',         # 系统定时任务模块
+    'api.apps.ApiConfig',           # 对外接口
     'common.apps.CommonConfig',     # 系统公共模块(创建公共表)
     'sys_sign.apps.SysSignConfig',  # 系统登录模块
     'sys_auth.apps.SysAuthConfig',  # 系统权限模块(角色&菜单)
