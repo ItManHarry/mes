@@ -16,7 +16,10 @@ def role_index(request):
         roles = Role.objects.all().order_by('code')
     else:
         roles = Role.objects.filter(company_id=request.session['company_id']).order_by('code')
-    return render(request, 'role/index.html', context=dict(roles=roles))
+    paginator = Paginator(roles, settings.PAGE_ITEMS)
+    page_num = request.GET.get('page', 1)
+    page = paginator.page(page_num)
+    return render(request, 'role/index.html', context=dict(roles=page.object_list, page=page))
 @login_required
 def role_add(request):
     company_id = request.session['company_id']
@@ -56,7 +59,10 @@ def role_edit(request, id):
 @login_required
 def menu_index(request):
     menus = Menu.objects.all().order_by('code')
-    return render(request, 'menu/index.html', context=dict(menus=menus))
+    paginator = Paginator(menus, settings.PAGE_ITEMS)
+    page_num = request.GET.get('page', 1)
+    page = paginator.page(page_num)
+    return render(request, 'menu/index.html', context=dict(menus=page.object_list, page=page))
 @login_required
 def menu_add(request):
     if request.method == 'POST':

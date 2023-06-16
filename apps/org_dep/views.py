@@ -3,6 +3,8 @@ from .models import Department
 from .forms import DepartmentForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.conf import settings
 @login_required
 def index(request):
     user = request.user
@@ -10,7 +12,10 @@ def index(request):
         departments = Department.objects.all().order_by('code')
     else:
         departments = Department.objects.filter(company_id=request.session['company_id']).order_by('code')
-    return render(request, 'department/index.html', context=dict(departments=departments))
+    paginator = Paginator(departments, settings.PAGE_ITEMS)
+    page_num = request.GET.get('page', 1)
+    page = paginator.page(page_num)
+    return render(request, 'department/index.html', context=dict(departments=page.object_list, page=page))
 @login_required
 def add(request):
     company_id = request.session['company_id']
