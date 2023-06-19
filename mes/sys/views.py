@@ -66,3 +66,5 @@ def func(request):
             'code': 0,
             'message': '功能菜单不存在！'
         })
+def test(request):
+    return render(request, 'common/test.html', context={})

@@ -21,6 +21,9 @@ def session_check(get_response):
             '/sys_sign/relogin/',
             '/sys_sign/roles/',
             '/',
+            '/test/',
+            '/api/test/',
+            '/api/test',
         ]
         exclude = False
         if request.path in exclude_urls or 'static' in request.path:

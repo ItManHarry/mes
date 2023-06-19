@@ -1,0 +1,13 @@
+{%load static%}
+<h1>Test Page</h1>
+<script type="text/javascript" src="{%static 'js/jquery-3.6.1.min.js'%}"></script>
+<script>
+  $(function(){
+    // test api
+    alert('Test api ...')
+    $.post('/api/test', function(data){
+            alert(data.code)
+            alert(data.message)
+    }, 'json')
+  })
+</script>
