@@ -250,6 +250,12 @@ def reset_password(request, id):
     pwd = request.POST['pwd']
     user.set_password(pwd)
     user.save()
+    username = request.session['username']
+    if username == user.username:
+        return JsonResponse({
+            'code': '2',
+            'message': '当前账号密码重置成功,请重新登录！'
+        })
     return JsonResponse({
         'code': '1',
         'message': '密码重置成功！'
