@@ -24,6 +24,10 @@ def session_check(get_response):
             '/test/',
             '/api/test/',
             '/api/test',
+            '/api/token/get/',
+            '/api/token/get',
+            '/api/token/validate/',
+            '/api/token/validate',
         ]
         exclude = False
         if request.path in exclude_urls or 'static' in request.path:
