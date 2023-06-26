@@ -53,9 +53,10 @@ def validate_token(request):
 def gen_token(payload, timeout=1):
     secret_key = settings.SECRET_KEY
     headers = {
-        'typ': 'jwt_',
+        'type': 'jwt',
         'alg': 'HS256',
     }
     payload['exp'] = datetime.datetime.utcnow() + datetime.timedelta(minutes=timeout)  # 设置到期时间(默认1分钟)
-    token = jwt.encode(payload=payload, key=secret_key, headers=headers)
+    token = jwt.encode(payload=payload, key=secret_key, headers=headers, algorithm='HS256')
+    print('Token type is : ', type(token))
     return token
