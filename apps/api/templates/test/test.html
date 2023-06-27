@@ -1,0 +1,30 @@
+<!--
+注：为了验证跨域调用，需要本地化运行！
+-->
+<h1>Test Page</h1>
+<script type="text/javascript" src="jquery-3.6.1.min.js"></script>
+<h5 id="token1"></h5>
+<h5 id="token2"></h5>
+<script>
+  $(function(){
+    // test api
+    alert('Test api ...')
+    /*$.post('http://localhost/api/test', function(data){
+            alert(data.code)
+            alert(data.message)
+			alert(data.token)
+			$('#token1').text(data.token)
+    }, 'json')*/
+	 $.post('http://localhost/api/token/get/', {username: '20112004', password: '123456'}, function(data){
+            alert(data.code)
+            alert(data.message)
+			alert(data.token)
+			$('#token2').text(data.token)
+    }, 'json')
+	$.post('http://localhost/api/token/validate/', {token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IjIwMTEyMDA0IiwiZXhwIjoxNjg3ODI2ODY0fQ.jqIFx3lfwCQdzYuMO7SNqkr0ssuVn7W4RR3odBa5Rhc'}, function(data){
+            alert(data.code)
+            alert(data.message)
+    }, 'json')
+	//eyJhbGciOiJIUzI1NiIsInR5cCI6Imp3dF8ifQ.eyJ1c2VybmFtZSI6IjIwMTEyMDA0IiwiZXhwIjoxNjg3Njc0ODY5fQ.KN-FvcomeRtgFHs42HsNNS2b5WiPks3-yd3obktPoF8
+  })
+</script>
