@@ -17,15 +17,13 @@ class BaseModel(models.Model):
     def created(self):
         if self.created_by:
             return User.objects.get(pk=self.created_by)
-        else:
-            return None
+        return None
 
     @property
     def updated(self):
         if self.updated_by:
             return User.objects.get(pk=self.updated_by)
-        else:
-            return None
+        return None
 
     def get_created_on(self, off_set=None):
         return self.utc_to_locale(self.created_on, off_set)
