@@ -52,7 +52,6 @@ def session_check(get_response):
                 '''
                 若未超时，session续时间
                 '''
-                # pass
                 request.session.set_expiry(timedelta(minutes=30))
         print('Do the session check before the request ...')
         response = get_response(request)
