@@ -26,7 +26,7 @@
             <td class="text-end">
                 <a href="{%url 'sys_auth:role_edit' role.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
                 <button class="btn btn-link text-success" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="菜单权限" onclick="get_menus('{{role.name}}', '{{role.id}}')"><i class="bi bi-menu-button"></i></button>
-                <button class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="用户" onclick="get_menus('{{role.name}}', '{{role.id}}')"><i class="bi bi-people"></i></button>
+                <button class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="用户" onclick="get_users('{{role.name}}', '{{role.id}}')"><i class="bi bi-people"></i></button>
             </td>
         </tr>
     {%endfor%}
@@ -39,10 +39,12 @@
 </table>
 {%include 'common/paginator.html'%}
 {%include './_menus.html'%}
+{%include './_users.html'%}
 {%endblock%}
 {%block scripts%}
     {{block.super}}
     var role_id = ''
+
     function get_menus(name, id){
         $('#modalTitle').text(name)
         role_id = id
@@ -79,6 +81,21 @@
                     }
                 }
                 $('#authModal').modal('show')
+        }, 'json')
+    }
+    function get_users(name, id){
+        $('#userModalTitle').text(name)
+        role_id = id
+        //alert('Role is : '+role_id)
+        $.post('/sys_auth/role/users/'+id, {}, function(data){
+            $('#users').empty()
+            if(data.users.length == 0){
+                $('#users').append("<li class='list-group-item text-danger'>尚未添加用户！</li>")
+            }else{
+                for(var i = 0; i < data.users.length; i++)
+                    $('#users').append("<li class='list-group-item list-group-item-action'>"+data.users[i]+"</li>")
+            }
+            $('#userModal').modal('show')
         }, 'json')
     }
     //执行授权

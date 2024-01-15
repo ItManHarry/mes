@@ -115,6 +115,14 @@ def get_role_menus(request, id):
         'authed_menus': authed_menus
     })
 @login_required
+def get_role_users(request, id):
+    role = Role.objects.get(pk=id)
+    return JsonResponse({
+        'code': '1',
+        'message': 'Success',
+        'users': [f'{user.employee.name}({user.username})' if user.is_staff else f'{user.last_name}{user.first_name}({user.username})' for user in role.users.all()],
+    })
+@login_required
 def get_roles(request, user_id):
     # 待授权用户
     auth_user = User.objects.get(pk=user_id)

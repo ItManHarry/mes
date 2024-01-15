@@ -6,6 +6,7 @@ urlpatterns = [
     path('role/add/', views.role_add, name='role_add'),
     path('role/edit/<id>', views.role_edit, name='role_edit'),
     path('role/menus/<id>', views.get_role_menus, name='get_role_menus'),
+    path('role/users/<id>', views.get_role_users, name='get_role_users'),
     path('role/auth/<id>', views.auth_role_menus, name='auth_role_menus'),
     path('role/user/<int:user_id>', views.get_roles, name='get_roles'),
     path('menu/index/', views.menu_index, name='menu_index'),
