@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from common.models import SysLog
 from django.contrib.auth.models import User
 from datetime import timedelta
+from mes.sys.urls import exclude_urls
 def session_check(get_response):
     def check(request):
         # 是否是Ajax请求
@@ -15,20 +16,6 @@ def session_check(get_response):
             request.session['username']
         except:
             time_out = True
-        exclude_urls = [
-            '/sys_sign/login/',
-            '/sys_sign/logout/',
-            '/sys_sign/relogin/',
-            '/sys_sign/roles/',
-            '/',
-            '/test/',
-            '/api/test/',
-            '/api/test',
-            '/api/token/get/',
-            '/api/token/get',
-            '/api/token/validate/',
-            '/api/token/validate',
-        ]
         exclude = False
         if request.path in exclude_urls or 'static' in request.path:
             exclude = True
