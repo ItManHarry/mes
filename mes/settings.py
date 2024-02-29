@@ -145,8 +145,8 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # 邮箱配置
-EMAIL_HOST = 'relay.hyundai-di.com'
-DEFAULT_FROM_EMAIL = 'guoqian.cheng@hyundai-di.com'
+EMAIL_HOST = 'hdi-relay.hd.com'
+DEFAULT_FROM_EMAIL = 'guoqian.cheng@hd.com'
 # 配置Log
 from logs.log_path import LOG_DIR
 LOGGING = {
