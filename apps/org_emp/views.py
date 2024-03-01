@@ -6,8 +6,10 @@ from django.contrib.auth.decorators import login_required
 from mes.sys.upload import handle_uploaded_file
 from django.conf import settings
 from django.core.paginator import Paginator
+from mes.sys.decorators import check_menu_used
 import os
 @login_required
+@check_menu_used('OR003')
 def index(request):
     user = request.user
     if user.is_superuser:

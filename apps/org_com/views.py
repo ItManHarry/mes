@@ -7,7 +7,9 @@ from .forms import CompanyForm
 from django.utils import timezone
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
+from mes.sys.decorators import check_menu_used
 @login_required
+@check_menu_used('OR001')
 def index(request):
     companies = Company.objects.all()
     return render(request, 'company/index.html', context=dict(companies=companies))

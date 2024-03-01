@@ -5,7 +5,9 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.conf import settings
+from mes.sys.decorators import check_menu_used
 @login_required
+@check_menu_used('SY004')
 def dict_index(request):
     dicts = SysDict.objects.all()
     paginator = Paginator(dicts, settings.PAGE_ITEMS)

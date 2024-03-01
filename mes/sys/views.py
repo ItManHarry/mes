@@ -43,11 +43,10 @@ def func(request):
             role = Role.objects.get(pk=role_id)
             if menu in role.menus.all():
                 authed = True
-                rums = RecentUsedMenu.objects.filter(menu=menu, user=user, role=role)
-                if not rums:
+                rum = RecentUsedMenu.objects.filter(menu=menu, user=user, role=role).first()
+                if not rum:
                     RecentUsedMenu.objects.create(menu=menu, user=user, role=role)
                 else:
-                    rum = rums[0]
                     rum.updated_on = timezone.now()
                     rum.save()
         if authed:

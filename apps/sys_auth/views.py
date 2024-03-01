@@ -9,7 +9,9 @@ from django.http import JsonResponse
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.conf import settings
+from mes.sys.decorators import check_menu_used
 @login_required
+@check_menu_used('SY001')
 def role_index(request):
     user = request.user
     if user.is_superuser:
@@ -57,6 +59,7 @@ def role_edit(request, id):
     return render(request, 'role/edit.html', context=dict(form=form, nav='编辑角色信息'))
 
 @login_required
+@check_menu_used('SY002')
 def menu_index(request):
     menus = Menu.objects.all().order_by('code')
     paginator = Paginator(menus, settings.PAGE_ITEMS)
@@ -168,6 +171,7 @@ def auth_role_menus(request, id):
         'message': '菜单授权成功！',
     })
 @login_required
+@check_menu_used('SY003')
 def user_index(request):
     users = User.objects.all().order_by('username')
     paginator = Paginator(users, settings.PAGE_ITEMS)
