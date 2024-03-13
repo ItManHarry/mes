@@ -31,8 +31,10 @@ SECRET_KEY = 'django-insecure-v=$3))p1*6co6#t+cwg%_sy)z^2r^#x&53%(!vye+j5s@@l4yx
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
+# 生产环境关闭Debug模式
+# DEBUG = False
+# ALLOWED_HOSTS = ['*']
 # 允许iframe显示在app页面中
 X_FRAME_OPTIONS = 'ALLOWALL url'
 # Application definition
