@@ -69,14 +69,14 @@
     }
     function do_move(action){
         var option = null
-        if(action == 1){    //若为1执行增加审批人
+        if(action == 1){    //若为1执行增加角色
             $('#for_select option').each(function(){
                 if($(this).is(':checked')){
                     $('#selected').append("<option value='"+$(this).val()+"'>"+$(this).text()+"</option>")
                     $(this).remove()
                 }
             })
-        }else{              //若为0执行移除审批人
+        }else{              //若为0执行移除角色
             $('#selected option').each(function(){
                 if($(this).is(':checked')){
                     $('#for_select').append("<option value='"+$(this).val()+"'>"+$(this).text()+"</option>")

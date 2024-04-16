@@ -47,6 +47,32 @@
         </div>
     </div><br>
     <div class="row">
+        <div class="col-2">
+            {{form.is_pp_rel_dept}}
+            {{form.is_pp_rel_dept.label}}
+        </div>
+        <div class="col-2">
+            {{form.is_pp_dept}}
+            {{form.is_pp_dept.label}}
+        </div>
+        <div class="col-2">
+            {{form.is_hv_dept}}
+            {{form.is_hv_dept.label}}
+        </div>
+        <div class="col-2">
+            {{form.is_qc_dept}}
+            {{form.is_qc_dept.label}}
+        </div>
+        <div class="col-2">
+            {{form.is_an_handle_dept}}
+            {{form.is_an_handle_dept.label}}
+        </div>
+        <div class="col-2">
+            {{form.is_wk_handle_dept}}
+            {{form.is_wk_handle_dept.label}}
+        </div>
+    </div><br>
+    <div class="row">
         <div class="col text-end">
             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
             <a class="btn btn-outline-secondary" href="{%url 'org_dep:index'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>

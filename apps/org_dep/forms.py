@@ -64,12 +64,18 @@ class DepartmentForm(ModelForm):
     #         return sub_ids
     class Meta:
         model = Department
-        fields = ['id', 'name', 'code', 'company', 'parent']
+        fields = ['id', 'name', 'code', 'company', 'parent', 'is_pp_rel_dept', 'is_pp_dept', 'is_hv_dept', 'is_qc_dept', 'is_an_handle_dept', 'is_wk_handle_dept']
         labels = {
             'code': '部门代码',
             'name': '部门名称',
             'company': '公司所属',
             'parent': '上级部门',
+            'is_pp_rel_dept': '生产关联部门',
+            'is_pp_dept': '生产部门',
+            'is_hv_dept': 'Heavy部门',
+            'is_qc_dept': '品质部门',
+            'is_an_handle_dept': '异常申告处理部门',
+            'is_wk_handle_dept': '作业邀请处理部门',
         }
         widgets = {
             'id': forms.HiddenInput(),
@@ -77,6 +83,12 @@ class DepartmentForm(ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'company': forms.Select(attrs={'class': 'form-control'}),
             'parent': forms.Select(attrs={'class': 'form-control'}),
+            'is_pp_rel_dept': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_pp_dept': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_hv_dept': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_qc_dept': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_an_handle_dept': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'is_wk_handle_dept': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 
     def clean(self):

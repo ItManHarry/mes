@@ -10,11 +10,17 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th width="30%">所属公司</th>
-            <th width="20%">部门代码</th>
-            <th width="20%">部门名称</th>
-            <th width="20%">上级部门</th>
-            <th width="10%" class="text-end">Action</th>
+            <th width="5%">工厂</th>
+            <th width="5%">部门代码</th>
+            <th width="15%">部门名称</th>
+            <th width="10%">上级部门</th>
+            <th class="text-center" width="10%">生产关联部门</th>
+            <th class="text-center" width="10%">生产部门</th>
+            <th class="text-center" width="10%">Heavy部门</th>
+            <th class="text-center" width="10%">品质部门</th>
+            <th class="text-center" width="10%">异常申告处理部门</th>
+            <th class="text-center" width="10%">作业邀请处理部门</th>
+            <th width="5%" class="text-end">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +31,12 @@
             <td>{{department.code}}</td>
             <td>{{department.name}}</td>
             <td>{%if department.parent%}{{department.parent}}{%else%}-{%endif%}</td>
+            <td class="text-center text-success">{%if department.is_pp_rel_dept%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td class="text-center text-success">{%if department.is_pp_dept%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td class="text-center text-success">{%if department.is_hv_dept%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td class="text-center text-success">{%if department.is_qc_dept%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td class="text-center text-success">{%if department.is_an_handle_dept%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td class="text-center text-success">{%if department.is_wk_handle_dept%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
             <td class="text-end">
                 <a href="{%url 'org_dep:edit' department.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
             </td>
