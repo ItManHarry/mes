@@ -15,17 +15,6 @@ def get_sub_departments(parent_id, sub_departments):
             get_sub_departments(department.id, sub_departments)
     else:
         return sub_departments
-class DepartmentImportForm(forms.Form):
-    file = forms.FileField(label='Excel文件', required=True, widget=forms.FileInput(attrs={'class': 'form-control'}))
-    def clean_file(self):
-        file = self.cleaned_data['file']
-        if file:
-            print('File name is : ', file.name)
-            file_extend = file.name.split('.')[1]
-            if file_extend not in ['xls', 'xlsx', 'csv']:
-                raise ValidationError('文件扩展名必须是(xls,xlsx,csv)')
-        return file
-
 class DepartmentForm(forms.ModelForm):
     def __init__(self, company_id, *args, **kwargs):
         self.company_id = company_id

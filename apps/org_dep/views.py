@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect, reverse
 from .models import Department
 from org_com.models import Company
-from .forms import DepartmentForm, DepartmentImportForm
+from .forms import DepartmentForm
+from common.forms import ExcelImportForm
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -14,7 +15,7 @@ import os
 @login_required
 @check_menu_used('OR002')
 def index(request):
-    form = DepartmentImportForm()
+    form = ExcelImportForm()
     user = request.user
     if user.is_superuser:
         departments = Department.objects.all().order_by('code')

@@ -7,9 +7,13 @@ from mes.sys.upload import handle_uploaded_file
 from django.conf import settings
 from django.core.paginator import Paginator
 from mes.sys.decorators import check_menu_used
+import os, xlrd3
+from collections import namedtuple
+from common.forms import ExcelImportForm
 @login_required
 @check_menu_used('OR003')
 def index(request):
+    form = ExcelImportForm()
     user = request.user
     if user.is_superuser:
         employees = Employee.objects.all().order_by('code')
@@ -18,7 +22,7 @@ def index(request):
     paginator = Paginator(employees, settings.PAGE_ITEMS)
     page_num = request.GET.get('page', 1)
     page = paginator.page(page_num)
-    return render(request, 'employee/index.html', context=dict(employees=page.object_list, page=page))
+    return render(request, 'employee/index.html', context=dict(employees=page.object_list, page=page, form=form))
 @login_required
 def add(request):
     company_id = request.session['company_id']
@@ -84,3 +88,30 @@ def search_employee(request):
         # print('Get all employees...')
         employees = Employee.objects.all().order_by('name')
     return render(request, 'employee/_search.html', context=dict(employees=employees))
+def exe_import(request):
+    file = request.FILES['file']
+    file_path = handle_uploaded_file(file, 'employee')
+    file_path = os.path.join(settings.UPLOAD_FILE_PATH, file_path)
+    work_book = xlrd3.open_workbook(file_path)
+    data_sheet = work_book.sheet_by_index(0)
+    rows = data_sheet.nrows
+    items = []
+    Data = namedtuple('Data', ['code', 'name', 'department'])
+    for i in range(1, rows):
+        values = data_sheet.row_values(i)
+        items.append(Data(*values))
+    # 更新上级部门
+    from org_dep.models import Department
+    departments = Department.objects.all()
+    parent_map = {}
+    for department in departments:
+        parent_map[department.code] = department
+    for item in items:
+        print(f'Employee : {item.code} - {item.name} - {item.department}')
+        # 执行导入
+        # 姓名为空或部门不存在则跳过
+        if not item.name or not parent_map.get(item.department, None):
+            continue
+        employee = Employee(name=item.name, code=str(item.code).split('.')[0], department=parent_map.get(item.department))
+        employee.save()
+    return redirect(reverse('org_emp:index'))
