@@ -33,4 +33,5 @@ urlpatterns = [
     path('org_emp/', include('org_emp.urls')),
     path('sys_auth/', include('sys_auth.urls')),
     path('sys_dict/', include('sys_dict.urls')),
+    path('pp_master/', include('pp_master.urls')),
 ]

@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'org_com.apps.OrgComConfig',    # 组织模块-公司
     'org_dep.apps.OrgDepConfig',    # 组织模块-部门
     'org_emp.apps.OrgEmpConfig',    # 组织模块-雇员
+    'pp_master.apps.PpMasterConfig',    # 生产模块-Master数据
 ]
 
 MIDDLEWARE = [
