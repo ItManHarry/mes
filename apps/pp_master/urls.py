@@ -4,4 +4,5 @@ app_name = 'pp_master'
 urlpatterns = [
     path('lines/', ProductLineIndexView.as_view(), name='lines'),
     path('line/add/', ProductLineAddView.as_view(), name='line_add'),
+    path('line/edit/<line_id>/', ProductLineEditView.as_view(), name='line_edit'),
 ]
