@@ -1,1 +1,2 @@
 from .pp_line import ProductLineIndexView, ProductLineAddView, ProductLineEditView
+from .pp_workcenter import ProductWorkCenterIndexView, ProductWorkCenterAddView, ProductWorkCenterEditView

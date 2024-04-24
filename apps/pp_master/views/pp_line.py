@@ -7,6 +7,7 @@ from mes.sys.decorators import check_menu_used
 from ..forms import ProductLineForm
 from django.core.paginator import Paginator
 from django.conf import settings
+from django.utils import timezone
 class ProductLineIndexView(View):
     template_name = 'pp_master/pp_line/index.html'
     @method_decorator(login_required)
@@ -57,6 +58,7 @@ class ProductLineEditView(View):
         if form.is_valid():
             line = form.save(commit=False)
             line.code = line.code.upper()
+            line.updated_on = timezone.now()
             user = request.user
             if user:
                 line.updated_by = user.id

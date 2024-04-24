@@ -9,7 +9,7 @@ from mes.sys.decorators import check_menu_used
 @login_required
 @check_menu_used('SY004')
 def dict_index(request):
-    dicts = SysDict.objects.all()
+    dicts = SysDict.objects.all().order_by('code')
     paginator = Paginator(dicts, settings.PAGE_ITEMS)
     page_num = request.GET.get('page', 1)
     page = paginator.page(page_num)

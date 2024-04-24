@@ -1,0 +1,51 @@
+{% extends 'base.html'%}
+{%block title%}&nbsp;{%endblock%}
+{%block header%}&nbsp;{%endblock%}
+{%block content%}
+<div class="row">
+    <div class="col text-end">
+        <a href="{%url 'pp_master:line_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
+    </div>
+</div><br>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th width="5%">工厂</th>
+            <th width="10%">产线</th>
+            <th width="10%">作业场代码</th>
+            <th width="15%">作业场名称</th>
+            <th width="10%">区分</th>
+            <th width="10%">开始作业场</th>
+            <th width="10%">结束作业场</th>
+            <th width="10%">追溯性传送</th>
+            <th width="10%">SAP实绩传送</th>
+            <th width="10%" class="text-end">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {%if workcenters%}
+    {%for workcenter in workcenters%}
+        <tr>
+            <td>{{workcenter.facility}}</td>
+            <td>{{workcenter.line}}</td>
+            <td>{{workcenter.code}}</td>
+            <td>{{workcenter.name}}</td>
+            <td>{{workcenter.category}}</td>
+            <td>{{workcenter.start_wc}}</td>
+            <td>{{workcenter.end_wc}}</td>
+            <td class="text-center text-success">{%if workcenter.to_track%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td class="text-center text-success">{%if workcenter.to_sap%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td class="text-end">
+                <a href="{%url 'pp_master:line_edit' workcenter.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+            </td>
+        </tr>
+    {%endfor%}
+    {%else%}
+    <tr>
+        <td colspan="10" class="text-info text-center">没有数据！</td>
+    </tr>
+    {%endif%}
+    </tbody>
+</table>
+{%include 'common/paginator.html'%}
+{%endblock%}

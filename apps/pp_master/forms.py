@@ -40,3 +40,5 @@ class ProductLineForm(forms.ModelForm):
         else:       # 新增
             if ProductLine.objects.filter(Q(code=code.upper()) & Q(company=company)).all():
                 self.add_error('code', '线号已存在！')
+class ProductWorkCenterForm(forms.ModelForm):
+    pass
