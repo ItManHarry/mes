@@ -28,22 +28,63 @@
     <br>
     <div class="row">
         <div class="col-6">
-            {{form.version.label_tag}}
-            {{form.version}}
-            {%if form.version.errors%}
-                {%for error in form.version.errors%}
+            {{form.category.label_tag}}
+            {{form.category}}
+            {%if form.category.errors%}
+                {%for error in form.category.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
         </div>
         <div class="col-6">
-            {{form.company.label_tag}}
-            {{form.company}}
-            {%if form.company.errors%}
-                {%for error in form.company.errors%}
+            {{form.facility.label_tag}}
+            {{form.facility}}
+            {%if form.facility.errors%}
+                {%for error in form.facility.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-6">
+            {{form.line.label_tag}}
+            {{form.line}}
+            {%if form.line.errors%}
+                {%for error in form.line.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-6">
+            {{form.start_wc.label_tag}}
+            {{form.start_wc}}
+            {%if form.start_wc.errors%}
+                {%for error in form.start_wc.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
+            {{form.end_wc.label_tag}}
+            {{form.end_wc}}
+            {%if form.end_wc.errors%}
+                {%for error in form.end_wc.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-6">
+            {{form.to_track}}
+            {{form.to_track.label}}
+        </div>
+        <div class="col-6">
+            {{form.to_sap}}
+            {{form.to_sap.label}}
         </div>
     </div><br>
     <div class="row">

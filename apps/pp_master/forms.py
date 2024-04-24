@@ -1,6 +1,7 @@
 from django import forms
-from .models import ProductLine
+from .models import ProductLine, ProductWorkCenter
 from org_com.models import Company
+from sys_dict.models import SysEnum
 from django.db.models import Q
 class ProductLineForm(forms.ModelForm):
     def __init__(self, company_id, *args, **kwargs):
@@ -41,4 +42,37 @@ class ProductLineForm(forms.ModelForm):
             if ProductLine.objects.filter(Q(code=code.upper()) & Q(company=company)).all():
                 self.add_error('code', '线号已存在！')
 class ProductWorkCenterForm(forms.ModelForm):
-    pass
+    def __init__(self, company_id, *args, **kwargs):
+        self.company_id = company_id
+        super(ProductWorkCenterForm, self).__init__(*args, **kwargs)
+        self.fields['category'].query_set = SysEnum.objects.filter(Q(sys_dict__code='D002') & ~Q(code='000')).all().order_by('code')
+        if self.company_id:
+            self.fields['facility'].query_set = Company.objects.filter(id=self.company_id).order_by('name')
+        else:
+            self.fields['facility'].query_set = Company.objects.all().order_by('name')
+    class Meta:
+        model = ProductWorkCenter
+        fields = ['id', 'name', 'code', 'category', 'facility', 'line', 'to_track', 'to_sap', 'start_wc', 'end_wc']
+        labels = {
+            'code': '作业场代码',
+            'name': '作业场名称',
+            'category': '区分',
+            'facility': '工厂',
+            'line': '产线',
+            'to_track': '追溯性传送',
+            'to_sap': 'SAP实绩传送',
+            'start_wc': '开始作业场',
+            'end_wc': '结束作业场',
+        }
+        widgets = {
+            'id': forms.HiddenInput(),
+            'code': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-control'}),
+            'facility': forms.Select(attrs={'class': 'form-control'}),
+            'line': forms.Select(attrs={'class': 'form-control'}),
+            'to_track': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'to_sap': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'start_wc': forms.Select(attrs={'class': 'form-control'}),
+            'end_wc': forms.Select(attrs={'class': 'form-control'}),
+        }

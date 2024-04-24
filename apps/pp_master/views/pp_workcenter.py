@@ -19,6 +19,14 @@ class ProductWorkCenterIndexView(View):
         page = paginator.page(page_num)
         return render(request, self.template_name, dict(workcenters=page.object_list, page=page))
 class ProductWorkCenterAddView(View):
-    pass
+    template_name = 'pp_master/pp_workcenter/edit.html'
+    form_class = ProductWorkCenterForm
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        company_id = request.session['company_id']
+        form = self.form_class(company_id)
+        return render(request, self.template_name, dict(form=form))
+    def post(self, request, *args, **kwargs):
+        pass
 class ProductWorkCenterEditView(View):
     pass
