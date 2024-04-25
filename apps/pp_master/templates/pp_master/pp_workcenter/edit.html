@@ -6,6 +6,17 @@
     {% csrf_token %}
     {{form.id}}
     <div class="row">
+        <div class="row">
+        <div class="col-6">
+            {{form.category.label_tag}}
+            {{form.category}}
+            {%if form.category.errors%}
+                {%for error in form.category.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div><br>
         <div class="col-6">
             {{form.code.label_tag}}
             {{form.code}}
@@ -28,15 +39,6 @@
     <br>
     <div class="row">
         <div class="col-6">
-            {{form.category.label_tag}}
-            {{form.category}}
-            {%if form.category.errors%}
-                {%for error in form.category.errors%}
-                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
-                {%endfor%}
-            {%endif%}
-        </div>
-        <div class="col-6">
             {{form.facility.label_tag}}
             {{form.facility}}
             {%if form.facility.errors%}
@@ -45,8 +47,6 @@
                 {%endfor%}
             {%endif%}
         </div>
-    </div><br>
-    <div class="row">
         <div class="col-6">
             {{form.line.label_tag}}
             {{form.line}}
@@ -90,8 +90,23 @@
     <div class="row">
         <div class="col text-end">
             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
-            <a class="btn btn-outline-secondary" href="{%url 'pp_master:lines'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
+            <a class="btn btn-outline-secondary" href="{%url 'pp_master:workcenters'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
         </div>
     </div>
 </form>
+{%endblock%}
+{%block scripts%}
+{{block.super}}
+$(function(){
+    $('#id_facility').change(function(){
+        var id = $(this).val()
+        if(!id)
+            id = '000000000'
+        alert('Facility id is : '+id)
+        $.post('/pp_master/line/get/'+id, {}, function(data){
+            alert(data)
+            $('#id_line').html(data)
+        }, 'html')
+    })
+})
 {%endblock%}

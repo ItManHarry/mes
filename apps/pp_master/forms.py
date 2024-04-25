@@ -8,9 +8,9 @@ class ProductLineForm(forms.ModelForm):
         self.company_id = company_id
         super(ProductLineForm, self).__init__(*args, **kwargs)
         if self.company_id:
-            self.fields['company'].query_set = Company.objects.filter(id=self.company_id).order_by('name')
+            self.fields['company'].queryset = Company.objects.filter(id=self.company_id).order_by('name')
         else:
-            self.fields['company'].query_set = Company.objects.all().order_by('name')
+            self.fields['company'].queryset = Company.objects.all().order_by('name')
     class Meta:
         model = ProductLine
         fields = ['id', 'name', 'code', 'version', 'company']
@@ -41,15 +41,20 @@ class ProductLineForm(forms.ModelForm):
         else:       # 新增
             if ProductLine.objects.filter(Q(code=code.upper()) & Q(company=company)).all():
                 self.add_error('code', '线号已存在！')
+
 class ProductWorkCenterForm(forms.ModelForm):
     def __init__(self, company_id, *args, **kwargs):
         self.company_id = company_id
         super(ProductWorkCenterForm, self).__init__(*args, **kwargs)
-        self.fields['category'].query_set = SysEnum.objects.filter(Q(sys_dict__code='D002') & ~Q(code='000')).all().order_by('code')
+        self.fields['category'].queryset = SysEnum.objects.filter(Q(sys_dict__code='D002') & ~Q(code='000')).all().order_by('code')
         if self.company_id:
-            self.fields['facility'].query_set = Company.objects.filter(id=self.company_id).order_by('name')
+            self.fields['facility'].queryset = Company.objects.filter(id=self.company_id).order_by('name')
+            self.fields['line'].queryset = ProductLine.objects.filter(company_id=self.company_id).order_by('code')
         else:
-            self.fields['facility'].query_set = Company.objects.all().order_by('name')
+            self.fields['facility'].queryset = Company.objects.all().order_by('name')
+            self.fields['line'].queryset = ProductLine.objects.none()
+        if 'facility' in self.data:
+            self.fields['line'].queryset = ProductLine.objects.filter(company_id=self.facility).order_by('code')
     class Meta:
         model = ProductWorkCenter
         fields = ['id', 'name', 'code', 'category', 'facility', 'line', 'to_track', 'to_sap', 'start_wc', 'end_wc']

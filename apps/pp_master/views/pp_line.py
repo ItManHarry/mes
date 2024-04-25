@@ -65,3 +65,10 @@ class ProductLineEditView(View):
             line.save()
             return redirect(reverse('pp_master:lines'))
         return render(request, self.template_name, dict(form=form))
+@login_required
+def get_lines_by_facility(request, facility_id):
+    if facility_id == '000000000':
+        lines = ProductLine.objects.none()
+    else:
+        lines = ProductLine.objects.filter(company_id=facility_id).order_by('code')
+    return render(request, 'pp_master/pp_line/_lines.html', context=dict(lines=lines))

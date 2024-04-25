@@ -27,6 +27,16 @@ class ProductWorkCenterAddView(View):
         form = self.form_class(company_id)
         return render(request, self.template_name, dict(form=form))
     def post(self, request, *args, **kwargs):
-        pass
+        company_id = request.session['company_id']
+        form = self.form_class(company_id, request.POST)
+        if form.is_valid():
+            workcenter = form.save(commit=False)
+            workcenter.code = workcenter.code.upper()
+            user = request.user
+            if user:
+                workcenter.created_by = user.id
+            workcenter.save()
+            return redirect(reverse('pp_master:workcenters'))
+        return render(request, self.template_name, dict(form=form))
 class ProductWorkCenterEditView(View):
     pass

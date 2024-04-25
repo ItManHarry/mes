@@ -17,8 +17,8 @@
             <th width="10%">区分</th>
             <th width="10%">开始作业场</th>
             <th width="10%">结束作业场</th>
-            <th width="10%">追溯性传送</th>
-            <th width="10%">SAP实绩传送</th>
+            <th width="10%" class="text-center">追溯性传送</th>
+            <th width="10%" class="text-center">SAP实绩传送</th>
             <th width="10%" class="text-end">Action</th>
         </tr>
     </thead>
@@ -31,8 +31,8 @@
             <td>{{workcenter.code}}</td>
             <td>{{workcenter.name}}</td>
             <td>{{workcenter.category}}</td>
-            <td>{{workcenter.start_wc}}</td>
-            <td>{{workcenter.end_wc}}</td>
+            <td>{%if workcenter.start_wc%}{{workcenter.start_wc}}{%else%}-{%endif%}</td>
+            <td>{%if workcenter.end_wc%}{{workcenter.end_wc}}{%else%}-{%endif%}</td>
             <td class="text-center text-success">{%if workcenter.to_track%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
             <td class="text-center text-success">{%if workcenter.to_sap%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
             <td class="text-end">
