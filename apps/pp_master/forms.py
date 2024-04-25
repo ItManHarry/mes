@@ -63,6 +63,8 @@ class ProductWorkCenterForm(forms.ModelForm):
         # Ajax切换工厂后保存产线时使用,否则报错
         if 'facility' in self.data:
             self.fields['line'].queryset = ProductLine.objects.filter(company_id=self.data['facility']).order_by('code')
+            self.fields['start_wc'].queryset = ProductWorkCenter.objects.filter(facility_id=self.data['facility']).order_by('code')
+            self.fields['end_wc'].queryset = ProductWorkCenter.objects.filter(facility_id=self.data['facility']).order_by('code')
     class Meta:
         model = ProductWorkCenter
         fields = ['id', 'name', 'code', 'category', 'facility', 'line', 'to_track', 'to_sap', 'start_wc', 'end_wc']
