@@ -5,7 +5,7 @@ class ProductLine(BaseModel):
     name = models.CharField(max_length=24)      # 产线名称
     code = models.CharField(max_length=8)       # 产线代码
     version = models.CharField(max_length=4)    # 版本
-    company = models.ForeignKey(Company, on_delete=models.CASCADE)  # 工厂所属
+    company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='product_lines')  # 工厂所属
 
     def __str__(self):
         return self.name

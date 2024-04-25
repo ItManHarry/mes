@@ -6,7 +6,6 @@
     {% csrf_token %}
     {{form.id}}
     <div class="row">
-        <div class="row">
         <div class="col-6">
             {{form.category.label_tag}}
             {{form.category}}
@@ -17,6 +16,7 @@
             {%endif%}
         </div>
     </div><br>
+    <div class="row">
         <div class="col-6">
             {{form.code.label_tag}}
             {{form.code}}
@@ -102,10 +102,15 @@ $(function(){
         var id = $(this).val()
         if(!id)
             id = '000000000'
-        alert('Facility id is : '+id)
+        //alert('Facility id is : '+id)
         $.post('/pp_master/line/get/'+id, {}, function(data){
-            alert(data)
+            //alert(data)
             $('#id_line').html(data)
+        }, 'html')
+         $.post('/pp_master/work_center/get/'+id, {}, function(data){
+            //alert(data)
+            $('#id_start_wc').html(data)
+            $('#id_end_wc').html(data)
         }, 'html')
     })
 })

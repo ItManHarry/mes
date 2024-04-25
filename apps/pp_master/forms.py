@@ -49,12 +49,20 @@ class ProductWorkCenterForm(forms.ModelForm):
         self.fields['category'].queryset = SysEnum.objects.filter(Q(sys_dict__code='D002') & ~Q(code='000')).all().order_by('code')
         if self.company_id:
             self.fields['facility'].queryset = Company.objects.filter(id=self.company_id).order_by('name')
-            self.fields['line'].queryset = ProductLine.objects.filter(company_id=self.company_id).order_by('code')
         else:
             self.fields['facility'].queryset = Company.objects.all().order_by('name')
+        instance = ProductWorkCenter.objects.filter(id=self.instance.pk).first()
+        if instance:    # 编辑
+            self.fields['line'].queryset = self.instance.facility.product_lines.order_by('code')
+            self.fields['start_wc'].queryset = self.instance.facility.work_centers.order_by('code')
+            self.fields['end_wc'].queryset = self.instance.facility.work_centers.order_by('code')
+        else:           # 新增
             self.fields['line'].queryset = ProductLine.objects.none()
+            self.fields['start_wc'].queryset = ProductWorkCenter.objects.none()
+            self.fields['end_wc'].queryset = ProductWorkCenter.objects.none()
+        # Ajax切换工厂后保存产线时使用,否则报错
         if 'facility' in self.data:
-            self.fields['line'].queryset = ProductLine.objects.filter(company_id=self.facility).order_by('code')
+            self.fields['line'].queryset = ProductLine.objects.filter(company_id=self.data['facility']).order_by('code')
     class Meta:
         model = ProductWorkCenter
         fields = ['id', 'name', 'code', 'category', 'facility', 'line', 'to_track', 'to_sap', 'start_wc', 'end_wc']

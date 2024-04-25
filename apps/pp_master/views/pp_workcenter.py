@@ -26,6 +26,7 @@ class ProductWorkCenterAddView(View):
         company_id = request.session['company_id']
         form = self.form_class(company_id)
         return render(request, self.template_name, dict(form=form))
+    @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         company_id = request.session['company_id']
         form = self.form_class(company_id, request.POST)
@@ -39,4 +40,33 @@ class ProductWorkCenterAddView(View):
             return redirect(reverse('pp_master:workcenters'))
         return render(request, self.template_name, dict(form=form))
 class ProductWorkCenterEditView(View):
-    pass
+    template_name = 'pp_master/pp_workcenter/edit.html'
+    form_class = ProductWorkCenterForm
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        company_id = request.session['company_id']
+        workcenter = ProductWorkCenter.objects.get(pk=kwargs['workcenter_id'])
+        form = self.form_class(company_id, instance=workcenter)
+        return render(request, self.template_name, dict(form=form))
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        company_id = request.session['company_id']
+        workcenter = ProductWorkCenter.objects.get(pk=kwargs['workcenter_id'])
+        form = self.form_class(company_id, request.POST, instance=workcenter)
+        if form.is_valid():
+            workcenter = form.save(commit=False)
+            workcenter.code = workcenter.code.upper()
+            user = request.user
+            if user:
+                workcenter.updated_by = user.id
+            workcenter.updated_on = timezone.now()
+            workcenter.save()
+            return redirect(reverse('pp_master:workcenters'))
+        return render(request, self.template_name, dict(form=form))
+@login_required
+def get_workcenters_by_facility(request, facility_id):
+    if facility_id == '000000000':
+        workcenters = ProductWorkCenter.objects.none()
+    else:
+        workcenters = ProductWorkCenter.objects.filter(facility_id=facility_id).order_by('code')
+    return render(request, 'pp_master/pp_workcenter/_workcenters.html', context=dict(workcenters=workcenters))
