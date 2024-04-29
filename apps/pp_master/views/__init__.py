@@ -1,2 +1,3 @@
 from .pp_line import ProductLineIndexView, ProductLineAddView, ProductLineEditView, get_lines_by_facility
 from .pp_workcenter import ProductWorkCenterIndexView, ProductWorkCenterAddView, ProductWorkCenterEditView, get_workcenters_by_facility
+from .pp_machinecode import MachineCodeIndexView, MachineCodeAddView, MachineCodeEditView

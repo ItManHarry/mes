@@ -1,0 +1,45 @@
+{% extends 'base.html'%}
+{%block title%}&nbsp;{%endblock%}
+{%block header%}&nbsp;{%endblock%}
+{%block content%}
+<div class="row">
+    <div class="col text-end">
+        <a href="{%url 'pp_master:machinecode_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
+    </div>
+</div><br>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th width="15%">工厂</th>
+            <th width="15%">机种</th>
+            <th width="15%">产品Group1</th>
+            <th width="15%">产品Group2</th>
+            <th width="15%">品质产品群</th>
+            <th width="15%" class="text-center">已结束</th>
+            <th width="10%" class="text-end">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {%if machinecodes%}
+    {%for machinecode in machinecodes%}
+        <tr>
+            <td>{{machinecode.facility}}</td>
+            <td>{{machinecode.code}}</td>
+            <td>{%if machinecode.pro_group1%}{{machinecode.pro_group1}}{%else%}&nbsp;{%endif%}</td>
+            <td>{%if machinecode.pro_group2%}{{machinecode.pro_group2}}{%else%}&nbsp;{%endif%}</td>
+            <td>{{machinecode.pro_quality}}</td>
+            <td class="text-center text-success">{%if machinecode.finished%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td class="text-end">
+                <a href="{%url 'pp_master:workcenter_edit' machinecode.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+            </td>
+        </tr>
+    {%endfor%}
+    {%else%}
+    <tr>
+        <td colspan="10" class="text-info text-center">没有数据！</td>
+    </tr>
+    {%endif%}
+    </tbody>
+</table>
+{%include 'common/paginator.html'%}
+{%endblock%}
