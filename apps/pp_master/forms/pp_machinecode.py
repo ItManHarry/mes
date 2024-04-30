@@ -47,3 +47,17 @@ class MachineCodeForm(forms.ModelForm):
             'pro_quality': forms.Select(attrs={'class': 'form-control'}),
             'finished': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+    def clean(self):
+        cleaned_data = super().clean()
+        id = cleaned_data['id']
+        code = cleaned_data['code']
+        facility = cleaned_data['facility']
+        if not facility:
+            self.add_error('facility', '请选择工厂！')
+        machinecode = MachineCode.objects.filter(id=id).first()
+        if machinecode:    # 编辑
+            if MachineCode.objects.filter(~Q(id=id) & Q(code=code.upper()) & Q(facility=facility)).all():
+                self.add_error('code', '机种代码已存在！')
+        else:       # 新增
+            if MachineCode.objects.filter(Q(code=code.upper()) & Q(facility=facility)).all():
+                self.add_error('code', '机种代码已存在！')

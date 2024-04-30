@@ -53,3 +53,17 @@ class ProductWorkCenterForm(forms.ModelForm):
             'start_wc': forms.Select(attrs={'class': 'form-control'}),
             'end_wc': forms.Select(attrs={'class': 'form-control'}),
         }
+    def clean(self):
+        cleaned_data = super().clean()
+        id = cleaned_data['id']
+        code = cleaned_data['code']
+        facility = cleaned_data['facility']
+        if not facility:
+            self.add_error('facility', '请选择工厂！')
+        workcenter = ProductWorkCenter.objects.filter(id=id).first()
+        if workcenter:    # 编辑
+            if ProductWorkCenter.objects.filter(~Q(id=id) & Q(code=code.upper()) & Q(facility=facility)).all():
+                self.add_error('code', '作业场代码已存在！')
+        else:       # 新增
+            if ProductWorkCenter.objects.filter(Q(code=code.upper()) & Q(facility=facility)).all():
+                self.add_error('code', '作业场代码已存在！')

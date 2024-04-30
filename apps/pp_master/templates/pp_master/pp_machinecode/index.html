@@ -30,7 +30,7 @@
             <td>{{machinecode.pro_quality}}</td>
             <td class="text-center text-success">{%if machinecode.finished%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
             <td class="text-end">
-                <a href="{%url 'pp_master:workcenter_edit' machinecode.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+                <a href="{%url 'pp_master:machinecode_edit' machinecode.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
             </td>
         </tr>
     {%endfor%}

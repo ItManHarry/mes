@@ -27,7 +27,7 @@
     {%for workcenter in workcenters%}
         <tr>
             <td>{{workcenter.facility}}</td>
-            <td>{{workcenter.line}}</td>
+            <td>{%if workcenter.line%}{{workcenter.line}}{%else%}-{%endif%}</td>
             <td>{{workcenter.category}}</td>
             <td>{{workcenter.code}}</td>
             <td>{{workcenter}}</td>

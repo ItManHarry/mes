@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import ProductLineIndexView, ProductLineAddView, ProductLineEditView, ProductWorkCenterAddView, ProductWorkCenterEditView, ProductWorkCenterIndexView, get_lines_by_facility, get_workcenters_by_facility
-from .views.pp_machinecode import MachineCodeIndexView, MachineCodeAddView
+from .views.pp_machinecode import MachineCodeIndexView, MachineCodeAddView, MachineCodeEditView
 app_name = 'pp_master'
 urlpatterns = [
     path('line/index/', ProductLineIndexView.as_view(), name='lines'),
@@ -13,4 +13,5 @@ urlpatterns = [
     path('work_center/get/<facility_id>', get_workcenters_by_facility, name='get_workcenters_by_facility'),
     path('machine_code/index/', MachineCodeIndexView.as_view(), name='machinecodes'),
     path('machine_code/add/', MachineCodeAddView.as_view(), name='machinecode_add'),
+    path('machine_code/edit/<machinecode_id>/', MachineCodeEditView.as_view(), name='machinecode_edit'),
 ]

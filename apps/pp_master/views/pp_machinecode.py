@@ -45,13 +45,13 @@ class MachineCodeEditView(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         company_id = request.session['company_id']
-        machinecode = MachineCode.objects.get(pk=kwargs['workcenter_id'])
+        machinecode = MachineCode.objects.get(pk=kwargs['machinecode_id'])
         form = self.form_class(company_id, instance=machinecode)
         return render(request, self.template_name, dict(form=form))
     @method_decorator(login_required)
     def post(self, request, *args, **kwargs):
         company_id = request.session['company_id']
-        machinecode = MachineCode.objects.get(pk=kwargs['workcenter_id'])
+        machinecode = MachineCode.objects.get(pk=kwargs['machinecode_id'])
         form = self.form_class(company_id, request.POST, instance=machinecode)
         if form.is_valid():
             machinecode = form.save(commit=False)
@@ -61,7 +61,7 @@ class MachineCodeEditView(View):
                 machinecode.updated_by = user.id
             machinecode.updated_on = timezone.now()
             machinecode.save()
-            return redirect(reverse('pp_master:workcenters'))
+            return redirect(reverse('pp_master:machinecodes'))
         return render(request, self.template_name, dict(form=form))
 # @login_required
 # def get_workcenters_by_facility(request, facility_id):
