@@ -33,7 +33,7 @@ class ProductLineAddView(View):
         form = self.form_class(company_id, request.POST)
         if form.is_valid():
             line = form.save(commit=False)
-            line.code = line.code.upper()
+            line.code = line.code.upper().strip()
             user = request.user
             if user:
                 line.created_by = user.id
@@ -57,7 +57,7 @@ class ProductLineEditView(View):
         form = self.form_class(company_id, request.POST, instance=line)
         if form.is_valid():
             line = form.save(commit=False)
-            line.code = line.code.upper()
+            line.code = line.code.upper().strip()
             line.updated_on = timezone.now()
             user = request.user
             if user:

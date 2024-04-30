@@ -32,7 +32,7 @@ class ProductWorkCenterAddView(View):
         form = self.form_class(company_id, request.POST)
         if form.is_valid():
             workcenter = form.save(commit=False)
-            workcenter.code = workcenter.code.upper()
+            workcenter.code = workcenter.code.upper().strip()
             user = request.user
             if user:
                 workcenter.created_by = user.id
@@ -55,7 +55,7 @@ class ProductWorkCenterEditView(View):
         form = self.form_class(company_id, request.POST, instance=workcenter)
         if form.is_valid():
             workcenter = form.save(commit=False)
-            workcenter.code = workcenter.code.upper()
+            workcenter.code = workcenter.code.upper().strip()
             user = request.user
             if user:
                 workcenter.updated_by = user.id

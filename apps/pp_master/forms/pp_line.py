@@ -36,8 +36,8 @@ class ProductLineForm(forms.ModelForm):
             self.add_error('company', '请选择工厂！')
         line = ProductLine.objects.filter(id=id).first()
         if line:    # 编辑
-            if ProductLine.objects.filter(~Q(id=id) & Q(code=code.upper()) & Q(company=company)).all():
+            if ProductLine.objects.filter(~Q(id=id) & Q(code=code.upper().strip()) & Q(company=company)).all():
                 self.add_error('code', '线号已存在！')
         else:       # 新增
-            if ProductLine.objects.filter(Q(code=code.upper()) & Q(company=company)).all():
+            if ProductLine.objects.filter(Q(code=code.upper().strip()) & Q(company=company)).all():
                 self.add_error('code', '线号已存在！')

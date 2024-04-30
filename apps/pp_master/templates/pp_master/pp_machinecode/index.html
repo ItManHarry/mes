@@ -10,13 +10,15 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th width="15%">工厂</th>
-            <th width="15%">机种</th>
-            <th width="15%">产品Group1</th>
-            <th width="15%">产品Group2</th>
-            <th width="15%">品质产品群</th>
-            <th width="15%" class="text-center">已结束</th>
-            <th width="10%" class="text-end">Action</th>
+            <th width="11%">工厂</th>
+            <th width="11%">机种</th>
+            <th width="11%">机型(SAP)</th>
+            <th width="11%">机型(MES)</th>
+            <th width="11%">产品Group1</th>
+            <th width="11%">产品Group2</th>
+            <th width="11%">品质产品群</th>
+            <th width="11" class="text-center">已结束</th>
+            <th width="12%" class="text-end">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +27,8 @@
         <tr>
             <td>{{machinecode.facility}}</td>
             <td>{{machinecode.code}}</td>
+            <td>{%if machinecode.model_sap%}{{machinecode.model_sap}}{%else%}&nbsp;{%endif%}</td>
+            <td>{%if machinecode.model_mes%}{{machinecode.model_mes}}{%else%}&nbsp;{%endif%}</td>
             <td>{%if machinecode.pro_group1%}{{machinecode.pro_group1}}{%else%}&nbsp;{%endif%}</td>
             <td>{%if machinecode.pro_group2%}{{machinecode.pro_group2}}{%else%}&nbsp;{%endif%}</td>
             <td>{{machinecode.pro_quality}}</td>

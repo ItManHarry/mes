@@ -62,8 +62,8 @@ class ProductWorkCenterForm(forms.ModelForm):
             self.add_error('facility', '请选择工厂！')
         workcenter = ProductWorkCenter.objects.filter(id=id).first()
         if workcenter:    # 编辑
-            if ProductWorkCenter.objects.filter(~Q(id=id) & Q(code=code.upper()) & Q(facility=facility)).all():
+            if ProductWorkCenter.objects.filter(~Q(id=id) & Q(code=code.upper().strip()) & Q(facility=facility)).all():
                 self.add_error('code', '作业场代码已存在！')
         else:       # 新增
-            if ProductWorkCenter.objects.filter(Q(code=code.upper()) & Q(facility=facility)).all():
+            if ProductWorkCenter.objects.filter(Q(code=code.upper().strip()) & Q(facility=facility)).all():
                 self.add_error('code', '作业场代码已存在！')

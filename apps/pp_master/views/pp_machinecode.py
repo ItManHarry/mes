@@ -32,7 +32,9 @@ class MachineCodeAddView(View):
         form = self.form_class(company_id, request.POST)
         if form.is_valid():
             machinecode = form.save(commit=False)
-            machinecode.code = machinecode.code.upper()
+            machinecode.code = machinecode.code.upper().strip()
+            machinecode.model_sap = machinecode.model_sap.upper().strip()
+            machinecode.model_mes = machinecode.model_mes.upper().strip()
             user = request.user
             if user:
                 machinecode.created_by = user.id
@@ -55,7 +57,9 @@ class MachineCodeEditView(View):
         form = self.form_class(company_id, request.POST, instance=machinecode)
         if form.is_valid():
             machinecode = form.save(commit=False)
-            machinecode.code = machinecode.code.upper()
+            machinecode.code = machinecode.code.upper().strip()
+            machinecode.model_sap = machinecode.model_sap.upper().strip()
+            machinecode.model_mes = machinecode.model_mes.upper().strip()
             user = request.user
             if user:
                 machinecode.updated_by = user.id
