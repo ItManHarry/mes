@@ -20,10 +20,24 @@ class BaseModel(models.Model):
         return None
 
     @property
+    def created_name(self):
+        if self.created_by:
+            user = User.objects.get(pk=self.created_by)
+            return f'{user.last_name}{user.first_name}({user.username})'
+        return ''
+
+    @property
     def updated(self):
         if self.updated_by:
             return User.objects.get(pk=self.updated_by)
         return None
+
+    @property
+    def updated_name(self):
+        if self.updated_by:
+            user = User.objects.get(pk=self.updated_by)
+            return f'{user.first_name}{user.last_name}({user.username})'
+        return ''
 
     def get_created_on(self, off_set=None):
         return self.utc_to_locale(self.created_on, off_set)

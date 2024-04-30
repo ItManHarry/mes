@@ -1,9 +1,8 @@
 from django import forms
-from ..models import ProductLine, MachineCode
+from ..models import MachineCode
 from org_com.models import Company
 from sys_dict.models import SysEnum
 from django.db.models import Q
-
 class MachineCodeForm(forms.ModelForm):
     def __init__(self, company_id, *args, **kwargs):
         self.company_id = company_id
@@ -13,20 +12,6 @@ class MachineCodeForm(forms.ModelForm):
             self.fields['facility'].queryset = Company.objects.filter(id=self.company_id).order_by('name')
         else:
             self.fields['facility'].queryset = Company.objects.all().order_by('name')
-        # instance = MachineCode.objects.filter(id=self.instance.pk).first()
-        # if instance:    # 编辑
-        #     self.fields['line'].queryset = self.instance.facility.product_lines.order_by('code')
-        #     self.fields['start_wc'].queryset = self.instance.facility.work_centers.order_by('code')
-        #     self.fields['end_wc'].queryset = self.instance.facility.work_centers.order_by('code')
-        # else:           # 新增
-        #     self.fields['line'].queryset = ProductLine.objects.none()
-        #     self.fields['start_wc'].queryset = MachineCode.objects.none()
-        #     self.fields['end_wc'].queryset = MachineCode.objects.none()
-        # # Ajax切换工厂后保存产线时使用,否则报错
-        # if 'facility' in self.data:
-        #     self.fields['line'].queryset = ProductLine.objects.filter(company_id=self.data['facility']).order_by('code')
-        #     self.fields['start_wc'].queryset = MachineCode.objects.filter(facility_id=self.data['facility']).order_by('code')
-        #     self.fields['end_wc'].queryset = MachineCode.objects.filter(facility_id=self.data['facility']).order_by('code')
     class Meta:
         model = MachineCode
         fields = ['id', 'code', 'facility', 'model_sap', 'model_mes', 'pro_group1', 'pro_group2', 'pro_quality', 'finished']
