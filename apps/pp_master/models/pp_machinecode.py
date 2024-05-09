@@ -17,7 +17,7 @@ class MachineCode(BaseModel):
     facility = models.ForeignKey(Company, on_delete=models.CASCADE)  # 工厂
 
     def __str__(self):
-        return f'[{self.code}]{self.name}'
+        return f'[{self.code}]'
 
 
     class Meta(BaseModel.Meta):

@@ -8,7 +8,7 @@ class Menu(BaseModel):
     name = models.CharField(max_length=64)      # 菜单名称
     code = models.CharField(max_length=24)      # 菜单代码
     url = models.CharField(max_length=24)       # 链接地址
-    icon = models.CharField(max_length=24)      # 菜单图标
+    icon = models.CharField(max_length=64)      # 菜单图标
     remark = models.CharField(max_length=256, blank=True, null=True)   # 菜单描述
 
     def __str__(self):
