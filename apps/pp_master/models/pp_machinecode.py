@@ -14,10 +14,10 @@ class MachineCode(BaseModel):
     pro_quality = models.ForeignKey(SysEnum, on_delete=models.CASCADE)      # 品质产品群(代码：D003)
     lines = models.ManyToManyField(ProductLine)     # 对应产线
     finished = models.BooleanField(default=False)   # 是否结束(即是否还生产)
-    facility = models.ForeignKey(Company, on_delete=models.CASCADE)  # 工厂
+    facility = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='machine_codes')  # 工厂
 
     def __str__(self):
-        return f'[{self.code}]'
+        return f'[{self.code}]-{self.model_mes}'
 
 
     class Meta(BaseModel.Meta):

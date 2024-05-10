@@ -21,7 +21,7 @@
             <th width="8%">机种重量(铭牌)</th>
             <th width="10%">内销/出口</th>
             <th width="6%">发动机品号</th>
-            <th width="5%" class="text-center">断种与否</th>
+            <th width="5%" class="text-center">已断种</th>
             <th width="15%">备注</th>
             <th width="5%" class="text-end">Action</th>
         </tr>
@@ -35,12 +35,12 @@
             <td>{{modelcode.machine_code.model_mes}}</td>
             <td>{{modelcode.code}}</td>
             <td>{{modelcode.cup}}</td>
-            <td>{{modelcode.brand_code}}</td>
+            <td>{%if modelcode.brand_code%}{{modelcode.brand_code}}{%else%}&nbsp;{%endif%}</td>
             <td>{{modelcode.machine_type}}</td>
             <td>{{modelcode.weight_sap}}</td>
             <td>{{modelcode.weight_brand}}</td>
             <td>{{modelcode.sale_type}}</td>
-            <td>{{modelcode.engine_no}}</td>
+            <td>{%if modelcode.engine_no%}{{modelcode.engine_no}}{%else%}&nbsp;{%endif%}</td>
             <td class="text-center text-success">{%if modelcode.product%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
             <td>{{modelcode.remark}}</td>
             <td class="text-end">

@@ -129,20 +129,15 @@
 {%block scripts%}
 {{block.super}}
 $(function(){
-    /*$('#id_facility').change(function(){
+    $('#id_facility').change(function(){
         var id = $(this).val()
         if(!id)
             id = '000000000'
         //alert('Facility id is : '+id)
-        $.post('/pp_master/line/get/'+id, {}, function(data){
+        $.post('/pp_master/machine_code/get/'+id, {}, function(data){
             //alert(data)
-            $('#id_line').html(data)
+            $('#id_machine_code').html(data)
         }, 'html')
-         $.post('/pp_master/work_center/get/'+id, {}, function(data){
-            //alert(data)
-            $('#id_start_wc').html(data)
-            $('#id_end_wc').html(data)
-        }, 'html')
-    })*/
+    })
 })
 {%endblock%}

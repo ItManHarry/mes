@@ -81,10 +81,18 @@ class ModelCodeForm(forms.ModelForm):
         self.fields['sale_type'].queryset = SysEnum.objects.filter(Q(sys_dict__code='D006') & ~Q(code='000')).all().order_by('code')
         if self.company_id:
             self.fields['facility'].queryset = Company.objects.filter(id=self.company_id).order_by('name')
-            # self.fields['machine_code'].queryset = MachineCode.objects.filter(facility_id=self.company_id).order_by('code')
+            self.fields['machine_code'].queryset = MachineCode.objects.filter(facility_id=self.company_id).order_by('code')
         else:
             self.fields['facility'].queryset = Company.objects.all().order_by('name')
-            # self.fields['machine_code'].queryset = MachineCode.objects.all().order_by('code')
+            self.fields['machine_code'].queryset = MachineCode.objects.all().order_by('code')
+        instance = ModelCode.objects.filter(id=self.instance.pk).first()
+        if instance:    # 编辑
+            self.fields['machine_code'].queryset = self.instance.facility.machine_codes.order_by('code')
+        else:           # 新增
+            self.fields['machine_code'].queryset = MachineCode.objects.none()
+        # Ajax处理
+        if 'facility' in self.data:
+            self.fields['machine_code'].queryset = MachineCode.objects.filter(facility_id=self.data['facility']).all()
     class Meta:
         model = ModelCode
         fields = ['id',
@@ -112,7 +120,7 @@ class ModelCodeForm(forms.ModelForm):
             'cup': 'CUP',
             'machine_type': '设备类型',
             'sale_type': '销售类型',
-            'product': '是否断种',
+            'product': '已断种',
             'machine_code': '所属机种',
         }
         widgets = {
@@ -130,3 +138,17 @@ class ModelCodeForm(forms.ModelForm):
             'machine_code': forms.Select(attrs={'class': 'form-control'}),
             'product': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
+    def clean(self):
+        cleaned_data = super().clean()
+        id = cleaned_data['id']
+        code = cleaned_data['code']
+        facility = cleaned_data['facility']
+        if not facility:
+            self.add_error('facility', '请选择工厂！')
+        modelcode = ModelCode.objects.filter(id=id).first()
+        if modelcode:       # 编辑
+            if ModelCode.objects.filter(~Q(id=id) & Q(code=code.upper().strip()) & Q(facility=facility)).all():
+                self.add_error('code', '代表式样已存在！')
+        else:               # 新增
+            if ModelCode.objects.filter(Q(code=code.upper().strip()) & Q(facility=facility)).all():
+                self.add_error('code', '代表式样已存在！')

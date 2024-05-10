@@ -67,10 +67,10 @@ class MachineCodeEditView(View):
             machinecode.save()
             return redirect(reverse('pp_master:machinecodes'))
         return render(request, self.template_name, dict(form=form))
-# @login_required
-# def get_workcenters_by_facility(request, facility_id):
-#     if facility_id == '000000000':
-#         workcenters = MachineCode.objects.none()
-#     else:
-#         workcenters = MachineCode.objects.filter(facility_id=facility_id).order_by('code')
-#     return render(request, 'pp_master/pp_machinecode/_workcenters.html', context=dict(workcenters=workcenters))
+@login_required
+def get_machinecodes_by_facility(request, facility_id):
+    if facility_id == '000000000':
+        machinecodes = MachineCode.objects.none()
+    else:
+        machinecodes = MachineCode.objects.filter(facility_id=facility_id).order_by('code')
+    return render(request, 'pp_master/pp_machinecode/_machine_codes.html', context=dict(machinecodes=machinecodes))
