@@ -16,4 +16,4 @@ class ProductWorkCenter(BaseModel):
         return f'[{self.code}]{self.name}'
 
     class Meta(BaseModel.Meta):
-        db_table = 'pp_workcenter'
+        db_table = 'pp_work_center'

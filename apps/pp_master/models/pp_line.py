@@ -11,4 +11,4 @@ class ProductLine(BaseModel):
         return self.name
 
     class Meta(BaseModel.Meta):
-        db_table = 'pp_line'
+        db_table = 'pp_product_line'

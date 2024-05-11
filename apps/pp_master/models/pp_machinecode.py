@@ -21,7 +21,7 @@ class MachineCode(BaseModel):
 
 
     class Meta(BaseModel.Meta):
-        db_table = 'pp_machinecode'
+        db_table = 'pp_machine_code'
 '''
 机型代表式样信息表
 '''
@@ -44,4 +44,4 @@ class ModelCode(BaseModel):
 
 
     class Meta(BaseModel.Meta):
-        db_table = 'pp_modelcode'
+        db_table = 'pp_model_code'
