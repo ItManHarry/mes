@@ -1,0 +1,81 @@
+{% extends 'base.html'%}
+{%block title%}&nbsp;{%endblock%}
+{%block header%}&nbsp;{%endblock%}
+{%block content%}
+<form method="post">
+    {% csrf_token %}
+    {{form.id}}
+    <div class="row">
+        <div class="col-6">
+            {{form.facility.label_tag}}
+            {{form.facility}}
+            {%if form.facility.errors%}
+                {%for error in form.facility.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-6">
+            {{form.code.label_tag}}
+            {{form.code}}
+            {%if form.code.errors%}
+                {%for error in form.code.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
+            {{form.style_code.label_tag}}
+            {{form.style_code}}
+            {%if form.style_code.errors%}
+                {%for error in form.style_code.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-6">
+            {{form.o_remark.label_tag}}
+            {{form.o_remark}}
+            {%if form.o_remark.errors%}
+                {%for error in form.o_remark.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
+            {{form.s_remark.label_tag}}
+            {{form.s_remark}}
+            {%if form.s_remark.errors%}
+                {%for error in form.s_remark.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col text-end">
+            <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
+            <a class="btn btn-outline-secondary" href="{%url 'pp_master:option_basics'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
+        </div>
+    </div>
+</form>
+{%endblock%}
+{%block scripts%}
+{{block.super}}
+$(function(){
+    $('#id_facility').change(function(){
+        var id = $(this).val()
+        if(!id)
+            id = '000000000'
+        //alert('Facility id is : '+id)
+        $.post('/pp_master/machine_code/get/'+id, {}, function(data){
+            //alert(data)
+            $('#id_machine_code').html(data)
+        }, 'html')
+    })
+})
+{%endblock%}

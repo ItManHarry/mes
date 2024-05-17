@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+{%block title%}&nbsp;{%endblock%}
+{%block header%}&nbsp;{%endblock%}
+{%block content%}
+<div class="row">
+    <div class="col text-end">
+        <a href="{%url 'pp_master:option_basic_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
+    </div>
+</div><br>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th width="5%">工厂</th>
+            <th width="5%">Option代码</th>
+            <th width="5%">式样代码</th>
+            <th width="5%">Option说明(MES)</th>
+            <th width="5%">式样说明(MES)</th>
+            <th width="5%" class="text-end">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {%if options%}
+    {%for option in options%}
+        <tr>
+            <td>{{option.facility}}</td>
+            <td>{{option.code}}</td>
+            <td>{{option.style_code}}</td>
+            <td>{{option.o_remark}}</td>
+            <td>{{option.s_remark}}</td>
+            <td class="text-end">
+                <a href="{%url 'pp_master:option_basic_edit' option.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+            </td>
+        </tr>
+    {%endfor%}
+    {%else%}
+    <tr>
+        <td colspan="6" class="text-info text-center">没有数据！</td>
+    </tr>
+    {%endif%}
+    </tbody>
+</table>
+{%include 'common/paginator.html'%}
+{%endblock%}
