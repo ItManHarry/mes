@@ -12,9 +12,9 @@
         <tr>
             <th width="5%">工厂</th>
             <th width="5%">Option代码</th>
-            <th width="5%">Option代码</th>
-            <th width="5%">顺序号</th>
-            <th width="5%" class="text-center">是否在用</th>
+            <th width="5%">式样代码</th>
+            <th width="5%">Option说明(MES)</th>
+            <th width="5%">式样说明(MES)</th>
             <th width="5%" class="text-end">Action</th>
         </tr>
     </thead>
@@ -24,9 +24,9 @@
         <tr>
             <td>{{option.facility}}</td>
             <td>{{option.code}}</td>
-            <td>{{option.name}}</td>
-            <td>{{option.sequence}}</td>
-            <td class="text-center text-success">{%if option.use%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td>{{option.style_code}}</td>
+            <td>{{option.o_remark}}</td>
+            <td>{{option.s_remark}}</td>
             <td class="text-end">
                 <a href="{%url 'pp_master:option_basic_edit' option.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
             </td>

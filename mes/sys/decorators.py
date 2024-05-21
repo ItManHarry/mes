@@ -10,7 +10,7 @@ def check_menu_used(menu_code):
         def decorated_function(request, *args, **kwargs):
             user = request.user
             if user:
-                menu = Menu.objects.get(code=menu_code)
+                menu = Menu.objects.filter(code=menu_code).first()
                 if menu:
                     role_id = request.session.get('role_id', None)
                     if role_id:

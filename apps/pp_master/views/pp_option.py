@@ -34,7 +34,6 @@ class OptionBasicAddView(View):
         if form.is_valid():
             option = form.save(commit=False)
             option.code = option.code.upper().strip()
-            option.style_code = option.style_code.upper().strip()
             user = request.user
             if user:
                 option.created_by = user.id
@@ -56,7 +55,6 @@ class OptionBasicEditView(View):
         if form.is_valid():
             option = form.save(commit=False)
             option.code = option.code.upper().strip()
-            option.style_code = option.style_code.upper().strip()
             user = request.user
             if user:
                 option.updated_by = user.id
@@ -65,7 +63,7 @@ class OptionBasicEditView(View):
             return redirect(reverse('pp_master:option_basics'))
         return render(request, self.template_name, dict(form=form))
 class OptionCodeIndexView(View):
-    pass
+    template_name = ''
 class OptionCodeAddView(View):
     pass
 class OptionCodeEditView(View):

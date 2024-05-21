@@ -27,10 +27,10 @@
             {%endif%}
         </div>
         <div class="col-6">
-            {{form.name.label_tag}}
-            {{form.name}}
-            {%if form.name.errors%}
-                {%for error in form.name.errors%}
+            {{form.style_code.label_tag}}
+            {{form.style_code}}
+            {%if form.style_code.errors%}
+                {%for error in form.style_code.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
@@ -38,18 +38,22 @@
     </div><br>
     <div class="row">
         <div class="col-6">
-            {{form.sequence.label_tag}}
-            {{form.sequence}}
-            {%if form.sequence.errors%}
-                {%for error in form.sequence.errors%}
+            {{form.o_remark.label_tag}}
+            {{form.o_remark}}
+            {%if form.o_remark.errors%}
+                {%for error in form.o_remark.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
         </div>
         <div class="col-6">
-            <br>
-            {{form.use}}
-            {{form.use.label_tag}}
+            {{form.s_remark.label_tag}}
+            {{form.s_remark}}
+            {%if form.s_remark.errors%}
+                {%for error in form.s_remark.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
         </div>
     </div><br>
     <div class="row">
