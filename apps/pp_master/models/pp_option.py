@@ -9,7 +9,7 @@ class OptionBasic(BaseModel):
     facility = models.ForeignKey(Company, on_delete=models.CASCADE, related_name='options')     # 工厂
 
     def __str__(self):
-        return f'{self.code}_{self.style_code}'
+        return f'[{self.code}]{self.name}'
 
     class Meta(BaseModel.Meta):
         db_table = 'pp_option_basic'
