@@ -131,7 +131,7 @@ class ModelCodeForm(forms.ModelForm):
             'weight_sap': forms.NumberInput(attrs={'class': 'form-control'}),
             'weight_brand': forms.NumberInput(attrs={'class': 'form-control'}),
             'engine_no': forms.TextInput(attrs={'class': 'form-control'}),
-            'remark': forms.Textarea(attrs={'class': 'form-control'}),
+            'remark': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'cup': forms.Select(attrs={'class': 'form-control'}),
             'machine_type': forms.Select(attrs={'class': 'form-control'}),
             'sale_type': forms.Select(attrs={'class': 'form-control'}),
