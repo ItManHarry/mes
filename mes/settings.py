@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'mes.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mesdb',
+        'NAME': 'mes',
         'USER': 'mes',
         'PASSWORD': 'Mes2023$',
         'HOST': 'localhost',

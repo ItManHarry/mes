@@ -106,9 +106,16 @@ $(function(){
         $.post('/pp_master/line/get/'+id, {}, function(data){
             //alert(data)
             $('#id_line').html(data)
+            $('#id_line').change()
         }, 'html')
-         $.post('/pp_master/work_center/get/'+id, {}, function(data){
-            //alert(data)
+    })
+    $('#id_line').change(function(){
+        var id = $(this).val()
+        // alert(id)
+        if(!id)
+            id = '000000000'
+        $.post('/pp_master/work_center/get/line/'+id, {}, function(data){
+            // alert(data)
             $('#id_start_wc').html(data)
             $('#id_end_wc').html(data)
         }, 'html')

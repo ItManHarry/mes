@@ -70,3 +70,10 @@ def get_workcenters_by_facility(request, facility_id):
     else:
         workcenters = ProductWorkCenter.objects.filter(facility_id=facility_id).order_by('code')
     return render(request, 'pp_master/pp_workcenter/_workcenters.html', context=dict(workcenters=workcenters))
+@login_required
+def get_workcenters_by_line(request, line_id):
+    if line_id == '000000000':
+        workcenters = ProductWorkCenter.objects.none()
+    else:
+        workcenters = ProductWorkCenter.objects.filter(line_id=line_id).order_by('code')
+    return render(request, 'pp_master/pp_workcenter/_workcenters.html', context=dict(workcenters=workcenters))
