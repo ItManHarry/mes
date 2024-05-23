@@ -53,33 +53,46 @@ class OptionCodeForm(forms.ModelForm):
         self.facility_id = facility_id
         super(OptionCodeForm, self).__init__(*args, **kwargs)
         if self.facility_id:
-            self.fields['facility'] = facility_id
             self.fields['option'].queryset = OptionBasic.objects.filter(facility_id=facility_id).order_by('code')
         else:
-            self.fields['facility'] = ''
             self.fields['option'] = OptionBasic.objects.none()
     class Meta:
         model = OptionCode
-        fields = ['id', 'code', 'o_sap', 's_sap', 'basic', 'erp_if', 'sign', 'option', 'facility']
+        fields = ['id', 'code', 'style_code', 'o_sap', 's_sap', 'o_mes', 's_mes', 'basic', 'erp_if', 'sign', 'option']
         labels = {
             'code': 'Option代码',
+            'style_code': '式样代码',
             'o_sap': 'Option说明(SAP)',
             's_sap': '式样说明(SAP)',
+            'o_mes': 'Option说明(MES)',
+            's_mes': '式样说明(MES)',
             'basic': '基本Option',
             'erp_if': 'ERP接口',
             'sign': '详细标识',
-            'option': 'Option信息所属',
+            'option': 'Option基本',
         }
         widgets = {
             'id': forms.HiddenInput(),
             'code': forms.TextInput(attrs={'class': 'form-control'}),
-            'o_remark': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            's_remark': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'style_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'o_sap': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            's_sap': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'o_mes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            's_mes': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'basic': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'erp_if': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'sign': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'option': forms.Select(attrs={'class': 'form-control'}),
-            'facility': forms.HiddenInput(),
         }
     def clean(self):
         data = super().clean()
+        id = data['id']
+        code = data['code']
+        style_code = data['style_code']
+        oc = OptionCode.objects.filter(id=id).first()
+        if oc:
+            if OptionCode.objects.filter(~Q(id=id) & Q(code=code.strip().upper()) & Q(style_code=style_code.strip().upper())).first():
+                self.add_error('style_code', '式样代码已存在！')
+        else:
+            if OptionCode.objects.filter(Q(code=code.strip().upper()) & Q(style_code=style_code.strip().upper())).first():
+                self.add_error('style_code', '式样代码已存在！')

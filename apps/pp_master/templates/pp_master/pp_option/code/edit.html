@@ -7,10 +7,10 @@
     {{form.id}}
     <div class="row">
         <div class="col-6">
-            {{form.facility.label_tag}}
-            {{form.facility}}
-            {%if form.facility.errors%}
-                {%for error in form.facility.errors%}
+            {{form.option.label_tag}}
+            {{form.option}}
+            {%if form.option.errors%}
+                {%for error in form.option.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
@@ -38,28 +38,53 @@
     </div><br>
     <div class="row">
         <div class="col-6">
-            {{form.o_remark.label_tag}}
-            {{form.o_remark}}
-            {%if form.o_remark.errors%}
-                {%for error in form.o_remark.errors%}
+            {{form.o_sap.label_tag}}
+            {{form.o_sap}}
+            {%if form.o_sap.errors%}
+                {%for error in form.o_sap.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
         </div>
         <div class="col-6">
-            {{form.s_remark.label_tag}}
-            {{form.s_remark}}
-            {%if form.s_remark.errors%}
-                {%for error in form.s_remark.errors%}
+            {{form.s_sap.label_tag}}
+            {{form.s_sap}}
+            {%if form.s_sap.errors%}
+                {%for error in form.s_sap.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
         </div>
     </div><br>
     <div class="row">
+        <div class="col-6">
+            {{form.o_mes.label_tag}}
+            {{form.o_mes}}
+            {%if form.o_mes.errors%}
+                {%for error in form.o_mes.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
+            {{form.s_mes.label_tag}}
+            {{form.s_mes}}
+            {%if form.s_mes.errors%}
+                {%for error in form.s_mes.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col-2">{{form.erp_if}}{{form.erp_if.label}}</div>
+        <div class="col-2">{{form.basic}}{{form.basic.label}}</div>
+        <div class="col-2">{{form.sign}}{{form.sign.label}}</div>
+    </div>
+    <div class="row">
         <div class="col text-end">
             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
-            <a class="btn btn-outline-secondary" href="{%url 'pp_master:option_basics'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
+            <a class="btn btn-outline-secondary" href="{%url 'pp_master:option_codes'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
         </div>
     </div>
 </form>

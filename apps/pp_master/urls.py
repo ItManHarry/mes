@@ -2,7 +2,7 @@ from django.urls import path
 from .views import ProductLineIndexView, ProductLineAddView, ProductLineEditView, ProductWorkCenterAddView, ProductWorkCenterEditView, ProductWorkCenterIndexView, get_lines_by_facility, get_workcenters_by_facility
 from .views.pp_machinecode import MachineCodeIndexView, MachineCodeAddView, MachineCodeEditView, get_machinecodes_by_facility
 from .views.pp_modelcode import ModelCodeIndexView, ModelCodeAddView, ModelCodeEditView
-from .views.pp_option import OptionBasicAddView, OptionBasicIndexView, OptionBasicEditView
+from .views.pp_option import OptionBasicAddView, OptionBasicIndexView, OptionBasicEditView, OptionCodeIndexView, OptionCodeAddView, OptionCodeEditView
 from .views.pp_workcenter import get_workcenters_by_line
 app_name = 'pp_master'
 urlpatterns = [
@@ -25,4 +25,7 @@ urlpatterns = [
     path('option/basic/index/', OptionBasicIndexView.as_view(), name='option_basics'),
     path('option/basic/add/', OptionBasicAddView.as_view(), name='option_basic_add'),
     path('option/basic/edit/<option_id>/', OptionBasicEditView.as_view(), name='option_basic_edit'),
+    path('option/code/index/', OptionCodeIndexView.as_view(), name='option_codes'),
+    path('option/code/add/', OptionCodeAddView.as_view(), name='option_code_add'),
+    path('option/code/edit/<option_id>/', OptionCodeEditView.as_view(), name='option_code_edit'),
 ]

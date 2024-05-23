@@ -4,37 +4,49 @@
 {%block content%}
 <div class="row">
     <div class="col text-end">
-        <a href="{%url 'pp_master:option_basic_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
+        <a href="{%url 'pp_master:option_code_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
     </div>
 </div><br>
 <table class="table table-hover">
     <thead>
         <tr>
             <th width="5%">工厂</th>
-            <th width="5%">Option代码</th>
-            <th width="5%">式样代码</th>
-            <th width="5%">Option说明(MES)</th>
-            <th width="5%">式样说明(MES)</th>
+            <th width="7%">Option基本</th>
+            <th width="7%">Option代码</th>
+            <th width="7%">式样代码</th>
+            <th width="13%">Option说明(SAP)</th>
+            <th width="13%">式样说明(SAP)</th>
+            <th width="13%">Option说明(MES)</th>
+            <th width="13%">式样说明(MES)</th>
+            <th width="7%" class="text-center">基本Option</th>
+            <th width="5%" class="text-center">ERP接口</th>
+            <th width="5%" class="text-center">详细标识</th>
             <th width="5%" class="text-end">Action</th>
         </tr>
     </thead>
     <tbody>
-    {%if options%}
-    {%for option in options%}
+    {%if codes%}
+    {%for oc in codes%}
         <tr>
-            <td>{{option.facility}}</td>
-            <td>{{option.code}}</td>
-            <td>{{option.style_code}}</td>
-            <td>{{option.o_remark}}</td>
-            <td>{{option.s_remark}}</td>
+            <td>{{oc.facility}}</td>
+            <td>{{oc.option}}</td>
+            <td>{{oc.code}}</td>
+            <td>{{oc.style_code}}</td>
+            <td>{{oc.o_sap}}</td>
+            <td>{{oc.s_sap}}</td>
+            <td>{{oc.o_mes}}</td>
+            <td>{{oc.s_mes}}</td>
+            <td class="text-center text-success">{%if oc.basic%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td class="text-center text-success">{%if oc.erp_if%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
+            <td class="text-center text-success">{%if oc.sign%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
             <td class="text-end">
-                <a href="{%url 'pp_master:option_basic_edit' option.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+                <a href="{%url 'pp_master:option_code_edit' oc.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
             </td>
         </tr>
     {%endfor%}
     {%else%}
     <tr>
-        <td colspan="6" class="text-info text-center">没有数据！</td>
+        <td colspan="12" class="text-info text-center">没有数据！</td>
     </tr>
     {%endif%}
     </tbody>
