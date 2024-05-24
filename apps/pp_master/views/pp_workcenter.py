@@ -8,6 +8,8 @@ from django.core.paginator import Paginator
 from ..forms import ProductWorkCenterForm
 from ..models import ProductWorkCenter
 from mes.sys.decorators import check_menu_used
+from org_emp.models import Employee, EmployeeWorkCenterChangeList
+from django.http import JsonResponse
 class ProductWorkCenterIndexView(View):
     template_name = 'pp_master/pp_workcenter/index.html'
     @method_decorator(login_required)
@@ -77,3 +79,27 @@ def get_workcenters_by_line(request, line_id):
     else:
         workcenters = ProductWorkCenter.objects.filter(line_id=line_id).order_by('code')
     return render(request, 'pp_master/pp_workcenter/_workcenters.html', context=dict(workcenters=workcenters))
+@login_required
+def get_employees(request, wc_id):
+    employees = []
+    if wc_id:
+        workcenter = ProductWorkCenter.objects.get(pk=wc_id)
+        # print('Work center is : ', wc.employees.all(), type(wc.employees))
+        if workcenter.employees.all():
+            employees = workcenter.employees.all()
+    # print('Employee list', employees)
+    return render(request, 'pp_master/pp_workcenter/_employee_items.html', dict(employees=employees))
+@login_required
+def add_employee(request, wc_id, emp_id):
+    workcenter = ProductWorkCenter.objects.get(pk=wc_id)
+    employee = Employee.objects.get(pk=emp_id)
+    # 已添加过的不重复添加
+    if employee not in workcenter.employees.all():
+        workcenter.employees.add(employee)
+        user = request.user
+        item = EmployeeWorkCenterChangeList(employee=employee, department=employee.department.name, work_center=workcenter)
+        if user:
+            item.created_by = user.id
+        item.save()
+        return JsonResponse({'code': 1, 'message': '添加成功！'})
+    return JsonResponse({'code': 0, 'message': '工人已存在！'})

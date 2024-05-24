@@ -14,12 +14,12 @@
             <th width="5%">产线</th>
             <th width="6%">区分</th>
             <th width="5%">代码</th>
-            <th width="20%">名称</th>
-            <th width="20%">开始作业场</th>
-            <th width="20%">结束作业场</th>
+            <th width="19%">名称</th>
+            <th width="19%">开始作业场</th>
+            <th width="19%">结束作业场</th>
             <th width="7%" class="text-center">追溯性传送</th>
             <th width="7%" class="text-center">SAP实绩传送</th>
-            <th width="5%" class="text-end">Action</th>
+            <th width="8%" class="text-center">Action</th>
         </tr>
     </thead>
     <tbody>
@@ -35,8 +35,9 @@
             <td>{%if workcenter.end_wc%}{{workcenter.end_wc}}{%else%}-{%endif%}</td>
             <td class="text-center text-success">{%if workcenter.to_track%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
             <td class="text-center text-success">{%if workcenter.to_sap%}<i class="bi bi-check-lg"></i>{%else%}&nbsp;{%endif%}</td>
-            <td class="text-end">
+            <td class="text-center">
                 <a href="{%url 'pp_master:workcenter_edit' workcenter.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+                <button onclick="employees('{{workcenter.id}}')" class="btn btn-link text-success" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="工人"><i class="bi bi-people"></i></button>
             </td>
         </tr>
     {%endfor%}
@@ -47,5 +48,45 @@
     {%endif%}
     </tbody>
 </table>
+<input type="hidden" id="employee_id"/>
 {%include 'common/paginator.html'%}
+{%include './_employees.html'%}
+{%include 'employee/_select.html'%}
+{%endblock%}
+{%block scripts%}
+{{block.super}}
+    var wc_id = ''
+    $(function(){
+        $('#employee_id').change(function(){
+            // alert('Employee id is : '+$(this).val())
+            // alert('Work center id is : '+wc_id)
+            emp_id = $(this).val()
+            $.post('/pp_master/work_center/add/employee/'+wc_id+'/'+emp_id, {}, function(data){
+                if(data.code == 1)
+                    get_all_employees(wc_id)
+                else
+                    $.alert({
+                       type:'red',
+                       title:'系统提示',
+                       content: data.message,
+                       onClose:function(){}
+                   })
+            }, 'json')
+        })
+    })
+    function employees(id){
+        wc_id = id
+        $('#employeesModal').modal('show')
+        get_all_employees(wc_id)
+    }
+    function get_all_employees(){
+        $.post('/pp_master/work_center/get/employees/'+wc_id, {}, function(html){
+    <!--        alert(html)-->
+            $('#employee_list').html(html)
+        }, 'html')
+    }
+    function add_employee(){
+        e_id = 'employee_id'
+        $('#employeeModal').modal('show')
+    }
 {%endblock%}
