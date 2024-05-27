@@ -103,3 +103,9 @@ def add_employee(request, wc_id, emp_id):
         item.save()
         return JsonResponse({'code': 1, 'message': '添加成功！'})
     return JsonResponse({'code': 0, 'message': '工人已存在！'})
+@login_required
+def remove_employee(request, wc_id, emp_id):
+    workcenter = ProductWorkCenter.objects.get(pk=wc_id)
+    employee = Employee.objects.get(pk=emp_id)
+    workcenter.employees.remove(employee)
+    return JsonResponse({'code': 1, 'message': '工人已移除！'})

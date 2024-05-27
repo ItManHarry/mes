@@ -89,4 +89,19 @@
         e_id = 'employee_id'
         $('#employeeModal').modal('show')
     }
+    function remove_employee(emp_id){
+        // alert('WorkCenter id : ' + wc_id)
+        // alert('Employee id : ' + emp_id)
+        $.post('/pp_master/work_center/remove/employee/'+wc_id+'/'+emp_id, {}, function(data){
+            if(data.code == 1)
+                get_all_employees(wc_id)
+            else
+                $.alert({
+                   type:'red',
+                   title:'系统提示',
+                   content: data.message,
+                   onClose:function(){}
+               })
+        }, 'json')
+    }
 {%endblock%}

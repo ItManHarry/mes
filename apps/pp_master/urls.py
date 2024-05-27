@@ -3,7 +3,7 @@ from .views import ProductLineIndexView, ProductLineAddView, ProductLineEditView
 from .views.pp_machinecode import MachineCodeIndexView, MachineCodeAddView, MachineCodeEditView, get_machinecodes_by_facility
 from .views.pp_modelcode import ModelCodeIndexView, ModelCodeAddView, ModelCodeEditView
 from .views.pp_option import OptionBasicAddView, OptionBasicIndexView, OptionBasicEditView, OptionCodeIndexView, OptionCodeAddView, OptionCodeEditView
-from .views.pp_workcenter import get_workcenters_by_line, get_employees, add_employee
+from .views.pp_workcenter import get_workcenters_by_line, get_employees, add_employee, remove_employee
 app_name = 'pp_master'
 urlpatterns = [
     path('line/index/', ProductLineIndexView.as_view(), name='lines'),
@@ -17,6 +17,7 @@ urlpatterns = [
     path('work_center/get/line/<line_id>', get_workcenters_by_line, name='get_workcenters_by_line'),
     path('work_center/get/employees/<wc_id>', get_employees, name='get_employees'),
     path('work_center/add/employee/<wc_id>/<emp_id>', add_employee, name='add_employee'),
+    path('work_center/remove/employee/<wc_id>/<emp_id>', remove_employee, name='remove_employee'),
     path('machine_code/index/', MachineCodeIndexView.as_view(), name='machinecodes'),
     path('machine_code/add/', MachineCodeAddView.as_view(), name='machinecode_add'),
     path('machine_code/edit/<machinecode_id>/', MachineCodeEditView.as_view(), name='machinecode_edit'),
