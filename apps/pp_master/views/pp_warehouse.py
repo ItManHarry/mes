@@ -25,9 +25,24 @@ class WarehouseAddView(View):
     template_name = 'pp_master/pp_warehouse/edit.html'
     form_class = WarehouseForm
 
+    @method_decorator(login_required)
     def get(self, request):
         facility_id = request.session['company_id']
         form = self.form_class(facility_id)
+        return render(request, self.template_name, dict(form=form))
+
+    @method_decorator(login_required)
+    def post(self, request):
+        facility_id = request.session['company_id']
+        form = self.form_class(facility_id, request.POST)
+        if form.is_valid():
+            warehouse = form.save(commit=False)
+            warehouse.code = warehouse.code.strip().upper()
+            user = request.user
+            if user:
+                warehouse.created_by = user.id
+            warehouse.save()
+            return redirect(reverse('pp_master:warehouses'))
         return render(request, self.template_name, dict(form=form))
 
 class WarehouseEditView(View):
