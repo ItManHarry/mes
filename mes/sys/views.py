@@ -17,7 +17,7 @@ def home(request):
     else:
         role_id = request.session['role_id']
         role = Role.objects.get(pk=role_id)
-        recent_used_menus = [rum.menu for rum in RecentUsedMenu.objects.filter(Q(user=user) & Q(role=role))]
+        recent_used_menus = [rum.menu for rum in RecentUsedMenu.objects.filter(Q(user=user) & Q(role=role)).order_by('menu')]
         all_menus = role.menus.order_by('code')
     return render(request, 'home.html', context=dict(recent_used_menus=recent_used_menus, all_menus=all_menus))
 @login_required

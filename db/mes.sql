@@ -424,6 +424,87 @@ CREATE TABLE public.org_employee (
 ALTER TABLE public.org_employee OWNER TO mes;
 
 --
+-- Name: pp_component; Type: TABLE; Schema: public; Owner: mes
+--
+
+CREATE TABLE public.pp_component (
+    id uuid NOT NULL,
+    active boolean NOT NULL,
+    created_by integer,
+    created_on timestamp with time zone NOT NULL,
+    updated_by integer,
+    updated_on timestamp with time zone NOT NULL,
+    code character varying(64) NOT NULL,
+    name character varying(128) NOT NULL,
+    safe_storage integer NOT NULL,
+    facility_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.pp_component OWNER TO mes;
+
+--
+-- Name: pp_component_amount; Type: TABLE; Schema: public; Owner: mes
+--
+
+CREATE TABLE public.pp_component_amount (
+    id uuid NOT NULL,
+    active boolean NOT NULL,
+    created_by integer,
+    created_on timestamp with time zone NOT NULL,
+    updated_by integer,
+    updated_on timestamp with time zone NOT NULL,
+    quantity integer NOT NULL,
+    component_id uuid NOT NULL,
+    location_id uuid NOT NULL,
+    warehouse_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.pp_component_amount OWNER TO mes;
+
+--
+-- Name: pp_component_inout_list; Type: TABLE; Schema: public; Owner: mes
+--
+
+CREATE TABLE public.pp_component_inout_list (
+    id uuid NOT NULL,
+    active boolean NOT NULL,
+    created_by integer,
+    created_on timestamp with time zone NOT NULL,
+    updated_by integer,
+    updated_on timestamp with time zone NOT NULL,
+    sign integer NOT NULL,
+    quantity integer NOT NULL,
+    component_id uuid NOT NULL,
+    inout_type_id uuid NOT NULL,
+    location_id uuid NOT NULL,
+    warehouse_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.pp_component_inout_list OWNER TO mes;
+
+--
+-- Name: pp_location; Type: TABLE; Schema: public; Owner: mes
+--
+
+CREATE TABLE public.pp_location (
+    id uuid NOT NULL,
+    active boolean NOT NULL,
+    created_by integer,
+    created_on timestamp with time zone NOT NULL,
+    updated_by integer,
+    updated_on timestamp with time zone NOT NULL,
+    code character varying(24) NOT NULL,
+    name character varying(128) NOT NULL,
+    warehouse_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.pp_location OWNER TO mes;
+
+--
 -- Name: pp_machine_code; Type: TABLE; Schema: public; Owner: mes
 --
 
@@ -596,6 +677,26 @@ CREATE TABLE public.pp_product_line (
 
 
 ALTER TABLE public.pp_product_line OWNER TO mes;
+
+--
+-- Name: pp_warehouse; Type: TABLE; Schema: public; Owner: mes
+--
+
+CREATE TABLE public.pp_warehouse (
+    id uuid NOT NULL,
+    active boolean NOT NULL,
+    created_by integer,
+    created_on timestamp with time zone NOT NULL,
+    updated_by integer,
+    updated_on timestamp with time zone NOT NULL,
+    code character varying(24) NOT NULL,
+    name character varying(512) NOT NULL,
+    address character varying(512) NOT NULL,
+    facility_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.pp_warehouse OWNER TO mes;
 
 --
 -- Name: pp_work_center; Type: TABLE; Schema: public; Owner: mes
@@ -930,6 +1031,26 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 98	Can change employee work center change list	25	change_employeeworkcenterchangelist
 99	Can delete employee work center change list	25	delete_employeeworkcenterchangelist
 100	Can view employee work center change list	25	view_employeeworkcenterchangelist
+101	Can add component	26	add_component
+102	Can change component	26	change_component
+103	Can delete component	26	delete_component
+104	Can view component	26	view_component
+105	Can add component amount	27	add_componentamount
+106	Can change component amount	27	change_componentamount
+107	Can delete component amount	27	delete_componentamount
+108	Can view component amount	27	view_componentamount
+109	Can add location	28	add_location
+110	Can change location	28	change_location
+111	Can delete location	28	delete_location
+112	Can view location	28	view_location
+113	Can add warehouse	29	add_warehouse
+114	Can change warehouse	29	change_warehouse
+115	Can delete warehouse	29	delete_warehouse
+116	Can view warehouse	29	view_warehouse
+117	Can add component in out list	30	add_componentinoutlist
+118	Can change component in out list	30	change_componentinoutlist
+119	Can delete component in out list	30	delete_componentinoutlist
+120	Can view component in out list	30	view_componentinoutlist
 \.
 
 
@@ -939,7 +1060,8 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 
 COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
 1	pbkdf2_sha256$600000$T47UvWrsvV3qpT6eZOnB0C$0bW4vNrZFDgnekqDDtmy6VxYwvV0FGrsOhH1XUlfNjA=	2024-05-23 14:36:18.899621+08	t	admin			guoqian.cheng@hd.com	t	t	2024-05-21 15:00:38.044384+08
-2	pbkdf2_sha256$600000$DdOUCqKohRALqy56jAqHHm$sXj7O2jTgeGllpt9o2oIJJRbYaF+cbI2NSQTPEPsyXg=	2024-05-24 15:48:54.84859+08	f	20112004	国前	程	guoqian.cheng@hd.com	f	t	2024-05-21 15:18:17.681267+08
+2	pbkdf2_sha256$600000$DdOUCqKohRALqy56jAqHHm$sXj7O2jTgeGllpt9o2oIJJRbYaF+cbI2NSQTPEPsyXg=	2024-05-29 15:02:28.567803+08	f	20112004	国前	程	guoqian.cheng@hd.com	f	t	2024-05-21 15:18:17.681267+08
+3	pbkdf2_sha256$600000$WwriDtcW6bRdyWL4w6CnkU$Ap4sbwdQaht5VQOVACMRoMYko6Yi3CNealpbXw1bjt8=	\N	f	ls0490	春艳	李	chunyan.li@hd.com	t	t	2024-05-29 15:45:19.382526+08
 \.
 
 
@@ -1013,6 +1135,11 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 23	pp_master	productworkcenter
 24	pp_master	optioncode
 25	org_emp	employeeworkcenterchangelist
+26	pp_master	component
+27	pp_master	componentamount
+28	pp_master	location
+29	pp_master	warehouse
+30	pp_master	componentinoutlist
 \.
 
 
@@ -1060,6 +1187,7 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 37	org_emp	0002_employee_work_center_emloyeeworkcenterchangelist	2024-05-24 14:04:11.15634+08
 38	org_emp	0003_rename_emloyeeworkcenterchangelist_employeeworkcenterchangelist	2024-05-24 14:04:11.196193+08
 39	org_emp	0004_employeeworkcenterchangelist_department	2024-05-24 14:14:12.379434+08
+40	pp_master	0003_component_warehouse_location_componentinoutlist_and_more	2024-06-03 15:00:56.477357+08
 \.
 
 
@@ -1070,10 +1198,12 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
 8b43nhdov2vv79rl04s4bjuri6ivknvj	.eJxVj81Ow0AMhN8lV9jI6-xvjpQDHLhxrBR5104baJMqaSQqxLuT0CLBxbI8M5_Gn0VD83nfzJOMTcdFXWBx__eWKL9Lvwr8Rv1uKPPQn8culaulvKlT-TKwHB5u3n-APU37JS3OgEXNSSBbLSEZSsZHb1oh8Nh6ApddJooYIiekCr0E67WLMYYMC3TF9XSUtSRojQBmuY7DQa7N2-ATS4VKCK0yOpIKNrBixxY45Wgy_wZunKfH581mO_tEepkG3Ha2xobFlYfjifrLlewytMJilBWDylTLlohJZQfsI1DburR-Pck0dUPfyMepGy8_PdEosAr1K4QadV2Z0gVnHd4B1ADF1zcgUXPX:1s9KHW:Qi6ssoWMTbYEUl0W3AF1ITKGOwQTIjTaZHQmtEBTTbs	2024-05-21 16:21:34.686562+08
 1ypncznhmb43d818j3mvt653a9me5n2v	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCqDr-DrCmvUJfgqxHAHUAMUX98gpHPd:1sAOyn:156ktiut73NTXO8aHPUq3aUKl6H8pAiCFs5vXWPM1Aw	2024-05-24 15:34:41.073898+08
+w2dn04ik63s454e8jzg4qqmci0r6kcm2	.eJxVj81Ow0AMhN8lV9jI6-xvjpQDHLhxrBR5104baJMqaSQqxLuT0CLBxbI8M5_Gn0VD83nfzJOMTcdFXWBx__eWKL9Lvwr8Rv1uKPPQn8culaulvKlT-TKwHB5u3n-APU37JS3OgEXNSSBbLSEZSsZHb1oh8Nh6ApddJooYIiekCr0E67WLMYYMC3TF9XSUtSRojQBmuY7DQa7N2-ATS4VKCK0yOpIKNrBixxY45Wgy_wZunKfH581mO_tEepkG3Ha2xobFlYfjifrLlewytMJilBWDylTLlohJZQfsI1DburR-Pck0dUPfyMepGy8_PdEosAr9K1Q1htrYUldog78DqAGKr28gqXPa:1sBQZR:r3KbRSW6wSlQ_yAbVVyofs8ZAwFD0ZA9JTaqrBJE0pQ	2024-05-27 11:28:45.132587+08
 udx6q1shmj67ye9hccrq1jjeqehpukoh	.eJxVj81Ow0AMhN8lV9jI6-xvjpQDHLhxrBR5104baJMqaSQqxLuT0CLBxbI8M5_Gn0VD83nfzJOMTcdFXWBx__eWKL9Lvwr8Rv1uKPPQn8culaulvKlT-TKwHB5u3n-APU37JS3OgEXNSSBbLSEZSsZHb1oh8Nh6ApddJooYIiekCr0E67WLMYYMC3TF9XSUtSRojQBmuY7DQa7N2-ATS4VKCK0yOpIKNrBixxY45Wgy_wZunKfH581mO_tEepkG3Ha2xobFlYfjifrLlewytMJilBWDylTLlohJZQfsI1DburR-Pck0dUPfyMepGy8_PdEosArxFaoaY21jGXTU1t0B1ADF1zcg2XPf:1s9cCt:3k06xl1orCUnhF_IMLDfT3tgBQoKf-fkWaaq8almh30	2024-05-22 11:29:59.819156+08
 sz6dv8etbdlwp450m7qhb9j1ecmy4e35	.eJxVj81Ow0AMhN8lV9jI2fX-9Ug5wIEbx0qRd-3QQJtUSSNRId6dDRQJLpY9Hn8af1QtLed9u8wytT1Xm0pXt3-1RPlNhnXBrzS8jHUeh_PUp3q11NftXD-NLIe7q_cfYE_zvlyLQ7C64SSQbSMhISX00WMnBF53nsBll4miDpGTJqO9BOsbF2MMGQp0xQ10lDUkNI0GwKJO40F-knfBJxajlZC2CptIKtjAih1b4JQjZv49uHIe7h-3293iEzWlIrjdYtGG4srj8UTD5YfsMnTCgsoKaoWmdImYVHbAPgJ1nUvr17PMcz8Orbyf-unynVOjAqu0eYa4Adgg1sYFE81NGQCqzy8gVHPX:1sA3qW:qqWd_9qlCfMz6U2fQLp0eEsDPJcCdlO8Y_My4lTmcYU	2024-05-23 17:00:44.368393+08
 6kz0q3p73x0cusl8sp1h049qac9rnlit	.eJxVj81Ow0AMhN8lV9jI63j_cqQc4MCNY6XIu-u0gTapkkaiQrw7CS0SXCzLM_Np_Fk0PJ_3zTzJ2HS5qAss7v_eIqd36Vchv3G_G8o09Oexi-VqKW_qVL4MWQ4PN-8_wJ6n_ZIWS2BQ5yiQjBYfiSO54KgVBoetY7DJJuaAPuSIXKETb5y2IQSfYIGuuJ6PspYErRGAlus4HOTavPUuZqlQCaNRpAMrb3xW2WYDOaZAKf8Gbpynx-fNZju7yHqZBHY7GzJ-caXheOL-ciXbBK1kIWWEUFG1bJEzq2QhuwDctjauX08yTd3QN_Jx6sbLT08kBUYhvoKvja-JSrAVVnAHUAMUX98gWXPQ:1s9hL2:XrY0bVJvoOwn4e3XiprfZlybuK_NSYZpDEsHktIc8wg	2024-05-22 16:58:44.06323+08
 xmegep45qh50ju9vzbrq01elngely9nn	.eJxVj81Ow0AMhN8lV9jIu_X-9Ug5wIEbx0qRd-20gTapkkaiQrw7G1okuFj2ePxp_Fk1NJ_3zTzJ2HRcrStT3f_VEuV36ZcFv1G_G-o89OexS_ViqW_bqX4ZWA4PN-8_wJ6mfbkWh2CN5iSQrZaQkBL66LEVAm9aT-Cyy0TRhMjJ0Mp4CdZrF2MMGQp0wfV0lCUkaG0AsKjjcJBr8jb4xLIySshYhTqSCjawYscWOOWImX8Pbpynx-fNZjv7RLpUBLedLdpQXHk4nqi_XMkuQyssqKygUbgqXSImlR2wj0Bt69Ly9STT1A19Ix-nbrz85DSowCpjXsGuLawh1LHkBryDMkD19Q0fo3PI:1s9eOW:D2coPmNn0bsLd2A0bNu6JFSklo3lxbcGVDBiD9qZ2yM	2024-05-22 13:50:08.900404+08
+a06fnkpdhc1t2cu3pc83ak7pxqliyvzg	.eJxVj81Ow0AMhN8lV9jI63r_cqQc4MCNY6XIu-s0gTapkkaiQrw7CS0SXCzLM_Np_FnUPJ_bep5krLtcVAUW939vkdO79KuQ37jfD2Ua-vPYxXK1lDd1Kl-GLIeHm_cfoOWpXdJiCQzqHAWS0eIjcSQXHDXC4LBxDDbZxBzQhxyRN-jEG6dtCMEnWKArruejrCVBawSg5ToOB7k2b7yLWTaohNEo0oGVNz6rbLOBHFOglH8DN87T4_N2u5tdZL1MArubDRm_uNJwPHF_uZJtgkaykDJCqGizbJEzq2QhuwDcNDauX08yTd3Q1_Jx6sbLT08kBUZheAVfaVMRlA4Nob8DqACKr28g2XPa:1sCE0C:V2Fv1XmfUWA7Hz5g_76ECa5HJPQGG9umfygGz75Tdmo	2024-05-29 16:15:40.725428+08
 mjgegyvdwyhgkd9v296p43agl40qwyiw	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCpTvUJVG19bV6JFDdUdQA1QfH0DIA9zzg:1s9yeS:GYkh667oV5OaNlpzQqlZkz-Fpc-1_zOdTitB2EDAJ9w	2024-05-23 11:27:56.454103+08
 hrvj7d7n4y01ztmzzvhtpxo89jcujz5o	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCqDr1DVEOvKlBBiBeYOoAYovr4BH_xzzg:1sAKqC:m3ghsyEgobkI9NoR0pRtaE3xtgY0AtPP9jb8HSFuXVQ	2024-05-24 11:09:32.089302+08
 ubkuy27qmvbmhfc32hfimbc64tsy39lk	.eJxVj81Ow0AMhN8lV9jIu_X-5Ug5wIEbx0qRd-3QQJtUSSNRId6dDRQJLpblmfk0_qhaWs77dpllanuumspUt39vifKbDKvArzS8jHUeh_PUp3q11Fd1rp9GlsPd1fsPsKd5X9LiEKzRnASy1RISUkIfPXZC4E3nCVx2mSiaEDkZ2hgvwXrtYowhQ4GuuIGOspYErQ0Alus0HuSneRd8YtkYJWSsQh1JBRtYsWMLnHLEzL-BK-fh_nG73S0-kS4Twe0WizYUVx6PJxouP2SXoRMWVFbQKNyULRGTyg7YR6Cuc2n9epZ57sehlfdTP12-expUYJXBZ7CNjY1xdemO2t8ANADV5xcgUXPR:1sANUc:yd51UPpFb8S7pusiLxmcf9tlCDV67A0whi6qkqHSL78	2024-05-24 13:59:26.201417+08
@@ -2897,7 +3027,6 @@ b8471580-15a2-4e43-b933-bb2892e3f133	t	\N	2024-05-21 15:16:54.341+08	\N	2024-05-
 9d4e0601-7f17-4aac-804a-a51b1ad410eb	t	\N	2024-05-21 15:16:54.342968+08	\N	2024-05-21 15:16:54.342968+08	谭文永	ls0073	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
 e8ae8fa5-65f3-4566-9146-520108a02d18	t	\N	2024-05-21 15:16:54.343966+08	\N	2024-05-21 15:16:54.343966+08	潘乐生	ls0084	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
 678432cf-3f63-4ffc-91b7-494597fc9fea	t	\N	2024-05-21 15:16:54.345961+08	\N	2024-05-21 15:16:54.345961+08	王心刚	ls0310	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
-19b64d86-a6d0-40c9-8a70-0d49c913a89b	t	\N	2024-05-21 15:16:54.34796+08	\N	2024-05-21 15:16:54.34796+08	李春艳	ls0490	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
 8b9609f1-122b-49f1-83d0-c2711f93aa4f	t	\N	2024-05-21 15:16:54.349949+08	\N	2024-05-21 15:16:54.349949+08	迟娜	ls0495	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
 642c8ddb-581b-4286-807b-d629b2fb427a	t	\N	2024-05-21 15:16:54.350947+08	\N	2024-05-21 15:16:54.350947+08	徐学全	ls0485	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
 56776049-54e7-4840-b3a0-7f652906717f	t	\N	2024-05-21 15:16:54.351944+08	\N	2024-05-21 15:16:54.351944+08	刘运玺	ls0572	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
@@ -3016,10 +3145,43 @@ a6dfffa3-ccc2-48ad-86c8-918840c4b83a	t	\N	2024-05-21 15:16:54.507043+08	\N	2024-
 b530e445-4fe2-4342-908e-eb36697e09db	t	\N	2024-05-21 15:16:54.508041+08	\N	2024-05-21 15:16:54.508041+08	孙晟凯	ls0424	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
 40064564-c942-4353-a014-cfabf536668f	t	\N	2024-05-21 15:16:54.510035+08	\N	2024-05-21 15:16:54.510035+08	鲁言腾	ls0521	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
 001c2558-68fd-48fb-9862-db03a2ec7008	t	\N	2024-05-21 15:16:53.941976+08	\N	2024-05-21 15:16:53.941976+08	马令泉	ic0752596	\N	\N	\N	1ecdce5f-6f12-4d25-bf76-12e7b5de9a9a	\N	043b5de1-0d1a-4470-98e4-491d6782fa51
-2f682a9c-08c2-47ae-8222-f64be0214e1b	t	\N	2024-05-21 15:16:52.237596+08	\N	2024-05-21 15:16:52.237596+08	李宝亮	1923283	\N	\N	\N	be176f6f-c409-4962-970a-4d3a71df161d	\N	c2be3466-f168-46e7-867d-f7f53fd89d13
 dccb2528-55b1-46a4-9032-2d9db363e70a	t	\N	2024-05-21 15:16:52.913217+08	\N	2024-05-21 15:16:52.913217+08	李彪	1924803	\N	\N	\N	60788ebe-4094-488c-860c-9ee459e7930b	\N	c2be3466-f168-46e7-867d-f7f53fd89d13
 4e6f38b4-9ae1-494c-8eda-49ccb9ff1f7b	t	\N	2024-05-21 15:16:52.576458+08	\N	2024-05-21 15:16:52.576458+08	王蓓蓓	ic0832989	\N	\N	\N	dd7ee76e-ba9d-4fff-8bcf-8c5e0ad0e4ea	\N	c2be3466-f168-46e7-867d-f7f53fd89d13
-062a6cf1-ae70-46c0-a528-6e2685310d27	t	\N	2024-05-21 15:16:52.022478+08	\N	2024-05-21 15:16:52.022478+08	赵昌春	1923057	\N	\N	\N	97046c45-19e1-48f5-abee-17e7818c18be	\N	c2be3466-f168-46e7-867d-f7f53fd89d13
+2f682a9c-08c2-47ae-8222-f64be0214e1b	t	\N	2024-05-21 15:16:52.237596+08	\N	2024-05-21 15:16:52.237596+08	李宝亮	1923283	\N	\N	\N	be176f6f-c409-4962-970a-4d3a71df161d	\N	\N
+062a6cf1-ae70-46c0-a528-6e2685310d27	t	\N	2024-05-21 15:16:52.022478+08	\N	2024-05-21 15:16:52.022478+08	赵昌春	1923057	\N	\N	\N	97046c45-19e1-48f5-abee-17e7818c18be	\N	\N
+19b64d86-a6d0-40c9-8a70-0d49c913a89b	t	\N	2024-05-21 15:16:54.34796+08	\N	2024-05-21 15:16:54.34796+08	李春艳	ls0490	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	3	\N
+\.
+
+
+--
+-- Data for Name: pp_component; Type: TABLE DATA; Schema: public; Owner: mes
+--
+
+COPY public.pp_component (id, active, created_by, created_on, updated_by, updated_on, code, name, safe_storage, facility_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: pp_component_amount; Type: TABLE DATA; Schema: public; Owner: mes
+--
+
+COPY public.pp_component_amount (id, active, created_by, created_on, updated_by, updated_on, quantity, component_id, location_id, warehouse_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: pp_component_inout_list; Type: TABLE DATA; Schema: public; Owner: mes
+--
+
+COPY public.pp_component_inout_list (id, active, created_by, created_on, updated_by, updated_on, sign, quantity, component_id, inout_type_id, location_id, warehouse_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: pp_location; Type: TABLE DATA; Schema: public; Owner: mes
+--
+
+COPY public.pp_location (id, active, created_by, created_on, updated_by, updated_on, code, name, warehouse_id) FROM stdin;
 \.
 
 
@@ -3138,6 +3300,14 @@ c7ac1dc2-88d7-4f15-bf4a-91928b548e1f	t	2	2024-05-22 09:20:50.874152+08	\N	2024-0
 9da635ae-f5c8-4ede-82e0-be084b91c21d	t	2	2024-05-22 09:21:10.456212+08	\N	2024-05-22 09:21:10.456212+08	T/F-Line	TF01	1.0	6c0fede4-5e42-43e4-bada-c60d790aff6b
 524c436d-4de2-4f04-ae45-9a9c0da3de74	t	2	2024-05-22 09:21:27.083197+08	\N	2024-05-22 09:21:27.083197+08	Test-Line	TT01	1.0	6c0fede4-5e42-43e4-bada-c60d790aff6b
 53d0b90e-9254-4fa6-befe-04090066b468	t	2	2024-05-22 09:21:41.146516+08	\N	2024-05-22 09:21:41.146516+08	W-Front	WF01	1.0	6c0fede4-5e42-43e4-bada-c60d790aff6b
+\.
+
+
+--
+-- Data for Name: pp_warehouse; Type: TABLE DATA; Schema: public; Owner: mes
+--
+
+COPY public.pp_warehouse (id, active, created_by, created_on, updated_by, updated_on, code, name, address, facility_id) FROM stdin;
 \.
 
 
@@ -4526,6 +4696,93 @@ ab9e881d-e205-45f4-90a8-7277f5e6ff6d	t	2	2024-05-24 16:45:09.709637+08	2	2024-05
 fe04395d-fadc-49aa-9ea4-7eaa767a2097	t	2	2024-05-24 16:45:10.000268+08	2	2024-05-24 16:45:10.000268+08	/home/	127.0.0.1	2
 3e67a220-2b72-41f3-bba8-c16bb9223c75	t	2	2024-05-24 16:45:11.019375+08	2	2024-05-24 16:45:11.019375+08	/pp_master/work_center/index/	127.0.0.1	2
 b366bd84-c741-4d31-8162-6929a0eef691	t	2	2024-05-24 16:45:12.057497+08	2	2024-05-24 16:45:12.057497+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+0dcad783-0d1d-435b-8f74-3afd50dda8fb	t	2	2024-05-27 10:02:54.795598+08	2	2024-05-27 10:02:54.795598+08	/index/	127.0.0.1	2
+5d136cdb-f90d-4c8e-8226-b942528b1dfd	t	2	2024-05-27 10:02:55.113766+08	2	2024-05-27 10:02:55.113766+08	/home/	127.0.0.1	2
+eb44edb2-5e53-432a-ac71-f43ddac1e0d2	t	2	2024-05-27 10:02:57.462194+08	2	2024-05-27 10:02:57.462194+08	/pp_master/work_center/index/	127.0.0.1	2
+d4f4aa43-eeee-4864-97b0-8aeb2f13eaa2	t	2	2024-05-27 10:02:59.062762+08	2	2024-05-27 10:02:59.062762+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+ae84f302-de6b-4168-a357-6a6443bc7ef0	t	2	2024-05-27 10:03:47.253209+08	2	2024-05-27 10:03:47.253209+08	/index/	127.0.0.1	2
+639aa6d1-8468-49ab-b589-1a45eb04857a	t	2	2024-05-27 10:03:47.536336+08	2	2024-05-27 10:03:47.536336+08	/home/	127.0.0.1	2
+fa0806cd-e0e7-4496-a7fc-59d82831b88d	t	2	2024-05-27 10:03:49.122595+08	2	2024-05-27 10:03:49.122595+08	/pp_master/work_center/index/	127.0.0.1	2
+45c4196a-8628-4187-bf88-b622abe3f1a9	t	2	2024-05-27 10:03:50.002401+08	2	2024-05-27 10:03:50.002401+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+25d5515c-ba4b-4466-9f66-08447f258391	t	2	2024-05-27 10:04:18.083496+08	2	2024-05-27 10:04:18.083496+08	/index/	127.0.0.1	2
+dc297597-7428-4c85-a894-465c40bbedf8	t	2	2024-05-27 10:04:18.367621+08	2	2024-05-27 10:04:18.367621+08	/home/	127.0.0.1	2
+12db6c5b-675a-4d7b-8c2c-8800d1de4276	t	2	2024-05-27 10:04:19.342867+08	2	2024-05-27 10:04:19.342867+08	/pp_master/work_center/index/	127.0.0.1	2
+de56f95f-6ddd-406d-9729-c29ba07555b2	t	2	2024-05-27 10:04:31.437959+08	2	2024-05-27 10:04:31.437959+08	/index/	127.0.0.1	2
+021bf2bf-e94c-43dd-9e87-3160e1374fb3	t	2	2024-05-27 10:04:20.395008+08	2	2024-05-27 10:04:20.395008+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+aafdc521-6548-4736-be7e-1b2d4e354f2b	t	2	2024-05-27 10:04:31.714735+08	2	2024-05-27 10:04:31.714735+08	/home/	127.0.0.1	2
+f19e02d7-c11f-4d2d-981e-51398f289653	t	2	2024-05-27 10:04:32.681235+08	2	2024-05-27 10:04:32.681235+08	/pp_master/work_center/index/	127.0.0.1	2
+2de1e085-740c-4aaa-9587-b160d952eedf	t	2	2024-05-27 10:04:33.70926+08	2	2024-05-27 10:04:33.70926+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+8ec0a336-b773-4774-a1a1-a14adb7eb671	t	2	2024-05-27 10:04:51.171766+08	2	2024-05-27 10:04:51.171766+08	/index/	127.0.0.1	2
+386fef3a-faa7-4b14-9720-ec11f74fa331	t	2	2024-05-27 10:04:51.44346+08	2	2024-05-27 10:04:51.44346+08	/home/	127.0.0.1	2
+8f828822-3b87-46f3-b26e-488f29a86fa2	t	2	2024-05-27 10:04:52.517043+08	2	2024-05-27 10:04:52.517043+08	/pp_master/work_center/index/	127.0.0.1	2
+7eda2b06-55a4-46d0-b0ac-cf4eaa773575	t	2	2024-05-27 10:04:53.345291+08	2	2024-05-27 10:04:53.345291+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+5c0315df-39b0-49a1-a98b-9bf08019b6c8	t	2	2024-05-27 10:05:03.744312+08	2	2024-05-27 10:05:03.744312+08	/index/	127.0.0.1	2
+b8887a74-4515-42bf-bc6f-83f85cdde5ea	t	2	2024-05-27 10:05:04.017015+08	2	2024-05-27 10:05:04.017015+08	/home/	127.0.0.1	2
+2536ac0d-28ba-4d88-a937-75f2f66e191b	t	2	2024-05-27 10:05:05.143629+08	2	2024-05-27 10:05:05.143629+08	/pp_master/work_center/index/	127.0.0.1	2
+33284f13-ca85-4a6c-9297-8f5a152888e2	t	2	2024-05-27 10:05:06.307911+08	2	2024-05-27 10:05:06.307911+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+e3abd058-80c7-4468-a9b8-f742f7b6c78a	t	2	2024-05-27 10:06:29.148867+08	2	2024-05-27 10:06:29.148867+08	/index/	127.0.0.1	2
+4cd0db51-7d0f-4438-8e63-3fdbb6328223	t	2	2024-05-27 10:06:29.415654+08	2	2024-05-27 10:06:29.415654+08	/home/	127.0.0.1	2
+78434c4e-311d-4fe6-9a10-cefb107134bd	t	2	2024-05-27 10:06:30.293424+08	2	2024-05-27 10:06:30.293424+08	/pp_master/work_center/index/	127.0.0.1	2
+71ff28c9-8519-4fba-88f3-32cd777be54f	t	2	2024-05-27 10:06:31.155618+08	2	2024-05-27 10:06:31.155618+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+02737894-9a5d-4053-8d66-3f5a28927584	t	2	2024-05-27 10:17:17.648141+08	2	2024-05-27 10:17:17.648141+08	/index/	127.0.0.1	2
+bf7680c9-ce29-4315-ba96-2fb923c4eb61	t	2	2024-05-27 10:17:17.94176+08	2	2024-05-27 10:17:17.94176+08	/home/	127.0.0.1	2
+eaac76a6-7dfc-42a2-80ae-57be0523e57d	t	2	2024-05-27 10:17:18.903965+08	2	2024-05-27 10:17:18.903965+08	/pp_master/work_center/index/	127.0.0.1	2
+402bfdee-9edb-4e1e-ab83-6ccac3da67e0	t	2	2024-05-27 10:17:19.831637+08	2	2024-05-27 10:17:19.831637+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+729b4e1a-ff33-4320-9e53-589867fbca48	t	2	2024-05-27 10:18:03.77132+08	2	2024-05-27 10:18:03.77132+08	/index/	127.0.0.1	2
+0653fa12-0b70-4851-906f-c5eeca9923d2	t	2	2024-05-27 10:18:04.044877+08	2	2024-05-27 10:18:04.044877+08	/home/	127.0.0.1	2
+d0ea652e-ff29-461d-a17e-c539b9ddc716	t	2	2024-05-27 10:18:05.036338+08	2	2024-05-27 10:18:05.036338+08	/pp_master/work_center/index/	127.0.0.1	2
+92b6291f-106c-4a2a-8cf5-edc95ca8b46e	t	2	2024-05-27 10:18:05.722739+08	2	2024-05-27 10:18:05.722739+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+362272b3-754a-4258-ace2-bbf614f28617	t	2	2024-05-27 10:18:35.986356+08	2	2024-05-27 10:18:35.986356+08	/index/	127.0.0.1	2
+ed44c3cf-2621-480d-acdb-2bff2ccb9ee3	t	2	2024-05-27 10:18:36.264617+08	2	2024-05-27 10:18:36.264617+08	/home/	127.0.0.1	2
+9d69ad92-2ac9-4d89-b0ef-9359642d75e3	t	2	2024-05-27 10:18:37.291972+08	2	2024-05-27 10:18:37.291972+08	/pp_master/work_center/index/	127.0.0.1	2
+d220cf30-5b18-4a0e-aac1-1950f5c19d8f	t	2	2024-05-27 10:18:38.127227+08	2	2024-05-27 10:18:38.127227+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+36f0d675-4556-42a9-a612-9765b5300b84	t	2	2024-05-27 10:18:51.907111+08	2	2024-05-27 10:18:51.907111+08	/index/	127.0.0.1	2
+c43f870d-d8f9-4206-a63e-7f5af6783fe7	t	2	2024-05-27 10:18:52.217395+08	2	2024-05-27 10:18:52.217395+08	/home/	127.0.0.1	2
+58d26717-0162-4461-8785-9d7cde85de40	t	2	2024-05-27 10:18:53.146977+08	2	2024-05-27 10:18:53.146977+08	/pp_master/work_center/index/	127.0.0.1	2
+2ca43396-9216-4507-8fb5-709b2f3030a5	t	2	2024-05-27 10:18:54.40511+08	2	2024-05-27 10:18:54.40511+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+b7353c63-b903-41ed-aba8-703deac559ec	t	2	2024-05-27 10:20:44.433761+08	2	2024-05-27 10:20:44.433761+08	/index/	127.0.0.1	2
+8218fdcc-4d40-4246-b367-dd6012b025ba	t	2	2024-05-27 10:20:44.71218+08	2	2024-05-27 10:20:44.71218+08	/home/	127.0.0.1	2
+094f186d-77e9-417e-b674-d9c6ce9eb2c8	t	2	2024-05-27 10:20:45.774739+08	2	2024-05-27 10:20:45.774739+08	/pp_master/work_center/index/	127.0.0.1	2
+03ea88c8-7af7-4658-be84-76870b6ff1b8	t	2	2024-05-27 10:20:46.46495+08	2	2024-05-27 10:20:46.46495+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+484f1431-d624-43ed-b0c6-53151ecdd5c5	t	2	2024-05-27 10:23:48.775417+08	2	2024-05-27 10:23:48.775417+08	/index/	127.0.0.1	2
+e05a1f75-2fd5-4374-9e2e-61e8e5a0be13	t	2	2024-05-27 10:23:49.106958+08	2	2024-05-27 10:23:49.106958+08	/home/	127.0.0.1	2
+8d586d75-3860-4e9f-b8de-597323725752	t	2	2024-05-27 10:23:50.057664+08	2	2024-05-27 10:23:50.057664+08	/pp_master/work_center/index/	127.0.0.1	2
+7c3087ea-4391-4699-9bbb-dd2e9ebc1e21	t	2	2024-05-27 10:23:50.859681+08	2	2024-05-27 10:23:50.859681+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+b1c3999c-bfd6-4a67-b4c3-1daaf805b596	t	2	2024-05-27 10:24:02.534728+08	2	2024-05-27 10:24:02.534728+08	/index/	127.0.0.1	2
+1c09d2c5-0545-422a-853e-385aa6084e0b	t	2	2024-05-27 10:24:02.808216+08	2	2024-05-27 10:24:02.808216+08	/home/	127.0.0.1	2
+cb0df461-35f5-49fe-8d43-c095cbe83b29	t	2	2024-05-27 10:24:04.68062+08	2	2024-05-27 10:24:04.68062+08	/pp_master/work_center/index/	127.0.0.1	2
+171b6ccd-5681-494f-8fa1-fe85bbfe0c49	t	2	2024-05-27 10:24:05.670634+08	2	2024-05-27 10:24:05.670634+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+da4a00d9-0c63-4e1f-81b1-7e488225372c	t	2	2024-05-27 10:26:05.556526+08	2	2024-05-27 10:26:05.556526+08	/index/	127.0.0.1	2
+9a0607a7-8b6c-41e6-8845-b0266c14db36	t	2	2024-05-27 10:26:05.868954+08	2	2024-05-27 10:26:05.868954+08	/home/	127.0.0.1	2
+4e34f39c-a72f-4a37-8861-5e6e4fffce1c	t	2	2024-05-27 10:26:06.755614+08	2	2024-05-27 10:26:06.755614+08	/pp_master/work_center/index/	127.0.0.1	2
+3a3de7b4-afcc-4662-91cb-46da38e2825d	t	2	2024-05-27 10:26:08.344854+08	2	2024-05-27 10:26:08.344854+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+5ebb0048-2af3-4aa2-83c3-964baa87e393	t	2	2024-05-27 10:30:16.238739+08	2	2024-05-27 10:30:16.238739+08	/index/	127.0.0.1	2
+b9d447a6-b8d7-411c-9242-d1adf7076853	t	2	2024-05-27 10:30:16.533259+08	2	2024-05-27 10:30:16.533259+08	/home/	127.0.0.1	2
+0a46034a-53b9-4983-888e-4790ff0cf6fd	t	2	2024-05-27 10:30:17.736951+08	2	2024-05-27 10:30:17.736951+08	/pp_master/work_center/index/	127.0.0.1	2
+bcf2c1d9-085b-4ce0-87d2-c712f4792734	t	2	2024-05-27 10:30:18.609079+08	2	2024-05-27 10:30:18.609079+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+16a9fdb9-8896-4acc-aa93-fa557b9be607	t	2	2024-05-27 10:30:22.420065+08	2	2024-05-27 10:30:22.420065+08	/pp_master/work_center/remove/employee/c2be3466-f168-46e7-867d-f7f53fd89d13/2f682a9c-08c2-47ae-8222-f64be0214e1b	127.0.0.1	2
+a5713524-d5ee-4081-947d-de6adf2c2f98	t	2	2024-05-27 10:30:22.619878+08	2	2024-05-27 10:30:22.619878+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+e81fd589-6754-42b9-86cb-dc0a0513b11c	t	2	2024-05-27 10:34:37.051342+08	2	2024-05-27 10:34:37.051342+08	/pp_master/work_center/remove/employee/c2be3466-f168-46e7-867d-f7f53fd89d13/062a6cf1-ae70-46c0-a528-6e2685310d27	127.0.0.1	2
+17051249-c3b4-471c-8d44-12acc0119970	t	2	2024-05-27 10:34:37.258185+08	2	2024-05-27 10:34:37.258185+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+0fd39776-648a-4a0b-b21d-3996dacbcea6	t	2	2024-05-27 10:58:41.574697+08	2	2024-05-27 10:58:41.574697+08	/sys_auth/role/index/	127.0.0.1	2
+b0fe0420-b640-4246-b683-8492bca4d613	t	2	2024-05-27 10:58:44.903946+08	2	2024-05-27 10:58:44.903946+08	/index/	127.0.0.1	2
+111b4cfd-ecdc-4c11-b488-a2eba72b0552	t	2	2024-05-27 10:58:45.181775+08	2	2024-05-27 10:58:45.181775+08	/home/	127.0.0.1	2
+906a2863-3124-4c3d-9808-624fc82e92e7	t	2	2024-05-29 15:02:28.817538+08	2	2024-05-29 15:02:28.817538+08	/index/	127.0.0.1	2
+545f6b2c-8819-42a0-86dd-bc72569c3af1	t	2	2024-05-29 15:02:29.209475+08	2	2024-05-29 15:02:29.209475+08	/home/	127.0.0.1	2
+fd59d950-e29e-4dc6-a02b-093a1ccd80cb	t	2	2024-05-29 15:21:01.246458+08	2	2024-05-29 15:21:01.246458+08	/index/	127.0.0.1	2
+722a65cd-2220-44a2-b4d7-c71f420dfbf0	t	2	2024-05-29 15:21:01.61249+08	2	2024-05-29 15:21:01.61249+08	/home/	127.0.0.1	2
+f8b4d174-ce66-4b64-81cd-a8112bfe2889	t	2	2024-05-29 15:22:07.873291+08	2	2024-05-29 15:22:07.873291+08	/sys_auth/menu/index/	127.0.0.1	2
+467782ce-543e-4ed1-bfed-469622e492ff	t	2	2024-05-29 15:23:03.796506+08	2	2024-05-29 15:23:03.796506+08	/index/	127.0.0.1	2
+d7b3e7fd-b0fb-42cf-82d9-715409cea089	t	2	2024-05-29 15:23:04.146572+08	2	2024-05-29 15:23:04.146572+08	/home/	127.0.0.1	2
+514341c8-7ffa-4ee4-8b61-7983360b0251	t	2	2024-05-29 15:44:13.039204+08	2	2024-05-29 15:44:13.039204+08	/sys_auth/user/index/	127.0.0.1	2
+1f453d63-ab4f-47fa-9e9b-98d9bf5f6822	t	2	2024-05-29 15:44:14.16711+08	2	2024-05-29 15:44:14.16711+08	/sys_auth/user/add/	127.0.0.1	2
+e6c30fec-0336-4602-8700-11675af7d608	t	2	2024-05-29 15:44:22.032471+08	2	2024-05-29 15:44:22.032471+08	/org_emp/employee/search/	127.0.0.1	2
+ee98b6f8-d62f-4d47-83a6-1748030d8039	t	2	2024-05-29 15:44:43.058675+08	2	2024-05-29 15:44:43.058675+08	/sys_auth/user/add/	127.0.0.1	2
+665c3ae6-c756-47e9-bef2-295fb9a4cdb9	t	2	2024-05-29 15:45:01.897934+08	2	2024-05-29 15:45:01.897934+08	/org_emp/employee/search/	127.0.0.1	2
+929ea273-b7c2-4429-bfa0-5959deb5c18e	t	2	2024-05-29 15:45:19.825246+08	2	2024-05-29 15:45:19.825246+08	/sys_auth/user/add/	127.0.0.1	2
+d2465d10-c88d-4d97-ac1c-04aa8315207b	t	2	2024-05-29 15:45:20.039692+08	2	2024-05-29 15:45:20.039692+08	/sys_auth/user/index/	127.0.0.1	2
+eb040cea-3c52-40cf-baaa-1b9605a21ac5	t	2	2024-05-29 15:45:35.837768+08	2	2024-05-29 15:45:35.837768+08	/sys_auth/user/edit/3	127.0.0.1	2
+21977030-b3a0-4d29-a9c2-f4b278ab948d	t	2	2024-05-29 15:45:40.760802+08	2	2024-05-29 15:45:40.760802+08	/sys_auth/user/index/	127.0.0.1	2
 \.
 
 
@@ -4552,6 +4809,8 @@ eacd46d8-1120-43d1-8f54-62a2a9639657	t	2	2024-05-23 10:56:39.677312+08	2	2024-05
 8dd02591-a15f-4c82-9f4d-d56c5a5fa84c	t	2	2024-05-24 13:29:25.795696+08	2	2024-05-24 13:29:25.795696+08	127.0.0.1	2
 35af2fb4-cc50-4e77-9133-c13a9949fb15	t	2	2024-05-24 14:09:01.081129+08	2	2024-05-24 14:09:01.081129+08	127.0.0.1	2
 6a32ce3d-561d-414d-9093-61dac1b929dd	t	2	2024-05-24 15:48:54.8576+08	2	2024-05-24 15:48:54.8576+08	127.0.0.1	2
+72d37721-2c45-48a5-a10f-a58818e9b101	t	2	2024-05-27 10:02:54.592972+08	2	2024-05-27 10:02:54.592972+08	127.0.0.1	2
+a6386205-ef84-4539-94ec-9926cbe3a8a9	t	2	2024-05-29 15:02:28.582766+08	2	2024-05-29 15:02:28.582766+08	127.0.0.1	2
 \.
 
 
@@ -4582,17 +4841,18 @@ e3cce14f-8b6e-41c4-a604-649489badf9b	t	1	2024-05-21 15:11:54.66909+08	\N	2024-05
 
 COPY public.sys_rencent_used_menu (id, active, created_by, created_on, updated_by, updated_on, menu_id, role_id, user_id) FROM stdin;
 30a9c6da-bae0-4ba3-8c1e-79994e26e1a8	t	\N	2024-05-21 15:19:13.795893+08	\N	2024-05-24 15:49:24.255558+08	51bda1b6-d738-44c4-b1e7-80ff8441c89d	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+65304b08-52ea-41d3-ac76-113e6e936bc6	t	\N	2024-05-21 15:39:53.022277+08	\N	2024-05-29 15:45:40.741713+08	4e74c25d-b6d5-4664-aeeb-6748e76be621	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
 af98bdd5-98a1-4e8a-b0fd-318dcb606791	t	\N	2024-05-21 15:19:59.323211+08	\N	2024-05-23 16:05:26.246829+08	37e84859-62dc-4af5-a4a7-426651d55133	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
 d4b20137-e26b-4ac6-9030-dcf354bd3698	t	\N	2024-05-22 09:24:02.732905+08	\N	2024-05-22 15:46:41.619395+08	7d42d8b8-816b-4d99-afc6-8554ab0d415a	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
 56d0419b-aa6a-4ca5-90b5-e2b748b9c9c4	t	\N	2024-05-21 15:19:11.301053+08	\N	2024-05-22 16:28:44.079187+08	6d91a3a3-e4f9-4a4a-83b5-4e16b0b1e740	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
 58b6e419-8f76-427b-85ee-b137b30cd497	t	\N	2024-05-21 15:40:19.860457+08	\N	2024-05-23 10:56:47.692183+08	1cc0b988-5138-4ec7-b488-71cab81106a4	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
 6bd51317-cdb3-4afc-9bff-af766715fa85	t	\N	2024-05-21 15:40:22.908069+08	\N	2024-05-23 10:57:41.672118+08	901a43bc-7fce-4a40-8370-94521659ebb9	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
 1f477ffb-351d-4ea9-a94a-6311c10d840f	t	\N	2024-05-21 15:40:28.424282+08	\N	2024-05-23 10:57:52.033948+08	13fc4528-4c99-4ac2-a7a2-6d8683ada499	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-65304b08-52ea-41d3-ac76-113e6e936bc6	t	\N	2024-05-21 15:39:53.022277+08	\N	2024-05-24 16:23:29.827726+08	4e74c25d-b6d5-4664-aeeb-6748e76be621	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
 6ca89cf2-afd6-4bc9-834f-7fb73ce46972	t	\N	2024-05-23 14:36:52.111234+08	\N	2024-05-23 16:30:44.383356+08	91bc865c-7004-4d14-bd1e-740057c9eeb7	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-86e9986d-5a83-487d-8569-e685ac691ddb	t	\N	2024-05-21 15:19:26.828315+08	\N	2024-05-24 10:39:30.042749+08	e3cce14f-8b6e-41c4-a604-649489badf9b	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
 b6f540ff-4a29-40be-a51b-23c916489f8a	t	\N	2024-05-21 15:19:15.872636+08	\N	2024-05-24 14:09:29.997195+08	94002f0c-50cf-4415-9a75-f33d197c83da	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-8726a39c-0633-45e7-a8cd-d27a9eb76813	t	\N	2024-05-21 15:40:25.877388+08	\N	2024-05-24 16:45:10.929536+08	bfe651c4-75e3-44a0-bf7b-489b054305ff	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+8726a39c-0633-45e7-a8cd-d27a9eb76813	t	\N	2024-05-21 15:40:25.877388+08	\N	2024-05-27 10:30:17.628242+08	bfe651c4-75e3-44a0-bf7b-489b054305ff	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+64de89d0-a4b4-45f3-8213-ccfb642f338d	t	\N	2024-05-27 10:58:41.537821+08	\N	2024-05-27 10:58:41.537821+08	b0143c31-b65b-4425-a03e-cf2258e42cdb	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+86e9986d-5a83-487d-8569-e685ac691ddb	t	\N	2024-05-21 15:19:26.828315+08	\N	2024-05-29 15:22:07.850348+08	e3cce14f-8b6e-41c4-a604-649489badf9b	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
 \.
 
 
@@ -4653,7 +4913,7 @@ SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mes
 --
 
-SELECT pg_catalog.setval('public.auth_permission_id_seq', 100, true);
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 120, true);
 
 
 --
@@ -4667,7 +4927,7 @@ SELECT pg_catalog.setval('public.auth_user_groups_id_seq', 1, false);
 -- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mes
 --
 
-SELECT pg_catalog.setval('public.auth_user_id_seq', 2, true);
+SELECT pg_catalog.setval('public.auth_user_id_seq', 3, true);
 
 
 --
@@ -4695,14 +4955,14 @@ SELECT pg_catalog.setval('public.django_apscheduler_djangojobexecution_id_seq', 
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mes
 --
 
-SELECT pg_catalog.setval('public.django_content_type_id_seq', 25, true);
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 30, true);
 
 
 --
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mes
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 39, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 40, true);
 
 
 --
@@ -4926,6 +5186,38 @@ ALTER TABLE ONLY public.org_employee
 
 
 --
+-- Name: pp_component_amount pp_component_amount_pkey; Type: CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component_amount
+    ADD CONSTRAINT pp_component_amount_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pp_component_inout_list pp_component_inout_list_pkey; Type: CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component_inout_list
+    ADD CONSTRAINT pp_component_inout_list_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pp_component pp_component_pkey; Type: CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component
+    ADD CONSTRAINT pp_component_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pp_location pp_location_pkey; Type: CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_location
+    ADD CONSTRAINT pp_location_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: pp_machine_code_lines pp_machine_code_lines_machinecode_id_productli_d47c5ea8_uniq; Type: CONSTRAINT; Schema: public; Owner: mes
 --
 
@@ -4995,6 +5287,14 @@ ALTER TABLE ONLY public.pp_option_code
 
 ALTER TABLE ONLY public.pp_product_line
     ADD CONSTRAINT pp_product_line_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: pp_warehouse pp_warehouse_pkey; Type: CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_warehouse
+    ADD CONSTRAINT pp_warehouse_pkey PRIMARY KEY (id);
 
 
 --
@@ -5264,6 +5564,69 @@ CREATE INDEX org_employee_work_center_id_1ffbfae7 ON public.org_employee USING b
 
 
 --
+-- Name: pp_component_amount_component_id_6da07546; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX pp_component_amount_component_id_6da07546 ON public.pp_component_amount USING btree (component_id);
+
+
+--
+-- Name: pp_component_amount_location_id_1560ce4f; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX pp_component_amount_location_id_1560ce4f ON public.pp_component_amount USING btree (location_id);
+
+
+--
+-- Name: pp_component_amount_warehouse_id_73061964; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX pp_component_amount_warehouse_id_73061964 ON public.pp_component_amount USING btree (warehouse_id);
+
+
+--
+-- Name: pp_component_facility_id_7de90813; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX pp_component_facility_id_7de90813 ON public.pp_component USING btree (facility_id);
+
+
+--
+-- Name: pp_component_inout_list_component_id_3a1a071b; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX pp_component_inout_list_component_id_3a1a071b ON public.pp_component_inout_list USING btree (component_id);
+
+
+--
+-- Name: pp_component_inout_list_inout_type_id_2517909d; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX pp_component_inout_list_inout_type_id_2517909d ON public.pp_component_inout_list USING btree (inout_type_id);
+
+
+--
+-- Name: pp_component_inout_list_location_id_dce8afb7; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX pp_component_inout_list_location_id_dce8afb7 ON public.pp_component_inout_list USING btree (location_id);
+
+
+--
+-- Name: pp_component_inout_list_warehouse_id_5dd982d5; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX pp_component_inout_list_warehouse_id_5dd982d5 ON public.pp_component_inout_list USING btree (warehouse_id);
+
+
+--
+-- Name: pp_location_warehouse_id_6d933e86; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX pp_location_warehouse_id_6d933e86 ON public.pp_location USING btree (warehouse_id);
+
+
+--
 -- Name: pp_machine_code_facility_id_a943b7e1; Type: INDEX; Schema: public; Owner: mes
 --
 
@@ -5366,6 +5729,13 @@ CREATE INDEX pp_option_code_option_id_66faa812 ON public.pp_option_code USING bt
 --
 
 CREATE INDEX pp_product_line_company_id_1188ce12 ON public.pp_product_line USING btree (company_id);
+
+
+--
+-- Name: pp_warehouse_facility_id_624b2a6a; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX pp_warehouse_facility_id_624b2a6a ON public.pp_warehouse USING btree (facility_id);
 
 
 --
@@ -5624,6 +5994,78 @@ ALTER TABLE ONLY public.org_employee
 
 
 --
+-- Name: pp_component_amount pp_component_amount_component_id_6da07546_fk_pp_component_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component_amount
+    ADD CONSTRAINT pp_component_amount_component_id_6da07546_fk_pp_component_id FOREIGN KEY (component_id) REFERENCES public.pp_component(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pp_component_amount pp_component_amount_location_id_1560ce4f_fk_pp_location_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component_amount
+    ADD CONSTRAINT pp_component_amount_location_id_1560ce4f_fk_pp_location_id FOREIGN KEY (location_id) REFERENCES public.pp_location(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pp_component_amount pp_component_amount_warehouse_id_73061964_fk_pp_warehouse_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component_amount
+    ADD CONSTRAINT pp_component_amount_warehouse_id_73061964_fk_pp_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES public.pp_warehouse(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pp_component pp_component_facility_id_7de90813_fk_org_company_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component
+    ADD CONSTRAINT pp_component_facility_id_7de90813_fk_org_company_id FOREIGN KEY (facility_id) REFERENCES public.org_company(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pp_component_inout_list pp_component_inout_l_component_id_3a1a071b_fk_pp_compon; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component_inout_list
+    ADD CONSTRAINT pp_component_inout_l_component_id_3a1a071b_fk_pp_compon FOREIGN KEY (component_id) REFERENCES public.pp_component(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pp_component_inout_list pp_component_inout_l_warehouse_id_5dd982d5_fk_pp_wareho; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component_inout_list
+    ADD CONSTRAINT pp_component_inout_l_warehouse_id_5dd982d5_fk_pp_wareho FOREIGN KEY (warehouse_id) REFERENCES public.pp_warehouse(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pp_component_inout_list pp_component_inout_list_inout_type_id_2517909d_fk_sys_enum_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component_inout_list
+    ADD CONSTRAINT pp_component_inout_list_inout_type_id_2517909d_fk_sys_enum_id FOREIGN KEY (inout_type_id) REFERENCES public.sys_enum(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pp_component_inout_list pp_component_inout_list_location_id_dce8afb7_fk_pp_location_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_component_inout_list
+    ADD CONSTRAINT pp_component_inout_list_location_id_dce8afb7_fk_pp_location_id FOREIGN KEY (location_id) REFERENCES public.pp_location(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pp_location pp_location_warehouse_id_6d933e86_fk_pp_warehouse_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_location
+    ADD CONSTRAINT pp_location_warehouse_id_6d933e86_fk_pp_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES public.pp_warehouse(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
 -- Name: pp_machine_code pp_machine_code_facility_id_a943b7e1_fk_org_company_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
 --
 
@@ -5741,6 +6183,14 @@ ALTER TABLE ONLY public.pp_option_code
 
 ALTER TABLE ONLY public.pp_product_line
     ADD CONSTRAINT pp_product_line_company_id_1188ce12_fk_org_company_id FOREIGN KEY (company_id) REFERENCES public.org_company(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: pp_warehouse pp_warehouse_facility_id_624b2a6a_fk_org_company_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.pp_warehouse
+    ADD CONSTRAINT pp_warehouse_facility_id_624b2a6a_fk_org_company_id FOREIGN KEY (facility_id) REFERENCES public.org_company(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
