@@ -1,0 +1,109 @@
+{% extends 'base.html'%}
+{%block title%}&nbsp;{%endblock%}
+{%block header%}&nbsp;{%endblock%}
+{%block content%}
+<h3>{{warehouse}}</h3><hr>
+<form method="post">
+    {% csrf_token %}
+    {{form.id}}
+    {{form.warehouse}}
+    <div class="row">
+        <div class="col-6">
+            {{form.code.label_tag}}
+            {{form.code}}
+            {%if form.code.errors%}
+                {%for error in form.code.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
+            {{form.name.label_tag}}
+            {{form.name}}
+            {%if form.name.errors%}
+                {%for error in form.name.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-6">
+            {{form.facility.label_tag}}
+            {{form.facility}}
+            {%if form.facility.errors%}
+                {%for error in form.facility.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+        <div class="col-6">
+            {{form.address.label_tag}}
+            {{form.address}}
+            {%if form.address.errors%}
+                {%for error in form.address.errors%}
+                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
+                {%endfor%}
+            {%endif%}
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col text-end">
+            <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
+            <a class="btn btn-outline-secondary" href="{%url 'pp_master:warehouses'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
+        </div>
+    </div>
+</form>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th colspan="3">
+                <a href="{%url 'pp_master:location_add' warehouse.id%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a><br><br>
+            </th>
+        </tr>
+         <tr>
+            <th width="45%">库位代码</th>
+            <th width="45%">库位名称</th>
+            <th width="10%" class="text-center">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {%if locations%}
+    {%for location in locations%}
+        <tr>
+            <td>{{location.code}}</td>
+            <td>{{location.name}}</td>
+            <td class="text-center">
+                <a href="{%url 'pp_master:location_edit' warehouse_id=warehouse.id location_id=location.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+            </td>
+        </tr>
+    {%endfor%}
+    {%else%}
+    <tr>
+        <td colspan="3" class="text-info text-center">没有数据！</td>
+    </tr>
+    {%endif%}
+    </tbody>
+</table>
+{%endblock%}
+{%block scripts%}
+{{block.super}}
+$(function(){
+    /*$('#id_facility').change(function(){
+        var id = $(this).val()
+        if(!id)
+            id = '000000000'
+        //alert('Facility id is : '+id)
+        $.post('/pp_master/line/get/'+id, {}, function(data){
+            //alert(data)
+            $('#id_line').html(data)
+        }, 'html')
+         $.post('/pp_master/work_center/get/'+id, {}, function(data){
+            //alert(data)
+            $('#id_start_wc').html(data)
+            $('#id_end_wc').html(data)
+        }, 'html')
+    })*/
+})
+{%endblock%}

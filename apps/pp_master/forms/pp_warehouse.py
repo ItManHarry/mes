@@ -2,6 +2,35 @@ from django import forms
 from ..models import Warehouse, Location
 from org_com.models import Company
 from django.db.models import Q
+class LocationForm(forms.ModelForm):
+    def __init__(self, warehouse_id, *args, **kwargs):
+        self.warehouse_id = warehouse_id
+        super(LocationForm, self).__init__(*args, **kwargs)
+        self.fields['warehouse'].initial = warehouse_id     # 设置默认值
+    class Meta:
+        model = Location
+        fields = ['id', 'code', 'name', 'warehouse']
+        labels = {
+            'code': '库位代码',
+            'name': '库位名称',
+        }
+        widgets = {
+            'id': forms.HiddenInput(),
+            'warehouse': forms.HiddenInput(),
+            'code': forms.TextInput(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+    def clean(self):
+        data = super().clean()
+        id = data['id']
+        code = data['code']
+        location = Location.objects.filter(pk=id).first()
+        if location:
+            if Location.objects.filter(~Q(id=id) & Q(warehouse=self.warehouse_id) & Q(code=code.strip().upper())).first():
+                self.add_error('code', '库位代码已存在！')
+        else:
+            if Location.objects.filter(Q(warehouse=self.warehouse_id) & Q(code=code.strip().upper())).first():
+                self.add_error('code', '库位代码已存在！')
 class WarehouseForm(forms.ModelForm):
     def __init__(self, facility_id, *args, **kwargs):
         self.facility_id = facility_id

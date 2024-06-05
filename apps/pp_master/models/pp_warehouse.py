@@ -15,7 +15,7 @@ class Warehouse(BaseModel):
 class Location(BaseModel):
     code = models.CharField(max_length=24)      # 库位代码
     name = models.CharField(max_length=128)     # 库位名称
-    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)  # 所属仓库
+    warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE, related_name='locations')  # 所属仓库
 
     def __str__(self):
         return f'[{self.code}]{self.name}'
