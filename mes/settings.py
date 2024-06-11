@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'org_dep.apps.OrgDepConfig',    # 组织模块-部门
     'org_emp.apps.OrgEmpConfig',    # 组织模块-雇员
     'pp_master.apps.PpMasterConfig',    # 生产模块-Master数据
+    'ld_stock.apps.LdStockConfig',      # 物流模块-出入库管理
 ]
 
 MIDDLEWARE = [
