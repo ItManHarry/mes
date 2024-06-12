@@ -5,7 +5,7 @@ class ComponentForm(forms.ModelForm):
     def __init__(self, facility_id, *args, **kwargs):
         self.facility_id = facility_id
         super(ComponentForm, self).__init__(*args, **kwargs)
-        self.facility_id['facility'].initial = facility_id
+        self.fields['facility'].initial = facility_id
     class Meta:
         model = Component
         fields = ['id', 'code', 'name', 'safe_storage', 'facility']

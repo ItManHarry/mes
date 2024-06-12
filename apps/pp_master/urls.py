@@ -5,6 +5,7 @@ from .views.pp_modelcode import ModelCodeIndexView, ModelCodeAddView, ModelCodeE
 from .views.pp_option import OptionBasicAddView, OptionBasicIndexView, OptionBasicEditView, OptionCodeIndexView, OptionCodeAddView, OptionCodeEditView
 from .views.pp_workcenter import get_workcenters_by_line, get_employees, add_employee, remove_employee
 from .views.pp_warehouse import WarehousrIndexView, WarehouseAddView, WarehouseEditView, LocationAddView, LocationEditView
+from .views.pp_component import ComponentIndexView, ComponentAddView, ComponentEditView
 app_name = 'pp_master'
 urlpatterns = [
     path('line/index/', ProductLineIndexView.as_view(), name='lines'),
@@ -37,4 +38,7 @@ urlpatterns = [
     path('warehouse/edit/<warehouse_id>/', WarehouseEditView.as_view(), name='warehouse_edit'),
     path('warehouse/location/add/<warehouse_id>/', LocationAddView.as_view(), name='location_add'),
     path('warehouse/location/edit/<warehouse_id>/<location_id>/', LocationEditView.as_view(), name='location_edit'),
+    path('component/index/', ComponentIndexView.as_view(), name='components'),
+    path('component/add/', ComponentAddView.as_view(), name='component_add'),
+    path('component/edit/<component_id>/', ComponentEditView.as_view(), name='component_edit'),
 ]
