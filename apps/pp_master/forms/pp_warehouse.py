@@ -53,7 +53,7 @@ class WarehouseForm(forms.ModelForm):
             'code': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
-            'facility': forms.Select(attrs={'class': 'form-control'}),
+            'facility': forms.Select(attrs={'class': 'form-select'}),
         }
     def clean(self):
         data = super().clean()

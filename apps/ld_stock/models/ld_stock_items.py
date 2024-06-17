@@ -6,10 +6,11 @@ from .ld_stock import StockBill
 出入库单明细
 '''
 class StockItems(BaseModel):
-    class Meta(BaseModel.Meta):
-        db_table = 'ld_stock_items'
     bill = models.ForeignKey(StockBill, on_delete=models.CASCADE)       # 出入库单
     component = models.ForeignKey(Component, on_delete=models.CASCADE)  # 配件
     amount = models.IntegerField(default=1)                             # 数量
     warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)  # 仓库
     location = models.ForeignKey(Location, on_delete=models.CASCADE)    # 库位
+
+    class Meta(BaseModel.Meta):
+        db_table = 'ld_stock_items'

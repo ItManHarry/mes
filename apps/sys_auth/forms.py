@@ -29,7 +29,7 @@ class RoleForm(ModelForm):
             'id': forms.HiddenInput(),
             'code': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'company': forms.Select(attrs={'class': 'form-control'}),
+            'company': forms.Select(attrs={'class': 'form-select'}),
         }
 
     def clean(self):

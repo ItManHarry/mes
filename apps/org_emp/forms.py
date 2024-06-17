@@ -46,9 +46,9 @@ class EmployeeForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.TextInput(attrs={'class': 'form-control'}),
             'phone': forms.TextInput(attrs={'class': 'form-control'}),
-            'department': forms.Select(attrs={'class': 'form-control'}),
+            'department': forms.Select(attrs={'class': 'form-select'}),
         }
-    company = forms.ChoiceField(label='所属公司', widget=forms.Select(attrs={'class': 'form-control'}))
+    company = forms.ChoiceField(label='所属公司', widget=forms.Select(attrs={'class': 'form-select'}))
     photo = forms.FileField(label='照片', required=False, widget=forms.FileInput(attrs={'class': 'form-control'}))
     def clean_code(self):
         id = self.cleaned_data['id']

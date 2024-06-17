@@ -5,8 +5,6 @@ from django.contrib.auth.models import User
 from org_com.models import Company
 
 class StockBill(BaseModel):
-    class Meta(BaseModel.Meta):
-        db_table = 'ld_stock_bill'
     bill_no = models.CharField(max_length=32)                           # 单号
     bill_type = models.ForeignKey(SysEnum, on_delete=models.CASCADE, related_name='type_bills')     # 单据类型(对应code: D009 出库/入库)
     bill_date = models.DateField(timezone.now)                          # 日期-默认当天
@@ -16,3 +14,6 @@ class StockBill(BaseModel):
 
     def __str__(self):
         return self.bill_no
+
+    class Meta(BaseModel.Meta):
+        db_table = 'ld_stock_bill'

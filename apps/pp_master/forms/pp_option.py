@@ -26,7 +26,7 @@ class OptionBasicForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'sequence': forms.TextInput(attrs={'class': 'form-control', 'rows': 3}),
             'use': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'facility': forms.Select(attrs={'class': 'form-control'})
+            'facility': forms.Select(attrs={'class': 'form-select'})
         }
     def clean(self):
         data = super().clean()
@@ -82,7 +82,7 @@ class OptionCodeForm(forms.ModelForm):
             'basic': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'erp_if': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'sign': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'option': forms.Select(attrs={'class': 'form-control'}),
+            'option': forms.Select(attrs={'class': 'form-select'}),
         }
     def clean(self):
         data = super().clean()

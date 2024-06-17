@@ -25,7 +25,7 @@ class ProductLineForm(forms.ModelForm):
             'code': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'version': forms.TextInput(attrs={'class': 'form-control'}),
-            'company': forms.Select(attrs={'class': 'form-control'}),
+            'company': forms.Select(attrs={'class': 'form-select'}),
         }
     def clean(self):
         cleaned_data = super().clean()

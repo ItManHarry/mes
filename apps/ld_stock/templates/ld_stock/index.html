@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+{%block title%}&nbsp;{%endblock%}
+{%block header%}&nbsp;{%endblock%}
+{%block content%}
+<div class="row">
+    <div class="col text-end">
+        <a href="{%url 'pp_master:component_add'%}" class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;新增</a>
+    </div>
+</div><br>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th width="20%">工厂</th>
+            <th width="20%">单号</th>
+            <th width="20%">类型</th>
+            <th width="20%">出入库日期</th>
+            <th width="20%">出入库人员</th>
+            <th width="10%" class="text-end">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {%if stocks%}
+    {%for stock in stocks%}
+        <tr>
+            <td>{{stock.facility}}</td>
+            <td>{{stock.name}}</td>
+            <td>{{stock.code}}</td>
+            <td>{{stock.safe_storage}}</td>
+            <td>{{stock.created_name}}</td>
+            <td class="text-end">
+                <a href="{%url 'pp_master:stock_edit' stock.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+            </td>
+        </tr>
+    {%endfor%}
+    {%else%}
+    <tr>
+        <td colspan="6" class="text-info text-center">没有数据！</td>
+    </tr>
+    {%endif%}
+    </tbody>
+</table>
+{%include 'common/paginator.html'%}
+{%endblock%}

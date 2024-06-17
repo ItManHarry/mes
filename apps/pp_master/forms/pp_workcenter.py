@@ -46,13 +46,13 @@ class ProductWorkCenterForm(forms.ModelForm):
             'id': forms.HiddenInput(),
             'code': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
-            'category': forms.Select(attrs={'class': 'form-control'}),
-            'facility': forms.Select(attrs={'class': 'form-control'}),
-            'line': forms.Select(attrs={'class': 'form-control'}),
+            'category': forms.Select(attrs={'class': 'form-select'}),
+            'facility': forms.Select(attrs={'class': 'form-select'}),
+            'line': forms.Select(attrs={'class': 'form-select'}),
             'to_track': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'to_sap': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
-            'start_wc': forms.Select(attrs={'class': 'form-control'}),
-            'end_wc': forms.Select(attrs={'class': 'form-control'}),
+            'start_wc': forms.Select(attrs={'class': 'form-select'}),
+            'end_wc': forms.Select(attrs={'class': 'form-select'}),
         }
     def clean(self):
         cleaned_data = super().clean()

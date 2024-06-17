@@ -28,12 +28,12 @@ class MachineCodeForm(forms.ModelForm):
         widgets = {
             'id': forms.HiddenInput(),
             'code': forms.TextInput(attrs={'class': 'form-control'}),
-            'facility': forms.Select(attrs={'class': 'form-control'}),
+            'facility': forms.Select(attrs={'class': 'form-select'}),
             'model_sap': forms.TextInput(attrs={'class': 'form-control'}),
             'model_mes': forms.TextInput(attrs={'class': 'form-control'}),
             'pro_group1': forms.TextInput(attrs={'class': 'form-control'}),
             'pro_group2': forms.TextInput(attrs={'class': 'form-control'}),
-            'pro_quality': forms.Select(attrs={'class': 'form-control'}),
+            'pro_quality': forms.Select(attrs={'class': 'form-select'}),
             'finished': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
     def clean(self):
@@ -126,16 +126,16 @@ class ModelCodeForm(forms.ModelForm):
         widgets = {
             'id': forms.HiddenInput(),
             'code': forms.TextInput(attrs={'class': 'form-control'}),
-            'facility': forms.Select(attrs={'class': 'form-control'}),
+            'facility': forms.Select(attrs={'class': 'form-select'}),
             'brand_code': forms.TextInput(attrs={'class': 'form-control'}),
             'weight_sap': forms.NumberInput(attrs={'class': 'form-control'}),
             'weight_brand': forms.NumberInput(attrs={'class': 'form-control'}),
             'engine_no': forms.TextInput(attrs={'class': 'form-control'}),
             'remark': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-            'cup': forms.Select(attrs={'class': 'form-control'}),
-            'machine_type': forms.Select(attrs={'class': 'form-control'}),
-            'sale_type': forms.Select(attrs={'class': 'form-control'}),
-            'machine_code': forms.Select(attrs={'class': 'form-control'}),
+            'cup': forms.Select(attrs={'class': 'form-select'}),
+            'machine_type': forms.Select(attrs={'class': 'form-select'}),
+            'sale_type': forms.Select(attrs={'class': 'form-select'}),
+            'machine_code': forms.Select(attrs={'class': 'form-select'}),
             'product': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
     def clean(self):
