@@ -13,7 +13,8 @@ class ProductLineIndexView(View):
     @method_decorator(login_required)
     @method_decorator(check_menu_used('PP001'))
     def get(self, request):
-        lines = ProductLine.objects.all().order_by('code')
+        company_id = request.session['company_id']
+        lines = ProductLine.objects.filter(company=company_id).all().order_by('code')
         paginator = Paginator(lines, settings.PAGE_ITEMS)
         page_num = request.GET.get('page', 1)
         page = paginator.page(page_num)

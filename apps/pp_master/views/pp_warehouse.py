@@ -14,7 +14,8 @@ class WarehousrIndexView(View):
     @method_decorator(login_required)
     @method_decorator(check_menu_used('PP007'))
     def get(self, request):
-        all = Warehouse.objects.all().order_by('code')
+        facility_id = request.session['company_id']
+        all = Warehouse.objects.filter(facility=facility_id).all().order_by('code')
         paginator = Paginator(all, settings.PAGE_ITEMS)
         page_num = request.GET.get('page', 1)
         page = paginator.page(page_num)
