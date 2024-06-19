@@ -1,6 +1,11 @@
 {% extends 'base.html'%}
+{%load static%}
 {%block title%}&nbsp;{%endblock%}
 {%block header%}&nbsp;{%endblock%}
+{%block links%}
+{{block.super}}
+<link rel="stylesheet" type="text/css" href="{%static 'css/bootstrap-datepicker3.min.css'%}"/>
+{%endblock%}
 {%block content%}
 <form method="post">
     {% csrf_token %}
@@ -8,19 +13,19 @@
     {{form.facility}}
     <div class="row">
          <div class="col-6">
-            {{form.name.label_tag}}
-            {{form.name}}
-            {%if form.name.errors%}
-                {%for error in form.name.errors%}
+            {{form.bill_no.label_tag}}
+            {{form.bill_no}}
+            {%if form.bill_no.errors%}
+                {%for error in form.bill_no.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
         </div>
         <div class="col-6">
-            {{form.code.label_tag}}
-            {{form.code}}
-            {%if form.code.errors%}
-                {%for error in form.code.errors%}
+            <label for="id_in_out_type">{%if stock_type is 1%}入库{%else%}出库{%endif%}类型:</label>
+            {{form.in_out_type}}
+            {%if form.in_out_type.errors%}
+                {%for error in form.in_out_type.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
@@ -28,21 +33,44 @@
     </div>
     <br>
     <div class="row">
-        <div class="col-3">
-            {{form.safe_storage.label_tag}}
-            {{form.safe_storage}}
-            {%if form.safe_storage.errors%}
-                {%for error in form.safe_storage.errors%}
+        <div class="col-6">
+            <label for="id_bill_date">{%if stock_type is 1%}入库{%else%}出库{%endif%}日期:</label>
+            {{form.bill_date}}
+            {%if form.bill_date.errors%}
+                {%for error in form.bill_date.errors%}
                 <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
                 {%endfor%}
             {%endif%}
         </div>
+
     </div><br>
     <div class="row">
         <div class="col text-end">
             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
-            <a class="btn btn-outline-secondary" href="{%url 'pp_master:components'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
+            <a class="btn btn-outline-secondary" href="/ld_stock/stock/index?bill_type={{stock_type}}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
         </div>
     </div>
 </form>
+{%endblock%}
+{%block assets%}
+{{block.super}}
+<script type="text/javascript" src="{%static 'js/bootstrap-datepicker.min.js'%}"></script>
+<script type="text/javascript" src="{%static 'js/bootstrap-datepicker.zh-CN.min.js'%}"></script>
+{%endblock%}
+{%block scripts%}
+$(function(){
+    init_date('id_bill_date')
+})
+function init_date(id){
+    $('#'+id).datepicker({
+        weekStart: 1,
+        autoclose: true,
+        todayBtn: "linked", // 点击可以回到今天
+        daysOfWeekHighlighted: "0,6",
+        format: "yyyy-mm-dd",
+        forceParse: false,
+        language: "zh-CN",
+        todayHighlight: true
+    }).datepicker("setDate",'now')
+}
 {%endblock%}
