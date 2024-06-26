@@ -10,6 +10,7 @@ from ..models import StockBill, StockItems
 from sys_dict.models import SysEnum
 from django.db.models import Q
 from ..forms.stock import StockForm
+
 class StockIndexView(View):
     template_name = 'ld_stock/index.html'
     @method_decorator(check_menu_used('PP009'))
@@ -33,6 +34,14 @@ class StockAddView(View):
         stock_type = kwargs['stock_type']
         print(f'Stock type is {stock_type}')
         form = self.form_class(facility_id, stock_type)
-        return render(request, self.template_name, dict(form=form, stock_type=stock_type))
+        items = [
+            {'name': 'C1', 'code': '001', 'amount': 2},
+            {'name': 'C2', 'code': '002', 'amount': 5},
+            {'name': 'C3', 'code': '003', 'amount': 3},
+            {'name': 'C4', 'code': '004', 'amount': 8},
+            {'name': 'C5', 'code': '005', 'amount': 9},
+        ]
+        print(f'Facility id is {form.facility_id} , stock type is {form.stock_type}')
+        return render(request, self.template_name, dict(form=form, stock_type=stock_type, items=items))
 class StockEditView(View):
     pass

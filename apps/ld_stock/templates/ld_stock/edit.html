@@ -11,6 +11,7 @@
     {% csrf_token %}
     {{form.id}}
     {{form.facility}}
+    {{form.tmp_bill_id}}
     <div class="row">
         <div class="col">
             <ul class="nav nav-tabs">
@@ -59,6 +60,45 @@
                     <a class="nav-link active" aria-current="page" href="#">{%if stock_type is 1%}入库{%else%}出库{%endif%}明细</a>
                   </li>
             </ul>
+        </div>
+    </div><br>
+    <div class="row">
+        <div class="col text-end">
+            <button class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;添加</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th width="5%">#</th>
+                        <th width="20%">品名</th>
+                        <th width="20%">品号</th>
+                        <th width="20%">仓库</th>
+                        <th width="20%">库位</th>
+                        <th width="10%">{%if stock_type is 1%}入库{%else%}出库{%endif%}数量</th>
+                        <th width="5%">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody id="items">
+                    {%if items%}
+                        {%for item in items%}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{item.name}}</td>
+                                <td>{{item.code}}</td>
+                                <td>{{item.code}}</td>
+                                <td>{{item.code}}</td>
+                                <td>{{item.amount}}</td>
+                                <td>
+                                    <button class="btn btn-link btn-sm text-danger" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="移除"><i class="bi bi-x-circle"></i></button>
+                                </td>
+                            </tr>
+                        {%endfor%}
+                    {%endif%}
+                </tbody>
+            </table>
         </div>
     </div><br>
     <div class="row">

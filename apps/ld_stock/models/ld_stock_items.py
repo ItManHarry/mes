@@ -11,6 +11,7 @@ class StockItems(BaseModel):
     amount = models.IntegerField(default=1)                             # 数量
     warehouse = models.ForeignKey(Warehouse, on_delete=models.CASCADE)  # 仓库
     location = models.ForeignKey(Location, on_delete=models.CASCADE)    # 库位
+    tmp_bill_id = models.CharField(max_length=32, null=True)            # 临时单据ID
 
     class Meta(BaseModel.Meta):
         db_table = 'ld_stock_items'
