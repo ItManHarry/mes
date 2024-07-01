@@ -10,10 +10,24 @@ from ..models import StockBill, StockItems
 from sys_dict.models import SysEnum
 from django.db.models import Q
 from ..forms.stock import StockForm
+from pp_master.models.pp_component import Component, ComponentAmount
 
+def get_items(request, stock_type):
+    if stock_type == 1:     # 入库
+        pass
+    else:                   # 出库
+        pass
+    items = [
+        {'name': 'C1', 'code': '001', 'amount': 2},
+        {'name': 'C2', 'code': '002', 'amount': 5},
+        {'name': 'C3', 'code': '003', 'amount': 3},
+        {'name': 'C4', 'code': '004', 'amount': 8},
+        {'name': 'C5', 'code': '005', 'amount': 9},
+    ]
+    return render(request, 'ld_stock/_items.html', dict(items=items))
 class StockIndexView(View):
     template_name = 'ld_stock/index.html'
-    @method_decorator(check_menu_used('PP009'))
+    @method_decorator(check_menu_used('LD001'))
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         print('Today is : ', timezone.now().strftime('%Y%m%d%H%M%S'))

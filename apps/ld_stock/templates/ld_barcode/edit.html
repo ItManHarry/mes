@@ -16,48 +16,22 @@
         <div class="col">
             <ul class="nav nav-tabs">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">主单据</a>
+                    <a class="nav-link active" aria-current="page" href="#">BarCode</a>
                   </li>
             </ul>
         </div>
     </div><br>
     <div class="row">
-         <div class="col-6">
-            {{form.bill_no.label_tag}}
-            {{form.bill_no}}
-            {%if form.bill_no.errors%}
-                {%for error in form.bill_no.errors%}
-                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
-                {%endfor%}
-            {%endif%}
-        </div>
-        <div class="col-6">
-            <label for="id_in_out_type">{%if stock_type is 1%}入库{%else%}出库{%endif%}类型:</label>
-            {{form.in_out_type}}
-            {%if form.in_out_type.errors%}
-                {%for error in form.in_out_type.errors%}
-                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
-                {%endfor%}
-            {%endif%}
+         <div class="col-4">
+            <input type="text" class="form-control" placeholder="系统自动生成......">
         </div>
     </div>
     <br>
     <div class="row">
-        <div class="col-2">
-            <label for="id_bill_date">{%if stock_type is 1%}入库{%else%}出库{%endif%}日期:</label>
-            {{form.bill_date}}
-            {%if form.bill_date.errors%}
-                {%for error in form.bill_date.errors%}
-                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
-                {%endfor%}
-            {%endif%}
-        </div>
-    </div><br>
-    <div class="row">
         <div class="col">
             <ul class="nav nav-tabs">
                   <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">{%if stock_type is 1%}入库{%else%}出库{%endif%}明细</a>
+                    <a class="nav-link active" aria-current="page" href="#">部品明细</a>
                   </li>
             </ul>
         </div>
@@ -72,13 +46,12 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th width="5%">#</th>
+                        <th width="10%">#</th>
                         <th width="20%">品名</th>
                         <th width="20%">品号</th>
-                        <th width="20%">仓库</th>
-                        <th width="20%">库位</th>
-                        <th width="10%">{%if stock_type is 1%}入库{%else%}出库{%endif%}数量</th>
-                        <th width="5%">&nbsp;</th>
+                        <th width="20%">数量</th>
+                        <th width="20%">已入库数量</th>
+                        <th width="10%">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody id="items"></tbody>
@@ -88,7 +61,7 @@
     <div class="row">
         <div class="col text-end">
             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
-            <a class="btn btn-outline-secondary" href="/ld_stock/stock/index?bill_type={{stock_type}}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
+            <a class="btn btn-outline-secondary" href="{%url 'ld_stock:barcodes'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
         </div>
     </div>
 </form>
