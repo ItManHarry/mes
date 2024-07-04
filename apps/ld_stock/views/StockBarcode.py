@@ -7,7 +7,13 @@ from mes.sys.decorators import check_menu_used
 from django.conf import settings
 from django.core.paginator import Paginator
 from ..models.ld_stock_barcode import StockBarCode, StockBarCodeList
-
+from django.http import HttpResponse
+import json
+def get_items(request):
+    print('Get items ...')
+    items = json.loads(request.POST.get('items'))
+    print(type(items), items)
+    return HttpResponse('<h1>OK</h1>')
 class StockBarcodeIndexView(View):
     template_name = 'ld_barcode/index.html'
     form_class = None
@@ -15,7 +21,7 @@ class StockBarcodeIndexView(View):
     @method_decorator(check_menu_used('LD002'))
     def get(self, request, *args, **kwargs):
         facility_id = request.session['company_id']
-        all_bars = StockBarCode.objects.filter(facility=facility_id).all()
+        all_bars = StockBarCode.objects.filter(facility=facility_id).all().order_by('code')
         paginator = Paginator(all_bars, settings.PAGE_ITEMS)
         page_num = request.GET.get('page', 1)
         page = paginator.page(page_num)
