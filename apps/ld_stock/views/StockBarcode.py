@@ -8,6 +8,8 @@ from django.conf import settings
 from django.core.paginator import Paginator
 from ..models.ld_stock_barcode import StockBarCode, StockBarCodeList
 from django.http import HttpResponse
+from pp_master.models.pp_component import Component
+import random
 import json
 def get_items(request):
     print('Get items ...')
@@ -32,13 +34,8 @@ class StockBarcodeAddView(View):
 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
-        items = [
-            {'name': 'C1', 'code': '001', 'amount': 2},
-            {'name': 'C2', 'code': '002', 'amount': 5},
-            {'name': 'C3', 'code': '003', 'amount': 3},
-            {'name': 'C4', 'code': '004', 'amount': 8},
-            {'name': 'C5', 'code': '005', 'amount': 9},
-        ]
-        return render(request, self.template_name, dict(items=items))
+        # items = [{'name': 'C'+str(i), 'code': '00'+str(i), 'amount': random.randint(1, 20)} for i in range(100)]
+        components = Component.objects.all().order_by('code')
+        return render(request, self.template_name, dict(components=components))
 class StockBarcodeEditView(View):
     pass
