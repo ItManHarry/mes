@@ -1,0 +1,59 @@
+<div class="offcanvas offcanvas-end"  data-bs-scroll="true" tabindex="-1" id="components" aria-labelledby="componentsLabel">
+<!--<div class="offcanvas-lg offcanvas-end" tabindex="-1" id="components" aria-labelledby="componentsLabel">-->
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="componentsLabel">部品</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div><hr>
+  <div class="offcanvas-body">
+    <div>
+        <input type="text" class="form-control" id="component_search" placeholder="输入品名或者品号回车进行查询......">
+    </div><br>
+    <table class="table table-hover">
+      <thead>
+          <tr>
+              <th width="5%">#</th>
+              <th width="45%">品名</th>
+              <th width="45%">品号</th>
+              <th width="5%">
+                  <input class="form-check-input" type="checkbox" id="all">
+              </th>
+          </tr>
+      </thead>
+      <tbody id="component_items">
+      {%for component in components%}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{component.name}}</td>
+            <td>{{component.code}}</td>
+            <td width="5%">
+              <input class="form-check-input" type="checkbox" id="{{component.code}}">
+            </td>
+        </tr>
+      {%endfor%}
+        <tr>
+            <td colspan="2">
+                <button class="btn btn-link btn-sm"><i class="bi bi-chevron-left"></i></button>
+                <button class="btn btn-link btn-sm"><i class="bi bi-chevron-right"></i></button>
+            </td>
+            <td colspan="2" class="text-end">
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="select_components(1)" data-bs-dismiss="offcanvas" data-bs-target="#components">选择</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="offcanvas" onclick="select_components(0)" data-bs-target="#components">关闭</button>
+            </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<script>
+    var selected = 0    // 是否选择了部品,默认为未选择
+    const components = document.getElementById('components')
+    components.addEventListener('shown.bs.offcanvas', event => {
+        selected = 0
+    })
+    components.addEventListener('hidden.bs.offcanvas', event => {
+        alert('Components selected : '+selected)
+    })
+    function select_components(has_selected){
+        selected = has_selected
+    }
+</script>

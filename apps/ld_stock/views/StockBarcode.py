@@ -9,12 +9,19 @@ from django.core.paginator import Paginator
 from ..models.ld_stock_barcode import StockBarCode, StockBarCodeList
 from django.http import HttpResponse
 from pp_master.models.pp_component import Component
+from django.db.models import Q
 import random
 import json
 def get_items(request):
-    print('Get items ...')
-    items = json.loads(request.POST.get('items'))
-    print(type(items), items)
+    facility_id = request.session['company_id']
+    params = json.loads(request.POST.get('params'))
+    print(type(params), params)
+    search_str = params.get('search_str')
+    if search_str:
+        components = Component.objects.filter(Q(code__icontains=search_str) | Q(name__icontains=search_str)).order_by('code')
+    else:
+        pass
+
     return HttpResponse('<h1>OK</h1>')
 class StockBarcodeIndexView(View):
     template_name = 'ld_barcode/index.html'
@@ -36,6 +43,6 @@ class StockBarcodeAddView(View):
     def get(self, request, *args, **kwargs):
         # items = [{'name': 'C'+str(i), 'code': '00'+str(i), 'amount': random.randint(1, 20)} for i in range(100)]
         components = Component.objects.all().order_by('code')
-        return render(request, self.template_name, dict(components=components))
+        return render(request, self.template_name, dict(components=components[:settings.PAGE_ITEMS]))
 class StockBarcodeEditView(View):
     pass

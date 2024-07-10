@@ -37,7 +37,7 @@
     </div><br>
     <div class="row">
         <div class="col text-end">
-            <a class="btn btn-outline-primary btn-sm" data-bs-toggle="offcanvas" href="#components" role="button" aria-controls="components">
+            <a class="btn btn-outline-primary btn-sm" id="add" data-bs-toggle="offcanvas" href="#components" role="button" aria-controls="components">
               <i class="bi bi-plus-lg"></i>&nbsp;添加
             </a>
         </div>
@@ -66,7 +66,7 @@
         </div>
     </div>
 </form>
-{% include './_components.html'%}
+{% include './_components_select.html'%}
 {%endblock%}
 {%block assets%}
 {{block.super}}
@@ -78,12 +78,24 @@
 $(function(){
     // init_date('id_bill_date')
     $('#add').click(function(){
-        alert('add components')
-        var params = {items: JSON.stringify([{c_id: '123456', amount: 4},{c_id: '456789', amount: 5}])}
+        $('#component_search').val('')
+        $('#all').prop('checked', false)
+        var params = {params: JSON.stringify({search_str: $('#component_search').val(), page: 1})}
         $.post('/ld_stock/stock/barcode/get_items/', params, function(data){
             alert('OK')
             alert(data)
         }, 'html')
+    })
+    $('#all').click(function(){
+        if($(this).is(':checked')){
+            $('#component_items').find(':checkbox').each(function(){
+                $(this).prop('checked', true)
+            })
+        }else{
+            $('#component_items').find(':checkbox').each(function(){
+                $(this).prop('checked', false)
+            })
+        }
     })
 })
 function init_date(id){
