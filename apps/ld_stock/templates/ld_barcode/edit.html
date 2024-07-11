@@ -7,65 +7,60 @@
 <link rel="stylesheet" type="text/css" href="{%static 'css/bootstrap-datepicker3.min.css'%}"/>
 {%endblock%}
 {%block content%}
-<form method="post">
-    {% csrf_token %}
-    {{form.id}}
-    {{form.facility}}
-    <div class="row">
-        <div class="col">
-            <ul class="nav nav-tabs">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">BarCode</a>
-                  </li>
-            </ul>
-        </div>
-    </div><br>
-    <div class="row">
-         <div class="col-4">
-            <input type="text" class="form-control" placeholder="系统自动生成......">
-        </div>
+<div class="row">
+    <div class="col">
+        <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">BarCode</a>
+              </li>
+        </ul>
     </div>
-    <br>
-    <div class="row">
-        <div class="col">
-            <ul class="nav nav-tabs">
-                  <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">部品明细</a>
-                  </li>
-            </ul>
-        </div>
-    </div><br>
-    <div class="row">
-        <div class="col text-end">
-            <a class="btn btn-outline-primary btn-sm" id="add" data-bs-toggle="offcanvas" href="#components" role="button" aria-controls="components">
-              <i class="bi bi-plus-lg"></i>&nbsp;添加
-            </a>
-        </div>
+</div><br>
+<div class="row">
+     <div class="col-4">
+        <input type="text" class="form-control" placeholder="系统自动生成......">
     </div>
-    <div class="row">
-        <div class="col">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th width="10%">#</th>
-                        <th width="20%">品名</th>
-                        <th width="20%">品号</th>
-                        <th width="20%">数量</th>
-                        <th width="20%">已入库数量</th>
-                        <th width="10%">&nbsp;</th>
-                    </tr>
-                </thead>
-                <tbody id="items"></tbody>
-            </table>
-        </div>
-    </div><br>
-    <div class="row">
-        <div class="col text-end">
-            <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
-            <a class="btn btn-outline-secondary" href="{%url 'ld_stock:barcodes'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
-        </div>
+</div>
+<br>
+<div class="row">
+    <div class="col">
+        <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">部品明细</a>
+              </li>
+        </ul>
     </div>
-</form>
+</div><br>
+<div class="row">
+    <div class="col text-end">
+        <a class="btn btn-outline-primary btn-sm" id="add" data-bs-toggle="offcanvas" href="#components" role="button" aria-controls="components">
+          <i class="bi bi-plus-lg"></i>&nbsp;添加
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th width="10%">#</th>
+                    <th width="20%">品名</th>
+                    <th width="20%">品号</th>
+                    <th width="20%">数量</th>
+                    <th width="20%">已入库数量</th>
+                    <th width="10%">&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody id="items"></tbody>
+        </table>
+    </div>
+</div><br>
+<div class="row">
+    <div class="col text-end">
+        <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
+        <a class="btn btn-outline-secondary" href="{%url 'ld_stock:barcodes'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
+    </div>
+</div>
 {% include './_components_select.html'%}
 {%endblock%}
 {%block assets%}
@@ -80,11 +75,7 @@ $(function(){
     $('#add').click(function(){
         $('#component_search').val('')
         $('#all').prop('checked', false)
-        var params = {params: JSON.stringify({search_str: $('#component_search').val(), page: 1})}
-        $.post('/ld_stock/stock/barcode/get_items/', params, function(data){
-            alert('OK')
-            alert(data)
-        }, 'html')
+        get_components(1)
     })
     $('#all').click(function(){
         if($(this).is(':checked')){
@@ -98,6 +89,22 @@ $(function(){
         }
     })
 })
+function get_components(page){
+    var params = {params: JSON.stringify({search_str: $('#component_search').val(), page: page})}
+    $.post('/ld_stock/stock/barcode/get_items/', params, function(data){
+        $('#component_items').html(data)
+        var total_page = parseInt($('#total_page').val())
+        var current_page = parseInt($('#current_page').val())
+        if(total_page == current_page)
+            $('#next').prop('disabled', true)
+        else
+            $('#next').prop('disabled', false)
+        if(current_page == 1)
+            $('#previous').prop('disabled', true)
+        else
+            $('#previous').prop('disabled', false)
+    }, 'html')
+}
 function init_date(id){
     $('#'+id).datepicker({
         weekStart: 1,

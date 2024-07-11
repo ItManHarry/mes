@@ -6,7 +6,7 @@
   </div><hr>
   <div class="offcanvas-body">
     <div>
-        <input type="text" class="form-control" id="component_search" placeholder="输入品名或者品号回车进行查询......">
+        <input type="text" onkeyup="search_components(event)" class="form-control" id="component_search" placeholder="输入品名或者品号回车进行查询......">
     </div><br>
     <table class="table table-hover">
       <thead>
@@ -20,27 +20,29 @@
           </tr>
       </thead>
       <tbody id="component_items">
-      {%for component in components%}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{component.name}}</td>
-            <td>{{component.code}}</td>
-            <td width="5%">
-              <input class="form-check-input" type="checkbox" id="{{component.code}}">
-            </td>
-        </tr>
-      {%endfor%}
-        <tr>
-            <td colspan="2">
-                <button class="btn btn-link btn-sm"><i class="bi bi-chevron-left"></i></button>
-                <button class="btn btn-link btn-sm"><i class="bi bi-chevron-right"></i></button>
-            </td>
-            <td colspan="2" class="text-end">
-                <button type="button" class="btn btn-outline-primary btn-sm" onclick="select_components(1)" data-bs-dismiss="offcanvas" data-bs-target="#components">选择</button>
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="offcanvas" onclick="select_components(0)" data-bs-target="#components">关闭</button>
-            </td>
-        </tr>
-      </tbody>
+          {%for component in components%}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{component.name}}</td>
+                <td>{{component.code}}</td>
+                <td width="5%">
+                  <input class="form-check-input" type="checkbox" id="{{component.code}}">
+                </td>
+            </tr>
+          {%endfor%}
+        </tbody>
+        <tbody>
+            <tr>
+                <td colspan="2">
+                    <button class="btn btn-link btn-sm" onclick="page(0)" id="previous"><i class="bi bi-chevron-left"></i></button>
+                    <button class="btn btn-link btn-sm" onclick="page(1)" id="next"><i class="bi bi-chevron-right"></i></button>
+                </td>
+                <td colspan="2" class="text-end">
+                    <button type="button" class="btn btn-outline-primary btn-sm" onclick="select_components(1)" data-bs-dismiss="offcanvas" data-bs-target="#components">选择</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="offcanvas" onclick="select_components(0)" data-bs-target="#components">关闭</button>
+                </td>
+            </tr>
+        </tbody>
     </table>
   </div>
 </div>
@@ -55,5 +57,19 @@
     })
     function select_components(has_selected){
         selected = has_selected
+    }
+    function search_components(event){
+        if (event.keyCode == 13){
+             get_components(1)
+        }
+    }
+    function page(sign){
+         // sign 1: 代表下一页，0: 代表上一页
+         var to_page = 0
+         if(sign == 1)
+            to_page = parseInt($('#current_page').val())+1
+         else
+            to_page = parseInt($('#current_page').val())-1
+         get_components(to_page)
     }
 </script>

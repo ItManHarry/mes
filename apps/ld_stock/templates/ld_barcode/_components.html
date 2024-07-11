@@ -11,8 +11,10 @@
 {%endfor%}
 {%else%}
 <tr>
-    <td colspan="4" class="text-danger">
+    <td colspan="4" class="text-danger text-center">
         没有记录！
     </td>
 </tr>
 {%endif%}
+<input type="hidden" id="total_page" value="{{page.paginator.num_pages}}"/>
+<input type="hidden" id="current_page" value="{{page.number}}"/>

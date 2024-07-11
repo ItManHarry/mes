@@ -12,17 +12,6 @@ from pp_master.models.pp_component import Component
 from django.db.models import Q
 import random
 import json
-def get_items(request):
-    facility_id = request.session['company_id']
-    params = json.loads(request.POST.get('params'))
-    print(type(params), params)
-    search_str = params.get('search_str')
-    if search_str:
-        components = Component.objects.filter(Q(code__icontains=search_str) | Q(name__icontains=search_str)).order_by('code')
-    else:
-        pass
-
-    return HttpResponse('<h1>OK</h1>')
 class StockBarcodeIndexView(View):
     template_name = 'ld_barcode/index.html'
     form_class = None
@@ -35,14 +24,22 @@ class StockBarcodeIndexView(View):
         page_num = request.GET.get('page', 1)
         page = paginator.page(page_num)
         return render(request, self.template_name, dict(bars=page.object_list, page=page))
-
-class StockBarcodeAddView(View):
-    template_name = 'ld_barcode/edit.html'
-
-    @method_decorator(login_required)
-    def get(self, request, *args, **kwargs):
-        # items = [{'name': 'C'+str(i), 'code': '00'+str(i), 'amount': random.randint(1, 20)} for i in range(100)]
-        components = Component.objects.all().order_by('code')
-        return render(request, self.template_name, dict(components=components[:settings.PAGE_ITEMS]))
+@login_required
+def barcode_add(request):
+    return render(request, 'ld_barcode/edit.html')
+@login_required
+def get_items(request):
+    facility_id = request.session['company_id']
+    params = json.loads(request.POST.get('params'))
+    print(type(params), params)
+    search_str = params.get('search_str')
+    page_num = int(params.get('page'))
+    if search_str:
+        components = Component.objects.filter(Q(facility=facility_id) & (Q(code__icontains=search_str) | Q(name__icontains=search_str))).order_by('code')
+    else:
+        components = Component.objects.filter(facility=facility_id).order_by('code')
+    paginator = Paginator(components, settings.PAGE_ITEMS)
+    page = paginator.page(page_num)
+    return render(request, 'ld_barcode/_components.html', dict(components=page.object_list, page=page))
 class StockBarcodeEditView(View):
     pass
