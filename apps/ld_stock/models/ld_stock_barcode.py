@@ -17,7 +17,7 @@ class StockBarCode(BaseModel):
         db_table = 'ld_stock_barcode'
 
 class StockBarCodeList(BaseModel):
-    barcode = models.ForeignKey(StockBarCode, on_delete=models.CASCADE)
+    barcode = models.ForeignKey(StockBarCode, on_delete=models.CASCADE, related_name='items')
     component = models.ForeignKey(Component, on_delete=models.CASCADE)
     '''
     数量和入库数量相等是，active设置为False，即当前明细对应的部品入库完毕

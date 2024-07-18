@@ -32,7 +32,6 @@ def barcode_add(request):
 def get_items(request):
     facility_id = request.session['company_id']
     params = json.loads(request.POST.get('params'))
-    print(type(params), params)
     search_str = params.get('search_str')
     page_num = int(params.get('page'))
     if search_str:
@@ -62,5 +61,7 @@ def execute_add_barcode(request):
         'code': 1,
         'message': 'Add successfully!'
     })
-class StockBarcodeEditView(View):
-    pass
+@login_required
+def barcode_edit(request, barcode_id):
+    barcode = StockBarCode.objects.get(pk=barcode_id)
+    return render(request, 'ld_barcode/edit.html', dict(barcode=barcode, items=barcode.items.all()))
