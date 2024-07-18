@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
@@ -7,7 +8,7 @@ from mes.sys.decorators import check_menu_used
 from django.conf import settings
 from django.core.paginator import Paginator
 from ..models.ld_stock_barcode import StockBarCode, StockBarCodeList
-from django.http import HttpResponse
+from django.http import JsonResponse
 from pp_master.models.pp_component import Component
 from django.db.models import Q
 import random
@@ -41,5 +42,25 @@ def get_items(request):
     paginator = Paginator(components, settings.PAGE_ITEMS)
     page = paginator.page(page_num)
     return render(request, 'ld_barcode/_components.html', dict(components=page.object_list, page=page))
+@login_required
+def execute_add_barcode(request):
+    facility_id = request.session['company_id']
+    # 生成Barcode
+    barcode = StockBarCode(code='BC'+datetime.now().strftime('%Y%m%d%H%M%S')+str(random.randint(10, 99)), facility_id=facility_id)
+    user = request.user
+    if user:
+        barcode.created_by = user.id
+    barcode.save()
+    # 生成Barcode配件清单
+    components = json.loads(request.POST.get('components'))
+    for component in components:
+        barcode_item = StockBarCodeList(barcode=barcode, component_id=component.get('id'), amount=int(component.get('amount')))
+        if user:
+            barcode_item.created_by = user.id
+        barcode_item.save()
+    return JsonResponse({
+        'code': 1,
+        'message': 'Add successfully!'
+    })
 class StockBarcodeEditView(View):
     pass

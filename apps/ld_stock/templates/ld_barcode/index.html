@@ -22,11 +22,11 @@
     {%for bar in bars%}
         <tr>
             <td>{{bar.facility}}</td>
-            <td>{{bar.name}}</td>
+            <td>{{bar.code}}</td>
             <td>{{bar.created_name}}</td>
             <td>{{bar.created_on}}</td>
             <td class="text-end">
-                <a href="{%url 'ld_stock:in_out_edit' bar.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+                <a href="{%url 'ld_stock:stock_barcode_edit' bar.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
             </td>
         </tr>
     {%endfor%}

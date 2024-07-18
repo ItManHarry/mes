@@ -8,8 +8,8 @@ class StockBarCode(BaseModel):
     逻辑：
     barcode明细全部入库完毕方可设置为入库完毕
     '''
-    code = models.CharField(max_length=16)
-    facility = models.ForeignKey(Component, on_delete=models.CASCADE)
+    code = models.CharField(max_length=32)
+    facility = models.ForeignKey(Company, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.code
