@@ -32,5 +32,5 @@ class StockBarCodeList(BaseModel):
 
     class Meta(BaseModel.Meta):
         db_table = 'ld_stock_barcode_list'
-        # order_by = ['component']
+        ordering = ['component__name']
 

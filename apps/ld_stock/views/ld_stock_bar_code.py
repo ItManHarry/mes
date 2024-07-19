@@ -35,7 +35,7 @@ def get_items(request):
     search_str = params.get('search_str')
     page_num = int(params.get('page'))
     if search_str:
-        components = Component.objects.filter(Q(facility=facility_id) & (Q(code__icontains=search_str) | Q(name__icontains=search_str))).order_by('code')
+        components = Component.objects.filter(Q(facility=facility_id) & (Q(code__icontains=search_str) | Q(name__icontains=search_str))).order_by('name')
     else:
         components = Component.objects.filter(facility=facility_id).order_by('code')
     paginator = Paginator(components, settings.PAGE_ITEMS)
