@@ -106,10 +106,20 @@
          get_components(to_page)
     }
     function remove_com(e){
-        $(e).parent().parent().remove()
-        // 重写序号
-        for(let i = 0; i < $('#items').children().length; i++){
-            $('#items').children().eq(i).children().eq(0).text(i+1)
+        if($('#barcode').val() && $(e).prop('id')){
+            $.post('/ld_stock/stock/barcode/items/remove/'+$(e).prop('id'), function(data){
+                $(e).parent().parent().remove()
+                // 重写序号
+                for(let i = 0; i < $('#items').children().length; i++){
+                    $('#items').children().eq(i).children().eq(0).text(i+1)
+                }
+            }, 'json')
+        }else{
+            $(e).parent().parent().remove()
+            // 重写序号
+            for(let i = 0; i < $('#items').children().length; i++){
+                $('#items').children().eq(i).children().eq(0).text(i+1)
+            }
         }
     }
 </script>

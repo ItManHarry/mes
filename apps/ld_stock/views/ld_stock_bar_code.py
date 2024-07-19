@@ -42,21 +42,40 @@ def get_items(request):
     page = paginator.page(page_num)
     return render(request, 'ld_barcode/_components.html', dict(components=page.object_list, page=page))
 @login_required
-def execute_add_barcode(request):
-    facility_id = request.session['company_id']
-    # 生成Barcode
-    barcode = StockBarCode(code='BC'+datetime.now().strftime('%Y%m%d%H%M%S')+str(random.randint(10, 99)), facility_id=facility_id)
+def execute_save_barcode(request):
     user = request.user
-    if user:
-        barcode.created_by = user.id
-    barcode.save()
-    # 生成Barcode配件清单
+    facility_id = request.session['company_id']
+    barcode_val = request.POST.get('barcode')
     components = json.loads(request.POST.get('components'))
-    for component in components:
-        barcode_item = StockBarCodeList(barcode=barcode, component_id=component.get('id'), amount=int(component.get('amount')))
+    if barcode_val:     # 编辑
+        barcode = StockBarCode.objects.filter(code=barcode_val).first()
         if user:
-            barcode_item.created_by = user.id
-        barcode_item.save()
+            barcode.updated_by = user.id
+        barcode.updated_on = timezone.now()
+        barcode.save()
+        for component in components:
+            barcode_item = StockBarCodeList.objects.filter(Q(barcode=barcode) & Q(component_id=component.get('id'))).first()
+            if barcode_item:
+                barcode_item.amount = int(component.get('amount'))
+                if user:
+                    barcode_item.updated_by = user.id
+                barcode_item.updated_on = timezone.now()
+                barcode_item.save()
+            else:
+                barcode_item = StockBarCodeList(barcode=barcode, component_id=component.get('id'), amount=int(component.get('amount')))
+                if user:
+                    barcode_item.created_by = user.id
+                barcode_item.save()
+    else:       # 新增
+        barcode = StockBarCode(code='BC'+datetime.now().strftime('%Y%m%d%H%M%S')+str(random.randint(10, 99)), facility_id=facility_id)
+        if user:
+            barcode.created_by = user.id
+        barcode.save()
+        for component in components:
+            barcode_item = StockBarCodeList(barcode=barcode, component_id=component.get('id'), amount=int(component.get('amount')))
+            if user:
+                barcode_item.created_by = user.id
+            barcode_item.save()
     return JsonResponse({
         'code': 1,
         'message': 'Add successfully!'
@@ -64,4 +83,14 @@ def execute_add_barcode(request):
 @login_required
 def barcode_edit(request, barcode_id):
     barcode = StockBarCode.objects.get(pk=barcode_id)
-    return render(request, 'ld_barcode/edit.html', dict(barcode=barcode, items=barcode.items.all()))
+    return render(request, 'ld_barcode/edit.html', dict(barcode=barcode, items=barcode.items.filter(active=True).all()))
+@login_required
+def barcode_item_remove(request, item_id):
+    item = StockBarCodeList.objects.get(pk=item_id)
+    item.active = False
+    user = request.user
+    if user:
+        item.updated_by = user.id
+    item.updated_on = timezone.now()
+    item.save()
+    return JsonResponse({'code': 1, 'message': 'Barcode item remove successfully.'})

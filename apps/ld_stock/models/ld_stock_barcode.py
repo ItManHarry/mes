@@ -25,6 +25,12 @@ class StockBarCodeList(BaseModel):
     amount = models.IntegerField(default=1)         # 数量
     amount_in = models.IntegerField(default=0)      # 已入库数量
 
+    # 是否执行入库
+    @property
+    def in_executed(self):
+        return self.amount_in > 0
+
     class Meta(BaseModel.Meta):
         db_table = 'ld_stock_barcode_list'
+        # order_by = ['component']
 
