@@ -356,6 +356,87 @@ CREATE TABLE public.employee_work_center_change_list (
 ALTER TABLE public.employee_work_center_change_list OWNER TO mes;
 
 --
+-- Name: ld_stock_barcode; Type: TABLE; Schema: public; Owner: mes
+--
+
+CREATE TABLE public.ld_stock_barcode (
+    id uuid NOT NULL,
+    active boolean NOT NULL,
+    created_by integer,
+    created_on timestamp with time zone NOT NULL,
+    updated_by integer,
+    updated_on timestamp with time zone NOT NULL,
+    code character varying(32) NOT NULL,
+    facility_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.ld_stock_barcode OWNER TO mes;
+
+--
+-- Name: ld_stock_barcode_list; Type: TABLE; Schema: public; Owner: mes
+--
+
+CREATE TABLE public.ld_stock_barcode_list (
+    id uuid NOT NULL,
+    active boolean NOT NULL,
+    created_by integer,
+    created_on timestamp with time zone NOT NULL,
+    updated_by integer,
+    updated_on timestamp with time zone NOT NULL,
+    amount integer NOT NULL,
+    amount_in integer NOT NULL,
+    barcode_id uuid NOT NULL,
+    component_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.ld_stock_barcode_list OWNER TO mes;
+
+--
+-- Name: ld_stock_bill; Type: TABLE; Schema: public; Owner: mes
+--
+
+CREATE TABLE public.ld_stock_bill (
+    id uuid NOT NULL,
+    active boolean NOT NULL,
+    created_by integer,
+    created_on timestamp with time zone NOT NULL,
+    updated_by integer,
+    updated_on timestamp with time zone NOT NULL,
+    bill_no character varying(32) NOT NULL,
+    bill_date date NOT NULL,
+    bill_type_id uuid NOT NULL,
+    in_out_by_id integer NOT NULL,
+    in_out_type_id uuid NOT NULL,
+    facility_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.ld_stock_bill OWNER TO mes;
+
+--
+-- Name: ld_stock_items; Type: TABLE; Schema: public; Owner: mes
+--
+
+CREATE TABLE public.ld_stock_items (
+    id uuid NOT NULL,
+    active boolean NOT NULL,
+    created_by integer,
+    created_on timestamp with time zone NOT NULL,
+    updated_by integer,
+    updated_on timestamp with time zone NOT NULL,
+    amount integer NOT NULL,
+    component_id uuid NOT NULL,
+    location_id uuid NOT NULL,
+    warehouse_id uuid NOT NULL,
+    bill_id uuid NOT NULL
+);
+
+
+ALTER TABLE public.ld_stock_items OWNER TO mes;
+
+--
 -- Name: org_company; Type: TABLE; Schema: public; Owner: mes
 --
 
@@ -1051,6 +1132,30 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 118	Can change component in out list	30	change_componentinoutlist
 119	Can delete component in out list	30	delete_componentinoutlist
 120	Can view component in out list	30	view_componentinoutlist
+121	Can add stock items	31	add_stockitems
+122	Can change stock items	31	change_stockitems
+123	Can delete stock items	31	delete_stockitems
+124	Can view stock items	31	view_stockitems
+125	Can add stock out bill	32	add_stockoutbill
+126	Can change stock out bill	32	change_stockoutbill
+127	Can delete stock out bill	32	delete_stockoutbill
+128	Can view stock out bill	32	view_stockoutbill
+129	Can add stock in bill	33	add_stockinbill
+130	Can change stock in bill	33	change_stockinbill
+131	Can delete stock in bill	33	delete_stockinbill
+132	Can view stock in bill	33	view_stockinbill
+133	Can add stock bill	34	add_stockbill
+134	Can change stock bill	34	change_stockbill
+135	Can delete stock bill	34	delete_stockbill
+136	Can view stock bill	34	view_stockbill
+137	Can add stock bar code	35	add_stockbarcode
+138	Can change stock bar code	35	change_stockbarcode
+139	Can delete stock bar code	35	delete_stockbarcode
+140	Can view stock bar code	35	view_stockbarcode
+141	Can add stock bar code list	36	add_stockbarcodelist
+142	Can change stock bar code list	36	change_stockbarcodelist
+143	Can delete stock bar code list	36	delete_stockbarcodelist
+144	Can view stock bar code list	36	view_stockbarcodelist
 \.
 
 
@@ -1059,9 +1164,9 @@ COPY public.auth_permission (id, name, content_type_id, codename) FROM stdin;
 --
 
 COPY public.auth_user (id, password, last_login, is_superuser, username, first_name, last_name, email, is_staff, is_active, date_joined) FROM stdin;
+2	pbkdf2_sha256$600000$DdOUCqKohRALqy56jAqHHm$sXj7O2jTgeGllpt9o2oIJJRbYaF+cbI2NSQTPEPsyXg=	2024-07-25 10:48:36.729217+08	f	20112004	国前	程	guoqian.cheng@hd.com	f	t	2024-05-21 15:18:17.681267+08
 3	pbkdf2_sha256$600000$WwriDtcW6bRdyWL4w6CnkU$Ap4sbwdQaht5VQOVACMRoMYko6Yi3CNealpbXw1bjt8=	\N	f	ls0490	春艳	李	chunyan.li@hd.com	t	t	2024-05-29 15:45:19.382526+08
-1	pbkdf2_sha256$600000$T47UvWrsvV3qpT6eZOnB0C$0bW4vNrZFDgnekqDDtmy6VxYwvV0FGrsOhH1XUlfNjA=	2024-06-03 16:27:36.718257+08	t	admin			guoqian.cheng@hd.com	t	t	2024-05-21 15:00:38.044384+08
-2	pbkdf2_sha256$600000$DdOUCqKohRALqy56jAqHHm$sXj7O2jTgeGllpt9o2oIJJRbYaF+cbI2NSQTPEPsyXg=	2024-06-05 15:22:18.453739+08	f	20112004	国前	程	guoqian.cheng@hd.com	f	t	2024-05-21 15:18:17.681267+08
+1	pbkdf2_sha256$600000$T47UvWrsvV3qpT6eZOnB0C$0bW4vNrZFDgnekqDDtmy6VxYwvV0FGrsOhH1XUlfNjA=	2024-07-01 14:22:15.84723+08	t	admin			guoqian.cheng@hd.com	t	t	2024-05-21 15:00:38.044384+08
 \.
 
 
@@ -1140,6 +1245,12 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 28	pp_master	location
 29	pp_master	warehouse
 30	pp_master	componentinoutlist
+31	ld_stock	stockitems
+32	ld_stock	stockoutbill
+33	ld_stock	stockinbill
+34	ld_stock	stockbill
+35	ld_stock	stockbarcode
+36	ld_stock	stockbarcodelist
 \.
 
 
@@ -1188,6 +1299,19 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 38	org_emp	0003_rename_emloyeeworkcenterchangelist_employeeworkcenterchangelist	2024-05-24 14:04:11.196193+08
 39	org_emp	0004_employeeworkcenterchangelist_department	2024-05-24 14:14:12.379434+08
 40	pp_master	0003_component_warehouse_location_componentinoutlist_and_more	2024-06-03 15:00:56.477357+08
+45	pp_master	0004_alter_location_warehouse	2024-06-07 13:50:11.593379+08
+46	ld_stock	0001_initial	2024-06-07 13:50:11.808864+08
+47	ld_stock	0002_alter_stockinbill_in_date_and_more	2024-06-07 13:50:11.858694+08
+48	ld_stock	0003_alter_stockinbill_in_date_and_more	2024-06-07 13:50:11.900583+08
+49	ld_stock	0004_stockbill_remove_stockoutbill_components_and_more	2024-06-07 13:50:12.180443+08
+50	ld_stock	0005_stockbill_facility	2024-06-07 13:51:51.839354+08
+51	ld_stock	0006_stockitems_tmp_bill_id	2024-06-26 14:36:17.060253+08
+52	ld_stock	0007_stockbarcode_stockbarcodelist	2024-07-01 11:23:51.909076+08
+53	ld_stock	0008_stockbarcode_facility	2024-07-01 15:06:17.154021+08
+54	ld_stock	0009_alter_stockbarcode_facility	2024-07-18 14:40:10.545128+08
+55	ld_stock	0010_alter_stockbarcode_code	2024-07-18 15:07:52.681988+08
+56	ld_stock	0011_alter_stockbarcodelist_barcode	2024-07-18 15:44:29.41633+08
+57	ld_stock	0012_alter_stockbarcodelist_options_and_more	2024-07-24 15:47:45.870129+08
 \.
 
 
@@ -1211,6 +1335,52 @@ ubkuy27qmvbmhfc32hfimbc64tsy39lk	.eJxVj81Ow0AMhN8lV9jIu_X-5Ug5wIEbx0qRd-3QQJtUSS
 i0ogyme1ot704zdbfesti0grki3tflyr	.eJxVj81Ow0AMhN8lV9jIu_X-5Ug5wIEbx0qRd-3QQJtUSSNRId6dDRQJLpblmfk0_qhaWs77dpllanuumspUt39vifKbDKvArzS8jHUeh_PUp3q11Fd1rp9GlsPd1fsPsKd5X9LiEKzRnASy1RISUkIfPXZC4E3nCVx2mSiaEDkZ2hgvwXrtYowhQ4GuuIGOspYErQ0Alus0HuSneRd8YtkYJWSsQh1JBRtYsWMLnHLEzL-BK-fh_nG73S0-kS4Twe0WizYUVx6PJxouP2SXoRMWVFbQKNyULRGTyg7YR6Cuc2n9epZ57sehlfdTP12-expUYJUxz-Ab1I2OdeEHDTcADUD1-QUgXHPV:1s9g87:gpEQ8xXPOzZQ_QJvPzCIsZah_fhubf7NCIlpFckYugI	2024-05-22 15:41:19.45881+08
 yf9prfqqcvanefdounlxrmraba8dxsly	.eJxVj81Ow0AMhN8lV9jIu_X-5Ug5wIEbx0qRd-00gTapkkaiQrw7CS0SXCzLM_Np_FnUNJ_bep5krDsuqsIU939vifK79KvAb9TvhzIP_XnsUrlayps6lS8Dy-Hh5v0HaGlql7Q4BGs0J4FstYSElNBHj40QeNN4ApddJoomRE6GNsZLsF67GGPIsEBXXE9HWUuC1gYAl-s4HOTavAk-sWyMEjJWoY6kgg2s2LEFTjli5t_AjfP0-Lzd7mafSC8Twe1mizYsrjwcT9RfrmSXoREWVFbQKNwsWyImlR2wj0BN49L69STT1A19LR-nbrz89DSowCqDrxArbSttSjAxxHgHUAEUX98gqHPe:1sAQY4:zwLMKGIqY1mYYTai9koRn_w9jMUKpT00fKx6sF1zTJk	2024-05-24 17:15:12.029899+08
 mdn1e9l0tke242dm10kdht9evjcaa96y	.eJxVj81Ow0AMhN8lV9jIu1nvT46UAxy4cawUeddOG2iTKmkkKsS7k9AiwcWyPDOfxp9FQ_N538yTjE3HRV2Y4v7vLVF-l34V-I363VDmoT-PXSpXS3lTp_JlYDk83Lz_AHua9ktanAU0mpNARi0hWUrWR29bIfCm9QQuu0wUTYicDFXGS0CvXYwxZFigK66no6wlQWsDYJfrOBzk2rwNPrFURgkZVFZHUgEDK3aMwClHm_k3cOM8PT5vNtvZJ9LLtOC2M1oMiysPxxP1lyvZZWiFxSoUa5Stli0Rk8oO2EegtnVp_XqSaeqGvpGPUzdefnoaq8ApwFfwNVa1xtJFD-jvAGqA4usbINxz3g:1sEkzL:tGl43B3Zzfef7NRAL86EnC9mre078NeplmwRCp7WS2M	2024-06-05 15:53:15.697057+08
+ig265e01y5iapmg87y6xmjqw6fafwipj	.eJxVj81Ow0AMhN8lV9jIu_H-9Ug5wIEbx0qRd-3QQJtUSSNRId6dDRQJJMuyxuNP44-qpeW8b5dZprbnalOZ6vavlii_ybAu-JWGl7HO43Ce-lSvlvq6neunkeVwd_X-A-xp3pdrcQjWaE4C2WoJCSmhjx47IfCm8wQuu0wUTYicDDXGS7BeuxhjyFCgK26go6whQWsDgEWdxoP8JO-CTyyNUULGKtSRVLCBFTu2wClHzPx7cOU83D9ut7vFJ9KlI7jdYtGG4srj8UTD5YfsMnTCgsoKGoVNmRIxqeyAfQTqOpfWr2eZ534cWnk_9dPlO6dBBU5p_wx2Y0tB3VhsHN4AbACqzy8gpHPX:1sJ4sI:BhGg94XjEjL81zuH5epSyGdZ2xz22BwhijoIpDCiUdQ	2024-06-17 13:55:50.354364+08
+6pk7y6oiot9e9ybzjb1g6mea6vjtm8cs	.eJxVj81Ow0AMhN8lV9jI63j_cqQc4MCNY6XIu-u0gTapkkaiQrw7CS0SXCzLM_Np_Fk0PJ_3zTzJ2HS5qAss7v_eIqd36Vchv3G_G8o09Oexi-VqKW_qVL4MWQ4PN-8_wJ6n_ZIWS2BQ5yiQjBYfiSO54KgVBoetY7DJJuaAPuSIXKETb5y2IQSfYIGuuJ6PspYErRGAlus4HOTavPUuZqlQCaNRpAMrb3xW2WYDOaZAKf8Gbpynx-fNZju7yHqZBHY7GzJ-caXheOL-ciXbBK1kIWWEUFG1bJEzq2QhuwDctjauX08yTd3QN_Jx6sbLT08kBVYhvIKvkWrEUhNWvroDqAGKr28fuXPL:1sKCcg:BW2ROFb6cM6xgrpb-eS9jW9LhGoGl9xNi3BYxDGh5TE	2024-06-20 16:24:22.142383+08
+imbokgsh0702w17c7qfpr9skbfuhuea7	.eJxVj81Ow0AMhN8lV9jI6-xvjpQDHLhxrBR5104baJMqaSQqxLuT0CLBxbI8M5_Gn0VD83nfzJOMTcdFXWBx__eWKL9Lvwr8Rv1uKPPQn8culaulvKlT-TKwHB5u3n-APU37JS3OgEXNSSBbLSEZSsZHb1oh8Nh6ApddJooYIiekCr0E67WLMYYMC3TF9XSUtSRojQBmuY7DQa7N2-ATS4VKCK0yOpIKNrBixxY45Wgy_wZunKfH581mO_tEepkG3Ha2xobFlYfjifrLlewytMJilBWDylTLlohJZQfsI1DburR-Pck0dUPfyMepGy8_PdEocArdK8QasEZfWqgimDuAGqD4-gYgcnPT:1sMO4p:WmAE6RTN0ndXJJBvoQ0-1-gD9OnEtsAxFK4gZufoz6w	2024-06-26 17:02:27.503904+08
+wwi560aozdnby49img4vfd9qvw2yfyn8	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCkdX8HU2tWVLq2xurJ3ADVA8fUNIBtzzg:1sJkP9:Z4gPPR5GTkYxv5H_xvlM5goM_MCRg5altn2hrvyY3xo	2024-06-19 10:16:31.525135+08
+5qf5511geifuxvu9buzm6ejap8b0k2zf	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCvQr2Bqa2rtS42AvroDqAGKr28fdHPI:1sO6gL:XzF6dWOUt2KfJ9MISXki6NCSxEOPHEs6yiw3Qhx-DGA	2024-07-01 10:52:17.140473+08
+5n5npnvr989533g6l2njkcvpeg4csalc	.eJxVj81Ow0AMhN8lV9jI63j_cqQc4MCNY6XIu-u0gTapkkaiQrw7CS0SXCzLM_Np_Fk0PJ_3zTzJ2HS5qAss7v_eIqd36Vchv3G_G8o09Oexi-VqKW_qVL4MWQ4PN-8_wJ6n_ZIWS2BQ5yiQjBYfiSO54KgVBoetY7DJJuaAPuSIXKETb5y2IQSfYIGuuJ6PspYErRGAlus4HOTavPUuZqlQCaNRpAMrb3xW2WYDOaZAKf8Gbpynx-fNZju7yHqZBHY7GzJ-caXheOL-ciXbBK1kIWWEUFG1bJEzq2QhuwDctjauX08yTd3QN_Jx6sbLT08kBVahfgWsCevKlEjgQd8B1ADF1zcfXHPE:1sKTlT:Fg_bYWRzY2WADn1sJz_o7lEnpjw0lzJ6GZr_0MylqzI	2024-06-21 10:42:35.240801+08
+c8y5qhpb176rfy2pzdvghytczij0l09b	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCltXsHX2tcYS11BrOIdQA1QfH0DIJNz2g:1sHHlt:dP7JCTadSe5CRo-IVr1BrFKz6jkJmkJ3Rajn7lVcpzQ	2024-06-12 15:17:49.130939+08
+l32j24ahcz4u9cl51uyeci48zy2salh5	.eJxVj81Ow0AMhN8lV9jI6-xvjpQDHLhxrBR5104baJMqaSQqxLuT0CLBxbI8M5_Gn0VD83nfzJOMTcdFXWBx__eWKL9Lvwr8Rv1uKPPQn8culaulvKlT-TKwHB5u3n-APU37JS3OgEXNSSBbLSEZSsZHb1oh8Nh6ApddJooYIiekCr0E67WLMYYMC3TF9XSUtSRojQBmuY7DQa7N2-ATS4VKCK0yOpIKNrBixxY45Wgy_wZunKfH581mO_tEepkG3Ha2xobFlYfjifrLlewytMJilBWDylTLlohJZQfsI1DburR-Pck0dUPfyMepGy8_PdEocEr7V8C6qmq0pXZeY7gDqAGKr28gLHPS:1sJ1iP:PKoINiSptSnwO-klzeGJM6zf4HiGXBrLmSIvDubnqMQ	2024-06-17 10:33:25.167128+08
+8546y92291rwlq2kff6g5s7s4d6wf3ud	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCkdX8HVVtfoS4hgK3MHUAMUX98gv3PW:1sJohX:WO-EcdsfTUuJMj3hwJhfG1X5NhFNEO97PMQgNgIaHS4	2024-06-19 14:51:47.090532+08
+ivjj677ijibk4yvfhiwmtgozc7cor1ha	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCkDr-DrKtYaS4xBa38HUAMUX98goHPa:1sKBv0:61pgdQ1R9OFIPbsCLPvsyY70zVb10Ju0NeNhxMleA-Y	2024-06-20 15:39:14.498117+08
+l83dw2834cgcjfvgbqgdbaxyosri555b	.eJxVj81Ow0AMhN8lV9jI6-xvjpQDHLhxrBR5104baJMqaSQqxLuT0CLBxbI8M5_Gn0VD83nfzJOMTcdFXWBx__eWKL9Lvwr8Rv1uKPPQn8culaulvKlT-TKwHB5u3n-APU37JS3OgEXNSSBbLSEZSsZHb1oh8Nh6ApddJooYIiekCr0E67WLMYYMC3TF9XSUtSRojQBmuY7DQa7N2-ATS4VKCK0yOpIKNrBixxY45Wgy_wZunKfH581mO_tEepkG3Ha2xobFlYfjifrLlewytMJilBWDylTLlohJZQfsI1DburR-Pck0dUPfyMepGy8_PdEocArdK2CNodaxhEpXMdwB1ADF1zcghnPY:1sMHvP:DK9dkD3wxh6AFpOW26eEPCNIImqm3qvfLdGCTMA_et4	2024-06-26 10:28:19.031398+08
+91voxx0z14e2oclhmuov4jxtb75l5d4n	.eJxVj81Ow0AMhN8lV9jI63r_cqQc4MCNY6XIu-s0gTapkkaiQrw7CS0SXCzLM_Np_FnUPJ_bep5krLtcVAUW939vkdO79KuQ37jfD2Ua-vPYxXK1lDd1Kl-GLIeHm_cfoOWpXdJiCQzqHAWS0eIjcSQXHDXC4LBxDDbZxBzQhxyRN-jEG6dtCMEnWKArruejrCVBawSg5ToOB7k2b7yLWTaohNEo0oGVNz6rbLOBHFOglH8DN87T4_N2u5tdZL1MArubDRm_uNJwPHF_uZJtgkaykDJCqGizbJEzq2QhuwDcNDauX08yTd3Q1_Jx6sbLT08kBVaBewWsyFVGl2QNerwDqACKr28giHPX:1sFPAt:H0RmRue9keq2OgYTMX-TZJxsfvphNM2du40yx69fX9A	2024-06-07 10:47:51.465282+08
+p7zf9vshi9tbala47cddqb0vi2angqlo	.eJxVj81Ow0AMhN8lV9jI6-xvj5QDHLhxrBR51w4NtEmVNBIV4t3ZQJHgYtnj8afxR9XSct63yyxT23O1qbC6_aslym8yrAt-peFlrPM4nKc-1aulvm7n-mlkOdxdvf8Ae5r35VqcAYuak0C2WkIylIyP3nRC4LHzBC67TBQxRE5IDXoJ1msXYwwZCnTFDXSUNSRojQCmqNN4kJ_kXfCJpUElhFYZHUkFG1ixYwuccjSZfw-unIf7x-12t_hEulQDbrdYY0Nx5fF4ouHyQ3YZOmExyopBZZrSJWJS2QH7CNR1Lq1fzzLP_Ti08n7qp8t3TjQKnEL3DH6j7QagbgL6prkBKEP1-QUgQHPR:1sMMOq:w2AVXhc59khQn6snZuvrHeWp0jsp4XRJ5__r8O_kj60	2024-06-26 15:15:00.382733+08
+ze07l4wsp9mervc5gtob4v68ev2pqk8r	.eJxVkM1Ow0AMhN8lV9jIu_X-5Ug5wIEbx0qRd-3QQJtUSSNRId6dDRQJLpblGX8a-6NqaTnv22WWqe25aipT3f6dJcpvMqwCv9LwMtZ5HM5Tn-rVUl_VuX4aWQ53V-8_wJ7mfdkWh2CN5iSQrZaQkBL66LETAm86T-Cyy0TRhMjJ0MZ4CdZrF2MMGQp0xQ10lDUkaG0AsEyn8SA_ybvgE8vGKCFjFepIKtjAih1b4JQjZv5duHIe7h-3293iE-lSEdxusWhDceXxeKLh8kN2GTphQWUFjcJN6RIxqeyAfQTqOpfWq2eZ534cWnk_9dPlO6dBBU5p_wy-sb4BWyP68ogbgAag-vwCIOlz2Q:1sJ6ld:-EQK4whNmmJlEr_Mz6ZPDxDYXr52d94mw3V_g8f959M	2024-06-17 15:57:05.447521+08
+whbu23lw15urjpi4xpdo0d99s3rfkklg	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCntXyHUGGuoStTOQ7gDqAGKr28g_3Pc:1sJ7Zv:KbF0WU94VpLNk96x-wClu_2XMTgLdBV--8FQwLmn8E4	2024-06-17 16:49:03.416708+08
+z7nxla658uld487jb60dsfo27bmbh3oz	.eJxVj81Ow0AMhN8lV9jIu_X-5Ug5wIEbx0qRd-00gTapkkaiQrw7CS0SXCzLM_Np_FnUNJ_bep5krDsuqsIU939vifK79KvAb9TvhzIP_XnsUrlayps6lS8Dy-Hh5v0HaGlql7Q4BGs0J4FstYSElNBHj40QeNN4ApddJoomRE6GNsZLsF67GGPIsEBXXE9HWUuC1gYAl-s4HOTavAk-sWyMEjJWoY6kgg2s2LEFTjli5t_AjfP0-Lzd7mafSC8Twe1mizYsrjwcT9RfrmSXoREWVFbQKNwsWyImlR2wj0BN49L69STT1A19LR-nbrz89DSowCnjXsFXNlQQS2-dQ38HUAEUX98hvXPq:1sMN4b:Ohl8db8VOsfCIAmcPz4CttXJ9A1Aw1bRBCFq_OgIcBs	2024-06-26 15:58:09.756647+08
+ww1nlsqoblqqbrx73h78nvn19clcgpyz	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCltXsHUGOuqKjForOAOoAYovr4BIAVzzg:1sHDaH:b8I8BJY0fhFbkOSfXRdjHuYN1ikpN0qPeSCIbTCqsfM	2024-06-12 10:49:33.48143+08
+xbwpt1h41r87rgfzy3ygg4mq0iixru34	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCnwrxBqXdWgSxMAq3AHUAMUX98gC3PP:1sFUFZ:yMNltkUgoX3kMUDo6Jj5u1Jql3p-AKxsz651bn73jso	2024-06-07 16:13:01.280438+08
+l1eygqvxu7bvug7usnmmd2d479beajcf	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCtjX6GqNdaoy1BFB3gHUAMUX98gZXPV:1sWoTB:fKVcROqtp_dxbpF-LDq3UYTJ4kKoSz_dce2rTNa6vvY	2024-07-25 11:14:41.839604+08
+c7110gjkzl83fhjtnxv13l8fhq1vlxce	.eJxVj81Ow0AMhN8lV9jIu_X-5Ug5wIEbx0qRd-00gTapkkaiQrw7CS0SXCzLM_Np_FnUNJ_bep5krDsuqsIU939vifK79KvAb9TvhzIP_XnsUrlayps6lS8Dy-Hh5v0HaGlql7Q4BGs0J4FstYSElNBHj40QeNN4ApddJoomRE6GNsZLsF67GGPIsEBXXE9HWUuC1gYAl-s4HOTavAk-sWyMEjJWoY6kgg2s2LEFTjli5t_AjfP0-Lzd7mafSC8Twe1mizYsrjwcT9RfrmSXoREWVFbQKNwsWyImlR2wj0BN49L69STT1A19LR-nbrz89DSowCnwrxAq6yoMZYwYI9wBVADF1zciEnPw:1sFUvx:0SkqNaqM5yNT1diOx6DP_lDIa0FbW9nTa49FWIr_lXg	2024-06-07 16:56:48.99499+08
+kvo8vdd423n31dhnaiapdjl5mngc0vzn	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCvQr1DVNtbWlToaQLgDqAGKr28gN3PQ:1sO7jo:6USLQb4gd1h_JXFb09ZZmxsqAmLkRNfw_iEKJv3xdg8	2024-07-01 11:59:56.19204+08
+hjk1u1e1p8e7gync2kufl02hfp2e7kqa	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCvQrxBrbWrUZeUMergDqAGKr28fxHPL:1sOCcT:l0RRQco9h8Ci4yoM_FIg7-Zy51zgSPzL0Pw01kbuCWM	2024-07-01 17:12:41.36247+08
+oum09wx05m3llwv0immbkrdgr9s5qugo	.eJxVj81Ow0AMhN8lV9jI2fX-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUu7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVhdcRLItpKQkBL66LEVAq9bT-Cyy0RRh8hJk9FegvWVizGGDAt0xfV0lLUkVJUGwOU6Dge5Nm-DTyxGKyFtFVaRVLCBFTu2wClHzPwbuHGeHp83m-3sE1XLRHDb2aINiysPxxP1lyvZZWiFBZUV1ArNsiViUtkB-wjUti6tX08yTd3QN_Jx6sbLT0-NCpzS7hVMbW1tTOkxGMA7gBqg-PoGIKZz1w:1sMJHp:6rfEctD_hRWDvAsIAWwVssEfotVULi5yJpBWhJV8AN4	2024-06-26 11:55:33.748304+08
+02ue0894869a6m4tsl9h5zcppmcb3hl2	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCntX6GqK1Mjltb7ysAdQA1QfH0DIFRz0g:1sJ2do:MfsNrMqoyvOT1jzqPsTsta8vztldT3Ut3U1i6ogPWkg	2024-06-17 11:32:44.57732+08
+5ljuawkuzjvdgagz59cn04mc3vzzlzof	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCuoXsHX1tdoS4PamngHUAMUX98gr3PZ:1sOuP3:tmUEPdHqD8AT7bTsL_7ITRvifL1viy-30DOKsmvuhkk	2024-07-03 15:57:45.241529+08
+2mb0krzlubm0ql7j4x2q0hn0l5jrgicv	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCvQr-BqW9UQy-h0peMdQA1QfH0DIHNz2A:1sOARR:Z-_9HGrvnYaZt3byfrEVBkqUikUqU08aE_Zf0VNCZ_0	2024-07-01 14:53:09.961319+08
+0j0hdb8aoyhpdryk29zswikj7f0agk8g	.eJxVj81Ow0AMhN8lV9jIu_X-9Ug5wIEbx0qRd-20gTapkkaiQrw7G1okuFj2ePxp_Fk1NJ_3zTzJ2HRcrStT3f_VEuV36ZcFv1G_G-o89OexS_ViqW_bqX4ZWA4PN-8_wJ6mfbkWh2CN5iSQrZaQkBL66LEVAm9aT-Cyy0TRhMjJ0Mp4CdZrF2MMGQp0wfV0lCUkaG0AsKjjcJBr8jb4xLIySshYhTqSCjawYscWOOWImX8Pbpynx-fNZjv7RLpUBLedLdpQXHk4nqi_XMkuQyssqKygUbgqXSImlR2wj0Bt69Ly9STT1A19Ix-nbrz85DSowCvQrxDWGtZg6qCDN-4OygDV1zcfxnPP:1sOBdq:MmmXbotU5xFjAK-dbIwefGX8_x6YnRtD4haG59CzK9k	2024-07-01 16:10:02.818726+08
+o1kmr20fkbwsk44780583hj4lxl2u7js	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCvQrxDqKtToS6eNrsIdQA1QfH0DIJBz1w:1sOC5f:uE3HxGFgoZLCqtRVgHdmVUnJ6I5JgbUsuwg3FPQ_6DY	2024-07-01 16:38:47.612138+08
+fdd9x9ik84qdap0te2zbefk9zfpdn4og	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCuoXiHU1tZoysrrCHAHUAMUX98ga3PS:1sOvJ8:CUCxaEa_bnMoh1dGqxC1H3JKOVrVDmXlnFfyXsXf6Os	2024-07-03 16:55:42.3719+08
+0vrv9uc9c9ycz225zjuevejuy4n69jhr	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCkdX6Gqq1CDLo2N6OAOoAYovr4BIItz1Q:1sJlg1:gvG9kU0HHrhxDDt2-8CB_PWjCt7l45kP_D666vRg6mM	2024-06-19 11:38:01.25946+08
+kd3re6dy4igv3jrhf9xtse8cixek6hu3	.eJxVj81Ow0AMhN8lV9jI6-xvjpQDHLhxrBR5104baJMqaSQqxLuT0CLBxbI8M5_Gn0VD83nfzJOMTcdFXWBx__eWKL9Lvwr8Rv1uKPPQn8culaulvKlT-TKwHB5u3n-APU37JS3OgEXNSSBbLSEZSsZHb1oh8Nh6ApddJooYIiekCr0E67WLMYYMC3TF9XSUtSRojQBmuY7DQa7N2-ATS4VKCK0yOpIKNrBixxY45Wgy_wZunKfH581mO_tEepkG3Ha2xobFlYfjifrLlewytMJilBWDylTLlohJZQfsI1DburR-Pck0dUPfyMepGy8_PdEocArhFapa2xpDqYPWVt8B1ADF1zcfjHPI:1sK7nk:6YMusAywyA7Vo7LqJUs7sVezQJVLz0BHe2j-QQZl3m4	2024-06-20 11:15:28.181151+08
+vk9rmk0ssoffu9hlrnp74b5zl6pwakhq	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCutX6GqLdTWlugw2nAHUAMUX98gZnPb:1sRkMZ:R_GDs4MewkSEmGCB8PbWg8nxC8JczzbPzBMIEJHbjOE	2024-07-11 11:50:55.464958+08
+soh2xnp6cbl77k6q85x76ok503rn76b7	.eJxVj81Ow0AMhN8lV9jIu_X-5Ug5wIEbx0qRd-00gTapkkaiQrw7CS0SXCzLM_Np_FnUNJ_bep5krDsuqsIU939vifK79KvAb9TvhzIP_XnsUrlayps6lS8Dy-Hh5v0HaGlql7Q4BGs0J4FstYSElNBHj40QeNN4ApddJoomRE6GNsZLsF67GGPIsEBXXE9HWUuC1gYAl-s4HOTavAk-sWyMEjJWoY6kgg2s2LEFTjli5t_AjfP0-Lzd7mafSC8Twe1mizYsrjwcT9RfrmSXoREWVFbQKNwsWyImlR2wj0BN49L69STT1A19LR-nbrz89DSowCsdXiFWoCtry4gmBn8HUAEUX98hcXPn:1sUMYN:kZdt7m5OdQEcF-6PxnoSTIdvEexVLRYlsf9s9YLF6Ks	2024-07-18 17:01:55.942987+08
+fmbzz9gxrps6oihmbl1uqtqyc7wifcvr	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCvAV6hqE2tjyso7tP4OoAYovr4BIHpz2Q:1sPCgs:_l8UrmuwjcmFh0wE5whvVcSihp34wwawQwxfLBlaMz4	2024-07-04 11:29:22.376457+08
+gbz6qpe2hppe46sdkf3u1ox49uq0h7ja	.eJxVj81Ow0AMhN8lV9jIu_X-5Ug5wIEbx0qRd-00gTapkkaiQrw7CS0SXCzLM_Np_FnUNJ_bep5krDsuqsIU939vifK79KvAb9TvhzIP_XnsUrlayps6lS8Dy-Hh5v0HaGlql7Q4BGs0J4FstYSElNBHj40QeNN4ApddJoomRE6GNsZLsF67GGPIsEBXXE9HWUuC1gYAl-s4HOTavAk-sWyMEjJWoY6kgg2s2LEFTjli5t_AjfP0-Lzd7mafSC8Twe1mizYsrjwcT9RfrmSXoREWVFbQKNwsWyImlR2wj0BN49L69STT1A19LR-nbrz89DSowCuIrxAqwAp8aWzEaO8AKoDi6xshHnPh:1sR5MV:GYfOH7PnlaSGMpaD8-d6p2w1FN-cNDiF5jYuwg37K1k	2024-07-09 16:04:07.259495+08
+zm2xzkan4cy20pxxy6n643dx3l3q8xgv	.eJxVj81Ow0AMhN8lV9jI63j_cqQc4MCNY6XIu-u0gTapkkaiQrw7CS0SXCzLM_Np_Fk0PJ_3zTzJ2HS5qAss7v_eIqd36Vchv3G_G8o09Oexi-VqKW_qVL4MWQ4PN-8_wJ6n_ZIWS2BQ5yiQjBYfiSO54KgVBoetY7DJJuaAPuSIXKETb5y2IQSfYIGuuJ6PspYErRGAlus4HOTavPUuZqlQCaNRpAMrb3xW2WYDOaZAKf8Gbpynx-fNZju7yHqZBHY7GzJ-caXheOL-ciXbBK1kIWWEUFG1bJEzq2QhuwDctjauX08yTd3QN_Jx6sbLT08kBU5pfAVfa6orLK12UOEdQA1QfH0DH-lzyw:1sSAxE:UeQWvRDE6gyMTYBuBNnrkjlST6pBpJk9OC7HMUNYhp8	2024-07-12 16:14:32.617032+08
+wymwllxi2uz32174rhga8q8jaj0wj55n	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCuIrxDqKtTWlZW3Ieo7gBqg-PoGIetz6w:1sR5uC:U4wGfhjKbstiSRJVV-KN15ED8soAu0kyqClnCxbqMJQ	2024-07-09 16:38:56.375891+08
+k37yatfkfm2foeog3s1ewa8qohy70uab	.eJxVj81Ow0AMhN8lV9jI2Xj_cqQc4MCNY6XIu3baQJtUSSNRId6dDS0SXCxrPPNp_Fm0tJz37TLL1PZcNIUu7v9qkdK7DOuB32jYjWUah_PUx3K1lLfrXL6MLIeHm_cfYE_zPqfFIhhdcRRIphIfkSK64LATAqc7R2CTTURB-8BRU62deOMqG0LwCTJ0xQ10lLUkVJUGwKxO40GuzTvvIkutlZA2CqtAyhvPii0b4JgCJv4N3DhPj8-bzXZxkao8Eex2MWh8dqXxeKLhciXbBJ2woDKCWmGdt0hMKllgF4C6zsb161nmuR-HVj5O_XT56alRgVMaX8E1tW7QlAHyW-YOoAEovr4BIQVz4A:1sWW1N:PXrxU7YSHCfPuU42oXYeKubzazjMoaP7xW_Q8kPEOWo	2024-07-24 15:32:45.908575+08
+tptb8udelj8qn8xdq9l46h2xvj86afip	.eJxVj81Ow0AMhN8lV9jIu_X-9Ug5wIEbx0qRd-20gTapkkaiQrw7G1okkCzLGo8_jT-rhubzvpknGZuOq3Vlqvu_WqL8Lv2y4Dfqd0Odh_48dqleLPVtO9UvA8vh4eb9B9jTtC_X4hCs0ZwEstUSElJCHz22QuBN6wlcdpkomhA5GVoZL8F67WKMIUOBLriejrKEBK0NABZ1HA5yTd4Gn1hWRgkZq1BHUsEGVuzYAqccMfPvwY3z9Pi82Wxnn0iXjuC2s0UbiisPxxP1lyvZZWiFBZUVNApXZUrEpLID9hGobV1avp5kmrqhb-Tj1I2Xn5wGFXil4RXiWutStQe06O8A1gDV1zcfrXPM:1sRSsx:ov1iXI5u1cvIg18b1jXP9jSGrroQa0bsiazwqBt9D8Y	2024-07-10 17:11:11.704547+08
+yspcx8lo7eaxnspbg0mbogxpjf3bsoo8	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCuDrxDqytbaltbHCvEOoAYovr4BIRNz3w:1sWWzr:kPuKTaSfMneSfbZkPR442TRUMMEIjlrTIPPthB8wai0	2024-07-24 16:35:15.579344+08
+1pfbpmgijmpfge2tti7tsp9gw1zakio1	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCvtXqGqram1Ly2EqOEOoAYovr4BIGVz0w:1sTYld:1V8chSx2ea4lgu2LgXIgAzM0LPzw7lM5ZAMkxhntJLw	2024-07-16 11:52:17.50891+08
+0yvfybyhm98jcmk1kak9ldw9o8fi9duw	.eJxVkM1Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_409mfR0HzeN_MkY9NxURemuP87S5TfpV8FfqN-N5R56M9jl8rVUt7UqXwZWA4PN-8_wJ6m_bItDsEazUkgWy0hISX00WMrBN60nsBll4miCZGTocp4CdZrF2MMGRboiuvpKGtI0NoA4DIdh4Nck7fBJ5bKKCFjFepIKtjAih1b4JQjZv5duHGeHp83m-3sE-mlIrjtbNGGxZWH44n6y5XsMrTCgsoKGoXV0iViUtkB-wjUti6tV08yTd3QN_Jx6sbLT06DCrzS8RWqGkONVbm8wVfuDqAGKL6-ASDoc9o:1sUe8p:bGNPucWNCBZpsxCLaXYI2mgf9LiXOwHxK4r2XcyxmpM	2024-07-19 11:48:43.052736+08
+528o2d4h1xwd3fjrfkpsrf7qqbink0gq	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCvAV_C19rWtSvQBQnUHUAMUX98gz3Pc:1sPGG1:K3hENyadVD7zSbJ_3tB_ozSF6vyjjSZMI53l6EOQl_0	2024-07-04 15:17:53.478083+08
+0zuzoff3trqa2iaai23hnzvvio7cdzhw	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCtjX6Gqtau1L72ujMM7gBqg-PoGIFhz0w:1sWoUj:xCgrqzGjw5qTTJZx9jlRrkvAz39JJM5uV6nnP06-TjQ	2024-07-25 11:16:17.713264+08
+5yb53i4b9ekhblhzo9fu35hcsb5rpx7y	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCtjX6GqdagrX2qEylR3ADVA8fUNIClzzQ:1sWoWz:O5RTwFVvnc8KZyk5bpfSrEPTjoutYb5tqe8tBzKeMWI	2024-07-25 11:18:37.140323+08
+pprmckah18uqakyeb87b37y59lar1dwc	.eJxVj81Ow0AMhN8lV9jIu_H-5Ug5wIEbx0qRd-20gTapkkaiQrw7CS0SXCzLM_Np_Fk0NJ_3zTzJ2HRc1IUp7v_eEuV36VeB36jfDWUe-vPYpXK1lDd1Kl8GlsPDzfsPsKdpv6TFIVijOQlkqyUkpIQ-emyFwJvWE7jsMlE0IXIyVBkvwXrtYowhwwJdcT0dZS0JWhsAXK7jcJBr8zb4xFIZJWSsQh1JBRtYsWMLnHLEzL-BG-fp8Xmz2c4-kV4mgtvOFm1YXHk4nqi_XMkuQyssqKygUVgtWyImlR2wj0Bt69L69STT1A19Ix-nbrz89DSowCsdX8HXEGpTlagBK7wDqAGKr28gh3PR:1sUhG3:GGe9--1WeuFVmQqgjS-txjsm-OcVeZcpw652hDkkIM4	2024-07-19 15:08:23.410434+08
 \.
 
 
@@ -1223,6 +1393,85 @@ COPY public.employee_work_center_change_list (id, active, created_by, created_on
 112f374b-61f2-4517-9324-0cf0ba494c65	t	\N	2024-05-24 16:41:49.98769+08	\N	2024-05-24 16:41:49.98769+08	dccb2528-55b1-46a4-9032-2d9db363e70a	c2be3466-f168-46e7-867d-f7f53fd89d13	中国运营 中国生产 生产部 挖掘机2课 6职 1组
 99d07a5a-6dbf-4306-aebf-76347ff06683	t	\N	2024-05-24 16:42:25.144196+08	\N	2024-05-24 16:42:25.144196+08	4e6f38b4-9ae1-494c-8eda-49ccb9ff1f7b	c2be3466-f168-46e7-867d-f7f53fd89d13	中国运营 中国生产 生产管理部 生产管理课
 99391ce2-e5d2-4240-abd4-36b766108eec	t	2	2024-05-24 16:44:12.633667+08	\N	2024-05-24 16:44:12.633667+08	062a6cf1-ae70-46c0-a528-6e2685310d27	c2be3466-f168-46e7-867d-f7f53fd89d13	中国运营 中国生产 生产部 挖掘机1课 3职 4组
+a601bc3c-fcb6-41bb-bed8-5657a5aa71ee	t	2	2024-06-20 10:35:13.984552+08	\N	2024-06-20 10:35:13.984552+08	dccb2528-55b1-46a4-9032-2d9db363e70a	24d8bb13-f1d3-4756-8856-49efe116c05e	中国运营 中国生产 生产部 挖掘机2课 6职 1组
+1747ced0-6816-4979-8b7c-1e52f6c4b7ce	t	2	2024-06-20 10:38:04.429926+08	\N	2024-06-20 10:38:04.429926+08	19b64d86-a6d0-40c9-8a70-0d49c913a89b	24d8bb13-f1d3-4756-8856-49efe116c05e	中国运营 中国生产 生产管理部 物流课 投放职
+bf79a84c-884d-4e90-8ddf-cb2b2d791296	t	2	2024-06-20 10:41:48.608679+08	\N	2024-06-20 10:41:48.608679+08	dccb2528-55b1-46a4-9032-2d9db363e70a	935f0250-935f-455d-912b-4d383184c2f6	中国运营 中国生产 生产部 挖掘机2课 6职 1组
+4c39ad95-bcbd-4da8-a146-7001d0e5ce4c	t	2	2024-06-20 10:45:18.832114+08	\N	2024-06-20 10:45:18.832114+08	962f8204-a2e3-4952-8880-54d90d1214cf	b906337c-9fec-4ba9-a218-05cb9abe8fb7	中国采购 采购 采购部 动力电装课
+\.
+
+
+--
+-- Data for Name: ld_stock_barcode; Type: TABLE DATA; Schema: public; Owner: mes
+--
+
+COPY public.ld_stock_barcode (id, active, created_by, created_on, updated_by, updated_on, code, facility_id) FROM stdin;
+051c9e6b-1ea7-4610-85fd-456d8d956aab	t	2	2024-07-18 15:28:56.921518+08	\N	2024-07-18 15:28:56.921518+08	BC2024071815285654	6c0fede4-5e42-43e4-bada-c60d790aff6b
+d36df791-e714-48d5-b132-c7c2777ea74a	t	2	2024-07-18 16:29:32.06478+08	\N	2024-07-18 16:29:32.06478+08	BC2024071816293253	6c0fede4-5e42-43e4-bada-c60d790aff6b
+1da9704d-dbfa-4ed4-b925-99f712aaf0c2	t	2	2024-07-19 11:14:56.014674+08	2	2024-07-19 11:18:40.880822+08	BC2024071911145638	6c0fede4-5e42-43e4-bada-c60d790aff6b
+5672dc0d-5148-41fb-8aa6-9385d3cf3883	t	2	2024-07-19 14:38:22.26848+08	\N	2024-07-19 14:38:22.26848+08	BC2024071914382288	6c0fede4-5e42-43e4-bada-c60d790aff6b
+f8fe2281-fdfb-47b0-8627-d247c26b7c00	t	2	2024-07-24 14:44:51.841877+08	\N	2024-07-24 14:44:51.841877+08	BC2024072414445138	6c0fede4-5e42-43e4-bada-c60d790aff6b
+\.
+
+
+--
+-- Data for Name: ld_stock_barcode_list; Type: TABLE DATA; Schema: public; Owner: mes
+--
+
+COPY public.ld_stock_barcode_list (id, active, created_by, created_on, updated_by, updated_on, amount, amount_in, barcode_id, component_id) FROM stdin;
+0b67bf4e-85ab-4649-89e3-e99c8b145b6c	t	2	2024-07-18 16:29:32.073455+08	\N	2024-07-18 16:29:32.073455+08	1	0	d36df791-e714-48d5-b132-c7c2777ea74a	c516cfde-1b94-4144-8fa1-7cd511284919
+260944cc-eb31-49df-aae5-94e8b707f1be	t	2	2024-07-18 16:29:32.079255+08	\N	2024-07-18 16:29:32.079255+08	6	0	d36df791-e714-48d5-b132-c7c2777ea74a	5d9fc3e6-8b12-426c-bd75-83e087d15401
+7106fc5b-2bbc-44ac-ad4e-c639ba8e0014	t	2	2024-07-18 16:29:32.080676+08	\N	2024-07-18 16:29:32.080676+08	1	0	d36df791-e714-48d5-b132-c7c2777ea74a	4242f9b1-c7d6-4001-99cc-9dd476ca9403
+d425cad0-1bee-4927-a890-283b05c74b00	t	2	2024-07-18 15:28:56.930161+08	\N	2024-07-18 15:28:56.930161+08	10	10	051c9e6b-1ea7-4610-85fd-456d8d956aab	4242f9b1-c7d6-4001-99cc-9dd476ca9403
+e9168861-4215-4ed2-9fe4-516c98705a4e	t	2	2024-07-18 15:28:56.936153+08	\N	2024-07-18 15:28:56.936153+08	5	2	051c9e6b-1ea7-4610-85fd-456d8d956aab	2f373bc6-615b-449a-9f7f-18325517f2c5
+5769f9cf-ed69-42a9-9a55-b61b52a0cab1	f	2	2024-07-19 11:14:56.037653+08	2	2024-07-19 11:16:35.83325+08	1	0	1da9704d-dbfa-4ed4-b925-99f712aaf0c2	33691c63-df1b-42c0-ac27-395ea8c8da55
+31cb54ef-4405-461f-9e10-98a3872642cb	f	2	2024-07-19 11:14:56.038611+08	2	2024-07-19 11:16:37.479487+08	1	0	1da9704d-dbfa-4ed4-b925-99f712aaf0c2	10cadc4b-651b-444e-80f3-676781616b74
+4649f444-fd77-4591-a4f8-eea1dceddb9d	f	2	2024-07-18 15:28:56.939142+08	2	2024-07-19 10:36:33.231979+08	14	0	051c9e6b-1ea7-4610-85fd-456d8d956aab	10cadc4b-651b-444e-80f3-676781616b74
+5048b321-a8e5-4efa-99a8-200596dc5c3b	f	2	2024-07-18 15:28:56.941135+08	2	2024-07-19 10:37:41.579462+08	13	0	051c9e6b-1ea7-4610-85fd-456d8d956aab	c84d099b-f2cc-438a-9e19-1172f398a728
+47579ead-8581-4fab-993b-8bf99ad6447c	f	2	2024-07-18 15:28:56.938143+08	2	2024-07-19 10:46:26.978653+08	9	0	051c9e6b-1ea7-4610-85fd-456d8d956aab	33691c63-df1b-42c0-ac27-395ea8c8da55
+cb5ff87c-0d56-459a-8770-b37ff2b02e8e	f	2	2024-07-19 11:14:56.040642+08	2	2024-07-19 11:18:17.429336+08	1	0	1da9704d-dbfa-4ed4-b925-99f712aaf0c2	c84d099b-f2cc-438a-9e19-1172f398a728
+0e1efa55-1863-4b27-91f9-a6567239f745	t	2	2024-07-19 11:14:56.022654+08	2	2024-07-19 11:18:40.892792+08	10	0	1da9704d-dbfa-4ed4-b925-99f712aaf0c2	c516cfde-1b94-4144-8fa1-7cd511284919
+f94f719b-9fd5-4f17-851f-694234efce71	t	2	2024-07-19 11:14:56.03163+08	2	2024-07-19 11:18:40.89678+08	11	0	1da9704d-dbfa-4ed4-b925-99f712aaf0c2	5d9fc3e6-8b12-426c-bd75-83e087d15401
+a0dbd010-b0b6-4286-8a03-86f7abbf35e7	t	2	2024-07-19 11:14:56.032626+08	2	2024-07-19 11:18:40.899775+08	12	0	1da9704d-dbfa-4ed4-b925-99f712aaf0c2	4242f9b1-c7d6-4001-99cc-9dd476ca9403
+507e27cc-9858-4703-b1ee-8b5b54a68743	t	2	2024-07-19 11:14:56.033624+08	2	2024-07-19 11:18:40.90476+08	13	0	1da9704d-dbfa-4ed4-b925-99f712aaf0c2	6cea163d-5efd-4f28-86e4-09d5c20f659d
+cb28a6a4-e056-40ab-8213-d38b82bd4ee6	t	2	2024-07-19 11:14:56.034621+08	2	2024-07-19 11:18:40.908751+08	14	0	1da9704d-dbfa-4ed4-b925-99f712aaf0c2	22fb1152-96a2-4b17-a3c5-2f328dcb0982
+4cc4035c-3ac7-4144-95f3-d6f75ad0415e	t	2	2024-07-19 11:14:56.035619+08	2	2024-07-19 11:18:40.91174+08	8	0	1da9704d-dbfa-4ed4-b925-99f712aaf0c2	e184260d-6452-4979-9253-639c51e9575f
+9e8c0da9-b247-4cd9-93d6-8a80f7f0e37d	t	2	2024-07-19 11:14:56.036654+08	2	2024-07-19 11:18:40.914732+08	90	0	1da9704d-dbfa-4ed4-b925-99f712aaf0c2	2f373bc6-615b-449a-9f7f-18325517f2c5
+440f6e09-ca29-4b76-a90a-8eb15b87c3ba	t	2	2024-07-19 14:38:22.276459+08	\N	2024-07-19 14:38:22.276459+08	1	0	5672dc0d-5148-41fb-8aa6-9385d3cf3883	c516cfde-1b94-4144-8fa1-7cd511284919
+987a6e3f-4517-469e-b407-2ce085a45c2a	t	2	2024-07-19 14:38:22.282443+08	\N	2024-07-19 14:38:22.282443+08	1	0	5672dc0d-5148-41fb-8aa6-9385d3cf3883	5d9fc3e6-8b12-426c-bd75-83e087d15401
+a5c9b65a-22f4-4623-8eaa-874362c1ca0f	t	2	2024-07-19 14:38:22.284437+08	\N	2024-07-19 14:38:22.284437+08	1	0	5672dc0d-5148-41fb-8aa6-9385d3cf3883	4242f9b1-c7d6-4001-99cc-9dd476ca9403
+3a88f2c6-52d0-4b25-bb27-7248d530e6ba	t	2	2024-07-19 14:38:22.285434+08	\N	2024-07-19 14:38:22.285434+08	1	0	5672dc0d-5148-41fb-8aa6-9385d3cf3883	6cea163d-5efd-4f28-86e4-09d5c20f659d
+b0a9b721-4724-43a9-a062-07348a07439c	t	2	2024-07-19 14:38:22.287429+08	\N	2024-07-19 14:38:22.287429+08	1	0	5672dc0d-5148-41fb-8aa6-9385d3cf3883	22fb1152-96a2-4b17-a3c5-2f328dcb0982
+2b395e0d-779a-4f68-b80c-b783bdf05198	t	2	2024-07-19 14:38:22.289424+08	\N	2024-07-19 14:38:22.289424+08	1	0	5672dc0d-5148-41fb-8aa6-9385d3cf3883	e184260d-6452-4979-9253-639c51e9575f
+e48d7ac5-3b87-452b-8675-047e17dde22e	t	2	2024-07-19 14:38:22.29042+08	\N	2024-07-19 14:38:22.29042+08	1	0	5672dc0d-5148-41fb-8aa6-9385d3cf3883	2f373bc6-615b-449a-9f7f-18325517f2c5
+ecac5dba-c887-4191-8e45-8b5a9f70cb8b	t	2	2024-07-19 14:38:22.292415+08	\N	2024-07-19 14:38:22.292415+08	1	0	5672dc0d-5148-41fb-8aa6-9385d3cf3883	33691c63-df1b-42c0-ac27-395ea8c8da55
+8549aa11-e3e1-40cf-a91c-5edcf88d6f88	t	2	2024-07-19 14:38:22.293413+08	\N	2024-07-19 14:38:22.293413+08	1	0	5672dc0d-5148-41fb-8aa6-9385d3cf3883	10cadc4b-651b-444e-80f3-676781616b74
+38e7f070-081a-4de4-b102-9d88638df13d	t	2	2024-07-19 14:38:22.294411+08	\N	2024-07-19 14:38:22.295408+08	1	0	5672dc0d-5148-41fb-8aa6-9385d3cf3883	c84d099b-f2cc-438a-9e19-1172f398a728
+e0886ba3-62f6-457b-b141-63010fcdaa3a	t	2	2024-07-24 14:44:51.849854+08	\N	2024-07-24 14:44:51.849854+08	1	0	f8fe2281-fdfb-47b0-8627-d247c26b7c00	c516cfde-1b94-4144-8fa1-7cd511284919
+c547800f-f6e5-4278-8143-358dafcae89e	t	2	2024-07-24 14:44:51.860826+08	\N	2024-07-24 14:44:51.860826+08	1	0	f8fe2281-fdfb-47b0-8627-d247c26b7c00	5d9fc3e6-8b12-426c-bd75-83e087d15401
+45709b4c-e142-47bb-a86f-7d23e8fde27b	t	2	2024-07-24 14:44:51.86282+08	\N	2024-07-24 14:44:51.86282+08	1	0	f8fe2281-fdfb-47b0-8627-d247c26b7c00	4242f9b1-c7d6-4001-99cc-9dd476ca9403
+095c6cca-0dca-4e10-a152-c7e461497ea5	t	2	2024-07-24 14:44:51.864814+08	\N	2024-07-24 14:44:51.864814+08	1	0	f8fe2281-fdfb-47b0-8627-d247c26b7c00	6cea163d-5efd-4f28-86e4-09d5c20f659d
+d00facc5-5a65-4a6e-84e6-caf427bd22ed	t	2	2024-07-24 14:44:51.865811+08	\N	2024-07-24 14:44:51.865811+08	1	0	f8fe2281-fdfb-47b0-8627-d247c26b7c00	22fb1152-96a2-4b17-a3c5-2f328dcb0982
+faf92a32-9996-4f98-b23a-a735fc01576f	t	2	2024-07-24 14:44:51.866808+08	\N	2024-07-24 14:44:51.866808+08	1	0	f8fe2281-fdfb-47b0-8627-d247c26b7c00	e184260d-6452-4979-9253-639c51e9575f
+6333c32e-24ad-4243-9869-0c927ff5da6f	t	2	2024-07-24 14:44:51.868804+08	\N	2024-07-24 14:44:51.868804+08	1	0	f8fe2281-fdfb-47b0-8627-d247c26b7c00	2f373bc6-615b-449a-9f7f-18325517f2c5
+44a765fa-e3ef-4090-960a-bc988c8cd86b	t	2	2024-07-24 14:44:51.870798+08	\N	2024-07-24 14:44:51.870798+08	1	0	f8fe2281-fdfb-47b0-8627-d247c26b7c00	33691c63-df1b-42c0-ac27-395ea8c8da55
+a7ea4d5e-6f0c-4fa6-9779-b58eb881d07c	t	2	2024-07-24 14:44:51.872792+08	\N	2024-07-24 14:44:51.872792+08	1	0	f8fe2281-fdfb-47b0-8627-d247c26b7c00	10cadc4b-651b-444e-80f3-676781616b74
+67a7f61a-64ef-4d07-8bc3-de968b6d5e7c	t	2	2024-07-24 14:44:51.874788+08	\N	2024-07-24 14:44:51.874788+08	1	0	f8fe2281-fdfb-47b0-8627-d247c26b7c00	c84d099b-f2cc-438a-9e19-1172f398a728
+\.
+
+
+--
+-- Data for Name: ld_stock_bill; Type: TABLE DATA; Schema: public; Owner: mes
+--
+
+COPY public.ld_stock_bill (id, active, created_by, created_on, updated_by, updated_on, bill_no, bill_date, bill_type_id, in_out_by_id, in_out_type_id, facility_id) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ld_stock_items; Type: TABLE DATA; Schema: public; Owner: mes
+--
+
+COPY public.ld_stock_items (id, active, created_by, created_on, updated_by, updated_on, amount, component_id, location_id, warehouse_id, bill_id) FROM stdin;
 \.
 
 
@@ -1895,7 +2144,6 @@ fbe512bc-eb05-4554-b3fd-14b2b088606c	t	\N	2024-05-21 15:16:52.422333+08	\N	2024-
 221fcebe-18a4-470e-9f78-c32dfb97b118	t	\N	2024-05-21 15:16:52.433305+08	\N	2024-05-21 15:16:52.433305+08	赵忠祥	ic0250546	\N	\N	\N	25e7bd08-f028-4305-9150-af854fd29548	\N	\N
 9496565b-8d6f-41d6-84d5-9382f9a1c85b	t	\N	2024-05-21 15:16:52.4353+08	\N	2024-05-21 15:16:52.4353+08	周俊	ic0250805	\N	\N	\N	31276793-0b52-4bb0-89b4-cc15dd23f71d	\N	\N
 c4da30a6-9e32-44a5-aac2-4d2755f25cc1	t	\N	2024-05-21 15:16:52.436296+08	\N	2024-05-21 15:16:52.436296+08	李洪儒	ic0250850	\N	\N	\N	25f115d3-7250-4b3c-b4b6-3570f0b5eec8	\N	\N
-962f8204-a2e3-4952-8880-54d90d1214cf	t	\N	2024-05-21 15:16:52.437293+08	\N	2024-05-21 15:16:52.437293+08	李传春	ic0832187	\N	\N	\N	c81c7374-ce11-4d7d-9370-13d79695ccd0	\N	\N
 1f6b7fc4-447b-4e0c-a3e1-75f93c56d605	t	\N	2024-05-21 15:16:52.439288+08	\N	2024-05-21 15:16:52.439288+08	汤同玲	ic0832221	\N	\N	\N	cd5568b0-9983-4fd0-88f1-871452899383	\N	\N
 16940e47-74fc-4595-a611-b1e70ae98c69	t	\N	2024-05-21 15:16:52.441285+08	\N	2024-05-21 15:16:52.441285+08	张建康	ic0852094	\N	\N	\N	44d8741e-f002-4d40-bbc2-469056d745ab	\N	\N
 bea55f40-6de0-4a96-b9a5-86a3b60cd3f9	t	\N	2024-05-21 15:16:52.44228+08	\N	2024-05-21 15:16:52.44228+08	王建涛	ic0852264	\N	\N	\N	81f822c5-1381-4f1c-963e-bdf7dba8a09f	\N	\N
@@ -3147,11 +3395,12 @@ a6dfffa3-ccc2-48ad-86c8-918840c4b83a	t	\N	2024-05-21 15:16:54.507043+08	\N	2024-
 b530e445-4fe2-4342-908e-eb36697e09db	t	\N	2024-05-21 15:16:54.508041+08	\N	2024-05-21 15:16:54.508041+08	孙晟凯	ls0424	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
 40064564-c942-4353-a014-cfabf536668f	t	\N	2024-05-21 15:16:54.510035+08	\N	2024-05-21 15:16:54.510035+08	鲁言腾	ls0521	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	\N	\N
 001c2558-68fd-48fb-9862-db03a2ec7008	t	\N	2024-05-21 15:16:53.941976+08	\N	2024-05-21 15:16:53.941976+08	马令泉	ic0752596	\N	\N	\N	1ecdce5f-6f12-4d25-bf76-12e7b5de9a9a	\N	043b5de1-0d1a-4470-98e4-491d6782fa51
-dccb2528-55b1-46a4-9032-2d9db363e70a	t	\N	2024-05-21 15:16:52.913217+08	\N	2024-05-21 15:16:52.913217+08	李彪	1924803	\N	\N	\N	60788ebe-4094-488c-860c-9ee459e7930b	\N	c2be3466-f168-46e7-867d-f7f53fd89d13
-4e6f38b4-9ae1-494c-8eda-49ccb9ff1f7b	t	\N	2024-05-21 15:16:52.576458+08	\N	2024-05-21 15:16:52.576458+08	王蓓蓓	ic0832989	\N	\N	\N	dd7ee76e-ba9d-4fff-8bcf-8c5e0ad0e4ea	\N	c2be3466-f168-46e7-867d-f7f53fd89d13
 2f682a9c-08c2-47ae-8222-f64be0214e1b	t	\N	2024-05-21 15:16:52.237596+08	\N	2024-05-21 15:16:52.237596+08	李宝亮	1923283	\N	\N	\N	be176f6f-c409-4962-970a-4d3a71df161d	\N	\N
 062a6cf1-ae70-46c0-a528-6e2685310d27	t	\N	2024-05-21 15:16:52.022478+08	\N	2024-05-21 15:16:52.022478+08	赵昌春	1923057	\N	\N	\N	97046c45-19e1-48f5-abee-17e7818c18be	\N	\N
-19b64d86-a6d0-40c9-8a70-0d49c913a89b	t	\N	2024-05-21 15:16:54.34796+08	\N	2024-05-21 15:16:54.34796+08	李春艳	ls0490	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	3	\N
+4e6f38b4-9ae1-494c-8eda-49ccb9ff1f7b	t	\N	2024-05-21 15:16:52.576458+08	\N	2024-05-21 15:16:52.576458+08	王蓓蓓	ic0832989	\N	\N	\N	dd7ee76e-ba9d-4fff-8bcf-8c5e0ad0e4ea	\N	\N
+19b64d86-a6d0-40c9-8a70-0d49c913a89b	t	\N	2024-05-21 15:16:54.34796+08	\N	2024-05-21 15:16:54.34796+08	李春艳	ls0490	\N	\N	\N	89cbb191-d648-477b-80b2-087104444ac7	3	24d8bb13-f1d3-4756-8856-49efe116c05e
+dccb2528-55b1-46a4-9032-2d9db363e70a	t	\N	2024-05-21 15:16:52.913217+08	\N	2024-05-21 15:16:52.913217+08	李彪	1924803	\N	\N	\N	60788ebe-4094-488c-860c-9ee459e7930b	\N	935f0250-935f-455d-912b-4d383184c2f6
+962f8204-a2e3-4952-8880-54d90d1214cf	t	\N	2024-05-21 15:16:52.437293+08	\N	2024-05-21 15:16:52.437293+08	李传春	ic0832187	\N	\N	\N	c81c7374-ce11-4d7d-9370-13d79695ccd0	\N	b906337c-9fec-4ba9-a218-05cb9abe8fb7
 \.
 
 
@@ -3160,6 +3409,24 @@ dccb2528-55b1-46a4-9032-2d9db363e70a	t	\N	2024-05-21 15:16:52.913217+08	\N	2024-
 --
 
 COPY public.pp_component (id, active, created_by, created_on, updated_by, updated_on, code, name, safe_storage, facility_id) FROM stdin;
+5d9fc3e6-8b12-426c-bd75-83e087d15401	t	2	2024-06-12 14:16:22.556053+08	2	2024-06-12 14:16:31.758029+08	00002	螺母	100000	6c0fede4-5e42-43e4-bada-c60d790aff6b
+c516cfde-1b94-4144-8fa1-7cd511284919	t	2	2024-06-12 14:16:02.233588+08	2	2024-06-12 14:38:12.629193+08	00001	螺栓	100000	6c0fede4-5e42-43e4-bada-c60d790aff6b
+4242f9b1-c7d6-4001-99cc-9dd476ca9403	t	2	2024-06-12 14:40:39.867944+08	2	2024-06-12 14:42:40.030297+08	11FQ-20060	ADAPTER	100	6c0fede4-5e42-43e4-bada-c60d790aff6b
+22fb1152-96a2-4b17-a3c5-2f328dcb0982	t	2	2024-06-12 14:41:06.776552+08	2	2024-06-12 14:42:51.847949+08	11WD-10840	CLAMP	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+6cea163d-5efd-4f28-86e4-09d5c20f659d	t	2	2024-06-12 14:40:56.133816+08	2	2024-06-12 14:43:11.846086+08	11K4-44300	CLAMP,CONSTANT TORQUE	100	6c0fede4-5e42-43e4-bada-c60d790aff6b
+2f373bc6-615b-449a-9f7f-18325517f2c5	t	2	2024-06-12 14:41:30.929092+08	2	2024-06-12 14:43:24.114535+08	21E6-10460	COVER	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+e184260d-6452-4979-9253-639c51e9575f	t	2	2024-06-12 14:41:18.986049+08	2	2024-06-12 14:43:35.042945+08	14E7-01070	GAUGE-LEVEL	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+33691c63-df1b-42c0-ac27-395ea8c8da55	t	2	2024-06-12 14:41:41.711441+08	2	2024-06-12 14:43:49.339028+08	21E7-0612	PLATE-CONNECTOR	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+10cadc4b-651b-444e-80f3-676781616b74	t	2	2024-06-12 14:41:53.30003+08	2	2024-06-12 14:43:59.47004+08	21EG-10130	PUMP ASSY-MOTOR	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+c84d099b-f2cc-438a-9e19-1172f398a728	t	2	2024-06-12 14:44:28.688455+08	\N	2024-06-12 14:44:28.688455+08	21EG-10140	TANK-RESERVIOR	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+f84fbe43-c43d-4812-bf6f-42fe6e6c9801	t	2	2024-06-12 14:44:40.794264+08	\N	2024-06-12 14:44:40.794264+08	21EM-30570	CONNECTOR-TUBE	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+16043eb5-51e4-4d4f-a80a-e23c6ecbaba9	t	2	2024-06-12 14:44:51.918966+08	\N	2024-06-12 14:44:51.918966+08	21EM-30581	HOSE-RUBBER	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+e82792e7-5b25-4b30-99d4-1cfb0df03437	t	2	2024-06-12 14:45:05.965933+08	\N	2024-06-12 14:45:05.965933+08	21K8-32220	ANTENNA-MOBILE	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+c673dac3-6659-48ef-a344-08cc59900dea	t	2	2024-06-12 14:45:16.763733+08	\N	2024-06-12 14:45:16.763733+08	21MN-20251	LAMP ASSY-BEACON LED	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+bb851279-be54-48ca-a6a0-9163fd93797e	t	2	2024-06-12 14:45:31.039104+08	\N	2024-06-12 14:45:31.039104+08	21N4-01130	PLATE-CLIP	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+8bf0760f-5220-48b1-a0af-4113302930d3	t	2	2024-06-12 14:46:05.794293+08	\N	2024-06-12 14:46:05.794293+08	21N4-46802	BUZZER-TRAVEL ALARM	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+1d2ae992-2136-44b9-a214-dfc6fa02b94c	t	2	2024-06-12 14:46:15.879773+08	\N	2024-06-12 14:46:15.879773+08	21NA-10600	STRAP-EARTH	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
+aa29c28e-eb70-4685-835b-723f7b2d5975	t	2	2024-06-12 14:46:26.872255+08	\N	2024-06-12 14:46:26.872255+08	21WD-20130	CLAMP-PLASTIC	1	6c0fede4-5e42-43e4-bada-c60d790aff6b
 \.
 
 
@@ -3372,6 +3639,9 @@ c3f019c8-68ab-4799-ad76-fb2c96467f3b	t	2	2024-05-22 14:48:47.42836+08	\N	2024-05
 65ae092b-8d39-4dcf-aaa0-1fff4fa5ad48	t	2	2024-05-22 15:44:11.198723+08	\N	2024-05-22 15:44:11.198723+08	CUP	D004
 ba205b44-2c5d-4e7b-967a-b2041d2de153	t	2	2024-05-22 15:45:17.516968+08	\N	2024-05-22 15:45:17.516968+08	设备类型	D005
 c3c818b5-9245-4819-8f7a-e2f18718da4f	t	2	2024-05-22 15:45:30.164399+08	\N	2024-05-22 15:45:30.164399+08	销售类型	D006
+16580b33-182f-4643-b6f3-9c4acbd7d439	t	2	2024-06-07 10:15:28.393002+08	\N	2024-06-07 10:15:28.393002+08	入库类型	D007
+db8ae72d-90d9-40ad-a385-c934f56a00f2	t	2	2024-06-07 10:16:40.030721+08	\N	2024-06-07 10:16:40.030721+08	出库类型	D008
+1631e315-9b32-43ef-bebd-70bc3bfcfbf7	t	2	2024-06-17 10:36:31.613027+08	\N	2024-06-17 10:36:31.613027+08	出入库区分	D009
 \.
 
 
@@ -3406,6 +3676,16 @@ fcf1fd51-05ee-4bf3-bc28-45e69fc1f682	t	\N	2024-05-22 15:44:29.354161+08	\N	2024-
 208b7333-9d9b-4dab-ab82-0807fd506cd7	t	\N	2024-05-22 15:46:49.403067+08	\N	2024-05-22 15:46:49.403067+08	ALL	000	c3c818b5-9245-4819-8f7a-e2f18718da4f
 a2ad7eee-ce66-4767-84b2-8655568d7e7e	t	\N	2024-05-22 15:46:57.229174+08	\N	2024-05-22 15:46:57.229174+08	DOM - 内销	1	c3c818b5-9245-4819-8f7a-e2f18718da4f
 91d1c44f-db31-451b-9202-c6c4927f63a1	t	\N	2024-05-22 15:47:08.826116+08	\N	2024-05-22 15:47:08.826116+08	EXP - 出口	2	c3c818b5-9245-4819-8f7a-e2f18718da4f
+8a9e2489-bfa0-4317-8312-9ebe3de8b7e3	t	\N	2024-06-07 10:15:47.958452+08	\N	2024-06-07 10:15:47.958452+08	ALL	000	16580b33-182f-4643-b6f3-9c4acbd7d439
+7bdb6238-3eb2-40ea-af45-83ee5e585457	t	\N	2024-06-07 10:15:55.580616+08	\N	2024-06-07 10:15:55.580616+08	购买入库	1	16580b33-182f-4643-b6f3-9c4acbd7d439
+b5e5d378-c01f-4fc0-ab3f-c8d2c1bdece6	t	\N	2024-06-07 10:16:16.07509+08	\N	2024-06-07 10:16:16.07509+08	返还入库	3	16580b33-182f-4643-b6f3-9c4acbd7d439
+ec4532fd-9ebf-4316-8282-4a6b2fe51b76	t	\N	2024-06-07 10:16:46.50616+08	\N	2024-06-07 10:16:46.50616+08	ALL	000	db8ae72d-90d9-40ad-a385-c934f56a00f2
+741cea0b-33f4-4715-8a47-650dd1dc2e81	t	\N	2024-06-07 10:16:52.883068+08	\N	2024-06-07 10:16:52.883068+08	销售出库	1	db8ae72d-90d9-40ad-a385-c934f56a00f2
+87d8180c-9e30-4e3d-b333-f55610078727	t	\N	2024-06-07 10:17:07.245781+08	\N	2024-06-07 10:17:07.245781+08	移库出库	2	db8ae72d-90d9-40ad-a385-c934f56a00f2
+c704fdb8-0556-4edb-92e6-cd601b4a05a6	t	\N	2024-06-07 10:16:06.52524+08	\N	2024-06-07 10:17:25.923371+08	移库入库	2	16580b33-182f-4643-b6f3-9c4acbd7d439
+180fdc42-1925-4bc6-a493-7f6c8daab2b1	t	\N	2024-06-17 10:36:58.535197+08	\N	2024-06-17 10:36:58.535197+08	ALL	000	1631e315-9b32-43ef-bebd-70bc3bfcfbf7
+4e3f702d-5773-429e-9372-c492287e3dc9	t	\N	2024-06-17 10:37:04.927757+08	\N	2024-06-17 10:37:04.927757+08	入库	1	1631e315-9b32-43ef-bebd-70bc3bfcfbf7
+45dcaf46-88ce-4fed-a699-c7564684f140	t	\N	2024-06-17 10:37:11.585628+08	\N	2024-06-17 10:37:11.585628+08	出库	2	1631e315-9b32-43ef-bebd-70bc3bfcfbf7
 \.
 
 
@@ -4717,6 +4997,75 @@ dc297597-7428-4c85-a894-465c40bbedf8	t	2	2024-05-27 10:04:18.367621+08	2	2024-05
 12db6c5b-675a-4d7b-8c2c-8800d1de4276	t	2	2024-05-27 10:04:19.342867+08	2	2024-05-27 10:04:19.342867+08	/pp_master/work_center/index/	127.0.0.1	2
 de56f95f-6ddd-406d-9729-c29ba07555b2	t	2	2024-05-27 10:04:31.437959+08	2	2024-05-27 10:04:31.437959+08	/index/	127.0.0.1	2
 021bf2bf-e94c-43dd-9e87-3160e1374fb3	t	2	2024-05-27 10:04:20.395008+08	2	2024-05-27 10:04:20.395008+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+48461053-68be-4f36-9dc6-468570c960cb	t	2	2024-07-12 15:17:05.779881+08	2	2024-07-12 15:17:05.779881+08	/index/	127.0.0.1	2
+80573bf9-2361-40cd-b503-5e15511cf410	t	2	2024-07-12 15:17:07.01236+08	2	2024-07-12 15:17:07.01236+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+3084449b-6ed6-46c4-859a-f5804a06e0bc	t	2	2024-07-12 15:17:09.155407+08	2	2024-07-12 15:17:09.156349+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+e7939432-500f-458e-ba3d-4d1a83a0442c	t	2	2024-07-12 15:17:56.415594+08	2	2024-07-12 15:17:56.415594+08	/home/	127.0.0.1	2
+c4147677-d875-488f-b871-8e6e4a1058e8	t	2	2024-07-12 15:18:03.302075+08	2	2024-07-12 15:18:03.302075+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+18a2fa28-9eac-49bb-8f28-f300fda87497	t	2	2024-07-12 15:19:21.643459+08	2	2024-07-12 15:19:21.643459+08	/index/	127.0.0.1	2
+fc5097b1-8055-4f7a-ab3a-036cef089878	t	2	2024-07-12 15:19:22.935144+08	2	2024-07-12 15:19:22.935144+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+f3dbb6ee-70a1-4f82-b3f4-a7e0fc532028	t	2	2024-07-12 15:19:25.306488+08	2	2024-07-12 15:19:25.306488+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+7a8eebea-5906-459a-8b84-15a6e72e2ce2	t	2	2024-07-12 15:20:56.571201+08	2	2024-07-12 15:20:56.571201+08	/home/	127.0.0.1	2
+099e6f59-4bd7-44e3-befe-2b6094ed36a2	t	2	2024-07-12 15:20:59.347791+08	2	2024-07-12 15:20:59.347791+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b86b0e95-970c-4ba6-8280-87a8396d3550	t	2	2024-07-12 15:21:26.556583+08	2	2024-07-12 15:21:26.556583+08	/index/	127.0.0.1	2
+fe82aa8a-08cf-4285-975f-73c2e3895742	t	2	2024-07-12 15:21:27.868541+08	2	2024-07-12 15:21:27.868541+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+6c4efef3-6c7f-462d-9d9d-caa984695155	t	2	2024-07-12 15:21:29.857121+08	2	2024-07-12 15:21:29.857121+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+0a3e0921-8646-45e7-9c58-e144e181bee4	t	2	2024-07-12 15:22:50.186573+08	2	2024-07-12 15:22:50.186573+08	/index/	127.0.0.1	2
+d81629a2-3645-4e6a-94bf-ce41b23a0854	t	2	2024-07-12 15:22:50.449865+08	2	2024-07-12 15:22:50.449865+08	/home/	127.0.0.1	2
+d8da9a63-6dc4-4c30-9cd3-59652cf4cce3	t	2	2024-07-12 15:22:51.960136+08	2	2024-07-12 15:22:51.960136+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+24a0499b-b97f-45b8-944c-37dc35040479	t	2	2024-07-12 15:22:53.307125+08	2	2024-07-12 15:22:53.307125+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+804d1028-71d5-481a-a918-37c03ae5741a	t	2	2024-07-12 15:22:55.536403+08	2	2024-07-12 15:22:55.536403+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+1ebf8d4e-138d-4216-8dab-cd7df5fb399c	t	2	2024-07-12 15:24:26.235487+08	2	2024-07-12 15:24:26.235487+08	/index/	127.0.0.1	2
+ee41c8f6-d501-43dc-aef7-8fb05244e3a0	t	2	2024-07-12 15:24:26.564311+08	2	2024-07-12 15:24:26.564311+08	/home/	127.0.0.1	2
+6e7c7cec-09b8-4786-ba30-78176b00c2a3	t	2	2024-07-12 15:24:27.605903+08	2	2024-07-12 15:24:27.605903+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+37f21df4-509f-4d20-a8e6-28a4b8410762	t	2	2024-07-12 15:24:28.573988+08	2	2024-07-12 15:24:28.573988+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+47538c0d-d116-4170-8df8-e2a974772cb8	t	2	2024-07-12 15:24:29.977665+08	2	2024-07-12 15:24:29.977665+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+3cbcc850-ef25-446d-95d0-d9357615adae	t	2	2024-07-12 15:25:24.97934+08	2	2024-07-12 15:25:24.97934+08	/index/	127.0.0.1	2
+573369d6-b681-430b-8517-564925867f92	t	2	2024-07-12 15:25:25.241157+08	2	2024-07-12 15:25:25.241157+08	/home/	127.0.0.1	2
+6a9c5f96-c631-4082-b7f2-11ed526a4f55	t	2	2024-07-12 15:25:26.218317+08	2	2024-07-12 15:25:26.218317+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+79d29ac1-072f-40da-9d43-a7fc141fcb8b	t	2	2024-07-12 15:25:27.241474+08	2	2024-07-12 15:25:27.241474+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+5d96d90c-6ecf-4833-b746-711b637d79f1	t	2	2024-07-12 15:25:28.530944+08	2	2024-07-12 15:25:28.530944+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d2f36ab6-2ff9-4356-9d1b-3a27f43a9254	t	2	2024-07-12 15:25:58.244218+08	2	2024-07-12 15:25:58.244218+08	/index/	127.0.0.1	2
+6f0ca254-7c70-49e3-81a5-668de407a5f5	t	2	2024-07-12 15:25:58.522455+08	2	2024-07-12 15:25:58.522455+08	/home/	127.0.0.1	2
+271a6073-f0dc-4b9a-9d42-0c5fb67bfbc0	t	2	2024-07-12 15:25:59.929858+08	2	2024-07-12 15:25:59.929858+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+8fbc4d8d-9620-4cd8-b060-4127b12e9b86	t	2	2024-07-12 15:26:00.833092+08	2	2024-07-12 15:26:00.833092+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+136d84f7-0898-490e-b09f-0588da19954f	t	2	2024-07-12 15:26:02.11702+08	2	2024-07-12 15:26:02.11702+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+6bc8522a-7f9e-40b6-9625-9029e2b0dfc7	t	2	2024-07-12 15:26:39.070812+08	2	2024-07-12 15:26:39.070812+08	/index/	127.0.0.1	2
+5c86e868-ddb5-4342-81ee-9086e662189e	t	2	2024-07-12 15:26:39.338006+08	2	2024-07-12 15:26:39.338006+08	/home/	127.0.0.1	2
+4ea8468d-450c-4c7b-b93c-703dfbaabb13	t	2	2024-07-12 15:26:40.339989+08	2	2024-07-12 15:26:40.339989+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+68a9c908-90ba-44a7-8122-e8ff15c4a25d	t	2	2024-07-12 15:26:41.595859+08	2	2024-07-12 15:26:41.595859+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e32e4bc0-9978-432a-9c95-160e10affcf3	t	2	2024-07-12 15:26:42.743184+08	2	2024-07-12 15:26:42.743184+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+5d45183c-4911-4b3f-8194-9da3fe6dcac7	t	2	2024-07-12 15:27:35.846709+08	2	2024-07-12 15:27:35.846709+08	/index/	127.0.0.1	2
+abdcc3db-7edb-4bd9-9285-9fd8fcc0837d	t	2	2024-07-12 15:27:36.109864+08	2	2024-07-12 15:27:36.109864+08	/home/	127.0.0.1	2
+02870d03-57e2-41c5-9c79-31f3da803c0e	t	2	2024-07-12 15:27:37.421017+08	2	2024-07-12 15:27:37.421017+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+958d4811-a61e-43e4-a1ad-0697b60a3a9e	t	2	2024-07-12 15:27:38.937872+08	2	2024-07-12 15:27:38.937872+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+35145264-9837-4029-a2f2-bd5369052941	t	2	2024-07-12 15:27:39.791173+08	2	2024-07-12 15:27:39.791173+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+ef62565a-2849-4ce3-ae48-8a7755903306	t	2	2024-07-12 15:27:58.327647+08	2	2024-07-12 15:27:58.327647+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+89d31f93-274c-40fb-aba4-7b2e3dfcf16f	t	2	2024-07-12 15:28:55.441348+08	2	2024-07-12 15:28:55.441348+08	/index/	127.0.0.1	2
+dca33308-d7a1-44b0-aef2-6b8823a8dbc2	t	2	2024-07-12 15:28:55.728347+08	2	2024-07-12 15:28:55.728347+08	/home/	127.0.0.1	2
+1f0423f6-a50d-443c-afe5-d0ec91fd4484	t	2	2024-07-12 15:28:56.855951+08	2	2024-07-12 15:28:56.855951+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+122e0aab-60a6-4550-8114-357ddff41639	t	2	2024-07-12 15:28:57.761964+08	2	2024-07-12 15:28:57.761964+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e0a4a8fb-af64-450e-8e2b-c598b5ded1cb	t	2	2024-07-12 15:28:58.9699+08	2	2024-07-12 15:28:58.9699+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+182b7df2-ef14-4ba2-b2ab-446f95e7e8a3	t	2	2024-07-12 15:32:06.196424+08	2	2024-07-12 15:32:06.196424+08	/index/	127.0.0.1	2
+d57bcc25-da63-4319-b7d0-cd9ce437d550	t	2	2024-07-12 15:32:06.508435+08	2	2024-07-12 15:32:06.508435+08	/home/	127.0.0.1	2
+60499813-4399-4e9f-b293-df91210a84ca	t	2	2024-07-12 15:32:07.541409+08	2	2024-07-12 15:32:07.541409+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+130bb5cc-86a0-49b4-bf6d-bbc67f678f10	t	2	2024-07-12 15:32:08.474908+08	2	2024-07-12 15:32:08.474908+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+ba508878-6e08-4f64-86df-f1be349fc85d	t	2	2024-07-12 15:32:09.420688+08	2	2024-07-12 15:32:09.420688+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b2f7462e-3cc5-489f-9529-978db3342091	t	2	2024-07-12 15:32:32.56354+08	2	2024-07-12 15:32:32.56354+08	/index/	127.0.0.1	2
+7d342e26-fe05-48a3-84b8-2c8339a4025e	t	2	2024-07-12 15:32:32.831651+08	2	2024-07-12 15:32:32.831651+08	/home/	127.0.0.1	2
+9ad1d2b3-32cb-4acc-8844-14450bc75fc1	t	2	2024-07-12 15:32:34.374299+08	2	2024-07-12 15:32:34.374299+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+a830fb7f-2415-4c7a-aa9c-59b9757f4401	t	2	2024-07-12 15:32:35.704565+08	2	2024-07-12 15:32:35.704565+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+d9652c5b-3707-405b-93e1-0dc2256b14d5	t	2	2024-07-12 15:32:36.662192+08	2	2024-07-12 15:32:36.662192+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+4a600924-f90a-47ad-936e-ac270b703665	t	2	2024-07-12 15:33:26.900323+08	2	2024-07-12 15:33:26.900323+08	/index/	127.0.0.1	2
+a758861d-4a24-4991-a38a-86f96aa2bb43	t	2	2024-07-12 15:33:27.184399+08	2	2024-07-12 15:33:27.184399+08	/home/	127.0.0.1	2
+529593f0-275b-4370-ad3b-dbea5889c48d	t	2	2024-07-12 15:33:27.972402+08	2	2024-07-12 15:33:27.972402+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d55f4dbd-b172-44da-a726-6dc0a146031c	t	2	2024-07-12 15:33:28.960755+08	2	2024-07-12 15:33:28.960755+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+77bf28ea-4ae0-45a8-9eaa-a39a77ecfccd	t	2	2024-07-12 15:33:29.754496+08	2	2024-07-12 15:33:29.754496+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d849f5e1-c861-48ba-ae3a-b38872501f29	t	2	2024-07-12 15:34:21.551066+08	2	2024-07-12 15:34:21.551066+08	/index/	127.0.0.1	2
+a5566090-65d0-4bf4-87de-16e68ffdd4ea	t	2	2024-07-12 15:34:21.841228+08	2	2024-07-12 15:34:21.841228+08	/home/	127.0.0.1	2
+58239b34-534c-42cc-8139-630678cd0564	t	2	2024-07-12 15:34:22.801466+08	2	2024-07-12 15:34:22.801466+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+0c73abc0-510e-4bd2-a8b6-ee0c12ee586c	t	2	2024-07-12 15:34:24.123557+08	2	2024-07-12 15:34:24.123557+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e4e70709-9917-4000-a2a7-cb965689346d	t	2	2024-07-12 15:37:02.499684+08	2	2024-07-12 15:37:02.499684+08	/index/	127.0.0.1	2
 aafdc521-6548-4736-be7e-1b2d4e354f2b	t	2	2024-05-27 10:04:31.714735+08	2	2024-05-27 10:04:31.714735+08	/home/	127.0.0.1	2
 f19e02d7-c11f-4d2d-981e-51398f289653	t	2	2024-05-27 10:04:32.681235+08	2	2024-05-27 10:04:32.681235+08	/pp_master/work_center/index/	127.0.0.1	2
 2de1e085-740c-4aaa-9587-b160d952eedf	t	2	2024-05-27 10:04:33.70926+08	2	2024-05-27 10:04:33.70926+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
@@ -4903,6 +5252,7 @@ f8050590-c42c-4842-9e1f-5c0ac5d73fa9	t	2	2024-06-05 15:00:31.573941+08	2	2024-06
 28231072-c8ca-4a19-ac33-cfa78e997404	t	2	2024-06-05 15:03:22.471034+08	2	2024-06-05 15:03:22.471034+08	/pp_master/warehouse/location/add/e2290150-e860-413e-9208-98ed4a0d32b7/	127.0.0.1	2
 47049976-c037-40db-a8be-e8d0e3dbf1db	t	2	2024-06-05 15:03:22.71937+08	2	2024-06-05 15:03:22.71937+08	/pp_master/warehouse/location/add/e2290150-e860-413e-9208-98ed4a0d32b7/	127.0.0.1	2
 df7ddcf4-9fc4-4595-96cb-887207042f4c	t	2	2024-06-05 15:04:46.074797+08	2	2024-06-05 15:04:46.074797+08	/pp_master/warehouse/location/add/e2290150-e860-413e-9208-98ed4a0d32b7/	127.0.0.1	2
+59d45d0a-407b-4400-8206-3ba32abdf0ed	t	1	2024-06-17 14:55:49.793448+08	1	2024-06-17 14:55:49.793448+08	/home/	127.0.0.1	1
 6cd15387-a429-41b5-864c-bc5dca184436	t	2	2024-06-05 15:06:36.015415+08	2	2024-06-05 15:06:36.015415+08	/pp_master/warehouse/location/add/e2290150-e860-413e-9208-98ed4a0d32b7/	127.0.0.1	2
 eeda0fd1-67c6-43e6-a758-f7e70f179553	t	2	2024-06-05 15:08:13.551445+08	2	2024-06-05 15:08:13.551445+08	/pp_master/warehouse/location/add/e2290150-e860-413e-9208-98ed4a0d32b7/	127.0.0.1	2
 5c90c15c-4a40-4920-aec0-06ab72cfdf59	t	2	2024-06-05 15:08:28.514507+08	2	2024-06-05 15:08:28.514507+08	/pp_master/warehouse/location/add/e2290150-e860-413e-9208-98ed4a0d32b7/	127.0.0.1	2
@@ -4947,6 +5297,1817 @@ a939ee08-ea98-4007-a787-778bac4a7757	t	2	2024-06-05 15:23:11.773404+08	2	2024-06
 53d8fa22-3b50-4966-98ea-feb8c0b02e81	t	2	2024-06-05 15:23:14.386459+08	2	2024-06-05 15:23:14.386459+08	/pp_master/warehouse/location/edit/bc1b0112-b3c0-46b6-8e11-122bb1a9e9fd/7bc169c4-80d1-4bcc-bb2d-5e5fda9eee99/	127.0.0.1	2
 335c8593-2f5d-49b6-b51d-a476393a4c90	t	2	2024-06-05 15:23:14.636793+08	2	2024-06-05 15:23:14.636793+08	/pp_master/warehouse/location/edit/bc1b0112-b3c0-46b6-8e11-122bb1a9e9fd/7bc169c4-80d1-4bcc-bb2d-5e5fda9eee99/	127.0.0.1	2
 c2cf1471-dea3-400f-ab45-c5fb68ba0d26	t	2	2024-06-05 15:23:15.732009+08	2	2024-06-05 15:23:15.732009+08	/pp_master/warehouse/index/	127.0.0.1	2
+f3f89b98-7058-444b-8dde-81f0972f0bbc	t	2	2024-06-07 10:15:09.446618+08	2	2024-06-07 10:15:09.446618+08	/index/	127.0.0.1	2
+5a76c0fd-b138-4b36-a02f-8ec0b839e240	t	2	2024-06-07 10:15:09.754992+08	2	2024-06-07 10:15:09.754992+08	/home/	127.0.0.1	2
+08a7e8f3-34e4-45a0-ad52-ce26b139163e	t	2	2024-06-07 10:15:13.065001+08	2	2024-06-07 10:15:13.065001+08	/sys_auth/role/index/	127.0.0.1	2
+7eac8349-d144-4e93-bbe3-44e70a729493	t	2	2024-06-07 10:15:17.0389+08	2	2024-06-07 10:15:17.0389+08	/sys_dict/dict/index/	127.0.0.1	2
+eb678dc3-f3fe-499a-bbcd-fb755ab730d0	t	2	2024-06-07 10:15:20.210125+08	2	2024-06-07 10:15:20.210125+08	/sys_dict/dict/add/	127.0.0.1	2
+d345a518-e8a4-464c-8996-dd355428a881	t	2	2024-06-07 10:15:28.405968+08	2	2024-06-07 10:15:28.405968+08	/sys_dict/dict/add/	127.0.0.1	2
+267c1df6-1cd8-4831-8834-628cd36b56a7	t	2	2024-06-07 10:15:28.610576+08	2	2024-06-07 10:15:28.610576+08	/sys_dict/dict/index/	127.0.0.1	2
+0ce784b2-9fd3-4099-ab5b-4a528c9d214c	t	2	2024-06-07 10:15:30.28651+08	2	2024-06-07 10:15:30.28651+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+cca53c5a-8101-451c-af3c-141313dabb52	t	2	2024-06-07 10:15:35.44953+08	2	2024-06-07 10:15:35.44953+08	/sys_dict/dict/index/	127.0.0.1	2
+5c25230d-6438-48f9-82ae-31a1e4bfbc54	t	2	2024-06-07 10:15:36.765646+08	2	2024-06-07 10:15:36.765646+08	/sys_dict/enum/add/c3c818b5-9245-4819-8f7a-e2f18718da4f	127.0.0.1	2
+2311bf44-785a-498f-a618-db8c788b8065	t	2	2024-06-07 10:15:39.748503+08	2	2024-06-07 10:15:39.748503+08	/sys_dict/dict/index/	127.0.0.1	2
+fe1feec5-d9dd-4c97-98ad-9119581e7447	t	2	2024-06-07 10:15:43.146932+08	2	2024-06-07 10:15:43.146932+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+7a2a29f3-5ae5-423c-8154-924fb0d479db	t	2	2024-06-07 10:15:47.970425+08	2	2024-06-07 10:15:47.970425+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+26329513-6ebe-48ce-9f1e-e87cf07ca939	t	2	2024-06-07 10:15:48.157226+08	2	2024-06-07 10:15:48.157226+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+aa3e9630-f71b-4dfa-9903-43ff757b5fd5	t	2	2024-06-07 10:15:55.594613+08	2	2024-06-07 10:15:55.594613+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+0790ed90-e48f-4fb6-a650-1c0ff353bfae	t	2	2024-06-07 10:15:55.806604+08	2	2024-06-07 10:15:55.806604+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+f62c726e-ef17-482e-9d45-f7dc3d97339d	t	2	2024-06-07 10:16:06.536208+08	2	2024-06-07 10:16:06.536208+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+4e18e423-c6c8-4cfe-b0fa-6f9107969720	t	2	2024-06-07 10:16:06.726266+08	2	2024-06-07 10:16:06.726266+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+84ee4712-975b-4a39-bbfc-50b33411b11a	t	2	2024-06-07 10:16:16.089156+08	2	2024-06-07 10:16:16.089156+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+09310d7e-366d-4146-8bb0-2271ad288d83	t	2	2024-06-07 10:16:16.276105+08	2	2024-06-07 10:16:16.276105+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+7873861d-e04e-4c16-86aa-dd5e8df9b307	t	2	2024-06-07 10:16:30.80271+08	2	2024-06-07 10:16:30.80271+08	/sys_dict/dict/index/	127.0.0.1	2
+f928de83-758b-4e43-9dbe-560e75844260	t	2	2024-06-07 10:16:32.840298+08	2	2024-06-07 10:16:32.840298+08	/sys_dict/dict/add/	127.0.0.1	2
+ff0ca249-0e2f-4ab8-afc9-f37aef202af1	t	2	2024-06-07 10:16:40.04369+08	2	2024-06-07 10:16:40.04369+08	/sys_dict/dict/add/	127.0.0.1	2
+1c65733a-b1f7-484d-84cf-a9880660d683	t	2	2024-06-07 10:16:40.238682+08	2	2024-06-07 10:16:40.238682+08	/sys_dict/dict/index/	127.0.0.1	2
+e0119ff5-6d67-4e25-a519-0aedead5fb63	t	2	2024-06-07 10:16:42.888003+08	2	2024-06-07 10:16:42.888003+08	/sys_dict/enum/add/db8ae72d-90d9-40ad-a385-c934f56a00f2	127.0.0.1	2
+316b09c1-cdc3-438f-a756-92cf52c0930b	t	2	2024-06-07 10:16:46.520163+08	2	2024-06-07 10:16:46.520163+08	/sys_dict/enum/add/db8ae72d-90d9-40ad-a385-c934f56a00f2	127.0.0.1	2
+f22f4388-1ba7-4a95-9b84-49690b28fef3	t	2	2024-06-07 10:16:46.706432+08	2	2024-06-07 10:16:46.706432+08	/sys_dict/enum/add/db8ae72d-90d9-40ad-a385-c934f56a00f2	127.0.0.1	2
+c78dcfb6-b595-41ca-8f1d-2634ec5efc85	t	2	2024-06-07 10:16:52.894925+08	2	2024-06-07 10:16:52.894925+08	/sys_dict/enum/add/db8ae72d-90d9-40ad-a385-c934f56a00f2	127.0.0.1	2
+9b6f4e47-b52e-48ec-b7a3-d2b861423c6b	t	2	2024-06-07 10:16:53.081472+08	2	2024-06-07 10:16:53.081472+08	/sys_dict/enum/add/db8ae72d-90d9-40ad-a385-c934f56a00f2	127.0.0.1	2
+76dc244c-19ad-4fbc-ad22-df1fabacf269	t	2	2024-06-07 10:17:07.257955+08	2	2024-06-07 10:17:07.257955+08	/sys_dict/enum/add/db8ae72d-90d9-40ad-a385-c934f56a00f2	127.0.0.1	2
+a2c78a5a-823a-464a-8650-c879b3ba42c6	t	2	2024-06-07 10:17:07.447734+08	2	2024-06-07 10:17:07.447734+08	/sys_dict/enum/add/db8ae72d-90d9-40ad-a385-c934f56a00f2	127.0.0.1	2
+592cc697-4f37-4bee-9bdb-944df049331c	t	2	2024-06-07 10:17:17.586292+08	2	2024-06-07 10:17:17.586292+08	/sys_dict/dict/index/	127.0.0.1	2
+16441ec3-5939-4dfd-ae9b-1c5eb48025e6	t	2	2024-06-07 10:17:18.615033+08	2	2024-06-07 10:17:18.615033+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+fe5dbed8-12dd-4e01-bde4-2417bf06a4d3	t	2	2024-06-07 10:17:21.901301+08	2	2024-06-07 10:17:21.901301+08	/sys_dict/enum/edit/16580b33-182f-4643-b6f3-9c4acbd7d439/c704fdb8-0556-4edb-92e6-cd601b4a05a6	127.0.0.1	2
+bb7b2711-5058-4f3b-9cf5-7c6545f1b6a0	t	2	2024-06-07 10:17:25.929355+08	2	2024-06-07 10:17:25.929355+08	/sys_dict/enum/edit/16580b33-182f-4643-b6f3-9c4acbd7d439/c704fdb8-0556-4edb-92e6-cd601b4a05a6	127.0.0.1	2
+11aa88d8-45c9-4bb4-8fd1-6590b7f7f831	t	2	2024-06-07 10:17:26.119132+08	2	2024-06-07 10:17:26.119132+08	/sys_dict/enum/edit/16580b33-182f-4643-b6f3-9c4acbd7d439/c704fdb8-0556-4edb-92e6-cd601b4a05a6	127.0.0.1	2
+c647687a-1ab4-440d-938d-d40df2d79b16	t	2	2024-06-07 10:17:51.493929+08	2	2024-06-07 10:17:51.493929+08	/sys_dict/dict/index/	127.0.0.1	2
+24ce3c6b-39d7-48e9-b22c-fb17aaad6312	t	2	2024-06-07 15:41:29.846278+08	2	2024-06-07 15:41:29.846278+08	/index/	127.0.0.1	2
+56f01077-ee74-460b-93de-6ab6098ed269	t	2	2024-06-07 15:41:30.130793+08	2	2024-06-07 15:41:30.130793+08	/home/	127.0.0.1	2
+6bf993c2-e98d-414f-abc9-f9ec2fb2380b	t	2	2024-06-07 15:41:47.46782+08	2	2024-06-07 15:41:47.46782+08	/pp_master/warehouse/index/	127.0.0.1	2
+0bceff7c-2f4e-4413-b00d-2ddf0243fbf0	t	2	2024-06-07 15:41:49.592175+08	2	2024-06-07 15:41:49.592175+08	/pp_master/warehouse/location/add/e2290150-e860-413e-9208-98ed4a0d32b7/	127.0.0.1	2
+802093c4-354e-4834-bac5-a7866bfe005d	t	2	2024-06-07 15:41:55.691238+08	2	2024-06-07 15:41:55.691238+08	/pp_master/warehouse/index/	127.0.0.1	2
+e6eae898-1d17-4a4c-a7d8-ed1cf45f58f3	t	2	2024-06-07 15:41:57.258725+08	2	2024-06-07 15:41:57.258725+08	/pp_master/warehouse/location/add/bc1b0112-b3c0-46b6-8e11-122bb1a9e9fd/	127.0.0.1	2
+9048a96e-2cca-429b-8a43-9976ae8c9368	t	2	2024-06-07 15:42:55.479165+08	2	2024-06-07 15:42:55.479165+08	/pp_master/warehouse/index/	127.0.0.1	2
+7d9f8cf8-9bd9-486c-819a-3c744bc4a6fa	t	2	2024-06-07 15:43:01.320332+08	2	2024-06-07 15:43:01.320332+08	/sys_auth/menu/index/	127.0.0.1	2
+4d522069-4468-493e-b172-6c3d5c49cf85	t	2	2024-06-07 16:26:48.768737+08	2	2024-06-07 16:26:48.768737+08	/index/	127.0.0.1	2
+7fcb72e5-31d6-4efd-8cee-409fd4a9b78a	t	2	2024-06-07 16:26:49.040833+08	2	2024-06-07 16:26:49.040833+08	/home/	127.0.0.1	2
+db9ad556-d7b7-4705-a000-ccbe3d3e25b5	t	2	2024-06-12 09:53:19.650478+08	2	2024-06-12 09:53:19.650478+08	/index/	127.0.0.1	2
+c579c62c-0055-4334-a8aa-8fd1b978de10	t	2	2024-06-12 09:53:19.96995+08	2	2024-06-12 09:53:19.96995+08	/home/	127.0.0.1	2
+5efe0a28-38ec-4688-849d-4bfd61fd475c	t	2	2024-06-12 09:55:13.472959+08	2	2024-06-12 09:55:13.472959+08	/pp_master/option/code/index/	127.0.0.1	2
+d421c3b2-aefc-4376-8c85-c1b98b1af37e	t	2	2024-06-12 09:57:22.188336+08	2	2024-06-12 09:57:22.188336+08	/pp_master/machine_code/index/	127.0.0.1	2
+8a7dfa80-a9df-4e66-811d-4feb4ffa5d0b	t	2	2024-06-12 10:19:31.891168+08	2	2024-06-12 10:19:31.891168+08	/pp_master/warehouse/index/	127.0.0.1	2
+70a24c88-1531-4496-a9e8-a889497cd2db	t	2	2024-06-12 10:19:33.54526+08	2	2024-06-12 10:19:33.54526+08	/pp_master/warehouse/add/	127.0.0.1	2
+a4240b0b-a450-436c-9184-8c7ec48c4dc0	t	2	2024-06-12 14:09:38.729483+08	2	2024-06-12 14:09:38.729483+08	/index/	127.0.0.1	2
+9e54ef4d-7ae3-4a86-8f62-340cc657f90b	t	2	2024-06-12 14:09:39.121342+08	2	2024-06-12 14:09:39.121342+08	/home/	127.0.0.1	2
+3324f1e8-c392-45b6-99d0-dc54e4c268c9	t	2	2024-06-12 14:09:43.339799+08	2	2024-06-12 14:09:43.339799+08	/sys_auth/menu/index/	127.0.0.1	2
+d7ceb0cb-743f-4689-b654-c3ee385ec17f	t	2	2024-06-12 14:09:46.698485+08	2	2024-06-12 14:09:46.698485+08	/sys_auth/menu/index/	127.0.0.1	2
+0e876c1e-85fe-467d-9642-8d5c84be572e	t	2	2024-06-12 14:09:48.94546+08	2	2024-06-12 14:09:48.946456+08	/sys_auth/menu/index/	127.0.0.1	2
+24b8343f-6d53-416a-8b91-58804e1429be	t	2	2024-06-12 14:09:51.366273+08	2	2024-06-12 14:09:51.366273+08	/sys_auth/menu/add/	127.0.0.1	2
+49f1b406-78c0-4a9c-aaa1-f2145a3ee4cd	t	2	2024-06-12 14:10:31.952818+08	2	2024-06-12 14:10:31.952818+08	/sys_auth/menu/add/	127.0.0.1	2
+32a4ccbd-9583-46c4-ad95-e00f36e34b37	t	2	2024-06-12 14:10:32.221103+08	2	2024-06-12 14:10:32.221103+08	/sys_auth/menu/index/	127.0.0.1	2
+d0efbab0-307b-45b8-9128-d04cf70d7872	t	2	2024-06-12 14:10:34.28841+08	2	2024-06-12 14:10:34.28841+08	/sys_auth/menu/index/	127.0.0.1	2
+3aa6072f-0c4a-4d59-8c87-5877622e6a69	t	1	2024-06-12 14:10:43.521387+08	1	2024-06-12 14:10:43.521387+08	/index/	127.0.0.1	1
+8a3da310-9fad-49ae-9d90-0c48ab7691a0	t	1	2024-06-12 14:10:43.863906+08	1	2024-06-12 14:10:43.863906+08	/home/	127.0.0.1	1
+f08d21ff-9ca0-4573-ba9a-35b3ed21aa81	t	1	2024-06-12 14:10:49.350128+08	1	2024-06-12 14:10:49.350128+08	/pp_master/component/index/	127.0.0.1	1
+48fb67ee-aa00-4ccd-8604-bd4cc8b1091c	t	1	2024-06-12 14:10:57.048374+08	1	2024-06-12 14:10:57.048383+08	/sys_auth/role/index/	127.0.0.1	1
+970a4733-f742-4534-b873-be8fdfc1ce96	t	1	2024-06-12 14:10:58.882805+08	1	2024-06-12 14:10:58.882805+08	/sys_auth/role/menus/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	1
+25392fc3-3b21-4c66-9166-74383a36cec9	t	1	2024-06-12 14:11:03.12641+08	1	2024-06-12 14:11:03.12641+08	/sys_auth/role/auth/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	1
+6691f018-c5d1-42dd-a41e-f1ce0ea6dd6b	t	2	2024-06-12 14:12:08.033205+08	2	2024-06-12 14:12:08.033205+08	/index/	127.0.0.1	2
+e3c248be-d831-421d-b491-40bd1219c134	t	2	2024-06-12 14:12:08.360828+08	2	2024-06-12 14:12:08.360828+08	/home/	127.0.0.1	2
+31c2c94d-f1e2-4c76-9199-428dabdd9d70	t	2	2024-06-12 14:12:12.887132+08	2	2024-06-12 14:12:12.887132+08	/pp_master/component/index/	127.0.0.1	2
+1c7cc142-de58-4315-b045-9fece5d3ac08	t	2	2024-06-12 14:12:14.959357+08	2	2024-06-12 14:12:14.959357+08	/index/	127.0.0.1	2
+ddf79808-cd83-4ca5-8093-b95761aa8a20	t	2	2024-06-12 14:12:15.323885+08	2	2024-06-12 14:12:15.323885+08	/home/	127.0.0.1	2
+ea9cd2fa-59e9-4c46-8cab-ccbc5dfaae5f	t	2	2024-06-12 14:12:18.159364+08	2	2024-06-12 14:12:18.159364+08	/pp_master/component/index/	127.0.0.1	2
+b09e85df-e397-42d4-9bfe-fae80ac7b85c	t	2	2024-06-12 14:12:20.21914+08	2	2024-06-12 14:12:20.21914+08	/pp_master/component/add/	127.0.0.1	2
+c41906af-8099-460f-bc3d-91c53673c126	t	2	2024-06-12 14:13:09.322657+08	2	2024-06-12 14:13:09.322657+08	/pp_master/component/index/	127.0.0.1	2
+e670424c-ef6a-4406-abd8-41c130928ae1	t	2	2024-06-12 14:13:10.62161+08	2	2024-06-12 14:13:10.62161+08	/pp_master/component/add/	127.0.0.1	2
+481616f8-cf7b-4f4b-a8fb-82fe4cde210f	t	2	2024-06-12 14:14:54.059736+08	2	2024-06-12 14:14:54.059736+08	/pp_master/component/index/	127.0.0.1	2
+504acab4-4cfa-46ed-992c-afe79aed4a99	t	2	2024-06-12 14:14:56.336731+08	2	2024-06-12 14:14:56.336731+08	/pp_master/component/add/	127.0.0.1	2
+4593d56b-e56f-4d47-be84-ec2cff356b17	t	2	2024-06-12 14:15:11.339644+08	2	2024-06-12 14:15:11.339644+08	/index/	127.0.0.1	2
+a5c69fec-af88-4081-a7b6-4cc2b992b7b6	t	2	2024-06-12 14:15:11.718516+08	2	2024-06-12 14:15:11.718516+08	/home/	127.0.0.1	2
+8cab9270-e86c-4594-a066-a30610b0249e	t	2	2024-06-12 14:15:12.754282+08	2	2024-06-12 14:15:12.754282+08	/pp_master/component/index/	127.0.0.1	2
+53c36d2b-0dea-42f5-b574-3d98bab06fa0	t	2	2024-06-12 14:15:14.10622+08	2	2024-06-12 14:15:14.10622+08	/pp_master/component/add/	127.0.0.1	2
+8416e845-2d49-4728-bdb1-ec057821d6af	t	2	2024-06-12 14:15:36.011161+08	2	2024-06-12 14:15:36.011161+08	/index/	127.0.0.1	2
+398398bb-4b83-4fb1-9dbc-8fc78bc83847	t	2	2024-06-12 14:15:36.402117+08	2	2024-06-12 14:15:36.402117+08	/home/	127.0.0.1	2
+3fd1ee92-cb75-4107-bb11-559b5408ccb4	t	2	2024-06-12 14:15:37.379114+08	2	2024-06-12 14:15:37.379114+08	/pp_master/component/index/	127.0.0.1	2
+75eb8df9-dcdd-4a5d-bc60-e22da4419277	t	2	2024-06-12 14:15:38.73012+08	2	2024-06-12 14:15:38.73012+08	/pp_master/component/add/	127.0.0.1	2
+31edab75-33df-4997-b7b6-de57d7528bb7	t	2	2024-06-12 14:16:02.25749+08	2	2024-06-12 14:16:02.25749+08	/pp_master/component/add/	127.0.0.1	2
+8fabc3f3-220a-45ee-84fa-03ebdfc909e0	t	2	2024-06-12 14:16:02.568683+08	2	2024-06-12 14:16:02.568683+08	/pp_master/component/index/	127.0.0.1	2
+91d1a769-fd9e-4ab2-8a34-68e0328a54eb	t	2	2024-06-12 14:16:08.371451+08	2	2024-06-12 14:16:08.371451+08	/pp_master/component/add/	127.0.0.1	2
+036ac4f5-6d86-47ea-82c9-b6e223444492	t	2	2024-06-12 14:16:19.105775+08	2	2024-06-12 14:16:19.105775+08	/pp_master/component/add/	127.0.0.1	2
+36cd8c04-c531-4225-8dd4-032f241f06cb	t	2	2024-06-12 14:16:22.575003+08	2	2024-06-12 14:16:22.575003+08	/pp_master/component/add/	127.0.0.1	2
+f121b735-d31f-4370-ae70-a8f4870287e5	t	2	2024-06-12 14:16:22.840694+08	2	2024-06-12 14:16:22.840694+08	/pp_master/component/index/	127.0.0.1	2
+5c6af131-4cca-426a-858b-e2f0478edf3b	t	2	2024-06-12 14:16:28.582967+08	2	2024-06-12 14:16:28.582967+08	/pp_master/component/edit/5d9fc3e6-8b12-426c-bd75-83e087d15401/	127.0.0.1	2
+c0f6a3bc-efc8-4650-aed8-ea22bb8c5125	t	2	2024-06-12 14:16:31.765011+08	2	2024-06-12 14:16:31.765011+08	/pp_master/component/edit/5d9fc3e6-8b12-426c-bd75-83e087d15401/	127.0.0.1	2
+a74f84cc-0433-4184-8de8-43a4f7f7a10b	t	2	2024-06-12 14:16:32.060692+08	2	2024-06-12 14:16:32.060692+08	/pp_master/component/index/	127.0.0.1	2
+9c6cbfe7-7db6-47c8-b21c-5b14d4621237	t	2	2024-06-12 14:16:45.420482+08	2	2024-06-12 14:16:45.420482+08	/pp_master/component/edit/5d9fc3e6-8b12-426c-bd75-83e087d15401/	127.0.0.1	2
+84d92fe3-ca2b-4dee-a975-c2f90fe86da8	t	2	2024-06-12 14:16:49.924203+08	2	2024-06-12 14:16:49.924203+08	/pp_master/component/edit/5d9fc3e6-8b12-426c-bd75-83e087d15401/	127.0.0.1	2
+43780aa9-7148-4205-a1e6-5741b3d1644a	t	2	2024-06-12 14:16:51.15957+08	2	2024-06-12 14:16:51.15957+08	/pp_master/line/index/	127.0.0.1	2
+749e8cb4-a940-43ce-9bf2-03fa4e04f22e	t	2	2024-06-12 14:17:13.330528+08	2	2024-06-12 14:17:13.330528+08	/pp_master/component/index/	127.0.0.1	2
+9690e32e-3188-4a2d-80d8-c839bbf765d1	t	2	2024-06-12 14:17:14.666872+08	2	2024-06-12 14:17:14.666872+08	/pp_master/component/edit/5d9fc3e6-8b12-426c-bd75-83e087d15401/	127.0.0.1	2
+b2fe16f5-ab72-492d-adef-4c495e89778d	t	2	2024-06-12 14:17:15.727082+08	2	2024-06-12 14:17:15.727082+08	/pp_master/component/index/	127.0.0.1	2
+fca67a44-6e0b-4dac-a533-c6db5be57f13	t	2	2024-06-12 14:17:16.853269+08	2	2024-06-12 14:17:16.853269+08	/pp_master/component/add/	127.0.0.1	2
+a09c96c2-b909-4995-8fa7-72a39af0602a	t	2	2024-06-12 14:17:18.064348+08	2	2024-06-12 14:17:18.065347+08	/pp_master/component/index/	127.0.0.1	2
+0aebfc43-ea97-4a0a-ac2a-2d1703e26c2b	t	2	2024-06-12 14:38:04.946014+08	2	2024-06-12 14:38:04.946014+08	/pp_master/component/edit/c516cfde-1b94-4144-8fa1-7cd511284919/	127.0.0.1	2
+70784ffa-4cb8-4859-958f-42759f39ea24	t	2	2024-06-12 14:38:12.637172+08	2	2024-06-12 14:38:12.637172+08	/pp_master/component/edit/c516cfde-1b94-4144-8fa1-7cd511284919/	127.0.0.1	2
+900325ca-9988-47c4-84e8-86f373b13e61	t	2	2024-06-12 14:38:12.92664+08	2	2024-06-12 14:38:12.92664+08	/pp_master/component/index/	127.0.0.1	2
+8417d2b4-2e7e-4e5d-8bac-5b786eb802a6	t	2	2024-06-12 14:40:29.950936+08	2	2024-06-12 14:40:29.950936+08	/pp_master/component/add/	127.0.0.1	2
+24079dfc-dcf7-47aa-957d-a62f423c1070	t	2	2024-06-12 14:40:39.891882+08	2	2024-06-12 14:40:39.891882+08	/pp_master/component/add/	127.0.0.1	2
+1b50f2cc-b1df-40c4-83fa-9fbf7e2d9882	t	2	2024-06-12 14:40:40.22016+08	2	2024-06-12 14:40:40.22016+08	/pp_master/component/index/	127.0.0.1	2
+757a7ed4-2061-4918-a140-640beaef1a8b	t	2	2024-06-12 14:40:45.674766+08	2	2024-06-12 14:40:45.674766+08	/pp_master/component/add/	127.0.0.1	2
+7369577a-5c32-4e4c-9a59-62a436a718b6	t	2	2024-06-12 14:40:56.159747+08	2	2024-06-12 14:40:56.159747+08	/pp_master/component/add/	127.0.0.1	2
+4ac661b3-8fe7-4e6d-a0c8-d1f46edfff67	t	2	2024-06-12 14:40:56.628528+08	2	2024-06-12 14:40:56.628528+08	/pp_master/component/index/	127.0.0.1	2
+52550c1f-9645-487d-94d9-cac93d35d23f	t	2	2024-06-12 14:41:00.55205+08	2	2024-06-12 14:41:00.55205+08	/pp_master/component/add/	127.0.0.1	2
+909019c9-0727-4b60-905c-bdef78b8001d	t	2	2024-06-12 14:41:06.796498+08	2	2024-06-12 14:41:06.796498+08	/pp_master/component/add/	127.0.0.1	2
+43306e64-e5de-4612-a505-21fad38f35dd	t	2	2024-06-12 14:41:07.07876+08	2	2024-06-12 14:41:07.07876+08	/pp_master/component/index/	127.0.0.1	2
+bb615529-629f-4a5c-9eda-833d6e781941	t	2	2024-06-12 14:41:12.479028+08	2	2024-06-12 14:41:12.479028+08	/pp_master/component/add/	127.0.0.1	2
+bf3950f2-3a33-415a-aa25-2e2f3b05b607	t	2	2024-06-12 14:41:19.008987+08	2	2024-06-12 14:41:19.008987+08	/pp_master/component/add/	127.0.0.1	2
+769e7189-709e-4e88-8238-8975af9d6229	t	2	2024-06-12 14:41:19.35358+08	2	2024-06-12 14:41:19.35358+08	/pp_master/component/index/	127.0.0.1	2
+f9478463-6d9f-4942-9f43-cace246d8925	t	2	2024-06-12 14:41:24.785464+08	2	2024-06-12 14:41:24.785464+08	/pp_master/component/add/	127.0.0.1	2
+ead1873c-67c0-40f3-92ec-bcd0da207d72	t	2	2024-06-12 14:41:30.955026+08	2	2024-06-12 14:41:30.955026+08	/pp_master/component/add/	127.0.0.1	2
+f57406e8-9efb-4c51-b42d-25a0c9d81f3f	t	2	2024-06-12 14:41:31.560711+08	2	2024-06-12 14:41:31.560711+08	/pp_master/component/index/	127.0.0.1	2
+e515c303-c9a2-4a07-aaee-0ecd9b18d3d3	t	2	2024-06-12 14:41:35.78821+08	2	2024-06-12 14:41:35.78821+08	/pp_master/component/add/	127.0.0.1	2
+4c65dbd2-4b24-4b85-a18d-7c5dacb8063d	t	2	2024-06-12 14:41:41.739367+08	2	2024-06-12 14:41:41.739367+08	/pp_master/component/add/	127.0.0.1	2
+8d5a778e-3f40-4a3e-96c9-82b3b00b5b4b	t	2	2024-06-12 14:41:42.058715+08	2	2024-06-12 14:41:42.058715+08	/pp_master/component/index/	127.0.0.1	2
+7798a6fe-784a-4d2b-8e8a-9fbf0cf0f770	t	2	2024-06-12 14:41:47.281966+08	2	2024-06-12 14:41:47.281966+08	/pp_master/component/add/	127.0.0.1	2
+a8d7e83f-5027-4997-ab25-ffd6ac624f05	t	2	2024-06-12 14:41:53.322968+08	2	2024-06-12 14:41:53.322968+08	/pp_master/component/add/	127.0.0.1	2
+55bbdd87-0db3-44c9-9661-fc28c777abe6	t	2	2024-06-12 14:41:53.651097+08	2	2024-06-12 14:41:53.651097+08	/pp_master/component/index/	127.0.0.1	2
+fcc6530b-3343-481f-94ba-b6cb1756beb1	t	2	2024-06-12 14:41:54.968427+08	2	2024-06-12 14:41:54.968427+08	/pp_master/component/add/	127.0.0.1	2
+27e671c8-16ce-4e8e-b431-6a43ace35015	t	2	2024-06-12 14:42:03.414896+08	2	2024-06-12 14:42:03.414896+08	/pp_master/component/add/	127.0.0.1	2
+7c16ad95-ac27-4f59-b226-f81f221dff48	t	2	2024-06-12 14:42:15.597012+08	2	2024-06-12 14:42:15.597012+08	/pp_master/component/index/	127.0.0.1	2
+c32ffd22-6e07-4059-bfd7-352f13458ab7	t	2	2024-06-12 14:42:29.406588+08	2	2024-06-12 14:42:29.406588+08	/pp_master/component/edit/4242f9b1-c7d6-4001-99cc-9dd476ca9403/	127.0.0.1	2
+f2cb4cdd-c825-4744-9cda-2b8630a9137f	t	2	2024-06-12 14:42:40.041268+08	2	2024-06-12 14:42:40.041268+08	/pp_master/component/edit/4242f9b1-c7d6-4001-99cc-9dd476ca9403/	127.0.0.1	2
+8ac3b640-3a8f-435f-9bf2-d90ad60f93b5	t	2	2024-06-12 14:42:40.385428+08	2	2024-06-12 14:42:40.385428+08	/pp_master/component/index/	127.0.0.1	2
+fe8bd8f7-ca50-44eb-b502-1784bff42d90	t	2	2024-06-12 14:42:42.928072+08	2	2024-06-12 14:42:42.928072+08	/pp_master/component/edit/22fb1152-96a2-4b17-a3c5-2f328dcb0982/	127.0.0.1	2
+8bef3edb-16d9-4b38-bfe6-0bfca3f31877	t	2	2024-06-12 14:42:51.856927+08	2	2024-06-12 14:42:51.856927+08	/pp_master/component/edit/22fb1152-96a2-4b17-a3c5-2f328dcb0982/	127.0.0.1	2
+32615eeb-e409-4256-9be3-c235f0f82f9b	t	2	2024-06-12 14:42:52.223461+08	2	2024-06-12 14:42:52.223461+08	/pp_master/component/index/	127.0.0.1	2
+8063c8de-cf4a-45b5-bb67-3d300b2795aa	t	2	2024-06-12 14:42:55.199198+08	2	2024-06-12 14:42:55.199198+08	/pp_master/component/edit/6cea163d-5efd-4f28-86e4-09d5c20f659d/	127.0.0.1	2
+02c585df-9e68-4cbc-9b71-ad2241f00932	t	2	2024-06-12 14:43:11.853068+08	2	2024-06-12 14:43:11.853068+08	/pp_master/component/edit/6cea163d-5efd-4f28-86e4-09d5c20f659d/	127.0.0.1	2
+533997d9-2b36-407a-b7ef-e70ac64de800	t	2	2024-06-12 14:43:12.146221+08	2	2024-06-12 14:43:12.146221+08	/pp_master/component/index/	127.0.0.1	2
+7f484721-19e6-4819-9830-ca15b14ce157	t	2	2024-06-12 14:43:16.773173+08	2	2024-06-12 14:43:16.773173+08	/pp_master/component/edit/2f373bc6-615b-449a-9f7f-18325517f2c5/	127.0.0.1	2
+480ed605-901b-44e4-9056-c9387033174f	t	2	2024-06-12 14:43:24.121521+08	2	2024-06-12 14:43:24.121521+08	/pp_master/component/edit/2f373bc6-615b-449a-9f7f-18325517f2c5/	127.0.0.1	2
+f48476ba-9bdb-4a66-94e9-f831c96ad55d	t	2	2024-06-12 14:43:24.498315+08	2	2024-06-12 14:43:24.498315+08	/pp_master/component/index/	127.0.0.1	2
+989163a7-b34a-4871-9f99-d974fa2ae91d	t	2	2024-06-12 14:43:27.570283+08	2	2024-06-12 14:43:27.570283+08	/pp_master/component/edit/e184260d-6452-4979-9253-639c51e9575f/	127.0.0.1	2
+a8472f4d-e062-4266-a50f-682e097d639b	t	2	2024-06-12 14:43:35.048963+08	2	2024-06-12 14:43:35.048963+08	/pp_master/component/edit/e184260d-6452-4979-9253-639c51e9575f/	127.0.0.1	2
+4e5700c1-5b37-4221-a604-2026a54a648e	t	2	2024-06-12 14:43:35.316595+08	2	2024-06-12 14:43:35.316595+08	/pp_master/component/index/	127.0.0.1	2
+b43510e8-1153-48c8-b9d8-46f4b5313cea	t	2	2024-06-12 14:43:39.324572+08	2	2024-06-12 14:43:39.324572+08	/pp_master/component/edit/33691c63-df1b-42c0-ac27-395ea8c8da55/	127.0.0.1	2
+9ba685c2-e97a-4f31-b9ba-780a0da526d4	t	2	2024-06-12 14:43:49.344016+08	2	2024-06-12 14:43:49.344016+08	/pp_master/component/edit/33691c63-df1b-42c0-ac27-395ea8c8da55/	127.0.0.1	2
+eb669a74-c279-4a06-98ec-92d8e9046053	t	2	2024-06-12 14:43:49.622405+08	2	2024-06-12 14:43:49.622405+08	/pp_master/component/index/	127.0.0.1	2
+a0bc8db1-0410-4512-a145-0ae8c2f59eaf	t	2	2024-06-12 14:43:52.572695+08	2	2024-06-12 14:43:52.572695+08	/pp_master/component/edit/10cadc4b-651b-444e-80f3-676781616b74/	127.0.0.1	2
+656abc8e-4547-4c02-ac4b-3c3a11a7713e	t	2	2024-06-12 14:43:59.477019+08	2	2024-06-12 14:43:59.477019+08	/pp_master/component/edit/10cadc4b-651b-444e-80f3-676781616b74/	127.0.0.1	2
+8202585d-09f6-4e2d-888c-b57295641ba3	t	2	2024-06-12 14:43:59.754016+08	2	2024-06-12 14:43:59.754016+08	/pp_master/component/index/	127.0.0.1	2
+35a7ecb1-2531-4a1c-9ded-f20b3944e88d	t	2	2024-06-12 14:44:21.793368+08	2	2024-06-12 14:44:21.793368+08	/pp_master/component/add/	127.0.0.1	2
+28088aee-ebb4-4975-9cbd-1f59f6ae1f1c	t	2	2024-06-12 14:44:28.712391+08	2	2024-06-12 14:44:28.712391+08	/pp_master/component/add/	127.0.0.1	2
+a04f7ae3-78fe-4772-8fc2-0852f4b5e44e	t	2	2024-06-12 14:44:29.033924+08	2	2024-06-12 14:44:29.033924+08	/pp_master/component/index/	127.0.0.1	2
+131ec5d7-9ff1-4945-9539-304a923f3094	t	2	2024-06-12 14:44:33.795627+08	2	2024-06-12 14:44:33.795627+08	/pp_master/component/add/	127.0.0.1	2
+256d9cd6-e8f9-4b29-b828-a078ea5d838f	t	2	2024-06-12 14:44:40.813215+08	2	2024-06-12 14:44:40.813215+08	/pp_master/component/add/	127.0.0.1	2
+68f2ace3-03cf-4ff7-97e1-8301921604b0	t	2	2024-06-12 14:44:41.132287+08	2	2024-06-12 14:44:41.132287+08	/pp_master/component/index/	127.0.0.1	2
+7b5b2552-7a13-4a62-ba7a-270964df33ec	t	2	2024-06-12 14:44:46.261739+08	2	2024-06-12 14:44:46.261739+08	/pp_master/component/add/	127.0.0.1	2
+4adc68e7-868a-4ec9-8e0d-c7d15da46bb3	t	2	2024-06-12 14:44:51.937916+08	2	2024-06-12 14:44:51.937916+08	/pp_master/component/add/	127.0.0.1	2
+93e295f8-e284-4c90-8dfd-9522f2dc6571	t	2	2024-06-12 14:44:52.469718+08	2	2024-06-12 14:44:52.469718+08	/pp_master/component/index/	127.0.0.1	2
+7af322ec-85f5-4284-91dd-a4d8f02a541b	t	2	2024-06-12 14:44:55.927264+08	2	2024-06-12 14:44:55.927264+08	/pp_master/component/add/	127.0.0.1	2
+46233aee-2d0f-418f-b893-1887b24ad52d	t	2	2024-06-12 14:45:05.986877+08	2	2024-06-12 14:45:05.986877+08	/pp_master/component/add/	127.0.0.1	2
+6c010d6e-bf39-4b48-9840-e7a5f29b3738	t	2	2024-06-12 14:45:06.348994+08	2	2024-06-12 14:45:06.348994+08	/pp_master/component/index/	127.0.0.1	2
+e463c19e-d671-442f-b773-18566569d89a	t	2	2024-06-12 14:45:10.320542+08	2	2024-06-12 14:45:10.320542+08	/pp_master/component/add/	127.0.0.1	2
+dfcf0b70-0ff8-44b6-9d0c-ae6d324d80d0	t	2	2024-06-12 14:45:16.78667+08	2	2024-06-12 14:45:16.78667+08	/pp_master/component/add/	127.0.0.1	2
+b6e4a37c-251d-4d92-a4b9-64827855c303	t	2	2024-06-12 14:45:17.092355+08	2	2024-06-12 14:45:17.092355+08	/pp_master/component/index/	127.0.0.1	2
+bc7ddc37-bad3-41d0-a677-bf50d47cf2db	t	2	2024-06-12 14:45:20.636305+08	2	2024-06-12 14:45:20.636305+08	/pp_master/component/add/	127.0.0.1	2
+36b2d8f8-9c9a-4002-a77c-f042e5c88f98	t	2	2024-06-12 14:45:31.060082+08	2	2024-06-12 14:45:31.060082+08	/pp_master/component/add/	127.0.0.1	2
+6e5c475d-b45e-488a-b056-c30e826e1012	t	2	2024-06-12 14:45:31.367796+08	2	2024-06-12 14:45:31.367796+08	/pp_master/component/index/	127.0.0.1	2
+e2d06f42-55c5-47a6-aed5-6286a42c7d34	t	2	2024-06-12 14:45:58.972196+08	2	2024-06-12 14:45:58.972196+08	/pp_master/component/add/	127.0.0.1	2
+0712a0e2-e523-4ef4-ab52-5cb958db496d	t	2	2024-06-12 14:46:05.815237+08	2	2024-06-12 14:46:05.816235+08	/pp_master/component/add/	127.0.0.1	2
+a89d6931-180a-4bcf-b64f-bfa29ea5372b	t	2	2024-06-12 14:46:06.126019+08	2	2024-06-12 14:46:06.126019+08	/pp_master/component/index/	127.0.0.1	2
+3202bf65-a381-4828-93ef-8519690e0e39	t	2	2024-06-12 14:46:09.999215+08	2	2024-06-12 14:46:09.999215+08	/pp_master/component/add/	127.0.0.1	2
+290e1b64-267e-4899-826c-5af92f3f17fb	t	2	2024-06-12 14:46:15.900718+08	2	2024-06-12 14:46:15.900718+08	/pp_master/component/add/	127.0.0.1	2
+66a7fde5-e4d7-4422-a0d1-417ebd5eb8b3	t	2	2024-06-12 14:46:16.210433+08	2	2024-06-12 14:46:16.210433+08	/pp_master/component/index/	127.0.0.1	2
+085fb2a8-e643-4174-a1df-7ad3a6b13385	t	2	2024-06-12 14:46:20.23507+08	2	2024-06-12 14:46:20.23507+08	/pp_master/component/add/	127.0.0.1	2
+866464f9-5c7e-4d1b-b879-6d956417159c	t	2	2024-06-12 14:46:26.891746+08	2	2024-06-12 14:46:26.891746+08	/pp_master/component/add/	127.0.0.1	2
+7f213334-e7ac-486e-9b12-5f172ecf86cf	t	2	2024-06-12 14:46:27.18896+08	2	2024-06-12 14:46:27.18896+08	/pp_master/component/index/	127.0.0.1	2
+92c07b98-02b4-44cf-9443-6809e28f01ca	t	2	2024-06-12 14:47:49.198757+08	2	2024-06-12 14:47:49.198757+08	/pp_master/component/index/	127.0.0.1	2
+3016c2e2-3437-4904-add5-3cc013c4cf13	t	2	2024-06-17 09:50:01.401915+08	2	2024-06-17 09:50:01.401915+08	/index/	127.0.0.1	2
+3a406059-cd08-472e-b830-3564d1b1a08a	t	2	2024-06-17 09:50:01.733609+08	2	2024-06-17 09:50:01.733609+08	/home/	127.0.0.1	2
+a3931c7f-23ee-4944-b1fa-00e3c90d28c9	t	2	2024-06-17 09:50:08.859851+08	2	2024-06-17 09:50:08.859851+08	/pp_master/component/index/	127.0.0.1	2
+46c6c87f-6598-4a26-81e5-03f99aa10aae	t	2	2024-06-17 10:02:30.520094+08	2	2024-06-17 10:02:30.520094+08	/sys_auth/menu/index/	127.0.0.1	2
+9e16da1f-af1e-49b6-84f0-3faaa62235cd	t	2	2024-06-17 10:02:34.044709+08	2	2024-06-17 10:02:34.044709+08	/sys_auth/menu/index/	127.0.0.1	2
+693cdc2a-5b63-4daa-80d1-9a0aee625335	t	2	2024-06-17 10:02:36.585821+08	2	2024-06-17 10:02:36.585821+08	/sys_auth/menu/add/	127.0.0.1	2
+d088c520-ff09-440c-ba4e-537b9f8f06be	t	2	2024-06-17 10:03:24.988311+08	2	2024-06-17 10:03:24.988311+08	/sys_auth/menu/add/	127.0.0.1	2
+1be3f95c-7318-4edf-a35a-d8335711bdb1	t	2	2024-06-17 10:03:25.196093+08	2	2024-06-17 10:03:25.196093+08	/sys_auth/menu/index/	127.0.0.1	2
+c30684e2-8db4-4b49-930d-4d33fe99f64c	t	2	2024-06-17 10:35:33.467903+08	2	2024-06-17 10:35:33.467903+08	/index/	127.0.0.1	2
+7cbb6e4f-36b2-4a16-81e5-221f7ba0e8f3	t	2	2024-06-17 10:35:33.777922+08	2	2024-06-17 10:35:33.777922+08	/home/	127.0.0.1	2
+30312b68-d50e-4cfe-b01a-f641c0ef1e61	t	2	2024-06-17 10:35:34.876135+08	2	2024-06-17 10:35:34.876135+08	/sys_dict/dict/index/	127.0.0.1	2
+40a0e571-6ea3-4172-9bde-f336264d479e	t	2	2024-06-17 10:35:40.214141+08	2	2024-06-17 10:35:40.214141+08	/sys_dict/enum/add/db8ae72d-90d9-40ad-a385-c934f56a00f2	127.0.0.1	2
+ee5be838-9d66-49f2-86f3-4f97f6d8b110	t	2	2024-06-17 10:35:43.339725+08	2	2024-06-17 10:35:43.339725+08	/sys_dict/dict/index/	127.0.0.1	2
+1ede43c5-d79d-497c-88c5-b9624f6cd332	t	2	2024-06-17 10:35:52.359091+08	2	2024-06-17 10:35:52.359091+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+d82a90d9-5fa6-47d3-baa4-25d950a3ca09	t	2	2024-06-17 10:35:54.628794+08	2	2024-06-17 10:35:54.628794+08	/sys_dict/dict/index/	127.0.0.1	2
+cb28ef47-3b77-491f-b98b-2bb29fb52bee	t	2	2024-06-17 10:36:17.435834+08	2	2024-06-17 10:36:17.435834+08	/sys_dict/dict/add/	127.0.0.1	2
+821f1ae6-82b6-4d71-8cbf-db153af75d93	t	2	2024-06-17 10:36:31.625991+08	2	2024-06-17 10:36:31.625991+08	/sys_dict/dict/add/	127.0.0.1	2
+26a51699-834a-46f5-af83-4a81e5b0013a	t	2	2024-06-17 10:36:31.834725+08	2	2024-06-17 10:36:31.834725+08	/sys_dict/dict/index/	127.0.0.1	2
+d63a26be-f7dd-4bc9-80ca-2e67298e4c70	t	2	2024-06-17 10:36:44.623233+08	2	2024-06-17 10:36:44.623233+08	/sys_dict/enum/add/1631e315-9b32-43ef-bebd-70bc3bfcfbf7	127.0.0.1	2
+f6148f5e-8fb5-4955-bda6-6985f1da2aa5	t	2	2024-06-17 10:36:58.549252+08	2	2024-06-17 10:36:58.549252+08	/sys_dict/enum/add/1631e315-9b32-43ef-bebd-70bc3bfcfbf7	127.0.0.1	2
+82f00a2a-ae6b-46fb-935e-1dcca2614791	t	2	2024-06-17 10:36:58.741268+08	2	2024-06-17 10:36:58.741268+08	/sys_dict/enum/add/1631e315-9b32-43ef-bebd-70bc3bfcfbf7	127.0.0.1	2
+d5f1b8b0-9d99-45b7-a3b5-0a3e4cd6cf1b	t	2	2024-06-17 10:37:04.940631+08	2	2024-06-17 10:37:04.940631+08	/sys_dict/enum/add/1631e315-9b32-43ef-bebd-70bc3bfcfbf7	127.0.0.1	2
+10313eca-40c7-42f6-a5f3-0d3b2de062b4	t	2	2024-06-17 10:37:05.12998+08	2	2024-06-17 10:37:05.12998+08	/sys_dict/enum/add/1631e315-9b32-43ef-bebd-70bc3bfcfbf7	127.0.0.1	2
+c861ea95-32c4-47da-a0ce-f1894ee79577	t	2	2024-06-17 10:37:11.598198+08	2	2024-06-17 10:37:11.598198+08	/sys_dict/enum/add/1631e315-9b32-43ef-bebd-70bc3bfcfbf7	127.0.0.1	2
+d8dc3c6b-0e38-41dd-91d8-09970e9bf29a	t	2	2024-06-17 10:37:11.779172+08	2	2024-06-17 10:37:11.779172+08	/sys_dict/enum/add/1631e315-9b32-43ef-bebd-70bc3bfcfbf7	127.0.0.1	2
+2b0cf975-516c-4b92-96fd-692254e37998	t	2	2024-06-17 10:37:20.546077+08	2	2024-06-17 10:37:20.546077+08	/sys_dict/dict/index/	127.0.0.1	2
+48501361-4356-4e76-84bc-0f26bc9cf315	t	2	2024-06-17 10:37:21.814179+08	2	2024-06-17 10:37:21.814179+08	/sys_dict/enum/add/db8ae72d-90d9-40ad-a385-c934f56a00f2	127.0.0.1	2
+514bfa83-9d54-4db1-a9e0-54c56973bb61	t	2	2024-06-17 10:37:24.735845+08	2	2024-06-17 10:37:24.735845+08	/sys_dict/dict/index/	127.0.0.1	2
+d6d0e832-d073-4b9b-8e6b-55d2e6d5ccc8	t	2	2024-06-17 10:47:52.696466+08	2	2024-06-17 10:47:52.696466+08	/org_dep/department/index/	127.0.0.1	2
+8844869d-4a3f-47be-b4d7-07ba2fbf7227	t	2	2024-06-17 10:47:54.996384+08	2	2024-06-17 10:47:54.996384+08	/org_dep/department/add/	127.0.0.1	2
+800855e7-39af-41d9-81b3-ed0a167e8124	t	2	2024-06-17 10:52:12.159933+08	2	2024-06-17 10:52:12.159933+08	/org_dep/department/index/	127.0.0.1	2
+c3ceb313-4e9a-4ea3-929f-a91d2c1dbf88	t	2	2024-06-17 10:52:13.536758+08	2	2024-06-17 10:52:13.536758+08	/org_dep/department/add/	127.0.0.1	2
+cca04865-71bb-4242-8517-416cf528bf8a	t	2	2024-06-17 10:57:41.826377+08	2	2024-06-17 10:57:41.826377+08	/pp_master/work_center/index/	127.0.0.1	2
+2dfa5ff7-08dc-4348-a5aa-982b995a0906	t	2	2024-06-17 10:57:43.149085+08	2	2024-06-17 10:57:43.149085+08	/pp_master/work_center/add/	127.0.0.1	2
+38f85f94-e677-42a4-9109-48dbee65da43	t	2	2024-06-17 10:58:47.141232+08	2	2024-06-17 10:58:47.141232+08	/pp_master/warehouse/index/	127.0.0.1	2
+835dc170-2bf6-4c86-9e11-f07fa7ef44c9	t	2	2024-06-17 10:58:48.804142+08	2	2024-06-17 10:58:48.804142+08	/pp_master/warehouse/add/	127.0.0.1	2
+92bbffd4-d63f-4259-be8a-358e5e9e50a1	t	2	2024-06-17 10:58:53.835574+08	2	2024-06-17 10:58:53.835574+08	/pp_master/line/index/	127.0.0.1	2
+42084467-0e7a-4324-b3ab-1f21ab124881	t	2	2024-06-17 10:58:55.404262+08	2	2024-06-17 10:58:55.404262+08	/pp_master/line/add/	127.0.0.1	2
+b3323a8c-fa9b-4278-a160-f59b3df2b6ba	t	2	2024-06-17 10:59:00.161072+08	2	2024-06-17 10:59:00.161072+08	/pp_master/model_code/index/	127.0.0.1	2
+85880d3b-aa0c-4b49-a8bc-54d3aeda2c43	t	2	2024-06-17 10:59:01.329738+08	2	2024-06-17 10:59:01.329738+08	/pp_master/model_code/add/	127.0.0.1	2
+8fd72ed9-34f8-4f73-89e2-75d844d83cd7	t	2	2024-06-17 11:00:57.412222+08	2	2024-06-17 11:00:57.412222+08	/pp_master/model_code/index/	127.0.0.1	2
+69ba17bb-527b-4324-a478-228cec2b2392	t	2	2024-06-17 11:00:58.91601+08	2	2024-06-17 11:00:58.91601+08	/pp_master/model_code/add/	127.0.0.1	2
+33a499cc-2bee-4a3b-8447-0a31a1eed2da	t	2	2024-06-17 11:01:16.825486+08	2	2024-06-17 11:01:16.825486+08	/pp_master/option/basic/index/	127.0.0.1	2
+a5e8e9b2-f795-408d-99e1-a33ecec3c23a	t	2	2024-06-17 11:01:18.280285+08	2	2024-06-17 11:01:18.280285+08	/pp_master/option/basic/add/	127.0.0.1	2
+74018dc4-dc96-40df-9416-4578d2609d0e	t	2	2024-06-17 11:01:27.231836+08	2	2024-06-17 11:01:27.231836+08	/sys_auth/user/index/	127.0.0.1	2
+3c237b26-62a9-4f2c-9a2f-7042a3d83e8e	t	2	2024-06-17 11:01:28.500427+08	2	2024-06-17 11:01:28.500427+08	/sys_auth/user/add/	127.0.0.1	2
+9708f0ff-f26d-4443-9810-1e8daa20e2ed	t	2	2024-06-17 11:01:42.03973+08	2	2024-06-17 11:01:42.03973+08	/org_com/company/index/	127.0.0.1	2
+968b2837-d2cd-417d-9e25-1fa83114a3bf	t	2	2024-06-17 11:01:44.302382+08	2	2024-06-17 11:01:44.302382+08	/org_com/company/add/	127.0.0.1	2
+f30fb6a3-46e5-43b6-b2f0-9732c27d6fbf	t	2	2024-06-17 11:01:47.980355+08	2	2024-06-17 11:01:47.980355+08	/sys_dict/dict/add/	127.0.0.1	2
+0a55a7f7-cb3a-4e8d-b8d8-eac799f756e6	t	2	2024-06-17 11:01:49.458877+08	2	2024-06-17 11:01:49.458877+08	/sys_dict/dict/index/	127.0.0.1	2
+e20f1a8a-72de-4f7e-b50e-835138171573	t	2	2024-06-17 11:01:50.521559+08	2	2024-06-17 11:01:50.521559+08	/sys_dict/enum/add/b68d0813-52f8-4f26-b4bc-d40f5531c17b	127.0.0.1	2
+04107326-7b23-42a7-a66a-28d8fac9e0b3	t	2	2024-06-17 11:01:54.10213+08	2	2024-06-17 11:01:54.10213+08	/pp_master/machine_code/index/	127.0.0.1	2
+07c554f3-bfbf-42ed-a4da-f0fe7c69eede	t	2	2024-06-17 11:01:55.479513+08	2	2024-06-17 11:01:55.479513+08	/pp_master/machine_code/add/	127.0.0.1	2
+4c348a01-76e3-41ec-ae1b-c4f91172796c	t	2	2024-06-17 11:02:03.494014+08	2	2024-06-17 11:02:03.494014+08	/pp_master/option/code/index/	127.0.0.1	2
+7f95d5ce-123f-4415-b131-67c0b798678f	t	2	2024-06-17 11:02:04.973124+08	2	2024-06-17 11:02:04.973124+08	/pp_master/option/code/add/	127.0.0.1	2
+86b533ca-815f-4d2b-992e-7c38328cd75e	t	2	2024-06-17 11:02:15.328864+08	2	2024-06-17 11:02:15.328864+08	/org_emp/employee/index/	127.0.0.1	2
+fdfe8257-e297-4b65-a848-7df5f98b108f	t	2	2024-06-17 11:02:17.457238+08	2	2024-06-17 11:02:17.457238+08	/org_emp/employee/add/	127.0.0.1	2
+26ec373d-ef35-42d6-bc44-b9bfc300e04a	t	2	2024-06-17 11:02:23.695394+08	2	2024-06-17 11:02:23.695394+08	/sys_auth/role/index/	127.0.0.1	2
+77f5c9f2-94d6-4a70-9d6f-f5b53cfb2feb	t	2	2024-06-17 11:02:25.073364+08	2	2024-06-17 11:02:25.073364+08	/sys_auth/role/add/	127.0.0.1	2
+e3b8b661-ff6d-4622-8304-cd6b53eff739	t	2	2024-06-17 11:02:36.27589+08	2	2024-06-17 11:02:36.27589+08	/sys_auth/menu/index/	127.0.0.1	2
+db30636b-bb81-40ab-872e-89a7f0221101	t	2	2024-06-17 11:02:38.027234+08	2	2024-06-17 11:02:38.027234+08	/sys_auth/menu/add/	127.0.0.1	2
+27a4d985-449a-499f-8416-7493e1373611	t	2	2024-06-17 11:02:41.127886+08	2	2024-06-17 11:02:41.127886+08	/pp_master/component/index/	127.0.0.1	2
+2b067f67-3925-4709-9802-34a172110f49	t	2	2024-06-17 11:02:44.589342+08	2	2024-06-17 11:02:44.589342+08	/pp_master/component/add/	127.0.0.1	2
+8f5d24ae-7b93-49ab-bc74-a3eb12721056	t	2	2024-06-17 13:25:50.14136+08	2	2024-06-17 13:25:50.14136+08	/index/	127.0.0.1	2
+2e1fc918-4dd8-4d1e-9914-effa189775f5	t	2	2024-06-17 13:25:50.406203+08	2	2024-06-17 13:25:50.406203+08	/home/	127.0.0.1	2
+2098faff-61f5-45b7-a1c1-7b23d480ef38	t	2	2024-06-17 14:14:11.286568+08	2	2024-06-17 14:14:11.286568+08	/index/	127.0.0.1	2
+6b0193fd-64f8-419b-be96-aaa050052e9d	t	2	2024-06-17 14:14:11.573153+08	2	2024-06-17 14:14:11.573153+08	/home/	127.0.0.1	2
+fbe6f45e-50aa-4495-a25e-bad055601458	t	2	2024-06-17 14:14:14.99603+08	2	2024-06-17 14:14:14.99603+08	/pp_master/component/index/	127.0.0.1	2
+f138aba7-b4b8-4c86-a3ec-60c320ec1fd8	t	2	2024-06-17 14:14:16.869859+08	2	2024-06-17 14:14:16.869859+08	/pp_master/component/add/	127.0.0.1	2
+cc65739b-8952-4aec-9ee8-0948ffc4357a	t	2	2024-06-17 14:14:18.24281+08	2	2024-06-17 14:14:18.24281+08	/pp_master/component/index/	127.0.0.1	2
+a5557557-72c8-4422-bf8b-675cc62b7a80	t	2	2024-06-17 14:15:08.483172+08	2	2024-06-17 14:15:08.483172+08	/pp_master/line/index/	127.0.0.1	2
+ed1c2c4a-af32-4920-a6fe-28891da5881c	t	2	2024-06-17 14:23:31.309959+08	2	2024-06-17 14:23:31.309959+08	/sys_auth/role/index/	127.0.0.1	2
+b551fd74-164c-4b8e-a578-23bade7acee4	t	2	2024-06-17 14:23:33.083688+08	2	2024-06-17 14:23:33.083688+08	/sys_auth/role/menus/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	2
+3a97231c-df59-4f77-a885-e9540978c76a	t	1	2024-06-17 14:23:41.63852+08	1	2024-06-17 14:23:41.63852+08	/index/	127.0.0.1	1
+b43c8c76-b2a8-4e67-9167-2c2fa3cf8320	t	1	2024-06-17 14:23:42.425263+08	1	2024-06-17 14:23:42.425263+08	/home/	127.0.0.1	1
+33e24447-0e32-49e8-a4bd-d1ba0a95cce9	t	1	2024-06-17 14:25:04.062475+08	1	2024-06-17 14:25:04.062475+08	/index/	127.0.0.1	1
+3c4f8ba8-6a4a-48dd-8fab-42b18b3bfee4	t	1	2024-06-17 14:25:04.741703+08	1	2024-06-17 14:25:04.741703+08	/home/	127.0.0.1	1
+7c0ddb64-44ee-40c7-9c15-aeed61052cba	t	1	2024-06-17 14:25:23.39555+08	1	2024-06-17 14:25:23.39555+08	/index/	127.0.0.1	1
+885cb18d-8481-4bd0-9eb2-6cd225629aa1	t	1	2024-06-17 14:25:24.097402+08	1	2024-06-17 14:25:24.097402+08	/home/	127.0.0.1	1
+c0647d7b-7635-4621-ad0d-c7bfd3cf850a	t	1	2024-06-17 14:25:53.492192+08	1	2024-06-17 14:25:53.492192+08	/index/	127.0.0.1	1
+b0447b22-7c66-436b-ab2a-3be6c35019cb	t	1	2024-06-17 14:25:54.256509+08	1	2024-06-17 14:25:54.256509+08	/home/	127.0.0.1	1
+ff4a9d37-e120-4232-ab85-05ae3eade263	t	1	2024-06-17 14:52:23.520127+08	1	2024-06-17 14:52:23.520127+08	/index/	127.0.0.1	1
+487807a5-1fb0-426b-811f-d68010d24fb6	t	1	2024-06-17 14:52:24.22013+08	1	2024-06-17 14:52:24.22013+08	/home/	127.0.0.1	1
+1d5e098c-4123-49ac-9458-6a3e628052c8	t	1	2024-06-17 14:52:38.731033+08	1	2024-06-17 14:52:38.731033+08	/index/	127.0.0.1	1
+9490cda2-df62-4f81-a788-c5f8f3c27b7b	t	1	2024-06-17 14:52:39.370568+08	1	2024-06-17 14:52:39.370568+08	/home/	127.0.0.1	1
+04261c1c-2ae9-4910-a8f2-12b99aef9178	t	1	2024-06-17 14:55:49.535928+08	1	2024-06-17 14:55:49.535928+08	/index/	127.0.0.1	1
+79477976-6b27-4283-845b-253734a03a20	t	1	2024-06-17 14:55:56.474457+08	1	2024-06-17 14:55:56.474457+08	/ld_stock/in_out/index/	127.0.0.1	1
+503d2442-fb46-4152-b62e-a45ba84d2da2	t	1	2024-06-17 14:56:53.335356+08	1	2024-06-17 14:56:53.335356+08	/ld_stock/in_out/index/	127.0.0.1	1
+5af6e832-529f-4242-b285-0b5bb55d714a	t	1	2024-06-17 14:58:32.666337+08	1	2024-06-17 14:58:32.666337+08	/ld_stock/in_out/index/	127.0.0.1	1
+ca68edf7-f5f6-4226-b5cc-600cc542e96f	t	1	2024-06-17 14:59:04.897445+08	1	2024-06-17 14:59:04.897445+08	/ld_stock/in_out/index/	127.0.0.1	1
+e4b5979a-07d3-4d79-9029-cb19a32e25f6	t	1	2024-06-17 15:00:23.474338+08	1	2024-06-17 15:00:23.474338+08	/index/	127.0.0.1	1
+688bb52a-dd55-4219-9d4a-41161a9b5c8b	t	1	2024-06-17 15:00:23.749638+08	1	2024-06-17 15:00:23.749638+08	/home/	127.0.0.1	1
+8d05edcc-3dc5-481d-8e72-1d41b5f73196	t	1	2024-06-17 15:00:26.459428+08	1	2024-06-17 15:00:26.459428+08	/ld_stock/in_out/index/	127.0.0.1	1
+52823385-3059-45fe-a12e-7e0c36b6c313	t	1	2024-06-17 15:01:08.10561+08	1	2024-06-17 15:01:08.10561+08	/index/	127.0.0.1	1
+92d1222a-ca7a-4777-bc53-1bc79ca9a7b3	t	1	2024-06-17 15:01:08.355662+08	1	2024-06-17 15:01:08.355662+08	/home/	127.0.0.1	1
+556166bd-2123-409b-bfb6-65ba466f1c72	t	1	2024-06-17 15:01:12.390957+08	1	2024-06-17 15:01:12.391921+08	/ld_stock/in_out/index/	127.0.0.1	1
+1bf290b9-cadd-45dc-a232-aa5432fdccb6	t	1	2024-06-17 15:02:01.262273+08	1	2024-06-17 15:02:01.262273+08	/ld_stock/in_out/index/	127.0.0.1	1
+6331d896-cc0e-48ca-8dbe-0f0394ddcff2	t	1	2024-06-17 15:02:45.570326+08	1	2024-06-17 15:02:45.570326+08	/index/	127.0.0.1	1
+953ec70a-fe4b-4a56-846a-9d07b450b619	t	1	2024-06-17 15:02:45.822758+08	1	2024-06-17 15:02:45.822758+08	/home/	127.0.0.1	1
+57a610bc-83dd-4e09-b9c5-8f3efe209e22	t	1	2024-06-17 15:02:48.094916+08	1	2024-06-17 15:02:48.094916+08	/ld_stock/in_out/index/	127.0.0.1	1
+b2370204-cac7-4b5e-89d8-cab62bcbfccc	t	1	2024-06-17 15:03:02.42238+08	1	2024-06-17 15:03:02.42238+08	/index/	127.0.0.1	1
+56d1ad18-47b9-4654-b267-62eef64e696b	t	1	2024-06-17 15:03:02.684728+08	1	2024-06-17 15:03:02.684728+08	/home/	127.0.0.1	1
+169916e4-72bb-431a-8d84-98af263b7262	t	1	2024-06-17 15:03:04.37683+08	1	2024-06-17 15:03:04.37683+08	/ld_stock/in_out/index/	127.0.0.1	1
+cd86027a-c58e-454c-887f-5b73286fb7cd	t	1	2024-06-17 15:03:19.305872+08	1	2024-06-17 15:03:19.305872+08	/index/	127.0.0.1	1
+cb754a07-925c-4c97-8b01-496e31510931	t	1	2024-06-17 15:03:19.563219+08	1	2024-06-17 15:03:19.563219+08	/home/	127.0.0.1	1
+a2ec29bb-209a-4e50-903a-5bc01f5564f2	t	1	2024-06-17 15:03:21.802051+08	1	2024-06-17 15:03:21.802051+08	/ld_stock/in_out/index/	127.0.0.1	1
+72e1fdac-22f0-4532-a810-6ab6efdaaa59	t	1	2024-06-17 15:04:03.553467+08	1	2024-06-17 15:04:03.553467+08	/index/	127.0.0.1	1
+7cf4bad8-e839-412c-aead-b5be8d946548	t	1	2024-06-17 15:04:03.804426+08	1	2024-06-17 15:04:03.804426+08	/home/	127.0.0.1	1
+e810ede7-bd05-44ae-b059-d69b34d2d7b1	t	1	2024-06-17 15:04:06.964844+08	1	2024-06-17 15:04:06.964844+08	/ld_stock/in_out/index/	127.0.0.1	1
+c469c2af-f13a-4707-bb09-c4d718fd864a	t	1	2024-06-17 15:05:39.050542+08	1	2024-06-17 15:05:39.050542+08	/sys_auth/role/index/	127.0.0.1	1
+2d906307-4ace-4f08-bac1-e19a31d0dbb3	t	1	2024-06-17 15:05:40.586263+08	1	2024-06-17 15:05:40.586263+08	/sys_auth/role/menus/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	1
+ded3be7d-0ad3-4bed-ba14-957550f96b80	t	1	2024-06-17 15:05:43.635601+08	1	2024-06-17 15:05:43.635601+08	/sys_auth/role/auth/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	1
+db5c0564-fd1b-423a-873f-c90604835fce	t	2	2024-06-17 15:05:52.88436+08	2	2024-06-17 15:05:52.88436+08	/index/	127.0.0.1	2
+2a6b5a1c-e693-49fa-92a6-61c4228ecca8	t	2	2024-06-17 15:05:53.158734+08	2	2024-06-17 15:05:53.158734+08	/home/	127.0.0.1	2
+0293aebe-06e1-4e5e-b00b-cd195a847867	t	2	2024-06-17 15:05:56.12962+08	2	2024-06-17 15:05:56.12962+08	/ld_stock/in_out/index/	127.0.0.1	2
+b1a5c07e-b63f-4294-a814-7e6222fcd891	t	2	2024-06-17 15:07:24.772526+08	2	2024-06-17 15:07:24.772526+08	/ld_stock/in_out/index/	127.0.0.1	2
+6c487ef1-72fa-4280-a421-7b2785133e57	t	2	2024-06-17 15:09:27.848311+08	2	2024-06-17 15:09:27.848311+08	/index/	127.0.0.1	2
+c35bbf79-9bb6-4007-af68-0d1514f75742	t	2	2024-06-17 15:09:28.123623+08	2	2024-06-17 15:09:28.123623+08	/home/	127.0.0.1	2
+8c854869-deb6-4b79-97f6-e419df1d3cf6	t	2	2024-06-17 15:11:36.060782+08	2	2024-06-17 15:11:36.060782+08	/ld_stock/in_out/index/	127.0.0.1	2
+f6cc3635-4319-4f55-8d4e-84222008d0e5	t	2	2024-06-17 15:11:37.740279+08	2	2024-06-17 15:11:37.740279+08	/index/	127.0.0.1	2
+6b264abf-1751-4ce8-a2ae-d50516be203a	t	2	2024-06-17 15:11:38.024389+08	2	2024-06-17 15:11:38.024389+08	/home/	127.0.0.1	2
+7318a1d9-adf7-4e56-85a8-3d37bb9f7769	t	2	2024-06-17 15:11:43.029346+08	2	2024-06-17 15:11:43.029346+08	/ld_stock/in_out/index/	127.0.0.1	2
+ff2f6090-1949-428b-a6c9-36b1dd38e226	t	2	2024-06-17 15:12:23.08816+08	2	2024-06-17 15:12:23.08816+08	/ld_stock/in_out/index/	127.0.0.1	2
+bc2a8dfa-6003-42e3-aeda-7c05633a5f90	t	2	2024-06-17 15:12:44.244978+08	2	2024-06-17 15:12:44.244978+08	/ld_stock/in_out/index/	127.0.0.1	2
+28ca8566-9eee-436f-bebe-9fb0318946d0	t	2	2024-06-17 15:15:50.073465+08	2	2024-06-17 15:15:50.073465+08	/ld_stock/in_out/index/	127.0.0.1	2
+f7da963e-58d4-423d-b157-f6fe60f0b9f7	t	2	2024-06-17 15:16:01.165147+08	2	2024-06-17 15:16:01.165147+08	/index/	127.0.0.1	2
+698c644b-54c1-4511-8dbf-4a0b4625fdd4	t	2	2024-06-17 15:16:01.448435+08	2	2024-06-17 15:16:01.448435+08	/home/	127.0.0.1	2
+ca16012a-d72e-45f1-a697-54c006a16607	t	2	2024-06-17 15:16:06.867456+08	2	2024-06-17 15:16:06.867456+08	/ld_stock/in_out/index/	127.0.0.1	2
+8f76ccb5-37cf-449e-acb2-ac2d1391f466	t	2	2024-06-17 15:16:28.381653+08	2	2024-06-17 15:16:28.381653+08	/ld_stock/in_out/index/	127.0.0.1	2
+89bf1d96-7b0a-44d8-b8f3-7012ba749ba9	t	2	2024-06-17 15:17:30.227537+08	2	2024-06-17 15:17:30.227537+08	/index/	127.0.0.1	2
+265ec0bd-1c69-4f12-867a-9802bb7ae633	t	2	2024-06-17 15:17:30.505237+08	2	2024-06-17 15:17:30.505237+08	/home/	127.0.0.1	2
+6712a2d2-dc5c-4a76-a47c-1d4696895510	t	2	2024-06-17 15:17:32.70161+08	2	2024-06-17 15:17:32.70161+08	/ld_stock/in_out/index/	127.0.0.1	2
+954733d2-059e-4008-adea-8611fd2eedfc	t	2	2024-06-17 15:18:53.719471+08	2	2024-06-17 15:18:53.719471+08	/index/	127.0.0.1	2
+f0b4d6a9-aada-42db-b550-b7946867dd96	t	2	2024-06-17 15:18:53.983412+08	2	2024-06-17 15:18:53.983412+08	/home/	127.0.0.1	2
+5d4a7e7f-f628-4cda-a13c-f2553dfaa9b9	t	2	2024-06-17 15:18:56.043432+08	2	2024-06-17 15:18:56.043432+08	/ld_stock/in_out/index/	127.0.0.1	2
+1c7fd24e-2403-436d-b921-cf0352c368d8	t	2	2024-06-17 15:19:27.074123+08	2	2024-06-17 15:19:27.074123+08	/index/	127.0.0.1	2
+14507673-6b61-4dbf-8532-dea51aebb31a	t	2	2024-06-17 15:19:27.337667+08	2	2024-06-17 15:19:27.337667+08	/home/	127.0.0.1	2
+49536cd1-cee7-44b8-9120-e599bf86992e	t	2	2024-06-17 15:19:29.060124+08	2	2024-06-17 15:19:29.060124+08	/ld_stock/in_out/index/	127.0.0.1	2
+0279bf0d-9a60-4cb9-8d3f-617381673465	t	2	2024-06-17 15:19:47.2999+08	2	2024-06-17 15:19:47.2999+08	/index/	127.0.0.1	2
+2c891d8f-85ef-4c87-99b7-9cbe56a1eaa3	t	2	2024-06-17 15:19:47.574447+08	2	2024-06-17 15:19:47.574447+08	/home/	127.0.0.1	2
+dcda33e2-f8a6-40e0-a1b8-e45ae9818b6d	t	2	2024-06-17 15:19:49.282463+08	2	2024-06-17 15:19:49.282463+08	/ld_stock/in_out/index/	127.0.0.1	2
+9b710162-0d05-41a8-8845-92d59f64ece2	t	2	2024-06-17 15:20:21.091167+08	2	2024-06-17 15:20:21.091167+08	/index/	127.0.0.1	2
+17e8d4ba-75fd-4a18-bb18-69bf464ccb4b	t	2	2024-06-17 15:20:21.357884+08	2	2024-06-17 15:20:21.357884+08	/home/	127.0.0.1	2
+b1dfeeef-17f9-4840-8d91-942ea3cdac52	t	2	2024-06-17 15:20:23.262573+08	2	2024-06-17 15:20:23.262573+08	/ld_stock/in_out/index/	127.0.0.1	2
+ee211605-f86b-4fd4-a789-6e1dd0b38144	t	2	2024-06-17 15:21:08.412031+08	2	2024-06-17 15:21:08.412031+08	/index/	127.0.0.1	2
+eceee202-282b-40f3-8e16-433362c258d9	t	2	2024-06-17 15:21:08.700962+08	2	2024-06-17 15:21:08.700962+08	/home/	127.0.0.1	2
+7be270d9-8ccb-4c21-a9e8-4b14bf1f74f9	t	2	2024-06-17 15:21:10.628029+08	2	2024-06-17 15:21:10.628029+08	/ld_stock/in_out/index/	127.0.0.1	2
+83eb155a-9b17-41a4-b161-1f1a21a871cf	t	2	2024-06-17 15:23:14.156088+08	2	2024-06-17 15:23:14.156088+08	/ld_stock/in_out/index/	127.0.0.1	2
+bdb0fde7-6902-465d-af99-ad83ee783c63	t	2	2024-06-17 15:23:16.372325+08	2	2024-06-17 15:23:16.372325+08	/ld_stock/in_out/index/	127.0.0.1	2
+0ebf70f6-4e93-4c82-9d71-eda754066bab	t	2	2024-06-17 15:23:17.674098+08	2	2024-06-17 15:23:17.674098+08	/ld_stock/in_out/index/	127.0.0.1	2
+52ed0ecc-d432-47db-a3ad-066ce5b4d3a1	t	2	2024-06-17 15:23:19.00095+08	2	2024-06-17 15:23:19.00095+08	/ld_stock/in_out/index/	127.0.0.1	2
+6e503293-bd74-4df9-8916-7f798b126150	t	2	2024-06-17 15:23:20.596892+08	2	2024-06-17 15:23:20.596892+08	/ld_stock/in_out/index/	127.0.0.1	2
+fdd1ba47-8a81-41c4-9b54-6dfab0290b05	t	2	2024-06-17 15:23:21.958621+08	2	2024-06-17 15:23:21.958621+08	/ld_stock/in_out/index/	127.0.0.1	2
+5694754b-dae1-4984-8081-918109f889ed	t	2	2024-06-17 15:23:23.231264+08	2	2024-06-17 15:23:23.231264+08	/ld_stock/in_out/index/	127.0.0.1	2
+346b9c9f-7534-467c-bdbb-0c8ede337604	t	2	2024-06-17 15:26:11.817451+08	2	2024-06-17 15:26:11.817451+08	/sys_auth/menu/index/	127.0.0.1	2
+fc9d003d-71e6-4ac8-9319-de7e58e3608c	t	2	2024-06-17 15:26:14.525193+08	2	2024-06-17 15:26:14.525193+08	/sys_auth/menu/index/	127.0.0.1	2
+a822a491-3275-4905-a120-22837bb595aa	t	2	2024-06-17 15:26:17.107412+08	2	2024-06-17 15:26:17.107412+08	/sys_auth/menu/edit/7312d4e7-f970-4dd2-9d95-8dd111b59bd1	127.0.0.1	2
+52ddb6fe-ff02-4db3-83a7-2986afce579c	t	2	2024-06-17 15:26:21.193319+08	2	2024-06-17 15:26:21.193319+08	/sys_auth/menu/edit/7312d4e7-f970-4dd2-9d95-8dd111b59bd1	127.0.0.1	2
+8d613b6d-e796-4f04-8eab-44e90a152a69	t	2	2024-06-17 15:26:21.396584+08	2	2024-06-17 15:26:21.396584+08	/sys_auth/menu/index/	127.0.0.1	2
+4b4cad07-9f25-4cd9-8f5c-1e58725dac32	t	2	2024-06-17 15:26:23.280181+08	2	2024-06-17 15:26:23.280181+08	/index/	127.0.0.1	2
+4efe4bc9-d85a-4a87-8104-288f55b3aab2	t	2	2024-06-17 15:26:23.581489+08	2	2024-06-17 15:26:23.581489+08	/home/	127.0.0.1	2
+d353eeb3-edb5-4fb9-b2b3-ed54d7fd2091	t	2	2024-06-17 15:26:25.877226+08	2	2024-06-17 15:26:25.877226+08	/ld_stock/stock/index/	127.0.0.1	2
+f31e7a28-3c0b-4d9d-b799-a813991be7de	t	2	2024-06-17 15:26:49.546633+08	2	2024-06-17 15:26:49.546633+08	/index/	127.0.0.1	2
+0d981d0a-fdf9-4dc1-ac0c-7eea91f3b80f	t	2	2024-06-17 15:26:49.852274+08	2	2024-06-17 15:26:49.852274+08	/home/	127.0.0.1	2
+f4f91a5c-98f1-42b6-8d0e-6417a6e87041	t	2	2024-06-17 15:26:50.775825+08	2	2024-06-17 15:26:50.775825+08	/ld_stock/stock/index/	127.0.0.1	2
+59748948-e085-4426-9dd3-232ee074c474	t	2	2024-06-17 15:27:01.787395+08	2	2024-06-17 15:27:01.787395+08	/index/	127.0.0.1	2
+d5c862d1-9a19-44a6-9ca6-8122825c9d10	t	2	2024-06-17 15:27:02.054836+08	2	2024-06-17 15:27:02.054836+08	/home/	127.0.0.1	2
+0a27a004-39be-47b0-b634-3a3f2a81f438	t	2	2024-06-17 15:27:03.459119+08	2	2024-06-17 15:27:03.459119+08	/ld_stock/stock/index/	127.0.0.1	2
+b119d712-830b-4ca1-bceb-2410e1f42773	t	2	2024-06-17 15:27:04.675551+08	2	2024-06-17 15:27:04.675551+08	/ld_stock/stock/index/	127.0.0.1	2
+7ebd6742-5e36-4429-949e-51fa562f5eda	t	2	2024-06-17 15:27:05.485556+08	2	2024-06-17 15:27:05.485556+08	/ld_stock/stock/index/	127.0.0.1	2
+d44779a0-c212-4951-a170-b5b2ca3ecce5	t	2	2024-06-17 16:02:17.287961+08	2	2024-06-17 16:02:17.287961+08	/index/	127.0.0.1	2
+98fcc57e-1daa-4d3f-a0cd-8491c39d156d	t	2	2024-06-17 16:02:17.584877+08	2	2024-06-17 16:02:17.584877+08	/home/	127.0.0.1	2
+1db1a09b-6468-4475-ad83-e89cadc29e97	t	2	2024-06-17 16:02:19.485599+08	2	2024-06-17 16:02:19.485599+08	/ld_stock/stock/index/	127.0.0.1	2
+3f0b5229-b3f5-4e30-93c9-8c51e0980314	t	2	2024-06-17 16:02:40.387806+08	2	2024-06-17 16:02:40.387806+08	/index/	127.0.0.1	2
+d65e19f9-e866-4f1a-8b51-8d5efb4b9385	t	2	2024-06-17 16:02:40.697655+08	2	2024-06-17 16:02:40.697655+08	/home/	127.0.0.1	2
+2567058e-e922-44a1-9821-cebbf014b90d	t	2	2024-06-17 16:02:42.449672+08	2	2024-06-17 16:02:42.449672+08	/ld_stock/stock/index/	127.0.0.1	2
+437db861-81d1-4799-ab04-1639014e50aa	t	2	2024-06-17 16:09:05.495569+08	2	2024-06-17 16:09:05.495569+08	/index/	127.0.0.1	2
+e0481004-b179-48ab-827e-59907bc74b09	t	2	2024-06-17 16:09:05.754556+08	2	2024-06-17 16:09:05.754556+08	/home/	127.0.0.1	2
+0cb4c7a6-1e9e-4afc-b60b-196627d7f77e	t	2	2024-06-17 16:09:06.910807+08	2	2024-06-17 16:09:06.910807+08	/ld_stock/stock/index/	127.0.0.1	2
+e97bd540-4047-404f-8db8-b54f675e85b5	t	2	2024-06-17 16:09:29.744832+08	2	2024-06-17 16:09:29.744832+08	/index/	127.0.0.1	2
+5be8c386-0ccb-439f-b324-4e1665cd961e	t	2	2024-06-17 16:09:30.027806+08	2	2024-06-17 16:09:30.027806+08	/home/	127.0.0.1	2
+07591ec7-eb9c-46df-9def-6c4771a20eda	t	2	2024-06-17 16:09:31.883208+08	2	2024-06-17 16:09:31.883208+08	/ld_stock/stock/index/	127.0.0.1	2
+06cdbec0-7096-4715-8012-8aef9d815712	t	2	2024-06-17 16:09:51.564535+08	2	2024-06-17 16:09:51.564535+08	/index/	127.0.0.1	2
+82b19c3c-0165-4709-ab5c-54df749b5f47	t	2	2024-06-17 16:09:51.832313+08	2	2024-06-17 16:09:51.832313+08	/home/	127.0.0.1	2
+665abdb3-a609-44d1-a9c5-96e098cf7180	t	2	2024-06-17 16:09:53.214613+08	2	2024-06-17 16:09:53.214613+08	/ld_stock/stock/index/	127.0.0.1	2
+5c84b8f4-9f10-4395-8853-1f5f79b83dfe	t	2	2024-06-17 16:10:08.787753+08	2	2024-06-17 16:10:08.787753+08	/index/	127.0.0.1	2
+5381f32e-1575-426e-ae6d-fa432756e147	t	2	2024-06-17 16:10:09.049982+08	2	2024-06-17 16:10:09.049982+08	/home/	127.0.0.1	2
+a885b2f7-f321-4078-b40e-b007da061115	t	2	2024-06-17 16:10:22.728711+08	2	2024-06-17 16:10:22.728711+08	/index/	127.0.0.1	2
+580ce7b9-ef72-4eae-893a-b783d3d36de3	t	2	2024-06-17 16:10:23.003543+08	2	2024-06-17 16:10:23.003543+08	/home/	127.0.0.1	2
+d0befac5-a126-4522-8ede-8641826c7687	t	2	2024-06-17 16:10:23.649857+08	2	2024-06-17 16:10:23.649857+08	/ld_stock/stock/index/	127.0.0.1	2
+638b7363-636d-4671-b851-385ef32c487c	t	2	2024-06-17 16:11:02.826245+08	2	2024-06-17 16:11:02.826245+08	/index/	127.0.0.1	2
+9b8c4bc1-6e28-4feb-94f6-32d1216813e3	t	2	2024-06-17 16:11:03.121357+08	2	2024-06-17 16:11:03.121357+08	/home/	127.0.0.1	2
+e2897218-598a-4d4c-aaf4-9c046834524e	t	2	2024-06-17 16:11:04.061536+08	2	2024-06-17 16:11:04.061536+08	/ld_stock/stock/index/	127.0.0.1	2
+f48f683c-42a5-48a5-82ce-af4d36ace7c3	t	2	2024-06-17 16:11:42.026982+08	2	2024-06-17 16:11:42.026982+08	/index/	127.0.0.1	2
+9b92f3b4-48f6-4f5c-8282-e2a3fdfc2f9b	t	2	2024-06-17 16:11:42.342092+08	2	2024-06-17 16:11:42.342092+08	/home/	127.0.0.1	2
+51a87623-6e41-4918-8758-4cdbff072d45	t	2	2024-06-17 16:11:43.827266+08	2	2024-06-17 16:11:43.827266+08	/ld_stock/stock/index/	127.0.0.1	2
+d5916ea2-3142-409b-9c71-1cbf417a9cdc	t	2	2024-06-17 16:11:58.743165+08	2	2024-06-17 16:11:58.743165+08	/index/	127.0.0.1	2
+6ccfa63d-ee48-413c-a81a-e34ec87bfeeb	t	2	2024-06-17 16:11:59.031691+08	2	2024-06-17 16:11:59.031691+08	/home/	127.0.0.1	2
+058333a3-b745-4b2f-9fd6-a31539bb39af	t	2	2024-06-17 16:11:59.966942+08	2	2024-06-17 16:11:59.966942+08	/ld_stock/stock/index/	127.0.0.1	2
+bd999b2e-de92-4264-b59a-e3e3db89eb0f	t	2	2024-06-17 16:12:02.383575+08	2	2024-06-17 16:12:02.383575+08	/ld_stock/stock/index/	127.0.0.1	2
+db8fc103-216d-41ff-a07f-fbe99793720d	t	2	2024-06-17 16:12:03.373454+08	2	2024-06-17 16:12:03.373454+08	/ld_stock/stock/index/	127.0.0.1	2
+e07505aa-fe20-4a24-8671-cc00f25551dc	t	2	2024-06-17 16:14:05.412614+08	2	2024-06-17 16:14:05.412614+08	/index/	127.0.0.1	2
+7ce61c0e-0006-4964-bd17-3acc96db5566	t	2	2024-06-17 16:14:05.680963+08	2	2024-06-17 16:14:05.680963+08	/home/	127.0.0.1	2
+01a50c13-727f-4aae-8f33-ed545cc21a10	t	2	2024-06-17 16:14:06.887695+08	2	2024-06-17 16:14:06.887695+08	/ld_stock/stock/index/	127.0.0.1	2
+69248bed-2f24-447a-96af-6c580cf643f2	t	2	2024-06-17 16:14:08.762692+08	2	2024-06-17 16:14:08.76369+08	/ld_stock/stock/index/ld_stock/stock/index	127.0.0.1	2
+8ad8640e-96f0-46f3-aaee-de892aca08b2	t	2	2024-06-17 16:14:27.083937+08	2	2024-06-17 16:14:27.083937+08	/index/	127.0.0.1	2
+d101bbfe-9c66-44bb-a006-1a50d27c3f35	t	2	2024-06-17 16:14:27.350597+08	2	2024-06-17 16:14:27.350597+08	/home/	127.0.0.1	2
+03774a3b-b348-465e-a6e9-36548229ca89	t	2	2024-06-17 16:14:28.273195+08	2	2024-06-17 16:14:28.273195+08	/ld_stock/stock/index/	127.0.0.1	2
+19f0e053-8acf-4a9a-a321-4a9401baab23	t	2	2024-06-17 16:14:29.571782+08	2	2024-06-17 16:14:29.571782+08	/ld_stock/stock/index	127.0.0.1	2
+8c053a1b-21e4-4943-a6d9-d9ba64a70864	t	2	2024-06-17 16:14:30.041452+08	2	2024-06-17 16:14:30.041452+08	/ld_stock/stock/index/	127.0.0.1	2
+0031241e-848a-4348-b973-892d805d9e54	t	2	2024-06-17 16:15:05.729214+08	2	2024-06-17 16:15:05.729214+08	/sys_dict/dict/index/	127.0.0.1	2
+8e09b6d5-9ded-433c-ab40-f5b60f2a77f1	t	2	2024-06-17 16:15:07.7606+08	2	2024-06-17 16:15:07.7606+08	/sys_dict/enum/add/1631e315-9b32-43ef-bebd-70bc3bfcfbf7	127.0.0.1	2
+c07b7377-074a-46b1-b486-7ddf0313e3c5	t	2	2024-06-17 16:15:12.883588+08	2	2024-06-17 16:15:12.883588+08	/ld_stock/stock/index/	127.0.0.1	2
+32d94f05-ea7f-458c-aa92-13e894769479	t	2	2024-06-17 16:15:14.320783+08	2	2024-06-17 16:15:14.320783+08	/ld_stock/stock/index	127.0.0.1	2
+d0c628eb-9962-4daf-a5e6-b80652883c14	t	2	2024-06-17 16:15:14.850211+08	2	2024-06-17 16:15:14.850211+08	/ld_stock/stock/index/	127.0.0.1	2
+12ec9216-4746-4496-b1f6-03a2e99bde8a	t	2	2024-06-17 16:16:05.442042+08	2	2024-06-17 16:16:05.442042+08	/ld_stock/stock/index/	127.0.0.1	2
+83fc9397-065b-4521-8976-855493ff9f47	t	2	2024-06-17 16:16:12.747611+08	2	2024-06-17 16:16:12.747611+08	/ld_stock/stock/index/	127.0.0.1	2
+30d2ae49-207a-42cc-a248-06d0811b7413	t	2	2024-06-17 16:16:39.11758+08	2	2024-06-17 16:16:39.11758+08	/ld_stock/stock/index/	127.0.0.1	2
+31c3b7a3-9a88-48f5-8985-c2af4bcd9377	t	2	2024-06-17 16:16:48.649834+08	2	2024-06-17 16:16:48.649834+08	/ld_stock/stock/index/	127.0.0.1	2
+18a23619-84b0-4a07-af35-06a06b20e1c9	t	2	2024-06-17 16:16:55.054585+08	2	2024-06-17 16:16:55.054585+08	/ld_stock/stock/index	127.0.0.1	2
+3ba2b719-4540-4089-ae8f-b105d867dcc1	t	2	2024-06-17 16:16:55.269305+08	2	2024-06-17 16:16:55.269305+08	/ld_stock/stock/index/	127.0.0.1	2
+2d6a9d31-ce69-435a-825a-b45e93d334c9	t	2	2024-06-17 16:17:41.677325+08	2	2024-06-17 16:17:41.677325+08	/ld_stock/stock/index/	127.0.0.1	2
+d826dba5-b35d-4328-8787-04a54296bd96	t	2	2024-06-17 16:17:43.678952+08	2	2024-06-17 16:17:43.678952+08	/ld_stock/stock/index/	127.0.0.1	2
+e6894943-dd3c-4bb1-90d6-d7715788dca9	t	2	2024-06-17 16:17:47.932209+08	2	2024-06-17 16:17:47.932209+08	/ld_stock/stock/index/	127.0.0.1	2
+b644d3c0-e3a1-4292-88ea-817e36f6a536	t	2	2024-06-17 16:17:49.675421+08	2	2024-06-17 16:17:49.675421+08	/ld_stock/stock/index/	127.0.0.1	2
+eb694ea5-97d8-43d2-8459-5c63fce8fe87	t	2	2024-06-17 16:18:59.035486+08	2	2024-06-17 16:18:59.035486+08	/ld_stock/stock/index/	127.0.0.1	2
+68acda97-9238-4706-a121-ee28f10e5b54	t	2	2024-06-17 16:19:03.453928+08	2	2024-06-17 16:19:03.453928+08	/ld_stock/stock/index/	127.0.0.1	2
+80e67b23-e1c8-4fc8-be37-b48ce5fd0e51	t	2	2024-06-19 09:46:21.850287+08	2	2024-06-19 09:46:21.850287+08	/index/	127.0.0.1	2
+9f4c5a8c-3ea6-4b11-9380-b123347b7071	t	2	2024-06-19 09:46:22.166142+08	2	2024-06-19 09:46:22.166142+08	/home/	127.0.0.1	2
+4a7bbdce-d9e7-4d1e-ba5c-ab3e4d3dee05	t	2	2024-06-19 09:46:24.815964+08	2	2024-06-19 09:46:24.815964+08	/ld_stock/stock/index/	127.0.0.1	2
+a7ddeb69-c055-466c-a6a2-f0125dc0fdd1	t	2	2024-06-19 09:46:27.117559+08	2	2024-06-19 09:46:27.117559+08	/ld_stock/stock/index	127.0.0.1	2
+e954e82b-9583-46a8-84f7-5de9e95077bf	t	2	2024-06-19 09:46:27.349775+08	2	2024-06-19 09:46:27.349775+08	/ld_stock/stock/index/	127.0.0.1	2
+8f0f25ae-3bab-4b06-af8c-511112efebbf	t	2	2024-06-19 09:46:31.341628+08	2	2024-06-19 09:46:31.341628+08	/ld_stock/stock/index	127.0.0.1	2
+727c97a2-adbb-4422-9da2-12c9637ea36f	t	2	2024-06-19 09:46:31.562073+08	2	2024-06-19 09:46:31.562073+08	/ld_stock/stock/index/	127.0.0.1	2
+98ae8366-e6d1-4a85-b9ba-8c36c02e61bf	t	2	2024-06-19 10:34:00.51159+08	2	2024-06-19 10:34:00.51159+08	/index/	127.0.0.1	2
+ee238e43-e98c-4408-ba73-bd7f1ecfbf37	t	2	2024-06-19 10:34:00.799295+08	2	2024-06-19 10:34:00.799295+08	/home/	127.0.0.1	2
+4b6c8bcf-6aa4-416f-bb13-ff3e8b7c408b	t	2	2024-06-19 10:34:04.595465+08	2	2024-06-19 10:34:04.595465+08	/ld_stock/stock/index/	127.0.0.1	2
+0e0d1acf-6628-416b-86b6-c6934ca17a0b	t	2	2024-06-19 10:35:23.216754+08	2	2024-06-19 10:35:23.216754+08	/ld_stock/stock/index	127.0.0.1	2
+683171aa-4e98-48f3-84e9-40e9a3f6bcd8	t	2	2024-06-19 10:35:23.746713+08	2	2024-06-19 10:35:23.746713+08	/ld_stock/stock/index/	127.0.0.1	2
+50a1eaba-aff8-4b07-9cea-a1ca27200f44	t	2	2024-06-19 10:39:02.524071+08	2	2024-06-19 10:39:02.524071+08	/ld_stock/stock/index/	127.0.0.1	2
+e758207a-bb86-4b40-8311-de10b59e6ba6	t	2	2024-06-19 10:39:31.574415+08	2	2024-06-19 10:39:31.574415+08	/ld_stock/stock/index/	127.0.0.1	2
+759397fe-b2ae-4884-8495-53be59f2836e	t	2	2024-06-19 10:39:56.480486+08	2	2024-06-19 10:39:56.480486+08	/ld_stock/stock/index/	127.0.0.1	2
+99a62f1c-5d63-4d1e-b861-06d95e00de5c	t	2	2024-06-19 10:40:06.791237+08	2	2024-06-19 10:40:06.791237+08	/ld_stock/stock/index/	127.0.0.1	2
+3c462339-9930-436a-8b91-4b939486b6a3	t	2	2024-06-19 10:40:23.07531+08	2	2024-06-19 10:40:23.07531+08	/ld_stock/stock/index/	127.0.0.1	2
+ba87084e-08a5-4e3b-9799-c7e4ed8147b4	t	2	2024-06-19 10:41:23.343492+08	2	2024-06-19 10:41:23.343492+08	/ld_stock/stock/index/	127.0.0.1	2
+4b9f1775-259b-47b4-b84f-41e3020ce43e	t	2	2024-06-19 10:41:54.050439+08	2	2024-06-19 10:41:54.050439+08	/ld_stock/stock/index/	127.0.0.1	2
+1cd2ae54-f83a-4b51-902c-167b901def45	t	2	2024-06-19 10:45:31.061331+08	2	2024-06-19 10:45:31.061331+08	/ld_stock/stock/index/	127.0.0.1	2
+cae0d167-2cd4-4ea1-b7ae-75a8b1369c99	t	2	2024-06-19 10:45:49.726124+08	2	2024-06-19 10:45:49.726124+08	/ld_stock/stock/index/	127.0.0.1	2
+34fadf1f-bd53-48a7-90a9-494158f0d776	t	2	2024-06-19 10:46:46.226829+08	2	2024-06-19 10:46:46.226829+08	/ld_stock/stock/index/	127.0.0.1	2
+32455367-1673-4c5c-b624-b9f92ec28054	t	2	2024-06-19 10:47:25.81832+08	2	2024-06-19 10:47:25.81832+08	/index/	127.0.0.1	2
+77f689f7-98f5-4ea3-8faa-73bf5c8b2431	t	2	2024-06-19 10:47:26.12274+08	2	2024-06-19 10:47:26.12274+08	/home/	127.0.0.1	2
+3710e69a-55a3-4c2d-8aef-b0c468eca587	t	2	2024-06-19 10:47:27.270226+08	2	2024-06-19 10:47:27.270226+08	/ld_stock/stock/index/	127.0.0.1	2
+d455edb3-d2fb-48f5-9f9d-54e6bf4672f5	t	2	2024-06-19 10:47:42.873773+08	2	2024-06-19 10:47:42.873773+08	/index/	127.0.0.1	2
+d63f0e4f-e5ec-4647-b00f-89d65838808d	t	2	2024-06-19 10:47:43.189958+08	2	2024-06-19 10:47:43.189958+08	/home/	127.0.0.1	2
+dfb17cd4-b49f-4844-9002-66914cffaa39	t	2	2024-06-19 10:47:44.542679+08	2	2024-06-19 10:47:44.542679+08	/ld_stock/stock/index/	127.0.0.1	2
+42ff5659-f974-4203-8f34-a6bb306c7f3f	t	2	2024-06-19 10:48:14.2023+08	2	2024-06-19 10:48:14.2023+08	/index/	127.0.0.1	2
+89bd9052-c46a-4425-8408-104293b78a44	t	2	2024-06-19 10:48:14.486871+08	2	2024-06-19 10:48:14.486871+08	/home/	127.0.0.1	2
+aaec17a4-4c2d-4406-b739-183e0d06210f	t	2	2024-06-19 10:48:15.545125+08	2	2024-06-19 10:48:15.545125+08	/ld_stock/stock/index/	127.0.0.1	2
+5578f432-74fc-4150-bdc2-552502a4bd7d	t	2	2024-06-19 10:48:29.030083+08	2	2024-06-19 10:48:29.030083+08	/index/	127.0.0.1	2
+861b88d1-922d-4be4-84d8-59a026297af5	t	2	2024-06-19 10:48:29.303873+08	2	2024-06-19 10:48:29.303873+08	/home/	127.0.0.1	2
+b53d840a-5beb-423e-945a-90089232301d	t	2	2024-06-19 10:48:30.425954+08	2	2024-06-19 10:48:30.425954+08	/ld_stock/stock/index/	127.0.0.1	2
+cdb176d0-0d1d-4ae3-9ed6-0a6df9934d7c	t	2	2024-06-19 11:07:43.755696+08	2	2024-06-19 11:07:43.755696+08	/ld_stock/stock/index/	127.0.0.1	2
+66d6d829-1e7c-447b-8b5a-4c67de22a823	t	2	2024-06-19 11:07:44.85162+08	2	2024-06-19 11:07:44.85162+08	/ld_stock/stock/add/1/	127.0.0.1	2
+404d2163-b61e-4de9-bcc9-3940cddc6faf	t	2	2024-06-19 11:07:55.743899+08	2	2024-06-19 11:07:55.743899+08	/ld_stock/stock/index	127.0.0.1	2
+7067df11-96d4-48b0-9189-24059f1e0918	t	2	2024-06-19 11:07:55.968384+08	2	2024-06-19 11:07:55.968384+08	/ld_stock/stock/index/	127.0.0.1	2
+11d4e99e-8ff8-44cb-b8ec-845d6db93336	t	2	2024-06-19 11:07:58.383118+08	2	2024-06-19 11:07:58.383118+08	/ld_stock/stock/index/	127.0.0.1	2
+b5fb671c-4b54-4c4c-8d38-a2ace67f30f8	t	2	2024-06-19 11:07:59.801224+08	2	2024-06-19 11:07:59.801224+08	/ld_stock/stock/add/2/	127.0.0.1	2
+b754d78c-f9c5-439a-8d19-5e0d2e33a673	t	2	2024-06-19 11:08:01.292982+08	2	2024-06-19 11:08:01.292982+08	/ld_stock/stock/index/	127.0.0.1	2
+44138a4a-2dac-4d1c-973f-ade3c8f76010	t	2	2024-06-19 13:34:09.225966+08	2	2024-06-19 13:34:09.225966+08	/index/	127.0.0.1	2
+d6746d9e-0c37-4374-b075-1e95259a9a48	t	2	2024-06-19 13:34:09.615363+08	2	2024-06-19 13:34:09.615363+08	/home/	127.0.0.1	2
+7f0e325e-2465-45f5-b6e3-4f91126966f2	t	2	2024-06-19 13:34:12.041286+08	2	2024-06-19 13:34:12.041286+08	/ld_stock/stock/index/	127.0.0.1	2
+4906ef3e-3b0d-4ac9-bfa0-54e83272cc04	t	2	2024-06-19 13:34:16.619798+08	2	2024-06-19 13:34:16.619798+08	/ld_stock/stock/add/1/	127.0.0.1	2
+84d00cb4-7f64-4d5d-ad60-9df010baf17d	t	2	2024-06-19 13:35:07.074139+08	2	2024-06-19 13:35:07.074139+08	/ld_stock/stock/index	127.0.0.1	2
+ed89ace0-f7ee-4583-b8df-f03b3a7b412f	t	2	2024-06-19 13:35:07.504106+08	2	2024-06-19 13:35:07.504106+08	/ld_stock/stock/index/	127.0.0.1	2
+41e5cf0c-df62-4be7-baf0-a39167bd01a3	t	2	2024-06-19 13:35:08.578363+08	2	2024-06-19 13:35:08.578363+08	/ld_stock/stock/add/1/	127.0.0.1	2
+174d3b43-0d36-4a17-bef5-0f247336d8eb	t	2	2024-06-19 13:46:35.443664+08	2	2024-06-19 13:46:35.443664+08	/index/	127.0.0.1	2
+5ec32516-4a12-47d3-92f3-89a25c94a01d	t	2	2024-06-19 13:46:35.826643+08	2	2024-06-19 13:46:35.826643+08	/home/	127.0.0.1	2
+4c3af2e6-798d-4b19-8b2b-8304e30c4d13	t	2	2024-06-19 13:46:37.704924+08	2	2024-06-19 13:46:37.704924+08	/ld_stock/stock/index/	127.0.0.1	2
+4f719d1e-b6d8-4917-aafd-4b926dd5de4e	t	2	2024-06-19 13:46:39.460891+08	2	2024-06-19 13:46:39.460891+08	/ld_stock/stock/add/1/	127.0.0.1	2
+87b9a774-d592-42b5-b2f8-ba2b11ff5cf9	t	2	2024-06-19 13:48:36.631727+08	2	2024-06-19 13:48:36.631727+08	/ld_stock/stock/index/	127.0.0.1	2
+4762dc94-aac4-4b45-b391-3345d634c99d	t	2	2024-06-19 13:48:39.552614+08	2	2024-06-19 13:48:39.552614+08	/favicon.ico	127.0.0.1	2
+f57b1612-185f-40d6-abf1-a46fd3d2ecb3	t	2	2024-06-19 13:49:06.497036+08	2	2024-06-19 13:49:06.497036+08	/ld_stock/stock/add/1/	127.0.0.1	2
+f61fde8d-d656-47ce-9bc8-373368283bb6	t	2	2024-06-19 13:49:16.159211+08	2	2024-06-19 13:49:16.159211+08	/ld_stock/stock/add/1/	127.0.0.1	2
+16ffdbc2-dac8-4191-adbf-3ab31b58f1d5	t	2	2024-06-19 13:50:38.690498+08	2	2024-06-19 13:50:38.690498+08	/ld_stock/stock/add/1/	127.0.0.1	2
+0145a4b0-3bbe-4e6c-8b60-ef39a6d48212	t	2	2024-06-19 13:51:34.501595+08	2	2024-06-19 13:51:34.501595+08	/ld_stock/stock/add/1/	127.0.0.1	2
+c9f08c6a-d0c5-49d6-8c4c-8e79019d7b4d	t	2	2024-06-19 13:51:52.332187+08	2	2024-06-19 13:51:52.332187+08	/ld_stock/stock/add/1/	127.0.0.1	2
+363394eb-78b5-42f6-a871-d9b701513210	t	2	2024-06-19 14:05:01.788155+08	2	2024-06-19 14:05:01.788155+08	/index/	127.0.0.1	2
+0f94d76e-5d15-442e-8d5d-ce6494553848	t	2	2024-06-19 14:05:02.165687+08	2	2024-06-19 14:05:02.165687+08	/home/	127.0.0.1	2
+894b3d52-c284-4ade-8157-d6cd8a351c08	t	2	2024-06-19 14:05:04.377325+08	2	2024-06-19 14:05:04.377325+08	/sys_dict/dict/index/	127.0.0.1	2
+3e15009a-446b-481b-88bd-e3dbe12cf59f	t	2	2024-06-19 14:05:07.802624+08	2	2024-06-19 14:05:07.802624+08	/sys_dict/enum/add/16580b33-182f-4643-b6f3-9c4acbd7d439	127.0.0.1	2
+a0324f7e-2e55-4a12-af20-2f5a4535fd52	t	2	2024-06-19 14:05:11.634708+08	2	2024-06-19 14:05:11.634708+08	/sys_dict/dict/index/	127.0.0.1	2
+36c78c18-33cb-492e-ac70-cd21ad3c0722	t	2	2024-06-19 14:06:31.2976+08	2	2024-06-19 14:06:31.2976+08	/ld_stock/stock/add/1/	127.0.0.1	2
+99722944-d502-4bd9-b1d1-f78011ef732f	t	2	2024-06-19 14:07:26.038947+08	2	2024-06-19 14:07:26.038947+08	/ld_stock/stock/add/1/	127.0.0.1	2
+26a60c49-3829-4481-ae4f-e19e449b4fa8	t	2	2024-06-19 14:07:34.928099+08	2	2024-06-19 14:07:34.928099+08	/ld_stock/stock/add/2/	127.0.0.1	2
+087385c0-a44d-4878-9069-3a50e0b223d6	t	2	2024-06-19 14:07:56.746339+08	2	2024-06-19 14:07:56.746339+08	/ld_stock/stock/add/2/	127.0.0.1	2
+f57b0a93-9c7b-4a60-bf69-c84f72bc2110	t	2	2024-06-19 14:10:14.75114+08	2	2024-06-19 14:10:14.75114+08	/ld_stock/stock/add/2/	127.0.0.1	2
+9e9d1544-585f-4d09-8f5a-2da8a023bce8	t	2	2024-06-19 14:10:23.261519+08	2	2024-06-19 14:10:23.261519+08	/ld_stock/stock/add/2/	127.0.0.1	2
+69c45e12-5383-46ae-8841-b2d9c7f066e5	t	2	2024-06-19 14:11:20.503266+08	2	2024-06-19 14:11:20.503266+08	/ld_stock/stock/add/2/	127.0.0.1	2
+967b46b0-f7c7-48ba-a505-d46ea6900b64	t	2	2024-06-19 14:13:14.195104+08	2	2024-06-19 14:13:14.195104+08	/ld_stock/stock/add/2/	127.0.0.1	2
+c5975dd7-c32d-453b-b216-a52146688b0d	t	2	2024-06-19 14:16:59.819079+08	2	2024-06-19 14:16:59.819079+08	/ld_stock/stock/add/2/	127.0.0.1	2
+438916dd-b2bb-43e9-a79c-a14e6dba05df	t	2	2024-06-19 14:17:08.135313+08	2	2024-06-19 14:17:08.135313+08	/ld_stock/stock/add/1/	127.0.0.1	2
+b75bcc9b-750a-4053-88bd-59cecc375cf3	t	2	2024-06-19 14:21:47.146383+08	2	2024-06-19 14:21:47.146383+08	/ld_stock/stock/add/1/	127.0.0.1	2
+4d83ddd6-6ce6-47f3-ab42-1a50327f3195	t	2	2024-06-20 10:01:28.841786+08	2	2024-06-20 10:01:28.841786+08	/index/	127.0.0.1	2
+917ec1ff-1d19-48b5-aa2f-11684b8c6587	t	2	2024-06-20 10:01:29.37418+08	2	2024-06-20 10:01:29.37418+08	/home/	127.0.0.1	2
+42441788-48b6-40e7-9f94-4ff9e4fb6745	t	2	2024-06-20 10:02:22.925439+08	2	2024-06-20 10:02:22.925439+08	/pp_master/work_center/index/	127.0.0.1	2
+be556f5a-7123-42e1-985a-54e071cc0840	t	2	2024-06-20 10:02:25.301018+08	2	2024-06-20 10:02:25.301018+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+b2e410c8-10af-4ac6-b714-401b8ee5c74e	t	2	2024-06-20 10:14:58.618732+08	2	2024-06-20 10:14:58.619532+08	/pp_master/work_center/get/employees/610ea5e2-b254-4cf4-b2ca-b7398cbd075a	127.0.0.1	2
+018fead3-0070-46cd-8abe-526331969080	t	2	2024-06-20 10:15:01.478288+08	2	2024-06-20 10:15:01.478288+08	/pp_master/work_center/get/employees/935f0250-935f-455d-912b-4d383184c2f6	127.0.0.1	2
+5e5ec650-7dfd-4867-bb20-56e6a4731d8f	t	2	2024-06-20 10:15:03.824434+08	2	2024-06-20 10:15:03.824434+08	/pp_master/work_center/get/employees/06c4502a-0c8c-4f44-ab93-dddf04aac8ff	127.0.0.1	2
+f39406bb-b267-4dc6-b7d3-278c81546714	t	2	2024-06-20 10:15:13.76259+08	2	2024-06-20 10:15:13.76259+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+6ba15ea3-8fe5-41aa-9c92-f6729d1e93ef	t	2	2024-06-20 10:15:17.317441+08	2	2024-06-20 10:15:17.317441+08	/pp_master/work_center/get/employees/935f0250-935f-455d-912b-4d383184c2f6	127.0.0.1	2
+d3f846c9-4164-48ff-b584-3262b455c383	t	2	2024-06-20 10:15:34.576044+08	2	2024-06-20 10:15:34.576044+08	/pp_master/work_center/get/employees/935f0250-935f-455d-912b-4d383184c2f6	127.0.0.1	2
+69c2aaae-e27e-4fa2-b22d-511cb44614d9	t	2	2024-06-20 10:15:44.048452+08	2	2024-06-20 10:15:44.048452+08	/pp_master/work_center/index/	127.0.0.1	2
+042ed153-3d65-4099-bc3b-b7cc00028354	t	2	2024-06-20 10:15:45.223664+08	2	2024-06-20 10:15:45.223664+08	/pp_master/work_center/get/employees/769ae283-87fc-4cc5-8a74-dc763910774e	127.0.0.1	2
+53bc1199-df6e-4f7a-b7ea-39096081c451	t	2	2024-06-20 10:15:50.516233+08	2	2024-06-20 10:15:50.516233+08	/org_emp/employee/search/	127.0.0.1	2
+212aa5fa-c254-4709-bc76-72becd42762f	t	2	2024-06-20 10:16:07.300731+08	2	2024-06-20 10:16:07.300731+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+91302177-f1bb-4e8b-b45a-6bf599ca933a	t	2	2024-06-20 10:16:11.185459+08	2	2024-06-20 10:16:11.185459+08	/pp_master/work_center/get/employees/24d8bb13-f1d3-4756-8856-49efe116c05e	127.0.0.1	2
+363470a0-7e8b-4803-9f21-1dc568b5ef66	t	2	2024-06-20 10:16:18.581433+08	2	2024-06-20 10:16:18.581433+08	/pp_master/work_center/get/employees/5c3276bd-ab92-456a-8b4f-2a420e5875ed	127.0.0.1	2
+c81c885a-dbef-482a-b529-5ca45aca2599	t	2	2024-06-20 10:20:12.924099+08	2	2024-06-20 10:20:12.924099+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+4eaf2405-fc49-4c4a-8877-1902877dea00	t	2	2024-06-20 10:21:20.402986+08	2	2024-06-20 10:21:20.402986+08	/pp_master/work_center/get/employees/ab745f95-ee99-485d-8fe3-cdb5b92e81ca	127.0.0.1	2
+b169f6e2-fc1a-4f12-9c31-f7859f3832e4	t	2	2024-06-20 10:21:26.120384+08	2	2024-06-20 10:21:26.120384+08	/index/	127.0.0.1	2
+d99178ca-7a35-4fa1-b429-d078ef0364f8	t	2	2024-06-20 10:21:26.67699+08	2	2024-06-20 10:21:26.67699+08	/home/	127.0.0.1	2
+9cf65477-708d-43e1-808b-e6e01a8901d5	t	2	2024-06-20 10:21:28.071998+08	2	2024-06-20 10:21:28.071998+08	/pp_master/work_center/index/	127.0.0.1	2
+2183aded-6c6e-41e1-aa94-7b1137d53a5c	t	2	2024-06-20 10:21:30.20709+08	2	2024-06-20 10:21:30.20709+08	/pp_master/work_center/get/employees/24d8bb13-f1d3-4756-8856-49efe116c05e	127.0.0.1	2
+074e7107-7ce4-4d95-aeb4-2148002fdf94	t	2	2024-06-20 10:21:51.861668+08	2	2024-06-20 10:21:51.861668+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+7254cacd-f746-4ebd-afcc-20ca884fcafd	t	2	2024-06-20 10:22:48.179697+08	2	2024-06-20 10:22:48.179697+08	/pp_master/work_center/get/employees/23916bf5-2d0a-43b6-9e78-0c85ce963e31	127.0.0.1	2
+241566f2-4a9c-49b9-ac88-fd2c4b7fb866	t	2	2024-06-20 10:24:36.103095+08	2	2024-06-20 10:24:36.103095+08	/index/	127.0.0.1	2
+db73ac35-a364-4879-a94f-50eb36466c21	t	2	2024-06-20 10:24:36.732299+08	2	2024-06-20 10:24:36.732299+08	/home/	127.0.0.1	2
+2217055f-93a8-4ee3-9cae-37b80983a992	t	2	2024-06-20 10:24:38.565874+08	2	2024-06-20 10:24:38.565874+08	/pp_master/work_center/index/	127.0.0.1	2
+849ec5d3-4596-46bc-b25b-5b11f0dfe8a8	t	2	2024-06-20 10:24:40.641075+08	2	2024-06-20 10:24:40.641075+08	/pp_master/work_center/get/employees/b906337c-9fec-4ba9-a218-05cb9abe8fb7	127.0.0.1	2
+a6d1f59e-1f53-4515-949e-acf82035edad	t	2	2024-06-20 10:29:21.386584+08	2	2024-06-20 10:29:21.386584+08	/pp_master/work_center/index/	127.0.0.1	2
+2413ceb2-f8a9-485e-b727-80376d2bfafa	t	2	2024-06-20 10:29:22.629031+08	2	2024-06-20 10:29:22.629031+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+75b837c7-9772-4a16-9b04-0a7286c68939	t	2	2024-06-20 10:29:30.269079+08	2	2024-06-20 10:29:30.269079+08	/pp_master/work_center/remove/employee/c2be3466-f168-46e7-867d-f7f53fd89d13/4e6f38b4-9ae1-494c-8eda-49ccb9ff1f7b	127.0.0.1	2
+800def11-a061-436e-a1f1-5b95ce681d26	t	2	2024-06-20 10:29:30.630911+08	2	2024-06-20 10:29:30.630911+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+f9fb5d44-03f1-4a31-8dd7-ecaa69d6f3e3	t	2	2024-06-20 10:30:33.065276+08	2	2024-06-20 10:30:33.065276+08	/index/	127.0.0.1	2
+c64fc314-3521-490d-9306-b1f7bbc2e0bd	t	2	2024-06-20 10:30:33.639532+08	2	2024-06-20 10:30:33.639532+08	/home/	127.0.0.1	2
+0fe1249e-6dba-43da-986d-ffe1e58591c1	t	2	2024-06-20 10:30:35.016467+08	2	2024-06-20 10:30:35.016467+08	/pp_master/work_center/index/	127.0.0.1	2
+0ebc3d51-17a1-4e48-ae37-7a59f799de64	t	2	2024-06-20 10:30:36.494713+08	2	2024-06-20 10:30:36.494713+08	/pp_master/work_center/get/employees/610ea5e2-b254-4cf4-b2ca-b7398cbd075a	127.0.0.1	2
+e89e7aec-9cdc-4c56-8db2-fe2688fa0ba3	t	2	2024-06-20 10:31:32.109985+08	2	2024-06-20 10:31:32.109985+08	/index/	127.0.0.1	2
+958ad923-3109-426e-9074-c104ced6bf92	t	2	2024-06-20 10:31:32.702202+08	2	2024-06-20 10:31:32.702202+08	/home/	127.0.0.1	2
+b0f3e26b-de03-4c6f-94c5-2ec72ff2e221	t	2	2024-06-20 10:31:34.420962+08	2	2024-06-20 10:31:34.420962+08	/pp_master/work_center/index/	127.0.0.1	2
+4ca4e9af-f4c4-4527-a6c4-10076d9915ae	t	2	2024-06-20 10:31:35.887731+08	2	2024-06-20 10:31:35.887731+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+1b325f35-b07a-43f6-a5ed-f7eff7a595b7	t	2	2024-06-20 10:33:00.469531+08	2	2024-06-20 10:33:00.469531+08	/index/	127.0.0.1	2
+7aa08a17-b323-4d86-94f4-2d9d38da74f9	t	2	2024-06-20 10:33:00.969396+08	2	2024-06-20 10:33:00.969396+08	/home/	127.0.0.1	2
+369eb460-121c-4bee-b8ff-467d65f687cc	t	2	2024-06-20 10:33:05.208337+08	2	2024-06-20 10:33:05.208337+08	/pp_master/work_center/index/	127.0.0.1	2
+f99b8024-24a7-4680-8db3-561ce0cf60ca	t	2	2024-06-20 10:33:08.12788+08	2	2024-06-20 10:33:08.12788+08	/pp_master/work_center/get/employees/ab745f95-ee99-485d-8fe3-cdb5b92e81ca	127.0.0.1	2
+f9d61bf9-9008-45db-864e-a2ab1cc32dd0	t	2	2024-06-20 10:33:39.140797+08	2	2024-06-20 10:33:39.140797+08	/index/	127.0.0.1	2
+856301b7-15ed-4e8a-93c1-f596cd5c175c	t	2	2024-06-20 10:33:39.695843+08	2	2024-06-20 10:33:39.695843+08	/home/	127.0.0.1	2
+8f9248db-7d11-4840-ad0e-3123dbde9aa4	t	2	2024-06-20 10:33:41.458377+08	2	2024-06-20 10:33:41.458377+08	/pp_master/work_center/index/	127.0.0.1	2
+04060323-ebeb-4843-8ff3-98a6a4695f9f	t	2	2024-06-20 10:33:43.106261+08	2	2024-06-20 10:33:43.106261+08	/pp_master/work_center/get/employees/b906337c-9fec-4ba9-a218-05cb9abe8fb7	127.0.0.1	2
+d1cd2607-049d-40f0-a22f-7fb40f8ae645	t	2	2024-06-20 10:34:30.418853+08	2	2024-06-20 10:34:30.418853+08	/index/	127.0.0.1	2
+30a04ac2-0f0b-4535-9d9e-296012a72fce	t	2	2024-06-20 10:34:30.962852+08	2	2024-06-20 10:34:30.962852+08	/home/	127.0.0.1	2
+66242f31-2525-473d-9219-db0aad53b8bb	t	2	2024-06-20 10:34:32.14744+08	2	2024-06-20 10:34:32.14744+08	/pp_master/work_center/index/	127.0.0.1	2
+1a936335-d648-49db-bf14-4c499a9b8a73	t	2	2024-06-20 10:34:33.737808+08	2	2024-06-20 10:34:33.737808+08	/pp_master/work_center/get/employees/c2be3466-f168-46e7-867d-f7f53fd89d13	127.0.0.1	2
+b35d8142-4c28-427d-bc27-be3d064e8143	t	2	2024-06-20 10:35:02.870007+08	2	2024-06-20 10:35:02.870007+08	/index/	127.0.0.1	2
+16e29cea-67dc-40e6-841e-ed341f25b3c8	t	2	2024-06-20 10:35:03.393355+08	2	2024-06-20 10:35:03.393355+08	/home/	127.0.0.1	2
+aa25de7f-f44f-4f3c-84bb-518fe35f6489	t	2	2024-06-20 10:35:04.851063+08	2	2024-06-20 10:35:04.851063+08	/pp_master/work_center/index/	127.0.0.1	2
+32fa94e0-9281-4c3c-ab40-6815d97d5436	t	2	2024-06-20 10:35:06.199386+08	2	2024-06-20 10:35:06.199386+08	/pp_master/work_center/get/employees/24d8bb13-f1d3-4756-8856-49efe116c05e	127.0.0.1	2
+3948a429-5f3a-4140-85a4-cf03e3ae9b42	t	2	2024-06-20 10:35:12.108192+08	2	2024-06-20 10:35:12.108192+08	/org_emp/employee/search/	127.0.0.1	2
+d2ecdd46-d92f-49e5-beaa-5c73d307fc37	t	2	2024-06-20 10:35:13.996124+08	2	2024-06-20 10:35:13.996124+08	/pp_master/work_center/add/employee/24d8bb13-f1d3-4756-8856-49efe116c05e/dccb2528-55b1-46a4-9032-2d9db363e70a	127.0.0.1	2
+1ceb5d76-f731-40f2-82c2-e06c43b958f8	t	2	2024-06-20 10:35:14.386334+08	2	2024-06-20 10:35:14.386334+08	/pp_master/work_center/get/employees/24d8bb13-f1d3-4756-8856-49efe116c05e	127.0.0.1	2
+e0c12158-b149-4569-ab81-06c5e653a243	t	2	2024-06-20 10:38:03.072278+08	2	2024-06-20 10:38:03.072278+08	/org_emp/employee/search/	127.0.0.1	2
+047f12d0-556c-4baf-ba06-b16aec09f069	t	2	2024-06-20 10:38:04.43591+08	2	2024-06-20 10:38:04.43591+08	/pp_master/work_center/add/employee/24d8bb13-f1d3-4756-8856-49efe116c05e/19b64d86-a6d0-40c9-8a70-0d49c913a89b	127.0.0.1	2
+b829935b-9bbf-475b-8593-5c70c5015022	t	2	2024-07-04 14:36:00.669878+08	2	2024-07-04 14:36:00.669878+08	/index/	127.0.0.1	2
+007a5eeb-e3ac-4e60-97f3-995c97c2987b	t	2	2024-06-20 10:38:04.880907+08	2	2024-06-20 10:38:04.880907+08	/pp_master/work_center/get/employees/24d8bb13-f1d3-4756-8856-49efe116c05e	127.0.0.1	2
+6077322b-011f-4887-96ab-7e9e122e96f1	t	2	2024-06-20 10:41:44.46195+08	2	2024-06-20 10:41:44.461959+08	/pp_master/work_center/get/employees/935f0250-935f-455d-912b-4d383184c2f6	127.0.0.1	2
+ed47852a-84ed-4dde-88eb-35480206c02a	t	2	2024-06-20 10:41:48.613666+08	2	2024-06-20 10:41:48.613666+08	/pp_master/work_center/add/employee/935f0250-935f-455d-912b-4d383184c2f6/dccb2528-55b1-46a4-9032-2d9db363e70a	127.0.0.1	2
+7ab2aa1e-2fa7-4335-9ce6-1e884748566f	t	2	2024-06-20 10:41:49.033049+08	2	2024-06-20 10:41:49.033049+08	/pp_master/work_center/get/employees/935f0250-935f-455d-912b-4d383184c2f6	127.0.0.1	2
+e4878f23-5c7d-4057-90a9-000aef53782a	t	2	2024-06-20 10:45:03.215712+08	2	2024-06-20 10:45:03.215712+08	/ld_stock/stock/index/	127.0.0.1	2
+5354306f-d19a-4068-b2c8-6cff7e47dd79	t	2	2024-06-20 10:45:09.008111+08	2	2024-06-20 10:45:09.008111+08	/pp_master/work_center/get/employees/b906337c-9fec-4ba9-a218-05cb9abe8fb7	127.0.0.1	2
+8e16fd91-89dc-40d1-bc63-fff268e10e0a	t	2	2024-06-20 10:45:18.8371+08	2	2024-06-20 10:45:18.8371+08	/pp_master/work_center/add/employee/b906337c-9fec-4ba9-a218-05cb9abe8fb7/962f8204-a2e3-4952-8880-54d90d1214cf	127.0.0.1	2
+b8e4fc04-0cef-4ab2-960e-c781fcdbe4b1	t	2	2024-06-20 10:45:19.256536+08	2	2024-06-20 10:45:19.256536+08	/pp_master/work_center/get/employees/b906337c-9fec-4ba9-a218-05cb9abe8fb7	127.0.0.1	2
+de90f958-6903-40a9-b3a5-a37565843a18	t	2	2024-06-20 10:45:27.541812+08	2	2024-06-20 10:45:27.541812+08	/ld_stock/stock/index	127.0.0.1	2
+6b85ae4f-160a-4545-808b-b8a4c7fe4a73	t	2	2024-06-20 10:45:28.245461+08	2	2024-06-20 10:45:28.245461+08	/ld_stock/stock/index/	127.0.0.1	2
+095393b4-636e-4b01-9912-1e92930fa808	t	2	2024-06-20 14:01:16.506495+08	2	2024-06-20 14:01:16.506495+08	/index/	127.0.0.1	2
+a1c7be69-930a-408e-9f03-1eff1e00cee2	t	2	2024-06-20 14:01:16.795025+08	2	2024-06-20 14:01:16.795025+08	/home/	127.0.0.1	2
+a87e352f-5e85-4a98-bc84-36bf79ac93cc	t	2	2024-06-20 14:15:09.112168+08	2	2024-06-20 14:15:09.112168+08	/ld_stock/stock/index/	127.0.0.1	2
+e4115d9b-554a-4704-b976-9304ed730e2a	t	2	2024-06-20 14:15:12.226435+08	2	2024-06-20 14:15:12.226435+08	/ld_stock/stock/add/1/	127.0.0.1	2
+0e0ecaaf-2d89-416e-ab4c-ad776627c377	t	2	2024-06-20 14:42:10.397305+08	2	2024-06-20 14:42:10.397305+08	/index/	127.0.0.1	2
+80af810c-b410-4924-9337-a8a083b71ff5	t	2	2024-06-20 14:42:10.707326+08	2	2024-06-20 14:42:10.707326+08	/home/	127.0.0.1	2
+58d82ea7-e91d-45d5-ab4c-cfbbe8ac1098	t	2	2024-06-20 14:42:12.089507+08	2	2024-06-20 14:42:12.089507+08	/ld_stock/stock/index/	127.0.0.1	2
+b74fc8e4-587b-45fd-9427-044e55ade197	t	2	2024-06-20 14:42:13.010064+08	2	2024-06-20 14:42:13.010064+08	/ld_stock/stock/add/1/	127.0.0.1	2
+ef276cd4-93c5-4e65-9168-c940cbbbc519	t	2	2024-06-20 14:42:32.694905+08	2	2024-06-20 14:42:32.694905+08	/index/	127.0.0.1	2
+dcdda637-cf11-4fdf-b068-9fe56e38a7b1	t	2	2024-06-20 14:42:32.982868+08	2	2024-06-20 14:42:32.982868+08	/home/	127.0.0.1	2
+61bfb98e-9943-436a-a6fa-787fc6783e63	t	2	2024-06-20 14:42:34.261421+08	2	2024-06-20 14:42:34.261421+08	/ld_stock/stock/index/	127.0.0.1	2
+1b0daf0e-49b1-4d79-ab30-f84f1df97feb	t	2	2024-06-20 14:42:35.308144+08	2	2024-06-20 14:42:35.308144+08	/ld_stock/stock/add/1/	127.0.0.1	2
+5a5358b0-5874-46d8-8f9d-b399c958dc8f	t	2	2024-06-20 14:43:16.826577+08	2	2024-06-20 14:43:16.826577+08	/index/	127.0.0.1	2
+11ab8156-1a07-4fb7-9ab4-cca9f4d1cb1b	t	2	2024-06-20 14:43:17.098865+08	2	2024-06-20 14:43:17.098865+08	/home/	127.0.0.1	2
+89f759c9-19fc-45af-8009-33ed6b2bcb7f	t	2	2024-06-20 14:43:18.528117+08	2	2024-06-20 14:43:18.528117+08	/ld_stock/stock/index/	127.0.0.1	2
+39447ad6-85a9-4054-973e-b6cc88a42285	t	2	2024-06-20 14:43:19.285407+08	2	2024-06-20 14:43:19.285407+08	/ld_stock/stock/add/1/	127.0.0.1	2
+153bc2ac-06b8-4aa2-8026-3fe134444daf	t	2	2024-06-20 15:09:09.776966+08	2	2024-06-20 15:09:09.776966+08	/ld_stock/stock/index	127.0.0.1	2
+0c9e0724-d4ae-4857-8e7e-2c5e4b0a454d	t	2	2024-06-20 15:09:09.993128+08	2	2024-06-20 15:09:09.993128+08	/ld_stock/stock/index/	127.0.0.1	2
+7be342b5-0fa9-4f36-80fd-a39ca6cda27b	t	2	2024-06-20 15:09:12.367395+08	2	2024-06-20 15:09:12.367395+08	/ld_stock/stock/index	127.0.0.1	2
+2a738ba8-e9a0-4496-933b-cf503df8d42b	t	2	2024-06-20 15:09:12.90328+08	2	2024-06-20 15:09:12.90328+08	/ld_stock/stock/index/	127.0.0.1	2
+f3ad124c-73af-4314-8d8f-25f8430fedd5	t	2	2024-06-20 15:09:14.513102+08	2	2024-06-20 15:09:14.513102+08	/ld_stock/stock/add/2/	127.0.0.1	2
+b8a8c785-a8c9-4cc9-b7c9-e457cf9fbadc	t	2	2024-06-20 15:52:52.196408+08	2	2024-06-20 15:52:52.196408+08	/index/	127.0.0.1	2
+a806f8e9-3a42-4713-a944-187566940dfa	t	2	2024-06-20 15:52:52.506816+08	2	2024-06-20 15:52:52.506816+08	/home/	127.0.0.1	2
+d84bfe26-03c3-4045-bf75-cb742a001bbd	t	2	2024-06-20 15:54:22.215023+08	2	2024-06-20 15:54:22.215023+08	/pp_master/component/index/	127.0.0.1	2
+a64a2ba2-86b4-4327-8b1a-5b688b45fa8e	t	2	2024-06-21 10:10:20.270877+08	2	2024-06-21 10:10:20.270877+08	/index/	127.0.0.1	2
+95fd7d29-1ab9-41b8-8691-e226bca19811	t	2	2024-06-21 10:10:20.594001+08	2	2024-06-21 10:10:20.594001+08	/home/	127.0.0.1	2
+546e2a2c-ca36-44aa-9b54-d755f8b059f0	t	2	2024-06-21 10:10:23.238531+08	2	2024-06-21 10:10:23.238531+08	/ld_stock/stock/index/	127.0.0.1	2
+ed3bd02a-dbe9-44fe-974d-05415e635fbb	t	2	2024-06-21 10:10:24.28703+08	2	2024-06-21 10:10:24.28703+08	/ld_stock/stock/add/1/	127.0.0.1	2
+d3afcd48-6d59-4158-856f-087b4eb0f685	t	2	2024-06-21 10:12:34.040675+08	2	2024-06-21 10:12:34.040675+08	/ld_stock/stock/index	127.0.0.1	2
+4a219568-270d-45e9-a18d-7efd99e76cec	t	2	2024-06-21 10:12:34.267518+08	2	2024-06-21 10:12:34.267518+08	/ld_stock/stock/index/	127.0.0.1	2
+853ef66a-4b4a-45da-8a28-99a74d93bb1e	t	2	2024-06-21 10:12:35.257947+08	2	2024-06-21 10:12:35.257947+08	/ld_stock/stock/add/1/	127.0.0.1	2
+6617221b-5904-459e-a96c-b70c97676003	t	2	2024-06-26 09:48:07.733105+08	2	2024-06-26 09:48:07.733105+08	/index/	127.0.0.1	2
+8dd134d4-6e5e-4f37-b7dc-e40197a47e21	t	2	2024-06-26 09:48:08.046868+08	2	2024-06-26 09:48:08.046868+08	/home/	127.0.0.1	2
+db1759bb-527a-4616-aa86-b3c4737b302f	t	2	2024-06-26 09:48:09.946231+08	2	2024-06-26 09:48:09.946231+08	/ld_stock/stock/index/	127.0.0.1	2
+aa8a4580-3bb6-4965-a984-432469b57183	t	2	2024-06-26 09:48:11.440006+08	2	2024-06-26 09:48:11.440006+08	/ld_stock/stock/add/1/	127.0.0.1	2
+9b5e01c3-5723-4e4d-8125-8c28f97b8f6f	t	2	2024-06-26 09:50:36.931194+08	2	2024-06-26 09:50:36.931194+08	/ld_stock/stock/index	127.0.0.1	2
+9502544a-200a-43d3-ac5c-40fb3e34a54b	t	2	2024-06-26 09:50:37.161898+08	2	2024-06-26 09:50:37.161898+08	/ld_stock/stock/index/	127.0.0.1	2
+1b589bcc-b9d7-4cb7-91a8-47929957b8a4	t	2	2024-06-26 09:51:33.83777+08	2	2024-06-26 09:51:33.83777+08	/ld_stock/stock/add/1/	127.0.0.1	2
+5caf15c8-7104-44d7-8470-91fd580ba120	t	2	2024-06-26 09:51:57.952841+08	2	2024-06-26 09:51:57.952841+08	/ld_stock/stock/index/	127.0.0.1	2
+43ce9b54-b91a-4cd7-8f37-3ab98b61f0df	t	2	2024-06-26 09:51:59.195564+08	2	2024-06-26 09:51:59.195564+08	/ld_stock/stock/add/1/	127.0.0.1	2
+3128bf70-c6cc-4fbf-90ce-e46dcc7f163e	t	2	2024-06-26 09:57:55.587823+08	2	2024-06-26 09:57:55.587823+08	/sys_dict/dict/index/	127.0.0.1	2
+afe7df01-3681-4f64-8e64-862d099cfee8	t	2	2024-06-26 09:57:57.171489+08	2	2024-06-26 09:57:57.171489+08	/sys_dict/enum/add/b68d0813-52f8-4f26-b4bc-d40f5531c17b	127.0.0.1	2
+79e35a06-531a-429e-966d-45774d23042b	t	2	2024-06-26 09:58:00.252493+08	2	2024-06-26 09:58:00.252493+08	/sys_dict/dict/index/	127.0.0.1	2
+34a9a3b3-9f8d-433f-94b2-1337aada61a5	t	2	2024-06-26 09:58:01.989717+08	2	2024-06-26 09:58:01.989717+08	/sys_dict/enum/add/f90f08f9-3021-41cb-934d-5189cb564b33	127.0.0.1	2
+4fe540ad-f319-4d4e-af11-3455abb47a85	t	2	2024-06-26 09:58:03.537158+08	2	2024-06-26 09:58:03.537158+08	/sys_dict/dict/index/	127.0.0.1	2
+dedb3b83-6155-4b86-b5ec-9ec627b0dc1c	t	2	2024-06-26 09:58:19.093005+08	2	2024-06-26 09:58:19.093005+08	/sys_auth/user/index/	127.0.0.1	2
+7adf2bc2-5fd1-443f-8321-261d496d4a9a	t	2	2024-06-26 10:38:33.698551+08	2	2024-06-26 10:38:33.698551+08	/index/	127.0.0.1	2
+f839a506-c3da-41ff-b168-49c2dd712f37	t	2	2024-06-26 10:38:33.973254+08	2	2024-06-26 10:38:33.973254+08	/home/	127.0.0.1	2
+e621352b-fba6-424c-a23f-4daa4afe7dab	t	2	2024-06-26 10:38:35.080759+08	2	2024-06-26 10:38:35.080759+08	/ld_stock/stock/index/	127.0.0.1	2
+25d3b28b-3990-46d6-a0c7-3de9732c989c	t	2	2024-06-26 10:38:36.627155+08	2	2024-06-26 10:38:36.627155+08	/ld_stock/stock/add/1/	127.0.0.1	2
+b2d68fcb-5d40-41e2-95e9-8a680085a51a	t	2	2024-06-26 10:44:31.764293+08	2	2024-06-26 10:44:31.764293+08	/ld_stock/stock/index/	127.0.0.1	2
+e4799077-db22-4eda-bcfe-224c4447f472	t	2	2024-06-26 10:44:33.350773+08	2	2024-06-26 10:44:33.350773+08	/ld_stock/stock/add/1/	127.0.0.1	2
+a5c65628-ddf5-42f4-8f37-6c246b154ef6	t	2	2024-06-26 10:45:19.504604+08	2	2024-06-26 10:45:19.504604+08	/ld_stock/stock/index/	127.0.0.1	2
+9eec9714-e72f-46a2-826c-caec9959b6c4	t	2	2024-06-26 10:45:20.957633+08	2	2024-06-26 10:45:20.957633+08	/ld_stock/stock/add/1/	127.0.0.1	2
+a2be8691-15a4-43b5-a2ff-2460fdb16882	t	2	2024-06-26 10:46:21.765476+08	2	2024-06-26 10:46:21.765476+08	/ld_stock/stock/index	127.0.0.1	2
+9774538b-2baa-45f9-aedf-f2d229af3035	t	2	2024-06-26 10:46:22.002892+08	2	2024-06-26 10:46:22.002892+08	/ld_stock/stock/index/	127.0.0.1	2
+8dca4907-63b5-485e-9218-3bc615a9e395	t	2	2024-06-26 10:46:23.026149+08	2	2024-06-26 10:46:23.026149+08	/ld_stock/stock/add/1/	127.0.0.1	2
+1821f794-7738-473c-81fc-3bfe10cff6eb	t	2	2024-06-26 10:50:08.450773+08	2	2024-06-26 10:50:08.450773+08	/ld_stock/stock/index/	127.0.0.1	2
+f6bf62c6-aa30-4404-ab41-45df97f0e011	t	2	2024-06-26 10:50:09.341545+08	2	2024-06-26 10:50:09.341545+08	/ld_stock/stock/add/1/	127.0.0.1	2
+47d09ec3-8964-464e-bff2-ad8c061a1145	t	2	2024-06-26 11:08:02.826472+08	2	2024-06-26 11:08:02.826472+08	/ld_stock/stock/index/	127.0.0.1	2
+45ecf5ae-953f-43d7-b1b9-05097e27dcdd	t	2	2024-06-26 11:08:03.967529+08	2	2024-06-26 11:08:03.967529+08	/ld_stock/stock/add/1/	127.0.0.1	2
+52bc7c61-4753-4dde-8055-b45caa6e81f3	t	2	2024-06-26 11:08:31.384067+08	2	2024-06-26 11:08:31.384067+08	/ld_stock/stock/add、1、	127.0.0.1	2
+83955118-12f7-457e-af10-4dcc403e0f2f	t	2	2024-06-26 11:08:36.697923+08	2	2024-06-26 11:08:36.697923+08	/ld_stock/stock/add/1/	127.0.0.1	2
+712d903d-6739-4dc5-8806-2b8934507f11	t	2	2024-06-26 11:09:17.865282+08	2	2024-06-26 11:09:17.865282+08	/ld_stock/stock/add/1/	127.0.0.1	2
+bb9360a6-5dca-41b8-95be-317287333c09	t	2	2024-06-26 11:09:18.201409+08	2	2024-06-26 11:09:18.201409+08	/favicon.ico	127.0.0.1	2
+21e8d345-4df6-484b-add3-0738968ff131	t	2	2024-06-26 11:10:06.342162+08	2	2024-06-26 11:10:06.342162+08	/ld_stock/stock/add/1/	127.0.0.1	2
+06ff4c8c-fa0f-4305-afe6-6438c24cd31c	t	2	2024-06-26 11:10:39.169824+08	2	2024-06-26 11:10:39.169824+08	/ld_stock/stock/add/1/	127.0.0.1	2
+62ffa4a9-3a21-4e2d-8cb9-3538f1cd9229	t	2	2024-06-26 11:25:33.783557+08	2	2024-06-26 11:25:33.783557+08	/ld_stock/stock/add/1/	127.0.0.1	2
+547dc5dc-95b6-41a7-8fce-ff02166dd4a7	t	2	2024-06-26 14:39:29.89209+08	2	2024-06-26 14:39:29.89209+08	/index/	127.0.0.1	2
+471705a7-fe34-421e-9135-ba48bd7972cb	t	2	2024-06-26 14:39:30.246142+08	2	2024-06-26 14:39:30.246142+08	/home/	127.0.0.1	2
+cde24809-6181-44b7-8ccf-95bff10304c9	t	2	2024-06-26 14:39:33.766528+08	2	2024-06-26 14:39:33.766528+08	/ld_stock/stock/add、1、	127.0.0.1	2
+8e45e924-4d2f-40b4-83ee-91ccf3fc0341	t	2	2024-06-26 14:39:52.23612+08	2	2024-06-26 14:39:52.23612+08	/ld_stock/stock/add/1/	127.0.0.1	2
+e2bcc12d-ca92-490e-b739-a5185a0bfecb	t	2	2024-06-26 14:40:23.045291+08	2	2024-06-26 14:40:23.045291+08	/ld_stock/stock/add/1/	127.0.0.1	2
+175520f9-27f2-4526-ba91-eb0b00e21179	t	2	2024-06-26 14:41:02.171132+08	2	2024-06-26 14:41:02.171132+08	/ld_stock/stock/add/1/	127.0.0.1	2
+aa62d52f-58a7-46da-9fad-718319515a24	t	2	2024-06-26 14:43:24.338169+08	2	2024-06-26 14:43:24.338169+08	/ld_stock/stock/add/1/	127.0.0.1	2
+79b90e2b-5962-4402-9318-1c51cb66915c	t	2	2024-06-26 14:43:39.479161+08	2	2024-06-26 14:43:39.479161+08	/ld_stock/stock/add/1/	127.0.0.1	2
+7bb4e605-1822-4aec-8f79-d7efc050e43e	t	2	2024-06-26 14:45:00.410658+08	2	2024-06-26 14:45:00.410658+08	/ld_stock/stock/add/1/	127.0.0.1	2
+ef90c5e2-1808-4639-9f6a-52d70ceba47b	t	2	2024-06-26 15:27:11.934831+08	2	2024-06-26 15:27:11.934831+08	/index/	127.0.0.1	2
+e2b01949-1493-4847-934b-b7084f3f405b	t	2	2024-06-26 15:27:12.307839+08	2	2024-06-26 15:27:12.307839+08	/home/	127.0.0.1	2
+1f192aae-f3e1-4ca9-b39d-edd1fe4942ba	t	2	2024-06-26 15:27:27.175386+08	2	2024-06-26 15:27:27.175386+08	/ld_stock/stock/add/1/	127.0.0.1	2
+72d8402f-24e7-4b05-a72f-6c9f3ed44981	t	2	2024-06-26 15:28:09.806516+08	2	2024-06-26 15:28:09.806516+08	/ld_stock/stock/add/1/	127.0.0.1	2
+78338770-b987-488b-a5b9-02884f9e7442	t	2	2024-06-26 16:32:04.253145+08	2	2024-06-26 16:32:04.253145+08	/index/	127.0.0.1	2
+9e6fc050-901d-41d9-ba1f-ed5a0793c82d	t	2	2024-06-26 16:32:04.531919+08	2	2024-06-26 16:32:04.531919+08	/home/	127.0.0.1	2
+265fcc83-9781-4a34-93fd-a9b4ebf92f55	t	2	2024-06-26 16:32:16.480223+08	2	2024-06-26 16:32:16.480223+08	/ld_stock/stock/add/1/	127.0.0.1	2
+197541fe-39a0-416b-b8a4-75b7e2c46408	t	2	2024-06-26 16:32:27.518909+08	2	2024-06-26 16:32:27.518909+08	/ld_stock/stock/add/2/	127.0.0.1	2
+622c6452-8a4c-4059-987a-90b3cd01fadd	t	2	2024-07-01 10:22:08.740265+08	2	2024-07-01 10:22:08.740265+08	/index/	127.0.0.1	2
+99f1368d-6839-4302-8b25-e6db0e0ad366	t	2	2024-07-01 10:22:09.047086+08	2	2024-07-01 10:22:09.047086+08	/home/	127.0.0.1	2
+b18220f2-ac3a-495c-80b8-f3c956384240	t	2	2024-07-01 10:22:15.498024+08	2	2024-07-01 10:22:15.498024+08	/ld_stock/stock/index/	127.0.0.1	2
+e6ee3ad8-303d-4927-9bea-62448d3bc4d5	t	2	2024-07-01 10:22:17.210791+08	2	2024-07-01 10:22:17.210791+08	/ld_stock/stock/add/1/	127.0.0.1	2
+46a0a023-49e5-4430-9ff7-20a0ac6eeded	t	2	2024-07-01 11:29:40.522354+08	2	2024-07-01 11:29:40.522354+08	/index/	127.0.0.1	2
+c8fef4ef-e444-497e-80c9-f2e0d4e65e08	t	2	2024-07-01 11:29:40.819261+08	2	2024-07-01 11:29:40.819261+08	/home/	127.0.0.1	2
+bdb8e886-7b76-4b72-a54d-9f1f52cdfac0	t	2	2024-07-01 11:29:42.167227+08	2	2024-07-01 11:29:42.167227+08	/sys_auth/menu/index/	127.0.0.1	2
+31ef6f1b-72a5-4ef1-a1d3-25c15a0d2c76	t	2	2024-07-01 11:29:45.087364+08	2	2024-07-01 11:29:45.087364+08	/sys_auth/menu/index/	127.0.0.1	2
+0ca94572-0935-4c7d-9da5-ef696e99ceb1	t	2	2024-07-01 11:29:52.110239+08	2	2024-07-01 11:29:52.110239+08	/sys_auth/menu/index/	127.0.0.1	2
+149e3b7f-9360-4376-889e-f0ad51cdee16	t	2	2024-07-01 11:29:56.219995+08	2	2024-07-01 11:29:56.219995+08	/sys_auth/menu/index/	127.0.0.1	2
+cdde81e8-bf34-493f-be8b-80f7e28acbb8	t	2	2024-07-01 14:17:42.10484+08	2	2024-07-01 14:17:42.10484+08	/index/	127.0.0.1	2
+caab4a5f-aa60-4a73-932b-ba53a45d6cbd	t	2	2024-07-01 14:17:42.432931+08	2	2024-07-01 14:17:42.432931+08	/home/	127.0.0.1	2
+c2979869-197f-4f1a-a562-be85f62210bc	t	2	2024-07-01 14:18:50.709888+08	2	2024-07-01 14:18:50.709888+08	/sys_auth/menu/index/	127.0.0.1	2
+ab58e5a8-b6b1-481e-a941-493722170802	t	2	2024-07-01 14:18:53.526044+08	2	2024-07-01 14:18:53.526044+08	/sys_auth/menu/index/	127.0.0.1	2
+bf60fb88-b064-49ea-9d86-01c0c72373b7	t	2	2024-07-01 14:18:58.445735+08	2	2024-07-01 14:18:58.445735+08	/sys_auth/menu/edit/7312d4e7-f970-4dd2-9d95-8dd111b59bd1	127.0.0.1	2
+140a658e-c953-45f9-891f-42ee22073d62	t	2	2024-07-01 14:19:05.328161+08	2	2024-07-01 14:19:05.328161+08	/sys_auth/menu/edit/7312d4e7-f970-4dd2-9d95-8dd111b59bd1	127.0.0.1	2
+1788e888-9d84-4928-8353-747bb1d45f50	t	2	2024-07-01 14:19:05.537086+08	2	2024-07-01 14:19:05.537086+08	/sys_auth/menu/index/	127.0.0.1	2
+44dd1bdd-2dea-482e-a044-8048b700c177	t	2	2024-07-01 14:20:07.637971+08	2	2024-07-01 14:20:07.637971+08	/sys_auth/menu/add/	127.0.0.1	2
+6445bc69-bc14-4e9a-a5cc-9876b6afcd52	t	2	2024-07-01 14:21:55.151771+08	2	2024-07-01 14:21:55.151771+08	/sys_auth/menu/add/	127.0.0.1	2
+86f6a17f-19c3-484f-80dd-f2db8c7fc222	t	2	2024-07-01 14:21:55.366686+08	2	2024-07-01 14:21:55.366686+08	/sys_auth/menu/index/	127.0.0.1	2
+45e6a82b-3e98-4993-b49f-c839826960c1	t	1	2024-07-01 14:22:16.038674+08	1	2024-07-01 14:22:16.038674+08	/index/	127.0.0.1	1
+a49deae2-e5b4-47ea-a926-5d7709ee9c02	t	1	2024-07-01 14:22:16.304496+08	1	2024-07-01 14:22:16.304496+08	/home/	127.0.0.1	1
+1cab83fe-48a1-4cfb-8f48-dcdb927636f2	t	1	2024-07-01 14:22:25.429973+08	1	2024-07-01 14:22:25.429973+08	/sys_auth/role/index/	127.0.0.1	1
+71d014c2-9436-414c-b85a-1abfa1ef2bb2	t	1	2024-07-01 14:22:27.53194+08	1	2024-07-01 14:22:27.53194+08	/sys_auth/role/menus/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	1
+0f3e3c2c-5d36-4624-b5fd-27815be25330	t	1	2024-07-01 14:22:34.717323+08	1	2024-07-01 14:22:34.717323+08	/sys_auth/role/auth/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	1
+e7398fef-5ee0-47c6-8ac3-29c2ba4e537b	t	2	2024-07-01 14:22:46.956166+08	2	2024-07-01 14:22:46.956166+08	/index/	127.0.0.1	2
+f46007c1-a442-432f-9a06-629114c32c44	t	2	2024-07-01 14:22:47.24144+08	2	2024-07-01 14:22:47.24144+08	/home/	127.0.0.1	2
+59536c48-f36e-4ecc-b06a-45a64ad3dccc	t	2	2024-07-01 14:23:09.961319+08	2	2024-07-01 14:23:09.961319+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d4649848-0385-4f4b-af11-7f935e60bdfd	t	2	2024-07-01 15:40:02.595826+08	2	2024-07-01 15:40:02.595826+08	/index/	127.0.0.1	2
+72947b12-6f22-4d00-aef3-a5eee24e2682	t	2	2024-07-01 15:40:02.901506+08	2	2024-07-01 15:40:02.901506+08	/home/	127.0.0.1	2
+9c0ae0b2-5ffc-4674-80c7-2ff7aac0cec6	t	2	2024-07-01 16:08:47.374763+08	2	2024-07-01 16:08:47.374763+08	/index/	127.0.0.1	2
+1d90f941-95f2-44fd-bf48-68657269d1ee	t	2	2024-07-01 16:08:47.684619+08	2	2024-07-01 16:08:47.684619+08	/home/	127.0.0.1	2
+fc3e7588-e639-4701-94e6-6c2e5dbb23dd	t	2	2024-07-01 16:11:58.824846+08	2	2024-07-01 16:11:58.824846+08	/index/	127.0.0.1	2
+69795a1b-c066-4560-8fb2-7adceccdd26a	t	2	2024-07-01 16:11:59.121268+08	2	2024-07-01 16:11:59.121268+08	/home/	127.0.0.1	2
+54a85fec-5576-4f59-aead-f239b883f934	t	2	2024-07-01 16:12:10.822208+08	2	2024-07-01 16:12:10.822208+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+06ea3005-9294-42b0-845b-b6d49846e642	t	2	2024-07-01 16:13:20.807353+08	2	2024-07-01 16:13:20.807353+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e8962b19-2fa7-4c8b-a044-bf679398c227	t	2	2024-07-01 16:17:49.164147+08	2	2024-07-01 16:17:49.164147+08	/pp_master/warehouse/index/	127.0.0.1	2
+881f9aa3-bb07-4aa8-b3ea-8f7505a1bfd9	t	2	2024-07-01 16:18:03.524329+08	2	2024-07-01 16:18:03.524329+08	/pp_master/component/index/	127.0.0.1	2
+8f1872f0-79d3-4e8c-b2d4-2d79f8f89dd3	t	2	2024-07-01 16:20:46.795412+08	2	2024-07-01 16:20:46.795412+08	/index/	127.0.0.1	2
+05eff1b9-ae83-4569-95ad-ffdeb2d7468a	t	2	2024-07-01 16:20:47.065865+08	2	2024-07-01 16:20:47.065865+08	/home/	127.0.0.1	2
+b8505f06-6848-40de-aa40-3075e4983217	t	2	2024-07-01 16:20:49.433012+08	2	2024-07-01 16:20:49.433012+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+5e6fc701-de8b-4077-8ec3-ea7fbf49b257	t	2	2024-07-01 16:30:37.132565+08	2	2024-07-01 16:30:37.132565+08	/ld_stock/stock/add/1/	127.0.0.1	2
+ec65c27d-0e11-423c-bd2f-7faa97113680	t	2	2024-07-01 16:37:44.624203+08	2	2024-07-01 16:37:44.624203+08	/ld_stock/stock/index	127.0.0.1	2
+f7be8437-3591-4f29-8d0e-dd6d167e4fab	t	2	2024-07-01 16:37:44.877589+08	2	2024-07-01 16:37:44.877589+08	/ld_stock/stock/index/	127.0.0.1	2
+e9e022af-c769-45d6-bb98-0dae05ec7191	t	2	2024-07-01 16:37:49.391102+08	2	2024-07-01 16:37:49.391102+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+26b587c7-8229-4cd1-8497-ca5892447d7f	t	2	2024-07-01 16:37:50.696101+08	2	2024-07-01 16:37:50.696101+08	/ld_stock/stock/add/1/	127.0.0.1	2
+9dcbd659-02ef-45da-9eb6-6155eb02a56f	t	2	2024-07-01 16:40:17.103912+08	2	2024-07-01 16:40:17.103912+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+5f39795e-289b-452c-bc6b-ed9993339c0e	t	2	2024-07-01 16:40:18.569602+08	2	2024-07-01 16:40:18.569602+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+8a0c7b7b-8c8a-4a58-9755-dc49f073e1b9	t	2	2024-07-01 16:41:39.877019+08	2	2024-07-01 16:41:39.877019+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+f31a4fdf-5ad0-4087-ba0b-83e9d1f13f99	t	2	2024-07-01 16:41:41.265534+08	2	2024-07-01 16:41:41.265534+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+4fbf7126-553c-4a6f-af8b-c54c4c8402b9	t	2	2024-07-01 16:42:39.438581+08	2	2024-07-01 16:42:39.438581+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+7b273243-57e5-475c-9d55-5d2a611ed37f	t	2	2024-07-01 16:42:40.426766+08	2	2024-07-01 16:42:40.426766+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+328bb425-f5ec-43b9-9cb5-bd7643a50d16	t	2	2024-07-01 16:42:41.390665+08	2	2024-07-01 16:42:41.391662+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d9df16ea-a98e-4023-a8f3-a17d1cbfea3e	t	2	2024-07-03 14:56:39.011435+08	2	2024-07-03 14:56:39.011435+08	/index/	127.0.0.1	2
+323ec9d2-4050-4572-a019-3365166c654f	t	2	2024-07-03 14:56:39.405861+08	2	2024-07-03 14:56:39.405861+08	/home/	127.0.0.1	2
+65a760b2-e6d9-4d8e-9b84-98bdcacec995	t	2	2024-07-03 14:56:42.420611+08	2	2024-07-03 14:56:42.420611+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+7c913b15-7123-45af-b0e0-7bed440cf86a	t	2	2024-07-03 14:56:44.014672+08	2	2024-07-03 14:56:44.014672+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+5624b9bb-bb38-490e-989e-02b30248d4c6	t	2	2024-07-03 14:56:51.1994+08	2	2024-07-03 14:56:51.1994+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+2c010e06-382c-4598-9d46-b54e1395836a	t	2	2024-07-03 14:56:55.650572+08	2	2024-07-03 14:56:55.650572+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+fc3e23fb-8b23-4d3a-8099-ecd770e0ad94	t	2	2024-07-03 14:56:57.001414+08	2	2024-07-03 14:56:57.001414+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+5874b8ee-3496-4848-b5b6-a40c76787163	t	2	2024-07-03 15:24:46.292474+08	2	2024-07-03 15:24:46.292474+08	/pp_master/warehouse/index/	127.0.0.1	2
+8c80fac5-0aa8-4884-bdc0-5af3ef612e43	t	2	2024-07-03 15:26:50.227379+08	2	2024-07-03 15:26:50.227379+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+dbab5cca-5463-47bf-82fb-6bee0ae580d2	t	2	2024-07-03 15:27:34.892721+08	2	2024-07-03 15:27:34.892721+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9ec8fc50-2b3b-4c69-938d-215b3a4c17a7	t	2	2024-07-03 15:27:45.255494+08	2	2024-07-03 15:27:45.255494+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+673cee1d-9851-4fe1-b546-0208ffead8b3	t	2	2024-07-03 16:25:38.329009+08	2	2024-07-03 16:25:38.329009+08	/index/	127.0.0.1	2
+35121a60-0ce4-4a77-bf9a-22d27e3bc920	t	2	2024-07-03 16:25:38.593402+08	2	2024-07-03 16:25:38.593402+08	/home/	127.0.0.1	2
+5db96540-c0fb-4318-b0d5-92dd8103686c	t	2	2024-07-03 16:25:41.3188+08	2	2024-07-03 16:25:41.3188+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+59275bf2-7191-4a80-b09a-b7aa84943080	t	2	2024-07-03 16:25:42.381533+08	2	2024-07-03 16:25:42.381533+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+536d7b31-b791-4fda-a776-86357b85ab9e	t	2	2024-07-04 08:36:51.628865+08	2	2024-07-04 08:36:51.628865+08	/index/	127.0.0.1	2
+729f8ee5-0cf6-464a-b6a8-6466458e107a	t	2	2024-07-04 08:36:51.953401+08	2	2024-07-04 08:36:51.953401+08	/home/	127.0.0.1	2
+04dedaf0-db92-41cc-a695-90c1ed44d084	t	2	2024-07-04 08:36:52.985904+08	2	2024-07-04 08:36:52.985904+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4f36edfd-54db-4591-8e4e-66b054655757	t	2	2024-07-04 08:36:54.018067+08	2	2024-07-04 08:36:54.018067+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+aa3e07f1-c366-4057-b344-a8e7adabe1c2	t	2	2024-07-04 08:59:20.35427+08	2	2024-07-04 08:59:20.35427+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+b6b72130-7e4a-4b61-aee4-2b820c5dad2d	t	2	2024-07-04 08:59:21.538196+08	2	2024-07-04 08:59:21.538196+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3b2a20d9-8095-44f3-8463-ca06b7e546bd	t	2	2024-07-04 08:59:23.707615+08	2	2024-07-04 08:59:23.707615+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+96af2f04-21fb-48c1-b693-0cdadd2e64c9	t	2	2024-07-04 08:59:57.197781+08	2	2024-07-04 08:59:57.197781+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+73a219af-17fd-45a4-9cda-d867ebb7562f	t	2	2024-07-04 08:59:58.191354+08	2	2024-07-04 08:59:58.191354+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3312d0e6-4e86-4974-807a-bced5aa05ce9	t	2	2024-07-04 09:00:00.375609+08	2	2024-07-04 09:00:00.375609+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+007a67a2-f2dd-4c2d-a1e0-18246751f260	t	2	2024-07-04 09:02:19.934645+08	2	2024-07-04 09:02:19.934645+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+99efd402-d322-4261-b44a-111f4d514112	t	2	2024-07-04 09:02:20.587952+08	2	2024-07-04 09:02:20.587952+08	/favicon.ico	127.0.0.1	2
+c013e964-7d6a-41e1-b36f-81e242a46391	t	2	2024-07-04 09:03:18.031146+08	2	2024-07-04 09:03:18.031146+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+035df151-a82f-444e-93cb-e25a4cb1f2db	t	2	2024-07-04 09:04:31.060105+08	2	2024-07-04 09:04:31.060105+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b3ade271-7cd4-41df-a70e-0e00d3118496	t	2	2024-07-04 09:04:33.770609+08	2	2024-07-04 09:04:33.770609+08	/ld_stock/stock/barcode/get_items	127.0.0.1	2
+89b6a73b-b96b-44e2-8505-d830f92078c2	t	2	2024-07-04 09:04:45.264217+08	2	2024-07-04 09:04:45.264217+08	/ld_stock/stock/barcode/get_items	127.0.0.1	2
+c4a8f187-34af-4306-8dfb-57813a5336d2	t	2	2024-07-04 09:04:45.450684+08	2	2024-07-04 09:04:45.450684+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+285b9ff3-38ea-4c31-9778-6176e19944cf	t	2	2024-07-04 09:06:46.445368+08	2	2024-07-04 09:06:46.445368+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+5ea3b816-15a5-4106-809d-3a8e931c4e10	t	2	2024-07-04 09:08:27.413533+08	2	2024-07-04 09:08:27.413533+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+3427e735-1d03-4623-981a-46277989e640	t	2	2024-07-04 09:08:58.003358+08	2	2024-07-04 09:08:58.003358+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+1459060c-70e4-456b-8c2c-ff965373b0ad	t	2	2024-07-04 09:09:51.13347+08	2	2024-07-04 09:09:51.13347+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+ba267d6a-299c-4db3-86b0-84919b65153f	t	2	2024-07-04 09:10:00.926704+08	2	2024-07-04 09:10:00.926704+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+fba8cc11-c1af-48b6-9a3b-39e79bb2377f	t	2	2024-07-04 09:10:14.535734+08	2	2024-07-04 09:10:14.535734+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+ac0d44db-bcb4-4aaa-a958-81863430e62e	t	2	2024-07-04 09:12:20.293593+08	2	2024-07-04 09:12:20.293593+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+170cc9aa-063e-4a53-b026-54ba0fcf9f18	t	2	2024-07-04 09:12:29.206338+08	2	2024-07-04 09:12:29.206338+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+260908c6-391f-4e18-9a35-a2159b60318e	t	2	2024-07-04 09:12:30.516199+08	2	2024-07-04 09:12:30.516199+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e7b52d6c-d385-4120-9688-beea1265415c	t	2	2024-07-04 09:12:33.195268+08	2	2024-07-04 09:12:33.195268+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+93018aa9-32b7-440b-8cf0-391c938c59f2	t	2	2024-07-04 09:13:41.16026+08	2	2024-07-04 09:13:41.16026+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+16223100-70c0-48f2-9be7-034e67d3dedd	t	2	2024-07-04 09:13:42.361298+08	2	2024-07-04 09:13:42.361298+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+0e636a94-7c7b-4bc8-8ee9-c902db6a7fb6	t	2	2024-07-04 09:13:44.673656+08	2	2024-07-04 09:13:44.673656+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+e2ff3a27-5e11-4f24-ad59-867bf8f04133	t	2	2024-07-04 09:14:46.134129+08	2	2024-07-04 09:14:46.134129+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+cdf20a13-3fdc-44f6-830d-ecc77b239604	t	2	2024-07-04 09:14:49.654367+08	2	2024-07-04 09:14:49.654367+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+395e76d5-6233-4618-880b-f205f720ddb3	t	2	2024-07-04 09:14:53.560116+08	2	2024-07-04 09:14:53.560116+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+4ce520ff-03be-4b90-a5d8-748d94ea252f	t	2	2024-07-04 09:15:38.375992+08	2	2024-07-04 09:15:38.375992+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b1e287cc-8248-4976-80dd-791539a4213a	t	2	2024-07-04 09:20:24.965462+08	2	2024-07-04 09:20:24.965462+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+63e1d16a-c778-48da-a9ca-1eea9b5b8fa3	t	2	2024-07-04 09:20:26.777568+08	2	2024-07-04 09:20:26.777568+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+9eff0416-4e26-414b-8e27-8916fd00efdf	t	2	2024-07-04 09:20:28.738597+08	2	2024-07-04 09:20:28.738597+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+9bfb309d-c269-4ad1-bd69-bef4a686a9a4	t	2	2024-07-04 09:20:48.502361+08	2	2024-07-04 09:20:48.502361+08	/index/	127.0.0.1	2
+9af9a6ae-77e7-40e3-9f95-636aed932466	t	2	2024-07-04 09:20:48.789663+08	2	2024-07-04 09:20:48.789663+08	/home/	127.0.0.1	2
+318ffbfe-f5ca-4b72-bc8f-e56a45a5c965	t	2	2024-07-04 09:20:52.331746+08	2	2024-07-04 09:20:52.331746+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9e98c9fc-9d9a-484c-a92c-bc3bcc87793e	t	2	2024-07-04 09:20:58.707515+08	2	2024-07-04 09:20:58.707515+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+28a83037-de9a-401a-8028-d96e1b2afd5f	t	2	2024-07-04 09:21:08.587395+08	2	2024-07-04 09:21:08.587395+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b9a4e2a1-89ad-4630-8911-53ec0ce8e6f9	t	2	2024-07-04 09:22:01.953588+08	2	2024-07-04 09:22:01.953588+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+b198d0c4-048c-492d-a668-87295fe1c20b	t	2	2024-07-04 09:22:03.15534+08	2	2024-07-04 09:22:03.15534+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+ad52bdea-e343-4524-b024-6c3cfaacbce5	t	2	2024-07-04 09:22:07.774558+08	2	2024-07-04 09:22:07.774558+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+5c7af300-af7d-4802-9b43-2980cdecce56	t	2	2024-07-04 09:22:17.974462+08	2	2024-07-04 09:22:17.974462+08	/index/	127.0.0.1	2
+ef65bf37-bcc8-4c3b-8e7c-1f9ea67545e4	t	2	2024-07-04 09:22:18.276954+08	2	2024-07-04 09:22:18.276954+08	/home/	127.0.0.1	2
+21f42075-1124-4353-85ce-504c6d3b82b7	t	2	2024-07-04 09:22:19.081421+08	2	2024-07-04 09:22:19.081421+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+96def1ed-c917-41dc-a2ae-0cda22cb5461	t	2	2024-07-04 09:22:20.400223+08	2	2024-07-04 09:22:20.400223+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+7c2cedd1-d480-4082-bd03-3b7faf34940b	t	2	2024-07-04 09:22:23.502232+08	2	2024-07-04 09:22:23.502232+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+4617c9cc-09bd-4fc7-bf89-ad7f3b8c0d82	t	2	2024-07-04 09:28:17.404894+08	2	2024-07-04 09:28:17.404894+08	/index/	127.0.0.1	2
+c1e7115c-4df2-4475-ad47-258483031b7c	t	2	2024-07-04 09:28:17.668644+08	2	2024-07-04 09:28:17.668644+08	/home/	127.0.0.1	2
+4c8f1634-c908-4f63-8eaa-f22c20778020	t	2	2024-07-04 09:28:18.899519+08	2	2024-07-04 09:28:18.899519+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+101ab87a-9c76-4809-ac0b-8bd7124aed04	t	2	2024-07-04 09:28:21.06936+08	2	2024-07-04 09:28:21.06936+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+171ed059-d0a7-4dbf-bf65-7d3805faabbc	t	2	2024-07-04 09:28:24.258206+08	2	2024-07-04 09:28:24.258206+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+34f13e37-b2d4-4046-867c-ecf6292c696d	t	2	2024-07-04 09:28:51.522793+08	2	2024-07-04 09:28:51.522793+08	/index/	127.0.0.1	2
+cc79db94-d79e-4ebd-ab2d-5e128bd785c6	t	2	2024-07-04 09:28:51.792371+08	2	2024-07-04 09:28:51.792371+08	/home/	127.0.0.1	2
+ada82332-be60-4057-ad92-c061379c2ca2	t	2	2024-07-04 09:28:53.308623+08	2	2024-07-04 09:28:53.308623+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9552993b-8307-42ff-8100-694767e8080e	t	2	2024-07-04 09:28:54.38673+08	2	2024-07-04 09:28:54.38673+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+a1f1e57d-521b-4ba1-8143-a4a6cc21e3b2	t	2	2024-07-04 09:28:56.518638+08	2	2024-07-04 09:28:56.518638+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+55f788da-8cd3-4fb9-8864-eafb2fab67e5	t	2	2024-07-04 09:31:27.917734+08	2	2024-07-04 09:31:27.917734+08	/index/	127.0.0.1	2
+b90655f7-ed60-4a41-bfbc-6e1cadf782ee	t	2	2024-07-04 09:31:28.217798+08	2	2024-07-04 09:31:28.217798+08	/home/	127.0.0.1	2
+40218b61-7cb3-49a0-909c-c4afa72d06ae	t	2	2024-07-04 09:31:29.046088+08	2	2024-07-04 09:31:29.046088+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+89a29a2a-a7da-4f3e-8f72-9687b29f35cf	t	2	2024-07-04 09:31:30.202182+08	2	2024-07-04 09:31:30.202182+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+35b93b52-9d3f-4f48-a845-6eb2553b5e6a	t	2	2024-07-04 09:31:32.361445+08	2	2024-07-04 09:31:32.361445+08	/sys_auth/role/users/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	2
+4f5ad558-01ce-474b-8423-e154bc845e3c	t	2	2024-07-04 09:32:57.705157+08	2	2024-07-04 09:32:57.705157+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+31f61c85-24af-4abc-a911-83fac07292af	t	2	2024-07-04 09:34:47.311349+08	2	2024-07-04 09:34:47.312346+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+bd24d860-3c55-46fc-8429-9677fc369105	t	2	2024-07-04 09:34:49.819322+08	2	2024-07-04 09:34:49.819322+08	/sys_auth/role/users/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	2
+2d1cd627-5408-49fc-9654-12cc695fe959	t	2	2024-07-04 09:36:08.243642+08	2	2024-07-04 09:36:08.243642+08	/sys_auth/role/users/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	2
+5f8701df-e629-4ff1-a009-8322bd91d6a3	t	2	2024-07-04 09:37:57.132176+08	2	2024-07-04 09:37:57.132176+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+2513f596-d523-4efc-822d-2f5f3b92f75a	t	2	2024-07-04 09:37:59.7248+08	2	2024-07-04 09:37:59.7248+08	/sys_auth/role/users/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	2
+6d8596f4-b8c5-4fd4-8508-e34f38878f79	t	2	2024-07-04 09:37:59.725766+08	2	2024-07-04 09:37:59.725766+08	/sys_auth/role/users/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	2
+e32b55fb-39e6-484b-a99a-5268859fc2de	t	2	2024-07-04 09:38:23.543946+08	2	2024-07-04 09:38:23.543946+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+da168980-c01f-476f-af61-d637a27a0679	t	2	2024-07-04 09:38:25.740466+08	2	2024-07-04 09:38:25.740466+08	/sys_auth/role/users/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	2
+3e81c13a-e463-4191-890e-5fad0b5d8fec	t	2	2024-07-04 09:41:00.938058+08	2	2024-07-04 09:41:00.938058+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+2cbeb34f-d792-4a89-ad80-c2adb7e9c22e	t	2	2024-07-04 09:41:03.150387+08	2	2024-07-04 09:41:03.150387+08	/sys_auth/role/users/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	2
+8821aff3-a77c-4570-99f5-c586e124ff98	t	2	2024-07-04 09:41:25.550392+08	2	2024-07-04 09:41:25.550392+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b650b665-64c2-44a7-a0f7-5e74adf98023	t	2	2024-07-04 09:41:28.112532+08	2	2024-07-04 09:41:28.112532+08	/sys_auth/role/users/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	2
+77858d12-2208-4a72-a308-4ef6c5c850ae	t	2	2024-07-04 09:41:49.124584+08	2	2024-07-04 09:41:49.124584+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3357498f-0e8f-4b32-903d-54027ec827ae	t	2	2024-07-04 09:41:51.521655+08	2	2024-07-04 09:41:51.521655+08	/sys_auth/role/users/f87bde32-ea25-419a-858d-d6d50dbc94cd	127.0.0.1	2
+38ce6681-6b7b-4dfc-a2cf-fdb887d6b572	t	2	2024-07-04 09:43:25.082425+08	2	2024-07-04 09:43:25.082425+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+56dbeb2c-f15c-4f33-81a9-d590c9fb03a2	t	2	2024-07-04 09:43:27.197063+08	2	2024-07-04 09:43:27.197063+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+fcaad33c-8c42-4608-9823-bd14874b0134	t	2	2024-07-04 09:43:34.743603+08	2	2024-07-04 09:43:34.743603+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+555ded31-32de-4d04-959c-4d38ca434d47	t	2	2024-07-04 09:43:37.063735+08	2	2024-07-04 09:43:37.063735+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+c76b490e-674f-4be4-a482-d6b3ee5be002	t	2	2024-07-04 09:43:55.162436+08	2	2024-07-04 09:43:55.162436+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+32203655-7730-45cc-8df3-514e0a3cf673	t	2	2024-07-04 09:43:58.047942+08	2	2024-07-04 09:43:58.047942+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+e00908c2-464d-4fff-a7ed-bfd0c74d84b6	t	2	2024-07-04 09:45:30.381205+08	2	2024-07-04 09:45:30.381205+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+de9a2981-ee05-49fb-8e57-156e84eff04d	t	2	2024-07-04 09:45:34.862265+08	2	2024-07-04 09:45:34.862265+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+ad377def-f3b3-48a2-8e6c-aad020740536	t	2	2024-07-04 09:45:54.854036+08	2	2024-07-04 09:45:54.854036+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+fcb679d7-4722-4c7e-9f42-459ffac2bd2d	t	2	2024-07-04 09:45:56.786021+08	2	2024-07-04 09:45:56.786021+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+a022f1ae-eeb3-4bd1-8bbb-40aeae09e9ea	t	2	2024-07-04 09:47:10.173135+08	2	2024-07-04 09:47:10.173135+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+32cd4dad-638a-4cef-b157-500d48829b76	t	2	2024-07-04 09:47:12.602056+08	2	2024-07-04 09:47:12.602056+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+e523ca07-e7c6-4c6f-8144-bd5c78785e56	t	2	2024-07-04 09:52:01.485251+08	2	2024-07-04 09:52:01.485251+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+45766701-c279-4add-939c-bced054d5f41	t	2	2024-07-04 09:52:03.960966+08	2	2024-07-04 09:52:03.960966+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+69ac3534-56bc-4d4e-9209-a8db062afabd	t	2	2024-07-04 09:53:48.826589+08	2	2024-07-04 09:53:48.826589+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3cae4182-4581-43d0-8d11-a143ec6c687b	t	2	2024-07-04 09:53:50.724397+08	2	2024-07-04 09:53:50.724397+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+1e3578a9-fc9a-4a8f-b8d9-ced0abd967d7	t	2	2024-07-04 10:13:58.261241+08	2	2024-07-04 10:13:58.261241+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3f77eaef-66e5-4144-a75b-5094d01051d3	t	2	2024-07-04 10:14:18.860271+08	2	2024-07-04 10:14:18.860271+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+31f4316f-87ea-4677-8caa-5c964c91bdc6	t	2	2024-07-04 10:14:20.388104+08	2	2024-07-04 10:14:20.388104+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+39903f3f-656f-4e89-b4c9-1dfbbd6525e6	t	2	2024-07-04 10:17:22.389775+08	2	2024-07-04 10:17:22.389775+08	/index/	127.0.0.1	2
+22016b0a-74ac-43a0-8444-e7150d3a2da1	t	2	2024-07-04 10:17:22.684881+08	2	2024-07-04 10:17:22.684881+08	/home/	127.0.0.1	2
+e2e910a3-4055-4846-872a-336a145c670d	t	2	2024-07-04 10:17:23.921415+08	2	2024-07-04 10:17:23.921415+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+2a54894f-46c7-4f7c-b256-4971c5110daf	t	2	2024-07-04 10:17:25.163446+08	2	2024-07-04 10:17:25.163446+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+43e46d5c-f8cf-416a-a797-3e34d1281126	t	2	2024-07-04 10:19:15.395078+08	2	2024-07-04 10:19:15.395078+08	/index/	127.0.0.1	2
+7906a3ec-0d45-4c45-ba98-513a4b946738	t	2	2024-07-04 10:19:15.66762+08	2	2024-07-04 10:19:15.66762+08	/home/	127.0.0.1	2
+73a883d8-b1fd-4a78-9b34-09bf687582a9	t	2	2024-07-04 10:19:16.383885+08	2	2024-07-04 10:19:16.383885+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+32c4ca08-0c4a-481e-891e-3a2428f25bcd	t	2	2024-07-04 10:19:17.398469+08	2	2024-07-04 10:19:17.398469+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+8d0cf517-45bc-427f-9f15-a08b2deec313	t	2	2024-07-04 10:20:05.389178+08	2	2024-07-04 10:20:05.389178+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+2a46c687-5f0b-4f89-8a55-4bd7f70aa74f	t	2	2024-07-04 10:20:06.222275+08	2	2024-07-04 10:20:06.222275+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e531f7f4-cfad-476c-8527-0a4fde9fb941	t	2	2024-07-04 10:20:19.085406+08	2	2024-07-04 10:20:19.085406+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e1479cc9-b8dd-4093-ba30-8235a429c998	t	2	2024-07-04 10:20:19.922489+08	2	2024-07-04 10:20:19.922489+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+0c746596-7811-43b8-a04d-104e4a591518	t	2	2024-07-04 10:20:43.187999+08	2	2024-07-04 10:20:43.187999+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+0cda1f68-dc72-4792-b8e9-54ce59824bea	t	2	2024-07-04 10:20:43.91111+08	2	2024-07-04 10:20:43.91111+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+14940e3c-363f-48c7-867c-212b449b3d6b	t	2	2024-07-04 10:20:56.160695+08	2	2024-07-04 10:20:56.160695+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+15f2ded0-103a-409b-92dc-3dda483ca505	t	2	2024-07-04 10:20:57.258365+08	2	2024-07-04 10:20:57.258365+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+10a5c566-5d9e-4692-acf3-c3d9fa28c275	t	2	2024-07-04 10:21:11.138513+08	2	2024-07-04 10:21:11.138513+08	/index/	127.0.0.1	2
+08798569-57ad-4c4d-922c-a9eb17c4d322	t	2	2024-07-04 10:21:11.427169+08	2	2024-07-04 10:21:11.427169+08	/home/	127.0.0.1	2
+fad3887e-c439-42f5-b7ad-b3d8df27389f	t	2	2024-07-04 10:21:12.537077+08	2	2024-07-04 10:21:12.537077+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+2ce99e37-33e3-484b-8187-6b0aadd17ff5	t	2	2024-07-04 10:21:13.774442+08	2	2024-07-04 10:21:13.774442+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+d7cd11d7-0ef8-418e-b037-cecc91428588	t	2	2024-07-04 10:23:34.068401+08	2	2024-07-04 10:23:34.068401+08	/index/	127.0.0.1	2
+4cb34a08-d5a2-4729-99e4-17743070cd00	t	2	2024-07-04 10:23:34.361618+08	2	2024-07-04 10:23:34.361618+08	/home/	127.0.0.1	2
+c317ac6a-c9cc-4795-81a4-866416b0bb5a	t	2	2024-07-04 10:23:35.141316+08	2	2024-07-04 10:23:35.141316+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+68c032b5-09a4-4187-a0b0-5b57a3f83100	t	2	2024-07-04 10:23:36.237248+08	2	2024-07-04 10:23:36.237248+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b39043d7-e6a2-4217-bbdd-15cfdc3dfb6b	t	2	2024-07-04 10:23:56.236752+08	2	2024-07-04 10:23:56.236752+08	/index/	127.0.0.1	2
+820cce64-aa64-4cfc-aed3-3281d4ff1093	t	2	2024-07-04 10:23:56.52993+08	2	2024-07-04 10:23:56.52993+08	/home/	127.0.0.1	2
+e39a93b6-4d81-426a-8578-7515c3015ac4	t	2	2024-07-04 10:23:57.294136+08	2	2024-07-04 10:23:57.294136+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+073ea010-8fa2-4597-870f-10e25eeb89a2	t	2	2024-07-04 10:23:58.4473+08	2	2024-07-04 10:23:58.4473+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+6f9bd9fe-f51f-4358-91e4-45e4ee7c868c	t	2	2024-07-04 10:30:41.319562+08	2	2024-07-04 10:30:41.319562+08	/index/	127.0.0.1	2
+dd14fb7e-98dd-4e44-a387-1c302ac16cd3	t	2	2024-07-04 10:30:41.590557+08	2	2024-07-04 10:30:41.590557+08	/home/	127.0.0.1	2
+1ad919e9-0de7-4ab5-9be4-cf89aa106c3b	t	2	2024-07-04 10:30:42.608898+08	2	2024-07-04 10:30:42.609895+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+0e9372b4-49be-44b6-a6e2-024f87f4d623	t	2	2024-07-04 10:30:44.178902+08	2	2024-07-04 10:30:44.178902+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+2467a18f-bd76-4853-a359-7ed03478328d	t	2	2024-07-04 10:31:01.541237+08	2	2024-07-04 10:31:01.541237+08	/index/	127.0.0.1	2
+21d58cfc-6e07-4df5-b43d-97a55c69a04c	t	2	2024-07-04 10:31:01.817498+08	2	2024-07-04 10:31:01.817498+08	/home/	127.0.0.1	2
+ea98dd62-72b3-4ca0-b527-5c905ede6ec4	t	2	2024-07-04 10:31:02.833737+08	2	2024-07-04 10:31:02.833737+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+8390e3b8-b712-4519-a1f4-69330cf27901	t	2	2024-07-04 10:31:04.114796+08	2	2024-07-04 10:31:04.114796+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+d77ff676-1524-4797-929c-b23aa35930d9	t	2	2024-07-04 10:31:09.74374+08	2	2024-07-04 10:31:09.74374+08	/index/	127.0.0.1	2
+5cecc730-ced1-4ca6-841d-859eb2f835ca	t	2	2024-07-04 10:31:10.035435+08	2	2024-07-04 10:31:10.035435+08	/home/	127.0.0.1	2
+d96b48a7-361a-4f16-879e-d6f8eba1dec0	t	2	2024-07-04 10:31:11.229651+08	2	2024-07-04 10:31:11.229651+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+3338e8f1-0565-4c1e-a77f-988e896686e9	t	2	2024-07-04 10:31:12.508951+08	2	2024-07-04 10:31:12.508951+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+42c35ef1-9f6f-423c-97a9-30ef58809d3f	t	2	2024-07-04 10:51:42.841147+08	2	2024-07-04 10:51:42.841147+08	/index/	127.0.0.1	2
+21198a2b-937c-411d-8a31-12cdc581ff84	t	2	2024-07-04 10:51:43.139962+08	2	2024-07-04 10:51:43.139962+08	/home/	127.0.0.1	2
+d64a0e1f-2dc6-46f7-9ac0-ca1195c273ef	t	2	2024-07-04 10:51:44.037117+08	2	2024-07-04 10:51:44.037117+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4d85e316-f0df-4caf-972c-25780f6b25a2	t	2	2024-07-04 10:51:45.054576+08	2	2024-07-04 10:51:45.054576+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1cf28b72-5fc1-40d1-99c3-c0d4d83064c2	t	2	2024-07-04 10:53:04.05343+08	2	2024-07-04 10:53:04.05343+08	/index/	127.0.0.1	2
+bc5b154a-1190-4cea-8f81-4489a718f2ec	t	2	2024-07-04 10:53:04.343343+08	2	2024-07-04 10:53:04.343343+08	/home/	127.0.0.1	2
+1e1a9c57-6862-4686-bb6a-c798467bf696	t	2	2024-07-04 10:53:05.16248+08	2	2024-07-04 10:53:05.16248+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+0ab52cc6-1b4a-4419-810a-4fbf5aee58fd	t	2	2024-07-04 10:53:06.194586+08	2	2024-07-04 10:53:06.195548+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+f8cd12e7-4190-4ba6-ad2f-f64835521066	t	2	2024-07-04 10:53:17.351585+08	2	2024-07-04 10:53:17.351585+08	/index/	127.0.0.1	2
+77037c00-5a7c-400e-94eb-7c4a787fba4b	t	2	2024-07-04 10:53:17.649063+08	2	2024-07-04 10:53:17.649063+08	/home/	127.0.0.1	2
+2462b0a4-1c49-439f-8cb3-a3ea744e1534	t	2	2024-07-04 10:53:18.545556+08	2	2024-07-04 10:53:18.545556+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+adabde1a-776a-4079-8d82-dce5f7ab46e9	t	2	2024-07-04 10:53:19.629438+08	2	2024-07-04 10:53:19.629438+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+83c8610e-f34a-48dc-a0a6-dcd37ed80d63	t	2	2024-07-04 10:54:52.819304+08	2	2024-07-04 10:54:52.819304+08	/index/	127.0.0.1	2
+bdbbe7d1-f44d-4456-8d65-52acaf69fc4b	t	2	2024-07-04 10:54:53.100241+08	2	2024-07-04 10:54:53.100241+08	/home/	127.0.0.1	2
+1b0ec275-bef3-496a-ba6f-adf70f6c08b0	t	2	2024-07-04 10:54:53.961922+08	2	2024-07-04 10:54:53.961922+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+117e34f1-fb86-40b0-82f0-9cda65e9a124	t	2	2024-07-04 10:54:54.88364+08	2	2024-07-04 10:54:54.88364+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3e63f4af-a9b8-44f3-b055-42a08adc7496	t	2	2024-07-04 10:55:07.697324+08	2	2024-07-04 10:55:07.697324+08	/index/	127.0.0.1	2
+9cdb879d-3e6f-4e31-ba9b-c3d74e835de9	t	2	2024-07-04 10:55:07.987342+08	2	2024-07-04 10:55:07.987342+08	/home/	127.0.0.1	2
+decd5d08-ae35-4980-88e6-77aa4aa8e783	t	2	2024-07-04 10:55:09.534901+08	2	2024-07-04 10:55:09.534901+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d042d720-1bae-4a16-b617-8a53462e944d	t	2	2024-07-04 10:55:10.461403+08	2	2024-07-04 10:55:10.461403+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+619e99b0-831f-4617-bcd7-8147539c8b4e	t	2	2024-07-04 10:55:22.762925+08	2	2024-07-04 10:55:22.762925+08	/index/	127.0.0.1	2
+d3dd8760-55f7-4f61-a06b-38357b94b7f2	t	2	2024-07-04 10:55:23.075893+08	2	2024-07-04 10:55:23.075893+08	/home/	127.0.0.1	2
+215ef7dc-f2e4-45b0-942b-0453930fac66	t	2	2024-07-04 10:55:23.758415+08	2	2024-07-04 10:55:23.758415+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+84b41432-dc8d-4c0b-8a64-7988a339a610	t	2	2024-07-04 10:55:24.754206+08	2	2024-07-04 10:55:24.754206+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b6af84ce-4d87-466c-a22c-34613c4e8ed9	t	2	2024-07-04 10:56:11.044817+08	2	2024-07-04 10:56:11.044817+08	/index/	127.0.0.1	2
+539412a1-2044-4ba0-9efa-6701c5acf932	t	2	2024-07-04 10:56:11.315319+08	2	2024-07-04 10:56:11.315319+08	/home/	127.0.0.1	2
+6f74b0df-5a87-4350-aa5d-a7d70028453f	t	2	2024-07-04 10:56:12.566622+08	2	2024-07-04 10:56:12.566622+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+c4235d94-e09a-4a39-95c5-8d6a912bc8ea	t	2	2024-07-04 10:56:14.244703+08	2	2024-07-04 10:56:14.244703+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3b4b5ff3-3ee7-4205-b9f2-b33d548baf8b	t	2	2024-07-04 10:56:29.809493+08	2	2024-07-04 10:56:29.809493+08	/index/	127.0.0.1	2
+b72fe8ed-d936-404b-977c-dd49289f884d	t	2	2024-07-04 10:56:30.086513+08	2	2024-07-04 10:56:30.086513+08	/home/	127.0.0.1	2
+f78b36ca-6894-4fce-991b-31908117cae3	t	2	2024-07-04 10:56:30.804329+08	2	2024-07-04 10:56:30.804329+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+12e9a4c6-7f91-48ed-b30c-207882c30eae	t	2	2024-07-04 10:56:31.770801+08	2	2024-07-04 10:56:31.770801+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+308ec2e2-5f73-404b-baf8-bef30fa20b36	t	2	2024-07-04 10:56:37.686882+08	2	2024-07-04 10:56:37.686882+08	/index/	127.0.0.1	2
+7f22f1f7-9b7d-4f19-ac39-be656ec68ba3	t	2	2024-07-04 10:56:37.958161+08	2	2024-07-04 10:56:37.958161+08	/home/	127.0.0.1	2
+9d6bf170-acf2-4c09-a9bd-a73a40c7dbc8	t	2	2024-07-04 10:56:38.814707+08	2	2024-07-04 10:56:38.814707+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+25564279-8038-4b7f-8d6d-2d055691ed7e	t	2	2024-07-04 10:56:39.834371+08	2	2024-07-04 10:56:39.834371+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+cdbf9c97-bf72-47f1-94a0-59b206f619f4	t	2	2024-07-04 10:58:26.112246+08	2	2024-07-04 10:58:26.112246+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d017053f-64f0-4db7-bb36-a246eeda87cb	t	2	2024-07-04 10:58:27.245949+08	2	2024-07-04 10:58:27.245949+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+986ed14c-1f10-49ca-9d39-fd34e2335ecd	t	2	2024-07-04 10:59:20.189093+08	2	2024-07-04 10:59:20.189093+08	/index/	127.0.0.1	2
+6c28b3c2-d862-4508-899b-f9020ab738db	t	2	2024-07-04 10:59:20.457783+08	2	2024-07-04 10:59:20.457783+08	/home/	127.0.0.1	2
+109f6c58-18ce-48f4-97fe-b79589e7ab11	t	2	2024-07-04 10:59:21.227736+08	2	2024-07-04 10:59:21.227736+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+7b0560dd-175d-40ae-beeb-bb0b350b2767	t	2	2024-07-04 10:59:22.387429+08	2	2024-07-04 10:59:22.387429+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3cf022d0-7763-46b9-b58f-6e6406ec9aef	t	2	2024-07-04 13:25:47.621511+08	2	2024-07-04 13:25:47.621511+08	/index/	127.0.0.1	2
+58bdbd01-5a05-42ef-89c2-d72ec82e10fa	t	2	2024-07-04 13:25:47.928314+08	2	2024-07-04 13:25:47.928314+08	/home/	127.0.0.1	2
+c4c35fb2-486b-4d8e-b96b-b5efb15a987c	t	2	2024-07-04 13:25:51.512005+08	2	2024-07-04 13:25:51.512005+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+2482db51-65cc-4f15-bd0f-00ea878a2bd8	t	2	2024-07-04 13:25:52.608934+08	2	2024-07-04 13:25:52.608934+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+bfb6d2a9-a334-4f2e-b241-0f287810775f	t	2	2024-07-04 13:31:23.761755+08	2	2024-07-04 13:31:23.762752+08	/index/	127.0.0.1	2
+dbb50c1b-b89a-4e72-bea7-7fe0f8df62ac	t	2	2024-07-04 13:31:24.057987+08	2	2024-07-04 13:31:24.057987+08	/home/	127.0.0.1	2
+02fe9071-b46e-428a-a5a9-23ed77c728e3	t	2	2024-07-04 13:31:25.640647+08	2	2024-07-04 13:31:25.640647+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+1dfe1683-1950-4cc5-a865-64a72c62a057	t	2	2024-07-04 13:31:27.147277+08	2	2024-07-04 13:31:27.147277+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+53d3f238-1933-4a70-89b9-9f5d93a55a16	t	2	2024-07-04 13:31:50.905309+08	2	2024-07-04 13:31:50.905309+08	/index/	127.0.0.1	2
+6a7c87f8-9d9f-4ad4-9f69-1be994e421a9	t	2	2024-07-04 13:31:51.199021+08	2	2024-07-04 13:31:51.199021+08	/home/	127.0.0.1	2
+e53c567b-ad7a-42df-9aa5-420ceb7ed697	t	2	2024-07-04 13:31:52.937422+08	2	2024-07-04 13:31:52.937422+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+6d0fdfd8-6f08-4d85-887a-f44554bed974	t	2	2024-07-04 13:31:53.991595+08	2	2024-07-04 13:31:53.991595+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+38ce9286-fe80-4ca1-8164-af5020f0f00d	t	2	2024-07-04 13:36:31.13813+08	2	2024-07-04 13:36:31.13813+08	/index/	127.0.0.1	2
+1f13a9fa-c91f-4cb5-81fd-9955d7724468	t	2	2024-07-04 13:36:31.456581+08	2	2024-07-04 13:36:31.456581+08	/home/	127.0.0.1	2
+c2d902ca-659a-43c2-a0c8-f9f5c5b17dc4	t	2	2024-07-04 13:36:32.547949+08	2	2024-07-04 13:36:32.547949+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+82801b56-70e4-4265-9e35-8a0dfe16c576	t	2	2024-07-04 13:36:44.059633+08	2	2024-07-04 13:36:44.059633+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+ba31ea75-bb4d-4ac2-a0ea-4ce98df80d45	t	2	2024-07-04 13:36:57.047965+08	2	2024-07-04 13:36:57.047965+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+c3343e9d-2600-4e17-bd29-141680388472	t	2	2024-07-04 13:40:30.190012+08	2	2024-07-04 13:40:30.190012+08	/index/	127.0.0.1	2
+e3d9d80d-74b8-48ac-91a4-e5bcde39b4ea	t	2	2024-07-04 13:40:30.493139+08	2	2024-07-04 13:40:30.493139+08	/home/	127.0.0.1	2
+212928b7-5796-477c-9c27-0724cb3769ed	t	2	2024-07-04 13:40:31.658183+08	2	2024-07-04 13:40:31.658183+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+ba330f6d-293a-4b6a-bdd2-fd3a84e3a6a9	t	2	2024-07-04 13:40:33.382107+08	2	2024-07-04 13:40:33.382107+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+5f3b5167-77b9-4738-97be-5ef58ca71b53	t	2	2024-07-04 13:40:56.913843+08	2	2024-07-04 13:40:56.913843+08	/index/	127.0.0.1	2
+c5909d4d-6acf-45d6-8beb-0d2b3838d9b8	t	2	2024-07-04 13:40:57.215004+08	2	2024-07-04 13:40:57.215004+08	/home/	127.0.0.1	2
+ad2902a5-c6ba-4a77-b4f7-a87771b25da2	t	2	2024-07-04 13:40:59.56095+08	2	2024-07-04 13:40:59.56095+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+cf20400c-89c6-4905-8c4e-16b4b96c8a58	t	2	2024-07-04 13:41:00.891987+08	2	2024-07-04 13:41:00.892986+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e06af0d4-4445-431d-b34a-cbbad3354d8b	t	2	2024-07-04 13:44:08.035288+08	2	2024-07-04 13:44:08.035288+08	/index/	127.0.0.1	2
+9b60220f-a7c1-4237-a9b3-539e520dda1e	t	2	2024-07-04 13:44:08.350963+08	2	2024-07-04 13:44:08.350963+08	/home/	127.0.0.1	2
+dc50dbba-f387-442e-ab10-8764759276a3	t	2	2024-07-04 13:44:23.04189+08	2	2024-07-04 13:44:23.04189+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9a852586-fd6e-4e2d-9589-98f5af2f929d	t	2	2024-07-04 13:44:24.408038+08	2	2024-07-04 13:44:24.408038+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+d1a2797c-c273-4d38-9776-230fbcc740b9	t	2	2024-07-04 13:44:45.757438+08	2	2024-07-04 13:44:45.757438+08	/index/	127.0.0.1	2
+fb96aee9-e658-4db3-8953-196e17ab4254	t	2	2024-07-04 13:44:46.106841+08	2	2024-07-04 13:44:46.106841+08	/home/	127.0.0.1	2
+dea7f0eb-af8a-43b8-993a-78c15cc22471	t	2	2024-07-04 13:44:47.697565+08	2	2024-07-04 13:44:47.697565+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4e9968a9-10af-4048-aca5-ecc1a8536910	t	2	2024-07-04 13:44:54.192332+08	2	2024-07-04 13:44:54.192332+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b9cdc21d-e4a9-45dd-8033-a3f9b84531ee	t	2	2024-07-04 13:49:55.006299+08	2	2024-07-04 13:49:55.006299+08	/index/	127.0.0.1	2
+57809c84-0caa-48c4-a864-19d0c1c9415b	t	2	2024-07-04 13:49:55.331883+08	2	2024-07-04 13:49:55.331883+08	/home/	127.0.0.1	2
+c68cf2a2-3303-4f79-8ae2-dde5361a3597	t	2	2024-07-04 13:49:57.069244+08	2	2024-07-04 13:49:57.069244+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+049611a0-0aba-4e0b-a18c-28c13c8add92	t	2	2024-07-04 13:49:58.861494+08	2	2024-07-04 13:49:58.861494+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+38e57425-9fc5-4f94-ad03-3154bea6be66	t	2	2024-07-04 14:03:41.074136+08	2	2024-07-04 14:03:41.074136+08	/index/	127.0.0.1	2
+975f3ba5-6fc7-4e7e-8d76-047d4d2e814c	t	2	2024-07-04 14:03:41.356382+08	2	2024-07-04 14:03:41.356382+08	/home/	127.0.0.1	2
+dee79375-a7f0-401a-9964-ed68d4fbb72b	t	2	2024-07-04 14:03:42.532236+08	2	2024-07-04 14:03:42.532236+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+27d23892-eca0-475f-8a19-8024e0d77806	t	2	2024-07-04 14:03:43.958529+08	2	2024-07-04 14:03:43.958529+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+4b2ff0d1-7e3b-4096-9033-c93d4b243785	t	2	2024-07-04 14:04:56.217623+08	2	2024-07-04 14:04:56.217623+08	/index/	127.0.0.1	2
+3a53e4b1-368e-4c71-8401-b2e17a0ba394	t	2	2024-07-04 14:04:56.505212+08	2	2024-07-04 14:04:56.505212+08	/home/	127.0.0.1	2
+0b203553-44dc-49e4-a59e-fa45caba5803	t	2	2024-07-04 14:04:57.801211+08	2	2024-07-04 14:04:57.801211+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+7c9a2a04-0e93-4647-b7d3-f2ed02322d2d	t	2	2024-07-04 14:04:58.919996+08	2	2024-07-04 14:04:58.919996+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+f2ce83d2-dd5e-4212-9ca1-98843e8913a3	t	2	2024-07-04 14:07:04.307198+08	2	2024-07-04 14:07:04.307198+08	/index/	127.0.0.1	2
+3e3681dc-066a-4047-afa2-058a46585696	t	2	2024-07-04 14:07:04.630334+08	2	2024-07-04 14:07:04.630334+08	/home/	127.0.0.1	2
+f013194e-92ed-4997-b701-b76cbef0fc37	t	2	2024-07-04 14:07:05.770659+08	2	2024-07-04 14:07:05.770659+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+34fe66fd-991e-41f4-97c9-ae4f9249b07a	t	2	2024-07-04 14:07:06.847764+08	2	2024-07-04 14:07:06.847764+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+62670e8c-aab8-4a28-a967-3e6731712510	t	2	2024-07-04 14:08:10.612594+08	2	2024-07-04 14:08:10.612594+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+36249f48-7716-4459-b904-d66b502f026c	t	2	2024-07-04 14:08:12.317109+08	2	2024-07-04 14:08:12.317109+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+efc661e9-3848-4565-b432-60e5401b4f10	t	2	2024-07-04 14:09:11.713273+08	2	2024-07-04 14:09:11.713273+08	/index/	127.0.0.1	2
+55cf7f4d-3975-426d-beef-5b131570fde1	t	2	2024-07-04 14:09:11.993602+08	2	2024-07-04 14:09:11.993602+08	/home/	127.0.0.1	2
+e7c82464-ec88-4e5b-98b5-2b0b2bae275b	t	2	2024-07-04 14:09:13.197811+08	2	2024-07-04 14:09:13.197811+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+7a5e58a5-f379-490c-9bdd-db9f18b6ac0b	t	2	2024-07-04 14:09:14.25061+08	2	2024-07-04 14:09:14.25061+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+6d5e2365-f6e2-47b1-9a9d-3cc7f5af843d	t	2	2024-07-04 14:09:48.414316+08	2	2024-07-04 14:09:48.414316+08	/index/	127.0.0.1	2
+f265afd1-afcf-4c08-ac45-72465bb946cd	t	2	2024-07-04 14:09:48.679494+08	2	2024-07-04 14:09:48.679494+08	/home/	127.0.0.1	2
+d99ba117-b3c4-442a-a986-e752080f586e	t	2	2024-07-04 14:09:50.618235+08	2	2024-07-04 14:09:50.618235+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+b09c0c20-380e-471d-98c5-24f8687b451a	t	2	2024-07-04 14:09:52.303915+08	2	2024-07-04 14:09:52.303915+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1fcb96be-3fc9-4f05-b656-59519ed81844	t	2	2024-07-04 14:22:50.748192+08	2	2024-07-04 14:22:50.748192+08	/index/	127.0.0.1	2
+3cc416ac-9962-407b-badc-e4c63f24ae43	t	2	2024-07-04 14:22:51.055149+08	2	2024-07-04 14:22:51.055149+08	/home/	127.0.0.1	2
+ea1b4c6f-fd41-49e3-a5cb-89ddcd919894	t	2	2024-07-04 14:22:52.337263+08	2	2024-07-04 14:22:52.337263+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+108b8265-15b5-4ba0-92df-e718ff993816	t	2	2024-07-04 14:22:53.253508+08	2	2024-07-04 14:22:53.253508+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+92de2045-0de8-4361-b41a-b00ffe4e637e	t	2	2024-07-04 14:23:41.093961+08	2	2024-07-04 14:23:41.093961+08	/index/	127.0.0.1	2
+89e9fe5d-2190-4375-a2ae-cdb35d8815c2	t	2	2024-07-04 14:23:41.36939+08	2	2024-07-04 14:23:41.36939+08	/home/	127.0.0.1	2
+b58307bd-67ee-4983-a156-5a9d95a8e7f6	t	2	2024-07-04 14:23:42.356113+08	2	2024-07-04 14:23:42.356113+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+3f098627-4fab-4665-ac58-cc3b8bde8b54	t	2	2024-07-04 14:23:43.44389+08	2	2024-07-04 14:23:43.44389+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+acd77373-e900-44ce-8fbb-1ff599d7cf69	t	2	2024-07-04 14:32:35.447019+08	2	2024-07-04 14:32:35.447019+08	/index/	127.0.0.1	2
+a55774be-b3a5-40c0-826f-1dfbd5c5c8d9	t	2	2024-07-04 14:32:35.759056+08	2	2024-07-04 14:32:35.759056+08	/home/	127.0.0.1	2
+88fdd4e4-a6d8-4d74-8934-e2e2daacb39a	t	2	2024-07-04 14:32:36.486268+08	2	2024-07-04 14:32:36.486268+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+ece1777a-415e-484b-bc4d-b10d6d0a9db6	t	2	2024-07-04 14:32:37.793218+08	2	2024-07-04 14:32:37.793218+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+101ec025-fd04-4493-b102-4821eea2c999	t	2	2024-07-04 14:36:00.960342+08	2	2024-07-04 14:36:00.960342+08	/home/	127.0.0.1	2
+25b713ae-0d18-4631-a040-4fb18b17ab8a	t	2	2024-07-04 14:36:01.79525+08	2	2024-07-04 14:36:01.79525+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+41a0129a-6007-4ee3-b807-0b3b94c5f562	t	2	2024-07-04 14:36:02.744357+08	2	2024-07-04 14:36:02.744357+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+958a414a-b81a-47c4-a2c6-712f2518edb1	t	2	2024-07-04 14:36:20.212724+08	2	2024-07-04 14:36:20.212724+08	/index/	127.0.0.1	2
+23bfd38a-b876-4474-b617-58536467cfc5	t	2	2024-07-04 14:36:20.511069+08	2	2024-07-04 14:36:20.511069+08	/home/	127.0.0.1	2
+d5713f07-b788-4f05-87dd-f4c413f4b1f0	t	2	2024-07-04 14:36:21.265637+08	2	2024-07-04 14:36:21.265637+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+62453ab2-f3b4-4d09-86bf-030e59449fd0	t	2	2024-07-04 14:36:22.380583+08	2	2024-07-04 14:36:22.380583+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1873fd57-9ffc-4c58-a7a8-502ed9863ed8	t	2	2024-07-04 14:40:02.395808+08	2	2024-07-04 14:40:02.395808+08	/index/	127.0.0.1	2
+967de8fa-173c-49c4-b27a-50f810af1b8d	t	2	2024-07-04 14:40:02.671492+08	2	2024-07-04 14:40:02.671492+08	/home/	127.0.0.1	2
+6d167bca-c20a-4bcb-ab63-69d751dc779b	t	2	2024-07-04 14:40:03.531501+08	2	2024-07-04 14:40:03.531501+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+56b99235-bd3b-4259-9431-304ef71231e9	t	2	2024-07-04 14:40:05.935939+08	2	2024-07-04 14:40:05.935939+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3ea95f50-1b26-49a7-9565-17701a87ca6d	t	2	2024-07-04 14:42:52.196202+08	2	2024-07-04 14:42:52.196202+08	/index/	127.0.0.1	2
+72f2ad4d-b5f8-4c83-9d58-79b28bb93f80	t	2	2024-07-04 14:42:52.467953+08	2	2024-07-04 14:42:52.467953+08	/home/	127.0.0.1	2
+f7d6a5e1-5026-4a22-8b58-75802e753ece	t	2	2024-07-04 14:42:53.276048+08	2	2024-07-04 14:42:53.276048+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d9f1cd5e-59d9-4b50-8e49-0caf127ab753	t	2	2024-07-04 14:42:54.199336+08	2	2024-07-04 14:42:54.199336+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+eebe34e3-a5e0-4bfb-8582-954734eae10a	t	2	2024-07-04 14:43:11.467396+08	2	2024-07-04 14:43:11.467396+08	/index/	127.0.0.1	2
+6a398a3e-205e-465a-9a44-a47fbfb3a797	t	2	2024-07-04 14:43:11.736881+08	2	2024-07-04 14:43:11.736881+08	/home/	127.0.0.1	2
+32c6862c-5c26-4fba-90e8-ea0b20520311	t	2	2024-07-04 14:43:12.627393+08	2	2024-07-04 14:43:12.627393+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d1721c3e-926a-4b51-b16f-dabf31c8c217	t	2	2024-07-04 14:43:14.041397+08	2	2024-07-04 14:43:14.041397+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+934766a5-807f-493b-8929-a52ddc796414	t	2	2024-07-04 14:44:53.683293+08	2	2024-07-04 14:44:53.683293+08	/index/	127.0.0.1	2
+533789f7-4df1-4421-bc60-5f281aacd7dc	t	2	2024-07-04 14:44:53.953971+08	2	2024-07-04 14:44:53.953971+08	/home/	127.0.0.1	2
+444aa072-b8da-4005-b31c-6ab26ceed8a4	t	2	2024-07-04 14:45:05.364294+08	2	2024-07-04 14:45:05.364294+08	/index/	127.0.0.1	2
+85b74c20-5020-4cb0-9eaf-9a167218555e	t	2	2024-07-04 14:45:05.634681+08	2	2024-07-04 14:45:05.634681+08	/home/	127.0.0.1	2
+d2abf987-70c8-4785-8c4e-2439c1ada72f	t	2	2024-07-04 14:45:06.382733+08	2	2024-07-04 14:45:06.382733+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+a044c2d5-9274-4b28-955e-6d92e742f730	t	2	2024-07-04 14:45:07.422414+08	2	2024-07-04 14:45:07.422414+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+5964c274-83b1-40d6-b78b-bb126c3c042b	t	2	2024-07-04 14:47:51.214808+08	2	2024-07-04 14:47:51.214808+08	/index/	127.0.0.1	2
+7d4f854c-a99f-4021-944d-6207ab9d83fe	t	2	2024-07-04 14:47:51.495885+08	2	2024-07-04 14:47:51.495885+08	/home/	127.0.0.1	2
+608ed59b-b59a-44b7-9e45-a358fdbb4305	t	2	2024-07-04 14:47:52.225762+08	2	2024-07-04 14:47:52.225762+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+38b0b795-e143-46fd-933f-0507582a39e2	t	2	2024-07-04 14:47:53.501985+08	2	2024-07-04 14:47:53.501985+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1735dcf0-efff-4555-9a73-2609c73e14bd	t	2	2024-07-09 14:27:28.877506+08	2	2024-07-09 14:27:28.877506+08	/index/	127.0.0.1	2
+0ef4e684-b71f-4727-87b2-978b4a4841a6	t	2	2024-07-09 14:27:29.206693+08	2	2024-07-09 14:27:29.206693+08	/home/	127.0.0.1	2
+8147ffda-59c0-41c1-b25e-ab06b4b06f63	t	2	2024-07-09 14:27:32.969595+08	2	2024-07-09 14:27:32.969595+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+573f890f-a21a-4e79-91d9-e5656025ce0c	t	2	2024-07-09 14:27:34.434619+08	2	2024-07-09 14:27:34.434619+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b289d48b-0513-4af3-b593-9059d033b8a9	t	2	2024-07-09 14:56:19.97299+08	2	2024-07-09 14:56:19.97299+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+93e48474-69bb-4f7f-b645-f93f85ee3a5f	t	2	2024-07-09 14:56:21.503013+08	2	2024-07-09 14:56:21.503013+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e2384665-d22f-489d-b57d-358f8ba5ef19	t	2	2024-07-09 14:57:27.406647+08	2	2024-07-09 14:57:27.406647+08	/index/	127.0.0.1	2
+fca65587-3bd5-4124-bfde-762e7b9099dd	t	2	2024-07-09 14:57:27.701344+08	2	2024-07-09 14:57:27.701344+08	/home/	127.0.0.1	2
+49c998de-8463-414b-bbb2-2fc5e9ddc6e1	t	2	2024-07-09 14:57:29.218242+08	2	2024-07-09 14:57:29.218242+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+db90ab6c-8f5f-47eb-b557-0340c8dc119f	t	2	2024-07-09 14:57:30.397041+08	2	2024-07-09 14:57:30.397041+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+7c22a897-29ca-4f5b-bb02-37050727d491	t	2	2024-07-09 14:58:15.581825+08	2	2024-07-09 14:58:15.581825+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+daa77fef-138e-4602-b32f-dfc43e1068f2	t	2	2024-07-09 14:58:22.114231+08	2	2024-07-09 14:58:22.114231+08	/favicon.ico	127.0.0.1	2
+a495eb72-9495-4fa4-8765-a67eb0b47328	t	2	2024-07-09 14:59:06.50998+08	2	2024-07-09 14:59:06.50998+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+ff914d01-626b-4e3d-9d6d-6aa8246f12a7	t	2	2024-07-09 14:59:08.899949+08	2	2024-07-09 14:59:08.899949+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+71da1adc-d3db-4e91-9847-b11c458d9262	t	2	2024-07-09 14:59:29.227852+08	2	2024-07-09 14:59:29.227852+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+23481c55-c145-43d3-807c-e8d917d75dec	t	2	2024-07-09 15:01:11.857355+08	2	2024-07-09 15:01:11.857355+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1949ce19-b18e-4a55-97b6-48f3e458b2fc	t	2	2024-07-09 15:01:44.378587+08	2	2024-07-09 15:01:44.378587+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+6bdec4bb-2dbe-48ac-be41-ed2526a07a88	t	2	2024-07-09 15:04:44.003846+08	2	2024-07-09 15:04:44.003846+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+0107a807-fc17-4bb6-884b-9a2a004fefa5	t	2	2024-07-09 15:05:02.24798+08	2	2024-07-09 15:05:02.24798+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+aeb5f0aa-4cc2-4943-8fc5-0a52c0f29ea2	t	2	2024-07-09 15:07:09.107692+08	2	2024-07-09 15:07:09.107692+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+5bc91845-127f-42fe-a644-2bbe2836477f	t	2	2024-07-09 15:13:19.036899+08	2	2024-07-09 15:13:19.036899+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+03dfc606-5ecb-4f50-81e5-b2a28760b950	t	2	2024-07-09 15:13:48.753017+08	2	2024-07-09 15:13:48.753017+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+17cabab3-8c96-456b-8002-427f83c624f4	t	2	2024-07-09 15:30:57.182074+08	2	2024-07-09 15:30:57.182074+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1e09c6d9-3744-4a5b-91eb-b7bc60e009d9	t	2	2024-07-09 15:32:33.431322+08	2	2024-07-09 15:32:33.431322+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+161c458a-4672-42f3-9d10-6accc7ee5b9e	t	2	2024-07-09 15:32:52.875583+08	2	2024-07-09 15:32:52.875583+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+539fa3c2-24b4-445e-be09-4aba50ed5b28	t	2	2024-07-09 15:33:07.037991+08	2	2024-07-09 15:33:07.037991+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+5d111ea3-699e-4e9a-a3c3-6cddf6294d6d	t	2	2024-07-09 15:34:07.279041+08	2	2024-07-09 15:34:07.279041+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+c6061fd7-ff7b-4f87-aa4c-a05d334c85c3	t	2	2024-07-09 16:08:47.91708+08	2	2024-07-09 16:08:47.91708+08	/index/	127.0.0.1	2
+5bcaaa39-d3a5-4c6e-8d23-238f5949bf5d	t	2	2024-07-09 16:08:48.199835+08	2	2024-07-09 16:08:48.199835+08	/home/	127.0.0.1	2
+ba102564-1e77-4efa-9878-0768d8867e22	t	2	2024-07-09 16:08:56.395839+08	2	2024-07-09 16:08:56.395839+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+da132b00-f99e-4a52-b84c-780c9305a980	t	2	2024-07-10 16:31:59.895143+08	2	2024-07-10 16:31:59.895143+08	/index/	127.0.0.1	2
+236fea00-c736-400a-9a25-b6aade907ac4	t	2	2024-07-10 16:32:00.223707+08	2	2024-07-10 16:32:00.223707+08	/home/	127.0.0.1	2
+628be848-e83b-426b-96fe-04f3555699a3	t	2	2024-07-10 16:32:02.339546+08	2	2024-07-10 16:32:02.339546+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d1d98ca7-7491-4080-ba35-6f2615bd808f	t	2	2024-07-10 16:32:04.354113+08	2	2024-07-10 16:32:04.354113+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1311d457-bf48-4f8b-ae3c-8816cb18eac6	t	2	2024-07-10 16:33:59.383667+08	2	2024-07-10 16:33:59.383667+08	/ld_stock/stock/add/2/	127.0.0.1	2
+38dc21d7-7b21-4e01-bffb-47b1a3fb7ffe	t	2	2024-07-10 16:34:15.579512+08	2	2024-07-10 16:34:15.579512+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+bcf54e48-3cd9-4802-8d20-4b9f2f889e9c	t	2	2024-07-10 16:36:12.361654+08	2	2024-07-10 16:36:12.361654+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+68708ba1-74bb-4e97-8c8e-63d6dc4fe98c	t	2	2024-07-10 16:38:03.935998+08	2	2024-07-10 16:38:03.935998+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3bb65a1d-0184-4a74-812c-67f744859ec9	t	2	2024-07-10 16:38:05.045633+08	2	2024-07-10 16:38:05.045633+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+a706633f-4faf-42f2-a9b4-2014237c2e2e	t	2	2024-07-10 16:40:34.54723+08	2	2024-07-10 16:40:34.54723+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+2c797b3c-7364-455f-813e-890daaccacb3	t	2	2024-07-10 16:40:35.806676+08	2	2024-07-10 16:40:35.806676+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+9e3f26b3-1891-446d-b3c2-9a4c68ed9295	t	2	2024-07-10 16:40:47.463155+08	2	2024-07-10 16:40:47.463155+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+d3e1d2c4-6793-4e95-b9d0-9820098039c6	t	2	2024-07-10 16:40:52.736595+08	2	2024-07-10 16:40:52.736595+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+7a8d7ac3-ae1b-4e84-a216-8a45ffe66de1	t	2	2024-07-10 16:40:54.167646+08	2	2024-07-10 16:40:54.167646+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+cd003759-8b16-4ffc-9fd2-1f4cd2f5bac2	t	2	2024-07-10 16:41:10.567064+08	2	2024-07-10 16:41:10.567064+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e963eb2e-28e4-4cb9-9033-f84138c66e67	t	2	2024-07-10 16:41:11.705542+08	2	2024-07-10 16:41:11.705542+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+2aae1ba5-c1f8-450c-8cb9-e100daf3ea3b	t	2	2024-07-11 09:33:58.982086+08	2	2024-07-11 09:33:58.982086+08	/index/	127.0.0.1	2
+00ac81ed-02f6-41b4-a65c-53544607d890	t	2	2024-07-11 09:33:59.288787+08	2	2024-07-11 09:33:59.288787+08	/home/	127.0.0.1	2
+8fa053a9-131b-4433-a4d9-78669e5795b2	t	2	2024-07-11 09:34:01.208882+08	2	2024-07-11 09:34:01.208882+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+78fe9cab-91d6-4e73-a5e3-6e4340d9c8bf	t	2	2024-07-11 09:34:02.785994+08	2	2024-07-11 09:34:02.785994+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+83a5ada5-558d-4e07-8ba8-a66f78e27ea4	t	2	2024-07-11 09:34:04.480009+08	2	2024-07-11 09:34:04.480976+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+927e2219-5fb0-483a-90ac-954879d66670	t	2	2024-07-11 09:36:35.300057+08	2	2024-07-11 09:36:35.300057+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+789e7bd7-b94f-48d4-a55a-5d65b1a8c98b	t	2	2024-07-11 09:36:44.8844+08	2	2024-07-11 09:36:44.8844+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+9ccafc68-de4a-4c2e-bcd3-dcb90671fb6c	t	2	2024-07-11 09:38:21.688421+08	2	2024-07-11 09:38:21.688421+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+f4964481-aeda-4fe8-9848-6fb1355643c9	t	2	2024-07-11 09:38:22.660389+08	2	2024-07-11 09:38:22.660389+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+31ea145f-3d57-45d4-914b-559ba00526b2	t	2	2024-07-11 09:38:24.001287+08	2	2024-07-11 09:38:24.001287+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+48108e2a-bac4-4af9-a142-cc0314445f38	t	2	2024-07-11 09:38:39.166167+08	2	2024-07-11 09:38:39.166167+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+925ef96f-37c6-468d-bf28-379ec804acba	t	2	2024-07-11 09:38:48.958279+08	2	2024-07-11 09:38:48.958279+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d9bcffda-54d7-4846-a27b-83c5ecd1667b	t	2	2024-07-11 09:40:21.451903+08	2	2024-07-11 09:40:21.451903+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b482c032-ed1d-42f2-9399-56467147e2a1	t	2	2024-07-11 09:40:26.320275+08	2	2024-07-11 09:40:26.320275+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+bdd3a77d-3dcf-462a-953b-ffdca1b50613	t	2	2024-07-11 09:45:09.61959+08	2	2024-07-11 09:45:09.61959+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+87f26c06-40bc-47ee-9a2b-ad81c1cca274	t	2	2024-07-11 09:48:48.516679+08	2	2024-07-11 09:48:48.516679+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+208cfde4-b0ee-4b9d-9e89-d25979693e25	t	2	2024-07-11 09:48:49.929375+08	2	2024-07-11 09:48:49.929375+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e9720a92-45c1-4ac3-8df5-8db94aa033fe	t	2	2024-07-11 09:48:52.144838+08	2	2024-07-11 09:48:52.144838+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+fecff765-a9b9-415b-987f-306b2874c870	t	2	2024-07-11 09:53:46.876303+08	2	2024-07-11 09:53:46.876303+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+396636f3-d393-4d55-b0f8-c1533ca4caf8	t	2	2024-07-11 09:53:48.833517+08	2	2024-07-11 09:53:48.833517+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+bb4bbe62-efb1-40b4-8ccc-bf71a39bce7d	t	2	2024-07-11 09:53:51.628953+08	2	2024-07-11 09:53:51.628953+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+1875ea22-2ac3-42ef-b510-a00eea125a06	t	2	2024-07-11 09:55:15.131425+08	2	2024-07-11 09:55:15.131425+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+53bd1329-8193-4e81-96ed-beb235bcd0fc	t	2	2024-07-11 09:55:18.129519+08	2	2024-07-11 09:55:18.129519+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+9b4f6690-b6a2-4c75-93ea-2c4d500439c9	t	2	2024-07-11 09:55:19.845909+08	2	2024-07-11 09:55:19.845909+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+f7ef8e69-4113-4edb-82d3-114a1a2a02b7	t	2	2024-07-11 09:56:30.024441+08	2	2024-07-11 09:56:30.024441+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+36289e03-03a5-4e9e-8283-61ab2535c26c	t	2	2024-07-11 09:59:02.071753+08	2	2024-07-11 09:59:02.071753+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4562f355-8f22-4f63-80af-a2ad6e3d319c	t	2	2024-07-11 09:59:03.468349+08	2	2024-07-11 09:59:03.468349+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+2a1a3ef5-ca32-457a-b828-27292e372141	t	2	2024-07-11 09:59:05.256941+08	2	2024-07-11 09:59:05.256941+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+3f4391f8-be20-4145-9dbb-059c907cb6f5	t	2	2024-07-11 10:00:49.864216+08	2	2024-07-11 10:00:49.864216+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d66a7c76-fab3-437f-817b-bfe240e9de7c	t	2	2024-07-11 10:00:51.046747+08	2	2024-07-11 10:00:51.046747+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+89a1fe08-5f43-4cc4-92ed-6a464e9bb0aa	t	2	2024-07-11 10:00:52.212372+08	2	2024-07-11 10:00:52.212372+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+c7a33094-6aca-4a1a-a341-296ab0d6188b	t	2	2024-07-11 10:00:55.457637+08	2	2024-07-11 10:00:55.457637+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+21e65a32-1c49-46e1-9f84-1ab420f41346	t	2	2024-07-11 10:01:04.159909+08	2	2024-07-11 10:01:04.159909+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b5684b32-a567-4273-a2c8-c785dd0d2208	t	2	2024-07-11 10:01:10.040794+08	2	2024-07-11 10:01:10.040794+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+90110e66-0fbf-4148-8f13-6113ea7f96b8	t	2	2024-07-11 10:01:29.347653+08	2	2024-07-11 10:01:29.347653+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+67065b82-d28b-4863-a50b-4d190e9c5c59	t	2	2024-07-11 10:01:30.346149+08	2	2024-07-11 10:01:30.346149+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+30655120-2cfe-4ae1-97d0-7c8380774162	t	2	2024-07-11 10:01:31.572068+08	2	2024-07-11 10:01:31.572068+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+6c02010a-36be-4587-acf0-9454a8560e38	t	2	2024-07-11 10:01:34.761526+08	2	2024-07-11 10:01:34.762522+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d92d9a71-f5f4-4e7d-8ecd-f7a2d3422f22	t	2	2024-07-11 10:01:40.442773+08	2	2024-07-11 10:01:40.442773+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+4fadaef3-7ea3-4fa8-bdbf-dab8be59d731	t	2	2024-07-11 10:06:45.984552+08	2	2024-07-11 10:06:45.984552+08	/index/	127.0.0.1	2
+0f20bb15-0780-4249-a56a-493b50bf4276	t	2	2024-07-11 10:06:46.289297+08	2	2024-07-11 10:06:46.289297+08	/home/	127.0.0.1	2
+63ef1c9f-cd2c-4f96-852e-96639371a71a	t	2	2024-07-11 10:06:47.168349+08	2	2024-07-11 10:06:47.168349+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+6bdd860c-f8f8-40f7-955e-97a58cc5bfaa	t	2	2024-07-11 10:06:48.20612+08	2	2024-07-11 10:06:48.20612+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+219f8b9c-70ba-4bc3-a124-f99df0c5132f	t	2	2024-07-11 10:06:49.527523+08	2	2024-07-11 10:06:49.527523+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+09518234-4bdc-4c3c-a617-6d80b034337a	t	2	2024-07-11 10:06:57.403533+08	2	2024-07-11 10:06:57.403533+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+3897aaba-ab82-433e-8026-ea5932dac659	t	2	2024-07-11 10:09:27.748394+08	2	2024-07-11 10:09:27.748394+08	/index/	127.0.0.1	2
+1455d5e7-531c-47d3-ae80-108d3d0ba881	t	2	2024-07-11 10:09:28.020334+08	2	2024-07-11 10:09:28.020334+08	/home/	127.0.0.1	2
+4fdc86c5-5451-4c09-9f6e-c0264b2ed648	t	2	2024-07-11 10:09:28.808506+08	2	2024-07-11 10:09:28.808506+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+08d35221-ebf3-43c0-b37a-ff367f8312f2	t	2	2024-07-11 10:09:29.807463+08	2	2024-07-11 10:09:29.807463+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+58144ad4-e879-40d6-aa94-352acd13f11e	t	2	2024-07-11 10:09:31.47896+08	2	2024-07-11 10:09:31.47896+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+1a045548-b12e-46cb-b783-2157f348fd90	t	2	2024-07-11 10:10:00.98522+08	2	2024-07-11 10:10:00.98522+08	/index/	127.0.0.1	2
+b8d2a18d-ce4a-443b-9edb-30edeb208b66	t	2	2024-07-11 10:10:01.247372+08	2	2024-07-11 10:10:01.247372+08	/home/	127.0.0.1	2
+ba9f7236-aba0-48f4-93b5-3bb0ba282643	t	2	2024-07-11 10:10:02.158779+08	2	2024-07-11 10:10:02.158779+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+8696f558-7ca5-47dc-b779-fbefaed4775c	t	2	2024-07-11 10:10:03.278199+08	2	2024-07-11 10:10:03.278199+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b7ba3f56-65de-4eb8-a552-b1a307a62814	t	2	2024-07-11 10:10:04.379799+08	2	2024-07-11 10:10:04.379799+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+45c151a5-ea1e-4e17-8238-e3e022bc21db	t	2	2024-07-11 10:11:45.055064+08	2	2024-07-11 10:11:45.055064+08	/index/	127.0.0.1	2
+2cbd397f-c9e9-478c-ba63-b3f162931c39	t	2	2024-07-11 10:11:45.323621+08	2	2024-07-11 10:11:45.323621+08	/home/	127.0.0.1	2
+2bbeb135-c723-4125-80e0-c3f7ef9cfe9b	t	2	2024-07-11 10:11:46.138563+08	2	2024-07-11 10:11:46.138563+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9ccf769a-6b31-4526-a747-6aa5026a21e7	t	2	2024-07-11 10:11:47.157084+08	2	2024-07-11 10:11:47.157084+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+c6379781-f811-4227-ad9d-e794e38d8070	t	2	2024-07-11 10:11:48.172767+08	2	2024-07-11 10:11:48.172767+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+3a25d133-4c95-4b99-8d22-7c61b74b05b6	t	2	2024-07-11 10:12:35.49294+08	2	2024-07-11 10:12:35.49294+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+8203612d-70fe-4b18-bd08-3d42f146368a	t	2	2024-07-11 10:12:36.621848+08	2	2024-07-11 10:12:36.621848+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+aea8de83-6f3d-4e34-9530-a383a4d9f367	t	2	2024-07-11 10:12:37.774501+08	2	2024-07-11 10:12:37.774501+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+c6daf991-42f4-4896-9b47-e7b55000726c	t	2	2024-07-11 10:18:00.801049+08	2	2024-07-11 10:18:00.801049+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+757cb2e3-cbd1-407d-ba64-5c4f3a2d6319	t	2	2024-07-11 10:18:01.830093+08	2	2024-07-11 10:18:01.830093+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+a5a10f5c-9c3f-4d49-8fd2-874e4681e856	t	2	2024-07-11 10:18:02.732489+08	2	2024-07-11 10:18:02.732489+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b753583f-7b81-4d58-893d-f0047b9647e4	t	2	2024-07-11 10:20:31.879121+08	2	2024-07-11 10:20:31.879121+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+0058f3b6-ca33-4369-80c8-d0d394c290e9	t	2	2024-07-11 10:20:33.68815+08	2	2024-07-11 10:20:33.68815+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+29abc7cc-9a54-40c1-badd-c20c3468cbb9	t	2	2024-07-11 10:20:35.419758+08	2	2024-07-11 10:20:35.419758+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+ea98bd7e-7c27-410f-9d51-a72c1743ba9c	t	2	2024-07-11 10:20:36.7265+08	2	2024-07-11 10:20:36.7265+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+1e15fac5-86f3-4e99-8cdb-0176fa6eb70b	t	2	2024-07-11 10:21:40.946691+08	2	2024-07-11 10:21:40.946691+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+40041de1-a9bb-4937-bcb3-6f0288869c45	t	2	2024-07-11 10:21:48.59485+08	2	2024-07-11 10:21:48.59485+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+5825071b-a010-4d07-adb5-39610458519e	t	2	2024-07-11 10:21:50.912688+08	2	2024-07-11 10:21:50.912688+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+aba8477a-9d1e-41da-a55b-d6232e315c2d	t	2	2024-07-11 10:21:56.384334+08	2	2024-07-11 10:21:56.384334+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+be89845c-f217-435e-8325-8151e26b433e	t	2	2024-07-11 10:22:02.574324+08	2	2024-07-11 10:22:02.574324+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+2dc11c22-909b-4605-8412-e4597d953204	t	2	2024-07-11 10:22:11.627743+08	2	2024-07-11 10:22:11.627743+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+91e3a089-ac2e-4698-a7e3-cf67eb17db45	t	2	2024-07-11 10:22:13.990711+08	2	2024-07-11 10:22:13.990711+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+1e75873b-1b87-431f-834f-accd566b1bc0	t	2	2024-07-11 10:22:17.163125+08	2	2024-07-11 10:22:17.163125+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+ced5fd36-36a3-48af-91ca-0de5c357ac73	t	2	2024-07-11 10:22:24.56323+08	2	2024-07-11 10:22:24.56323+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+898e3094-7c7c-4a47-82e6-a7476c5d49a4	t	2	2024-07-11 10:22:32.695557+08	2	2024-07-11 10:22:32.695557+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+38319a8b-8df1-41fd-8c53-c97792b4c3da	t	2	2024-07-11 10:22:34.393018+08	2	2024-07-11 10:22:34.393018+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+73fe16f7-9972-48a9-ad0d-47e4db803382	t	2	2024-07-11 10:22:36.589616+08	2	2024-07-11 10:22:36.589616+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+2fcd70a1-fca5-4257-a024-086784f9898e	t	2	2024-07-11 10:34:17.491652+08	2	2024-07-11 10:34:17.491652+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d459555a-a7e4-4d67-8a07-c1ad09438e23	t	2	2024-07-11 10:34:20.109474+08	2	2024-07-11 10:34:20.109474+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+960fbc08-b2cb-4147-bd12-781475229f1d	t	2	2024-07-11 10:34:21.395737+08	2	2024-07-11 10:34:21.395737+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+4ac8bae1-2c2e-4ad2-99bb-26cedc11145e	t	2	2024-07-11 10:54:12.578039+08	2	2024-07-11 10:54:12.578039+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+17457b65-57d5-4dbb-ae4f-36bee70ed4a1	t	2	2024-07-11 10:54:14.389627+08	2	2024-07-11 10:54:14.389627+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+9030105a-d530-49aa-88d2-50a54f6b114e	t	2	2024-07-11 11:20:37.178267+08	2	2024-07-11 11:20:37.178267+08	/pp_master/line/index/	127.0.0.1	2
+921100d3-c6b5-4879-8c2b-c6492c9ec0ec	t	2	2024-07-11 11:20:40.855478+08	2	2024-07-11 11:20:40.855478+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+8936a964-e0c7-4166-88b7-bac22769e1ff	t	2	2024-07-11 11:20:55.477918+08	2	2024-07-11 11:20:55.477918+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+63fe5374-f58b-4dcd-8efa-c6ac85f043d6	t	2	2024-07-12 14:04:51.548392+08	2	2024-07-12 14:04:51.548392+08	/index/	127.0.0.1	2
+77e58b05-653a-40ea-97fa-29cb9d032dc1	t	2	2024-07-12 14:04:51.865731+08	2	2024-07-12 14:04:51.865731+08	/home/	127.0.0.1	2
+db8a4084-761a-4658-b08c-2cc65006ab3f	t	2	2024-07-12 14:04:54.289644+08	2	2024-07-12 14:04:54.289644+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+044383ef-462b-4dea-a1ce-6137b9083dd6	t	2	2024-07-12 14:04:55.268778+08	2	2024-07-12 14:04:55.268778+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1e4f4f9b-179d-49f3-b680-618730f0ab59	t	2	2024-07-12 14:04:56.727695+08	2	2024-07-12 14:04:56.727695+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+3c6e20bc-be8a-45c9-ac94-1e9c844df823	t	2	2024-07-12 14:30:30.985889+08	2	2024-07-12 14:30:30.985889+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+fbcf0039-f0a8-470d-8d84-a83ca6ea2926	t	2	2024-07-12 14:30:32.622341+08	2	2024-07-12 14:30:32.622341+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+9a2b1264-beff-408d-8f3c-be41ccadf1d7	t	2	2024-07-12 14:30:33.948787+08	2	2024-07-12 14:30:33.948787+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b97adc1f-1628-437f-9ae9-622f00803a89	t	2	2024-07-12 14:30:45.998598+08	2	2024-07-12 14:30:45.998598+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+f3e2b1fc-7f95-494f-8be7-22d119480bca	t	2	2024-07-12 14:32:07.973036+08	2	2024-07-12 14:32:07.973036+08	/index/	127.0.0.1	2
+b0db3cec-b72f-427f-a28c-ad1b93273a6e	t	2	2024-07-12 14:32:08.276749+08	2	2024-07-12 14:32:08.276749+08	/home/	127.0.0.1	2
+e365f9b3-c2ac-465e-8584-1f03965177a9	t	2	2024-07-12 14:32:09.912524+08	2	2024-07-12 14:32:09.912524+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d212bdd8-d589-484e-bc99-3d2b46b823a6	t	2	2024-07-12 14:32:11.054551+08	2	2024-07-12 14:32:11.054551+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+010b13e3-5a23-4a80-a9c0-b1f69f9ac218	t	2	2024-07-12 14:32:12.232736+08	2	2024-07-12 14:32:12.232736+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b33647b3-37c5-4210-9da3-492ce2a62dc6	t	2	2024-07-12 14:36:00.310409+08	2	2024-07-12 14:36:00.310409+08	/index/	127.0.0.1	2
+a8ede785-cfa3-45b2-9c21-949e1327c942	t	2	2024-07-12 14:36:00.623029+08	2	2024-07-12 14:36:00.623029+08	/home/	127.0.0.1	2
+369f224c-070d-48c7-ac93-a390ea50b6c4	t	2	2024-07-12 14:36:02.84815+08	2	2024-07-12 14:36:02.84815+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9c2bcc2d-fb7b-4e25-84c4-6d81b53ddc31	t	2	2024-07-12 14:36:04.032352+08	2	2024-07-12 14:36:04.032352+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+af048abe-fd4b-4035-b869-66f21959becd	t	2	2024-07-12 14:36:04.944971+08	2	2024-07-12 14:36:04.944971+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+af9bc3b3-f316-4195-a7da-0ff5cc44fd1a	t	2	2024-07-12 14:36:26.202855+08	2	2024-07-12 14:36:26.202855+08	/index/	127.0.0.1	2
+e142588b-5b71-467a-add2-d4e77b950b6e	t	2	2024-07-12 14:36:26.475085+08	2	2024-07-12 14:36:26.475085+08	/home/	127.0.0.1	2
+7bdf3486-99a0-4c4c-b58b-dc4cc7d8d634	t	2	2024-07-12 14:36:27.574219+08	2	2024-07-12 14:36:27.574219+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e54d7e40-4c80-47b1-9708-bd3daf2c3590	t	2	2024-07-12 14:36:28.521533+08	2	2024-07-12 14:36:28.521533+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+da88ac35-361e-4fae-8a17-8d3e956d892d	t	2	2024-07-12 14:36:29.814506+08	2	2024-07-12 14:36:29.814506+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+41b192c0-c7f8-4a42-9b5e-cca4bba7e588	t	2	2024-07-12 14:37:06.259169+08	2	2024-07-12 14:37:06.259169+08	/index/	127.0.0.1	2
+f7663942-5aab-4e1d-84e0-9f72c7547105	t	2	2024-07-12 14:37:06.543246+08	2	2024-07-12 14:37:06.543246+08	/home/	127.0.0.1	2
+d15e4aa8-3ac6-4f5d-ad27-91785e7b8968	t	2	2024-07-12 14:37:07.830723+08	2	2024-07-12 14:37:07.830723+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e526004b-bf87-4e6a-a776-28341a31e956	t	2	2024-07-12 14:37:08.723424+08	2	2024-07-12 14:37:08.723424+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+36ab3939-0b23-42e8-97b1-01eb05491a81	t	2	2024-07-12 14:37:10.166373+08	2	2024-07-12 14:37:10.166373+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d3dfb3ab-6dde-4511-a792-bb5b27fbf6a0	t	2	2024-07-12 14:37:31.590294+08	2	2024-07-12 14:37:31.590294+08	/index/	127.0.0.1	2
+c79b0db3-a246-4c63-9de0-e3728244038f	t	2	2024-07-12 14:37:31.852815+08	2	2024-07-12 14:37:31.852815+08	/home/	127.0.0.1	2
+dcfb0f8d-6294-48ca-b4a3-52b183b6703a	t	2	2024-07-12 14:37:32.952572+08	2	2024-07-12 14:37:32.952572+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+cce10529-20cb-499c-9b43-9b9e49e3634d	t	2	2024-07-12 14:37:34.343403+08	2	2024-07-12 14:37:34.343403+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+de080dcb-c6b9-4506-a945-4a4200644a40	t	2	2024-07-12 14:37:35.329338+08	2	2024-07-12 14:37:35.329338+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+036cab2a-549d-411c-a2e2-4996a10844ec	t	2	2024-07-12 14:45:03.160102+08	2	2024-07-12 14:45:03.160102+08	/index/	127.0.0.1	2
+abab49cd-1b75-4cc0-bd9c-4a1285e32af3	t	2	2024-07-12 14:45:03.430815+08	2	2024-07-12 14:45:03.430815+08	/home/	127.0.0.1	2
+e78fdb30-070a-4de5-853f-efa84e3f4871	t	2	2024-07-12 14:45:04.628886+08	2	2024-07-12 14:45:04.628886+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+db5bc18a-0c47-4649-b0bc-2236cff49591	t	2	2024-07-12 14:45:06.111348+08	2	2024-07-12 14:45:06.111348+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+6900bb92-e3c5-4c87-a238-16a903b18f06	t	2	2024-07-12 14:45:08.315527+08	2	2024-07-12 14:45:08.315527+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+49420e1f-af70-4389-9ec1-a9ac401de7a5	t	2	2024-07-12 14:45:58.397797+08	2	2024-07-12 14:45:58.397797+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+0997ddec-73d9-49cb-a8cf-5f05b5657965	t	2	2024-07-12 14:46:03.271726+08	2	2024-07-12 14:46:03.271726+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d644cb1c-98c0-4c2a-86a9-41d6f752a001	t	2	2024-07-12 14:46:06.12111+08	2	2024-07-12 14:46:06.12111+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+0ae94966-08e7-4588-83ba-7814060349d3	t	2	2024-07-12 14:46:08.651191+08	2	2024-07-12 14:46:08.651191+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+ff1f73f3-efbe-4144-8658-c5e5d1b04bea	t	2	2024-07-12 14:46:10.708009+08	2	2024-07-12 14:46:10.708009+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+e10226f9-0989-4099-ab06-1f80efc9d732	t	2	2024-07-12 14:47:54.820069+08	2	2024-07-12 14:47:54.820069+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+5932d9fc-0844-4b57-86dd-b0a681231887	t	2	2024-07-12 14:49:55.669637+08	2	2024-07-12 14:49:55.669637+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+b7e7bd2d-402f-45b7-b75c-2319d29e606f	t	2	2024-07-12 14:49:57.083601+08	2	2024-07-12 14:49:57.083601+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+33a4d28a-ac27-48c7-9a74-92b3ed8a0573	t	2	2024-07-12 14:53:25.711146+08	2	2024-07-12 14:53:25.711146+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+cb57711d-0ee1-4e9f-ba80-b23842971de0	t	2	2024-07-12 14:56:12.036515+08	2	2024-07-12 14:56:12.036515+08	/index/	127.0.0.1	2
+f5357387-e1df-48cf-a87f-7657a573e745	t	2	2024-07-12 14:56:12.315424+08	2	2024-07-12 14:56:12.315424+08	/home/	127.0.0.1	2
+fb479d6f-e692-447a-832d-2bb3de06e933	t	2	2024-07-12 14:56:13.352782+08	2	2024-07-12 14:56:13.352782+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+44c6613e-d8b8-4c54-9fa2-1ba762c2aa7c	t	2	2024-07-12 14:56:14.43267+08	2	2024-07-12 14:56:14.43267+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+d7462721-daf5-4cfa-ae73-4bcb607e3b8c	t	2	2024-07-12 14:56:15.296964+08	2	2024-07-12 14:56:15.296964+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+18d62175-7db4-45ee-acc1-ad3073c3a959	t	2	2024-07-12 14:56:52.237301+08	2	2024-07-12 14:56:52.237301+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+abcf0c69-6660-4d12-b8a1-cad9a6797881	t	2	2024-07-12 14:59:41.491949+08	2	2024-07-12 14:59:41.491949+08	/index/	127.0.0.1	2
+bb956b0e-d868-41ab-ad10-42e3f27a377e	t	2	2024-07-12 14:59:41.796435+08	2	2024-07-12 14:59:41.796435+08	/home/	127.0.0.1	2
+531085fe-fa87-4220-95f9-796924278dcf	t	2	2024-07-12 14:59:42.864229+08	2	2024-07-12 14:59:42.864229+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+5ffe1a47-5912-4b84-9442-8e636294c0db	t	2	2024-07-12 14:59:44.268208+08	2	2024-07-12 14:59:44.268208+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+68e0a097-ef0c-4a1e-a721-321d43f186ef	t	2	2024-07-12 14:59:45.41041+08	2	2024-07-12 14:59:45.41041+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d610066a-637c-44c7-9b3d-1c2662a6fc9a	t	2	2024-07-12 15:00:18.148253+08	2	2024-07-12 15:00:18.148253+08	/index/	127.0.0.1	2
+ba06d36d-169c-4da7-8b24-b4cc11facda4	t	2	2024-07-12 15:00:18.419057+08	2	2024-07-12 15:00:18.419057+08	/home/	127.0.0.1	2
+319914b2-be27-4093-ab39-8e9bb1d1e30c	t	2	2024-07-12 15:00:19.586581+08	2	2024-07-12 15:00:19.586581+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+a9a9cd45-7193-445d-916e-93446223e798	t	2	2024-07-12 15:00:20.841606+08	2	2024-07-12 15:00:20.841606+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1e28d719-d417-4a2c-9818-4aa6e4025a43	t	2	2024-07-12 15:00:22.04028+08	2	2024-07-12 15:00:22.04028+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+9c1b67de-4f08-4b53-9925-6fb1a6e6afe5	t	2	2024-07-12 15:01:40.367548+08	2	2024-07-12 15:01:40.367548+08	/index/	127.0.0.1	2
+1ba9aa66-6048-42b9-8c16-8e368d54697e	t	2	2024-07-12 15:01:40.630889+08	2	2024-07-12 15:01:40.630889+08	/home/	127.0.0.1	2
+a0c8af3c-03d4-42b1-b22d-d536409f0da4	t	2	2024-07-12 15:01:41.660346+08	2	2024-07-12 15:01:41.660346+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+abbf2c8d-11ba-48f5-af1b-f3f279895839	t	2	2024-07-12 15:01:42.72587+08	2	2024-07-12 15:01:42.72587+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+9c11041f-b654-4366-96cc-e9098cba0db1	t	2	2024-07-12 15:01:43.753752+08	2	2024-07-12 15:01:43.753752+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+c938d6a1-b94a-4556-ae95-1a93ea3ab599	t	2	2024-07-12 15:02:20.267968+08	2	2024-07-12 15:02:20.267968+08	/index/	127.0.0.1	2
+2933b2c6-4be1-45e4-a071-717421f0e942	t	2	2024-07-12 15:02:20.546288+08	2	2024-07-12 15:02:20.546288+08	/home/	127.0.0.1	2
+afbc4110-cf14-4945-a2d4-8a322b42595c	t	2	2024-07-12 15:02:21.433257+08	2	2024-07-12 15:02:21.433257+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+fdfdf600-627e-4601-bf59-4a1129e5a9dd	t	2	2024-07-12 15:02:22.388353+08	2	2024-07-12 15:02:22.388353+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+62b845e9-d8e6-4b21-91e2-678821478343	t	2	2024-07-12 15:02:23.387896+08	2	2024-07-12 15:02:23.387896+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+38420f78-89c1-4be9-bead-d66af7bcff7c	t	2	2024-07-12 15:04:13.078508+08	2	2024-07-12 15:04:13.078508+08	/index/	127.0.0.1	2
+d5fab54d-0ba2-4d78-8539-24fb6de49eeb	t	2	2024-07-12 15:04:13.34486+08	2	2024-07-12 15:04:13.34486+08	/home/	127.0.0.1	2
+a2b4ecb5-0aa1-4ae6-89a3-b68b54726088	t	2	2024-07-12 15:04:14.331727+08	2	2024-07-12 15:04:14.331727+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+ecf4e378-0e43-4584-bede-54e55b23dbf8	t	2	2024-07-12 15:04:15.69476+08	2	2024-07-12 15:04:15.69476+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+0d988ec0-ff74-48d8-8084-172b4bf3e2d6	t	2	2024-07-12 15:04:16.801722+08	2	2024-07-12 15:04:16.801722+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+77d8c340-7884-46d7-9e3b-bdbf2c3fc7f0	t	2	2024-07-12 15:06:46.875961+08	2	2024-07-12 15:06:46.87696+08	/index/	127.0.0.1	2
+5e2f5498-54ff-4b1e-8dc3-4ead407914eb	t	2	2024-07-12 15:06:47.15318+08	2	2024-07-12 15:06:47.15318+08	/home/	127.0.0.1	2
+7722cafd-2b10-421d-9bf9-9c3029ae1e17	t	2	2024-07-12 15:06:48.532615+08	2	2024-07-12 15:06:48.532615+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4f0e0d87-9a47-46cb-8ceb-575420f25eba	t	2	2024-07-12 15:06:49.878282+08	2	2024-07-12 15:06:49.878282+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+6d6965ed-a785-4bb4-af4c-13743ed8d62e	t	2	2024-07-12 15:06:50.826537+08	2	2024-07-12 15:06:50.826537+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+9e780deb-4198-4c8b-aad3-d2d078f5dfbf	t	2	2024-07-12 15:10:23.870778+08	2	2024-07-12 15:10:23.870778+08	/index/	127.0.0.1	2
+328010c3-316f-49f7-9814-cf8cffdd4d6a	t	2	2024-07-12 15:10:24.141317+08	2	2024-07-12 15:10:24.141317+08	/home/	127.0.0.1	2
+84091245-5c23-4fee-8e11-5b36846e5891	t	2	2024-07-12 15:10:25.318501+08	2	2024-07-12 15:10:25.318501+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+8ffe7330-1c92-438f-84d6-e0c0fbfd1e0b	t	2	2024-07-12 15:10:26.241602+08	2	2024-07-12 15:10:26.241602+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+ed3009b1-7b63-4af4-9113-034db96cc694	t	2	2024-07-12 15:10:27.443251+08	2	2024-07-12 15:10:27.443251+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+c692a171-b9df-46c2-9727-1389c2c2f9c3	t	2	2024-07-12 15:15:30.446594+08	2	2024-07-12 15:15:30.446594+08	/index/	127.0.0.1	2
+53462e92-ce9f-43c8-99ba-3dd6bac42e08	t	2	2024-07-12 15:15:30.724873+08	2	2024-07-12 15:15:30.724873+08	/home/	127.0.0.1	2
+f030e53d-0d95-496a-ac1d-8f86b6c841a0	t	2	2024-07-12 15:15:31.945187+08	2	2024-07-12 15:15:31.945187+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+7fd8dbd8-3f50-4dc3-a7fc-f72086d1e1c3	t	2	2024-07-12 15:15:32.91744+08	2	2024-07-12 15:15:32.91744+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+6ffea44f-6564-4ada-a133-460e63cb1f20	t	2	2024-07-12 15:15:33.767417+08	2	2024-07-12 15:15:33.767417+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+651d026b-ca74-4923-b2a7-c7fc2af458b8	t	2	2024-07-12 15:17:06.050245+08	2	2024-07-12 15:17:06.050245+08	/home/	127.0.0.1	2
+cad62f87-fa81-438c-8197-661547e05160	t	2	2024-07-12 15:17:08.056041+08	2	2024-07-12 15:17:08.056041+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+d9639609-b559-441e-9f07-32e59b7b642f	t	2	2024-07-12 15:17:56.132533+08	2	2024-07-12 15:17:56.132533+08	/index/	127.0.0.1	2
+9f44cec2-5a49-468c-9424-9ca5766e47de	t	2	2024-07-12 15:17:57.498918+08	2	2024-07-12 15:17:57.498918+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+fe34af8e-295b-4de0-98f6-da966a6df103	t	2	2024-07-12 15:18:04.144938+08	2	2024-07-12 15:18:04.144938+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+5dc724f2-89ec-4715-9e0a-d7728bd261b3	t	2	2024-07-12 15:19:21.924481+08	2	2024-07-12 15:19:21.924481+08	/home/	127.0.0.1	2
+6caac119-2f1f-432c-884d-0e7b8cf90295	t	2	2024-07-12 15:19:24.41915+08	2	2024-07-12 15:19:24.41915+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+888c1326-89ee-413c-8ff3-6614e111e86e	t	2	2024-07-12 15:20:56.250086+08	2	2024-07-12 15:20:56.250086+08	/index/	127.0.0.1	2
+07b40344-0fcd-47a6-ac9f-c0437fb8426c	t	2	2024-07-12 15:20:57.963691+08	2	2024-07-12 15:20:57.963691+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+ab28fb2f-cf5d-469c-9652-1a0a77144029	t	2	2024-07-12 15:21:00.195782+08	2	2024-07-12 15:21:00.195782+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+45b0474c-1a2d-4809-bf32-8dd002373957	t	2	2024-07-12 15:21:26.82479+08	2	2024-07-12 15:21:26.82479+08	/home/	127.0.0.1	2
+cb983f4f-35c8-4da6-9804-e3611b82f6ea	t	2	2024-07-12 15:21:28.999539+08	2	2024-07-12 15:21:28.999539+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+c40f4e05-a1e8-45fc-8e9b-7645f79fdf3b	t	2	2024-07-12 15:34:25.442731+08	2	2024-07-12 15:34:25.442731+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+6c4de345-6303-404c-811b-9ad19837b2f9	t	2	2024-07-12 15:37:02.775923+08	2	2024-07-12 15:37:02.775923+08	/home/	127.0.0.1	2
+455ef4fc-1d1a-45be-bb6e-7b031ccfe821	t	2	2024-07-12 15:37:04.390438+08	2	2024-07-12 15:37:04.390438+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+69b27e43-9e4c-4048-89bf-7afaa8b3f637	t	2	2024-07-12 15:37:06.189362+08	2	2024-07-12 15:37:06.189362+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+4dcb8f04-db35-42c5-a246-3e0ecbc7fca5	t	2	2024-07-12 15:37:07.30906+08	2	2024-07-12 15:37:07.30906+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+0a8436b1-dbcc-4d4a-a4fa-90b69c0c946f	t	2	2024-07-12 15:37:39.799191+08	2	2024-07-12 15:37:39.799191+08	/index/	127.0.0.1	2
+d00a6589-8862-4b4f-95c5-0e982abdab25	t	2	2024-07-12 15:37:40.091884+08	2	2024-07-12 15:37:40.091884+08	/home/	127.0.0.1	2
+d0f7a4dc-ed09-4633-a68f-e0e895bb2568	t	2	2024-07-12 15:37:40.980098+08	2	2024-07-12 15:37:40.980098+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+5681097d-3d6d-4dbc-96e3-356b1fa401bf	t	2	2024-07-12 15:37:42.171916+08	2	2024-07-12 15:37:42.171916+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+a2350ac3-be34-4715-b308-03f8472a0f54	t	2	2024-07-12 15:37:43.048794+08	2	2024-07-12 15:37:43.048794+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+e1a734e3-9097-4ec3-9f81-082ad5de3a49	t	2	2024-07-12 15:40:18.7499+08	2	2024-07-12 15:40:18.7499+08	/index/	127.0.0.1	2
+7d990a56-a868-4a6d-b309-1e17d51a6ada	t	2	2024-07-12 15:40:19.05903+08	2	2024-07-12 15:40:19.05903+08	/home/	127.0.0.1	2
+5632965f-55d8-4b34-8a78-44d4459daa7c	t	2	2024-07-12 15:40:19.891792+08	2	2024-07-12 15:40:19.891792+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+2994fb02-da1f-4f90-a584-778d662bf0b3	t	2	2024-07-12 15:40:21.357026+08	2	2024-07-12 15:40:21.357026+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+76a34bbc-094d-41fb-b32d-6a1ac1cfab22	t	2	2024-07-12 15:40:22.578617+08	2	2024-07-12 15:40:22.578617+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+102c6c6b-06c8-4803-b218-cb4d6a34e7e3	t	2	2024-07-12 15:42:03.878571+08	2	2024-07-12 15:42:03.878571+08	/index/	127.0.0.1	2
+09156b36-c429-498c-ba0b-843c8327ad54	t	2	2024-07-12 15:42:04.168469+08	2	2024-07-12 15:42:04.168469+08	/home/	127.0.0.1	2
+2bede125-97a9-452f-97d0-a80ec38d1bf4	t	2	2024-07-12 15:42:05.578339+08	2	2024-07-12 15:42:05.578339+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+3c058542-d52d-4d25-9258-c8ebb12dbc52	t	2	2024-07-12 15:42:06.802318+08	2	2024-07-12 15:42:06.802318+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+445fe3cc-b8e1-4585-9cc3-080599eee957	t	2	2024-07-12 15:42:07.811373+08	2	2024-07-12 15:42:07.811373+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b360d394-2115-4d21-aec2-94aa56ce6ab9	t	2	2024-07-12 15:42:19.494108+08	2	2024-07-12 15:42:19.494108+08	/index/	127.0.0.1	2
+947b6676-06f6-4468-ba5b-30db27be7ff0	t	2	2024-07-12 15:42:19.80121+08	2	2024-07-12 15:42:19.80121+08	/home/	127.0.0.1	2
+0e9b7228-bc89-42de-b23d-965e825d835b	t	2	2024-07-12 15:42:20.672813+08	2	2024-07-12 15:42:20.672813+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+2813ce1f-99d3-42b8-b8ad-4e91da84ef1f	t	2	2024-07-12 15:42:21.899247+08	2	2024-07-12 15:42:21.899247+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+81558ea9-dd7f-4dbe-b810-ffb783e45a53	t	2	2024-07-12 15:42:22.745771+08	2	2024-07-12 15:42:22.745771+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+cddfa881-721d-4590-b11e-239b7283f63a	t	2	2024-07-12 15:43:06.339297+08	2	2024-07-12 15:43:06.339297+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+8197f32b-1a71-4ff3-a32f-e0056dd0bb3b	t	2	2024-07-12 15:44:28.929864+08	2	2024-07-12 15:44:28.929864+08	/index/	127.0.0.1	2
+ca0b10c3-26a1-483d-9e92-f00961f0b1e1	t	2	2024-07-12 15:44:29.203432+08	2	2024-07-12 15:44:29.203432+08	/home/	127.0.0.1	2
+397512ae-1938-4a27-94f6-290595584e0a	t	2	2024-07-12 15:44:30.608196+08	2	2024-07-12 15:44:30.608196+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+6940f4fd-bf79-43a5-aec5-e7b5805829ef	t	2	2024-07-12 15:44:31.709599+08	2	2024-07-12 15:44:31.709599+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+9d03fa00-259e-4b11-8a83-ac303d842990	t	2	2024-07-12 15:44:32.630788+08	2	2024-07-12 15:44:32.630788+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b44645c8-6c23-473e-96d1-f5e8a559536d	t	2	2024-07-16 10:56:56.098189+08	2	2024-07-16 10:56:56.098189+08	/index/	127.0.0.1	2
+d10c5588-c58f-482f-a154-9f2d86f1ba98	t	2	2024-07-16 10:56:56.538739+08	2	2024-07-16 10:56:56.538739+08	/home/	127.0.0.1	2
+65b3a5f5-e93b-4de4-bcf8-651f5459cef4	t	2	2024-07-16 10:56:58.793173+08	2	2024-07-16 10:56:58.793173+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+1d1d9ba6-bf9b-4b33-ab07-e022854afc68	t	2	2024-07-16 10:57:00.794286+08	2	2024-07-16 10:57:00.794286+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+59e22345-c4dd-49b3-999a-3087fede8f7f	t	2	2024-07-16 10:57:02.004529+08	2	2024-07-16 10:57:02.004529+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+99c475de-35d9-47c2-8363-243af90146e3	t	2	2024-07-16 10:57:55.590233+08	2	2024-07-16 10:57:55.590233+08	/index/	127.0.0.1	2
+18c2a097-34b1-460b-971b-1abeeb6e10cc	t	2	2024-07-16 10:57:55.872125+08	2	2024-07-16 10:57:55.872125+08	/home/	127.0.0.1	2
+d46e55c2-0544-4b38-88b3-28f702e0b57c	t	2	2024-07-16 10:57:56.700404+08	2	2024-07-16 10:57:56.700404+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e627de68-63e2-44d4-8462-3d3df9f20e60	t	2	2024-07-16 10:57:58.082242+08	2	2024-07-16 10:57:58.082242+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+797cacf2-5eb1-4574-898f-6ce0aa5b7dc5	t	2	2024-07-16 10:57:59.007216+08	2	2024-07-16 10:57:59.007216+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d54d8363-9a27-4e3e-8ce9-1ea4f9aa9223	t	2	2024-07-16 11:19:47.60022+08	2	2024-07-16 11:19:47.60022+08	/index/	127.0.0.1	2
+6a54ff06-6263-49f3-a2a1-9b5828766162	t	2	2024-07-16 11:19:47.895255+08	2	2024-07-16 11:19:47.895255+08	/home/	127.0.0.1	2
+c4252459-8f78-479c-9a37-860a6ff1e3e2	t	2	2024-07-16 11:19:49.10382+08	2	2024-07-16 11:19:49.10382+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+27d2b08d-3e49-4052-8784-48e2add21113	t	2	2024-07-16 11:19:50.361183+08	2	2024-07-16 11:19:50.361183+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1fd715aa-688b-4416-9dbb-7250bc0de8e6	t	2	2024-07-16 11:19:51.401493+08	2	2024-07-16 11:19:51.401493+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+3cf76b97-f431-4aed-a377-05392ed7b171	t	2	2024-07-16 11:21:47.451254+08	2	2024-07-16 11:21:47.451254+08	/index/	127.0.0.1	2
+a627cceb-792c-4c64-b182-cbb16a7404f6	t	2	2024-07-16 11:21:47.735124+08	2	2024-07-16 11:21:47.735124+08	/home/	127.0.0.1	2
+10a08782-b891-41c9-8fab-6aa4a4f42da0	t	2	2024-07-16 11:21:48.821482+08	2	2024-07-16 11:21:48.821482+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+eac7f19b-acca-43dc-a76f-a70aa47f097a	t	2	2024-07-16 11:21:51.507233+08	2	2024-07-16 11:21:51.507233+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+8e5bcb11-5e28-4ece-9854-9d37e984bd1e	t	2	2024-07-16 11:21:52.375979+08	2	2024-07-16 11:21:52.375979+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+2bf361b3-b043-4773-90eb-5bcfe928002a	t	2	2024-07-16 11:22:13.286366+08	2	2024-07-16 11:22:13.286366+08	/index/	127.0.0.1	2
+2e2ffc2c-0027-4813-8f3c-7876644a0d02	t	2	2024-07-16 11:22:13.587843+08	2	2024-07-16 11:22:13.587843+08	/home/	127.0.0.1	2
+201a4ad7-f0f8-402a-8403-59f40070ee2a	t	2	2024-07-16 11:22:14.704719+08	2	2024-07-16 11:22:14.704719+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+fcf915c0-df3b-4590-8433-f2e851f8a6a7	t	2	2024-07-16 11:22:16.59615+08	2	2024-07-16 11:22:16.59615+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+2b97aa89-3694-429c-b613-0b4a6e3be144	t	2	2024-07-16 11:22:17.522494+08	2	2024-07-16 11:22:17.522494+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+73b1665f-29d9-4425-a534-8a073a67aea3	t	2	2024-07-18 13:35:22.322833+08	2	2024-07-18 13:35:22.322833+08	/index/	127.0.0.1	2
+a6f694d6-8fce-4fb7-98d0-42e89f90f121	t	2	2024-07-18 13:35:22.633609+08	2	2024-07-18 13:35:22.633609+08	/home/	127.0.0.1	2
+47200102-9222-45a0-b8c8-41d20b9619c1	t	2	2024-07-18 13:35:24.233237+08	2	2024-07-18 13:35:24.234234+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+42509a90-fa8b-4d98-8595-b9a1444b9361	t	2	2024-07-18 13:35:25.926134+08	2	2024-07-18 13:35:25.926134+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+0f93eacd-9b3c-4264-9a80-fdcbcf747199	t	2	2024-07-18 13:35:48.634756+08	2	2024-07-18 13:35:48.634756+08	/index/	127.0.0.1	2
+53225f33-7998-4ad6-976e-b9e42befc7c1	t	2	2024-07-18 13:35:48.895348+08	2	2024-07-18 13:35:48.895348+08	/home/	127.0.0.1	2
+c9a842cc-1790-41b7-ae90-3e7ff9ed5eca	t	2	2024-07-18 13:35:50.243381+08	2	2024-07-18 13:35:50.243381+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9ec428ad-2eca-4212-bbbb-ca6ffd6c55dc	t	2	2024-07-18 13:35:52.814876+08	2	2024-07-18 13:35:52.814876+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+cbddf97e-8cbf-4ed3-88b4-248ee536ffad	t	2	2024-07-18 13:35:53.818439+08	2	2024-07-18 13:35:53.818439+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+197ca220-5be9-42a1-9f78-73d9e3663aef	t	2	2024-07-18 13:36:02.205585+08	2	2024-07-18 13:36:02.205585+08	/index/	127.0.0.1	2
+4b8373b4-d70d-4bc4-9d6d-0dc9e2bd9b91	t	2	2024-07-18 13:36:02.468465+08	2	2024-07-18 13:36:02.468465+08	/home/	127.0.0.1	2
+63e6a293-70d1-4bb1-a064-e5c3904181ab	t	2	2024-07-18 13:36:03.376692+08	2	2024-07-18 13:36:03.376692+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+acee6b29-e807-4b1e-99aa-d4fb25750b2a	t	2	2024-07-18 13:36:04.522241+08	2	2024-07-18 13:36:04.522241+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+eb7ecdb4-7028-45b1-a2cb-16820996f8d2	t	2	2024-07-18 13:36:06.318191+08	2	2024-07-18 13:36:06.318191+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+41084cc8-438c-48bb-b7d6-19613d3c2d13	t	2	2024-07-18 13:36:18.738577+08	2	2024-07-18 13:36:18.738577+08	/index/	127.0.0.1	2
+561bbe92-fae1-41ce-a022-e015a2f89e5f	t	2	2024-07-18 13:36:19.017975+08	2	2024-07-18 13:36:19.017975+08	/home/	127.0.0.1	2
+5470ec3b-5ab4-44a2-a849-44c1869dbe43	t	2	2024-07-18 13:36:20.088194+08	2	2024-07-18 13:36:20.088194+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+8e5baee8-2181-4909-afb8-d31ead7c1a92	t	2	2024-07-18 13:36:21.171541+08	2	2024-07-18 13:36:21.171541+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+c47c1fd2-9180-4670-bf6d-e4ae56061085	t	2	2024-07-18 13:36:56.785177+08	2	2024-07-18 13:36:56.785177+08	/index/	127.0.0.1	2
+97a4118c-f645-4648-94ed-9d2b50826a9c	t	2	2024-07-18 13:36:57.06856+08	2	2024-07-18 13:36:57.069518+08	/home/	127.0.0.1	2
+919c15be-961d-4733-96cf-c88375833429	t	2	2024-07-18 13:36:57.829843+08	2	2024-07-18 13:36:57.829843+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+b0bc1dcb-3019-454b-aa47-2c1c368fa9cf	t	2	2024-07-18 13:36:58.917502+08	2	2024-07-18 13:36:58.917502+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+f4cdb511-70dc-4f71-925a-4ef83f89fcc8	t	2	2024-07-18 13:37:07.400926+08	2	2024-07-18 13:37:07.400926+08	/index/	127.0.0.1	2
+a6a78976-51d2-4b15-a244-40fafb9927bb	t	2	2024-07-18 13:37:07.675689+08	2	2024-07-18 13:37:07.675689+08	/home/	127.0.0.1	2
+119ad99b-c57b-4d69-ba61-527ce3286d57	t	2	2024-07-18 13:37:08.334167+08	2	2024-07-18 13:37:08.334167+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+780ce3c1-659c-4b2f-88f8-eef02a34e8f8	t	2	2024-07-18 13:37:09.395579+08	2	2024-07-18 13:37:09.396576+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+a895509c-3451-4931-aff6-5b5f88f60fb6	t	2	2024-07-18 13:37:10.256049+08	2	2024-07-18 13:37:10.256049+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+91280eb8-cd96-4b3f-873f-4a6cb3d3dc85	t	2	2024-07-18 13:37:46.346049+08	2	2024-07-18 13:37:46.346049+08	/index/	127.0.0.1	2
+9c87d25e-f487-4a1e-b25a-018cb6282f0c	t	2	2024-07-18 13:37:46.614976+08	2	2024-07-18 13:37:46.614976+08	/home/	127.0.0.1	2
+d3361fcd-4b3e-4372-af21-0bc2f0ac4f4e	t	2	2024-07-18 13:37:47.613532+08	2	2024-07-18 13:37:47.613532+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+117289bf-ae15-4c15-b721-8f887b4282a9	t	2	2024-07-18 13:37:48.860739+08	2	2024-07-18 13:37:48.860739+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+5891b7e9-f9dc-447c-9078-92417d71d401	t	2	2024-07-18 13:37:49.768235+08	2	2024-07-18 13:37:49.768235+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+44262439-98b2-4174-886f-b12a6262da9e	t	2	2024-07-18 13:38:17.446139+08	2	2024-07-18 13:38:17.446139+08	/index/	127.0.0.1	2
+596553bb-7a28-44d1-82d0-25e53d75b177	t	2	2024-07-18 13:38:17.713882+08	2	2024-07-18 13:38:17.713882+08	/home/	127.0.0.1	2
+eaaa57c1-0ea8-4ca6-8a08-9cc193d33584	t	2	2024-07-18 13:38:20.331003+08	2	2024-07-18 13:38:20.331003+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+cebafd7f-58da-4a94-aa60-3203e7557149	t	2	2024-07-18 13:38:21.39199+08	2	2024-07-18 13:38:21.39199+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+c1e947ce-a68f-4e1c-b55f-e25c40f7da5b	t	2	2024-07-18 13:38:22.234262+08	2	2024-07-18 13:38:22.234262+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+e2b25a6e-97eb-4110-9a53-610c10dbc738	t	2	2024-07-18 13:39:06.848518+08	2	2024-07-18 13:39:06.848518+08	/index/	127.0.0.1	2
+0110a62f-f5de-46b5-a0a8-3a3141d76ba0	t	2	2024-07-18 13:39:07.106992+08	2	2024-07-18 13:39:07.106992+08	/home/	127.0.0.1	2
+3510828f-c130-4044-b231-35bcde1d0efd	t	2	2024-07-18 13:39:07.946454+08	2	2024-07-18 13:39:07.946454+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4ad98cf1-c0b3-47d3-8404-ee61469d1a83	t	2	2024-07-18 13:39:09.015393+08	2	2024-07-18 13:39:09.015393+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+da94be7d-afc0-4e93-b6fe-2c081ef4bc96	t	2	2024-07-18 13:39:09.793874+08	2	2024-07-18 13:39:09.793874+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+0a3917af-1780-4214-a4b1-13a2b19c54e1	t	2	2024-07-18 13:39:50.140528+08	2	2024-07-18 13:39:50.140528+08	/index/	127.0.0.1	2
+85e26673-d56b-4819-b775-9b43db0d84e5	t	2	2024-07-18 13:39:50.411118+08	2	2024-07-18 13:39:50.411118+08	/home/	127.0.0.1	2
+f99101e0-155a-48f4-93e5-8ed93bcdead9	t	2	2024-07-18 13:39:51.353472+08	2	2024-07-18 13:39:51.353472+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+148afbf8-6fda-4d04-9cda-e808ec9ba7b3	t	2	2024-07-18 13:39:52.58294+08	2	2024-07-18 13:39:52.58294+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+f783f191-5e61-4ad0-a5bd-4fbdc22bd5a8	t	2	2024-07-18 13:39:53.524042+08	2	2024-07-18 13:39:53.524042+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+777b8a8c-2071-4c96-9232-5b73f217e75b	t	2	2024-07-18 13:41:25.183089+08	2	2024-07-18 13:41:25.183089+08	/index/	127.0.0.1	2
+dfa3b745-8cb9-459d-85cd-6562a47dd4f4	t	2	2024-07-18 13:41:25.451372+08	2	2024-07-18 13:41:25.451372+08	/home/	127.0.0.1	2
+0fe0137a-b038-40bd-9862-771fdb6e924f	t	2	2024-07-18 13:41:26.645487+08	2	2024-07-18 13:41:26.645487+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+ccc02d19-0298-4f22-8dec-8039e601f053	t	2	2024-07-18 13:41:27.883369+08	2	2024-07-18 13:41:27.883369+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+d0c7ee59-6a42-4fa4-b4c4-496ee7410038	t	2	2024-07-18 13:41:43.43286+08	2	2024-07-18 13:41:43.43286+08	/index/	127.0.0.1	2
+f8c84c84-e3f1-4a3c-a08f-440485a29fd2	t	2	2024-07-18 13:41:43.703808+08	2	2024-07-18 13:41:43.703808+08	/home/	127.0.0.1	2
+2812bcfe-831f-465b-b757-82017e8e5db7	t	2	2024-07-18 13:41:44.559021+08	2	2024-07-18 13:41:44.559021+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+5dfd0dbf-7d9e-4a55-9291-439d70499d16	t	2	2024-07-18 13:41:45.616922+08	2	2024-07-18 13:41:45.616922+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+9ca8c8ea-5cad-4206-b3d8-2b96f80607d3	t	2	2024-07-18 13:41:46.511986+08	2	2024-07-18 13:41:46.511986+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+2acf5fc5-16e2-4792-8a6b-809fa030dfd7	t	2	2024-07-18 13:44:23.966141+08	2	2024-07-18 13:44:23.966141+08	/index/	127.0.0.1	2
+2f854fb8-2e40-4141-b5cb-b6883a233968	t	2	2024-07-18 13:44:24.266146+08	2	2024-07-18 13:44:24.266146+08	/home/	127.0.0.1	2
+360d59a8-bb6e-4258-bc17-3fc010eedf42	t	2	2024-07-18 13:44:25.515468+08	2	2024-07-18 13:44:25.515468+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9e1b7739-e464-45d3-bd12-333537e84b1f	t	2	2024-07-18 13:44:26.782771+08	2	2024-07-18 13:44:26.782771+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e7eff275-df6e-4902-aca5-954c0682f9de	t	2	2024-07-18 13:44:27.826114+08	2	2024-07-18 13:44:27.826114+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+2c9dc739-3bb4-40a3-98f0-0c0c66f285d3	t	2	2024-07-18 13:45:00.038957+08	2	2024-07-18 13:45:00.038957+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+01b842d4-f2ce-4323-af01-7d0f378ecad1	t	2	2024-07-18 13:56:13.884047+08	2	2024-07-18 13:56:13.884047+08	/index/	127.0.0.1	2
+d9156fce-6a80-4e5e-b914-fe75613f58d9	t	2	2024-07-18 13:56:14.172448+08	2	2024-07-18 13:56:14.172448+08	/home/	127.0.0.1	2
+7c4ae25b-3036-4b0f-bf02-1fdadb286390	t	2	2024-07-18 13:56:15.004568+08	2	2024-07-18 13:56:15.004568+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+3a395c14-0601-42be-904e-62b4782ae52b	t	2	2024-07-18 13:56:16.35087+08	2	2024-07-18 13:56:16.35087+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+23ea6025-de0c-4619-8b04-feddfd003191	t	2	2024-07-18 13:56:17.310112+08	2	2024-07-18 13:56:17.310112+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+8e9a2f51-2a0d-41a9-bbfa-88d63e528f6c	t	2	2024-07-18 13:56:22.236903+08	2	2024-07-18 13:56:22.236903+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+b0860ce0-c017-491e-894c-14cf20323676	t	2	2024-07-18 13:59:02.106369+08	2	2024-07-18 13:59:02.106369+08	/index/	127.0.0.1	2
+058ec1a2-713b-4469-91ff-4b6c6cecaa7c	t	2	2024-07-18 13:59:02.422673+08	2	2024-07-18 13:59:02.422673+08	/home/	127.0.0.1	2
+d2310c16-d75e-4173-801a-09a553018397	t	2	2024-07-18 13:59:03.258224+08	2	2024-07-18 13:59:03.258224+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d0599145-ba52-4d08-949e-ab0fa9663341	t	2	2024-07-18 13:59:08.325504+08	2	2024-07-18 13:59:08.325504+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+fdf4175e-344e-4a87-8489-4ab2b6af370c	t	2	2024-07-18 13:59:09.280527+08	2	2024-07-18 13:59:09.280527+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+aa26338f-8d4f-42e6-9fc8-6e46d32c23b9	t	2	2024-07-18 13:59:14.67173+08	2	2024-07-18 13:59:14.67173+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+d899e181-f0ab-4a57-b5f3-b7a4fd72550a	t	2	2024-07-18 14:02:11.36071+08	2	2024-07-18 14:02:11.36071+08	/index/	127.0.0.1	2
+5f227757-394b-45d2-b39d-944e9e5f1e88	t	2	2024-07-18 14:02:11.6703+08	2	2024-07-18 14:02:11.6703+08	/home/	127.0.0.1	2
+380d95e4-ebb9-48ae-834d-89e07279c0b9	t	2	2024-07-18 14:02:12.725577+08	2	2024-07-18 14:02:12.725577+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+8aafdf10-dffb-4d34-82ce-8a31285a64de	t	2	2024-07-18 14:02:13.99116+08	2	2024-07-18 14:02:13.99116+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+f6a8c98a-e98c-4929-abaa-205cb4552627	t	2	2024-07-18 14:02:15.012555+08	2	2024-07-18 14:02:15.012555+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+eadd076f-6244-4cad-9c6d-0d1752b2e029	t	2	2024-07-18 14:02:24.885368+08	2	2024-07-18 14:02:24.885368+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+6895d5b8-c99d-4656-a725-8bc1fdf26136	t	2	2024-07-18 14:25:02.882858+08	2	2024-07-18 14:25:02.882858+08	/index/	127.0.0.1	2
+a31d496d-82b0-465f-9219-40ec456f389e	t	2	2024-07-18 14:25:03.142755+08	2	2024-07-18 14:25:03.142755+08	/home/	127.0.0.1	2
+8e606d7b-328b-46b3-a692-9e9547c96d32	t	2	2024-07-18 14:25:04.478042+08	2	2024-07-18 14:25:04.478042+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+45e0978a-9c56-4054-ae9b-d8b22505ab87	t	2	2024-07-18 14:25:07.362591+08	2	2024-07-18 14:25:07.362591+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+abb90785-98bc-4143-8cf2-c93a784abe75	t	2	2024-07-18 14:25:08.277689+08	2	2024-07-18 14:25:08.277689+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+4fcb3c80-8c36-404f-aee8-0defb0c9d1f0	t	2	2024-07-18 14:25:14.082773+08	2	2024-07-18 14:25:14.082773+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+b6ce74cc-eb89-4577-ab99-dddcedebe3de	t	2	2024-07-18 14:28:34.841296+08	2	2024-07-18 14:28:34.841296+08	/index/	127.0.0.1	2
+33a886d1-1590-4eed-9d73-ae0e5326f546	t	2	2024-07-18 14:28:35.121599+08	2	2024-07-18 14:28:35.121599+08	/home/	127.0.0.1	2
+da9a779f-b854-4c4d-91ee-57f144b2623f	t	2	2024-07-18 14:28:36.851828+08	2	2024-07-18 14:28:36.851828+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+f72b1b7a-4eb6-4e0e-843e-b7421fc5488e	t	2	2024-07-18 14:28:37.938872+08	2	2024-07-18 14:28:37.938872+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+860284a8-4fc3-41d5-ab24-5c0a96e86527	t	2	2024-07-18 14:28:38.973067+08	2	2024-07-18 14:28:38.973067+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+72d0dcfc-464d-4773-a4f9-b867196bd3a2	t	2	2024-07-18 14:28:44.062106+08	2	2024-07-18 14:28:44.062106+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+a0b0ce9d-5eea-42f4-854f-fc82b7f666ed	t	2	2024-07-18 14:30:22.193976+08	2	2024-07-18 14:30:22.193976+08	/index/	127.0.0.1	2
+86787d0e-0300-4aef-9d11-871cab3b6e91	t	2	2024-07-18 14:30:22.46565+08	2	2024-07-18 14:30:22.46565+08	/home/	127.0.0.1	2
+04858778-0336-4e33-b2be-2d631f0c3945	t	2	2024-07-18 14:30:28.166806+08	2	2024-07-18 14:30:28.166806+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+ed51dcda-7382-4073-ad0a-03d326e2c3a0	t	2	2024-07-18 14:30:29.550756+08	2	2024-07-18 14:30:29.550756+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+615fe780-230b-43f8-8cfd-987e6ccfa246	t	2	2024-07-18 14:30:30.387622+08	2	2024-07-18 14:30:30.387622+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+0ca5249f-5109-474a-9722-3bf752739b9a	t	2	2024-07-18 14:30:35.50884+08	2	2024-07-18 14:30:35.50884+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+9301f19a-7ea8-4264-9a1a-e7e358d02255	t	2	2024-07-18 14:34:06.282367+08	2	2024-07-18 14:34:06.282367+08	/index/	127.0.0.1	2
+eee360de-f7e9-475e-ab71-a0e5ba390b7d	t	2	2024-07-18 14:34:06.581738+08	2	2024-07-18 14:34:06.581738+08	/home/	127.0.0.1	2
+059ba5d9-eb98-4411-b198-bd8e5cf14eda	t	2	2024-07-18 14:34:07.726841+08	2	2024-07-18 14:34:07.726841+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+cba946b9-d22c-43fa-839b-da1c90d51362	t	2	2024-07-18 14:34:08.740671+08	2	2024-07-18 14:34:08.740671+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+0b990f14-d9d1-4d0c-90b0-8c90a2a3f881	t	2	2024-07-18 14:34:09.720129+08	2	2024-07-18 14:34:09.720129+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+502e599b-e476-443e-b8e6-5702f0853ce1	t	2	2024-07-18 14:34:15.835038+08	2	2024-07-18 14:34:15.835038+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+eb2adf8c-500f-4db4-b8a6-50939a99cb53	t	2	2024-07-18 14:34:52.059537+08	2	2024-07-18 14:34:52.059537+08	/index/	127.0.0.1	2
+6d4eb2c9-2b42-46aa-a74e-0f772417e779	t	2	2024-07-18 14:34:52.334436+08	2	2024-07-18 14:34:52.334436+08	/home/	127.0.0.1	2
+2d7489ba-f1b6-4253-ae46-ab4414693865	t	2	2024-07-18 14:34:53.61188+08	2	2024-07-18 14:34:53.61188+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e50d74a9-d031-4adf-baa1-7100d7eb8193	t	2	2024-07-18 14:34:54.457845+08	2	2024-07-18 14:34:54.457845+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1b709820-256d-462c-a497-fb346265dd5f	t	2	2024-07-18 14:34:56.828965+08	2	2024-07-18 14:34:56.828965+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+3ab4c3df-679a-4553-9a9b-2a8511affb34	t	2	2024-07-18 14:35:01.919667+08	2	2024-07-18 14:35:01.919667+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+30747389-bbe5-4f15-803b-9649f81a5fde	t	2	2024-07-18 14:35:32.532284+08	2	2024-07-18 14:35:32.532284+08	/index/	127.0.0.1	2
+370eee94-4209-4859-bb40-c6e09854b4ef	t	2	2024-07-18 14:35:32.8439+08	2	2024-07-18 14:35:32.8439+08	/home/	127.0.0.1	2
+59e6030c-01a6-4ada-ae8e-2fd519ba0a2d	t	2	2024-07-18 14:35:33.581826+08	2	2024-07-18 14:35:33.581826+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+0338ec2b-ea64-4a32-b1e0-d9c4eb6fe2f1	t	2	2024-07-18 14:35:34.589856+08	2	2024-07-18 14:35:34.589856+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+9646adf7-da81-427f-87c4-4f4d20568f31	t	2	2024-07-18 14:35:35.45995+08	2	2024-07-18 14:35:35.45995+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+c35bb9f4-8f88-445a-b11c-1e3d27872a52	t	2	2024-07-18 14:35:40.377857+08	2	2024-07-18 14:35:40.377857+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+62825720-2c8a-4537-8121-2ed6636eaecc	t	2	2024-07-18 14:36:19.374791+08	2	2024-07-18 14:36:19.374791+08	/index/	127.0.0.1	2
+4b03c137-922e-4bc9-9140-5b8bcc58a5a6	t	2	2024-07-18 14:36:19.700672+08	2	2024-07-18 14:36:19.700672+08	/home/	127.0.0.1	2
+809f3bd5-7321-482f-aa3b-6c072c23fc08	t	2	2024-07-18 14:36:21.062128+08	2	2024-07-18 14:36:21.062128+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+bfa903ec-1953-479f-9312-3fdaa18c9cad	t	2	2024-07-18 14:36:22.139992+08	2	2024-07-18 14:36:22.139992+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+3952409c-6b8f-4001-9a6e-48c60a1830b3	t	2	2024-07-18 14:36:23.106597+08	2	2024-07-18 14:36:23.106597+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+50bb24d9-9470-4a53-b3ec-19de01919b9f	t	2	2024-07-18 14:36:27.056352+08	2	2024-07-18 14:36:27.056352+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+cb1e894e-f9e7-440c-900e-e41825bd9116	t	2	2024-07-18 14:37:20.540454+08	2	2024-07-18 14:37:20.540454+08	/index/	127.0.0.1	2
+92887bbb-f9e4-4107-bfd2-c431168d3943	t	2	2024-07-18 14:37:20.812019+08	2	2024-07-18 14:37:20.812019+08	/home/	127.0.0.1	2
+597eb5a1-e67c-4a40-8bac-2a364cc97117	t	2	2024-07-18 14:37:21.844526+08	2	2024-07-18 14:37:21.844526+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+094bbc0f-af1c-47fe-aa77-2247d1097c43	t	2	2024-07-18 14:37:23.331172+08	2	2024-07-18 14:37:23.331172+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b50887dc-3546-471f-8fba-a1db3550fe46	t	2	2024-07-18 14:37:24.480486+08	2	2024-07-18 14:37:24.480486+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+a0c250a2-9cbe-4df9-a99e-e1b0e9f8b161	t	2	2024-07-18 14:37:28.564144+08	2	2024-07-18 14:37:28.564144+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+a8943538-56e2-4097-91ac-71c8a1503562	t	2	2024-07-18 14:39:21.472987+08	2	2024-07-18 14:39:21.472987+08	/index/	127.0.0.1	2
+c709bd1a-06a5-4035-965f-06236debb4ee	t	2	2024-07-18 14:39:21.797685+08	2	2024-07-18 14:39:21.797685+08	/home/	127.0.0.1	2
+b2c57e7a-f7fe-4e4b-88f4-6f184cde555b	t	2	2024-07-18 14:39:22.78865+08	2	2024-07-18 14:39:22.78865+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+16dc12cd-44e5-461f-b779-954cfe70975d	t	2	2024-07-18 14:39:24.213126+08	2	2024-07-18 14:39:24.213126+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+d0845149-3b67-4a4d-93ea-024b4db5870f	t	2	2024-07-18 14:39:25.1584+08	2	2024-07-18 14:39:25.1584+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+6fa4d3d3-92b7-4fab-aae1-07abad18e2e6	t	2	2024-07-18 14:39:29.080424+08	2	2024-07-18 14:39:29.080424+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+393b1415-dfbd-4960-ba66-273a3520950f	t	2	2024-07-18 14:40:21.971885+08	2	2024-07-18 14:40:21.971885+08	/index/	127.0.0.1	2
+595cbd02-6e3f-46f3-8349-1ef94b293163	t	2	2024-07-18 14:40:22.259212+08	2	2024-07-18 14:40:22.259212+08	/home/	127.0.0.1	2
+65b3de2e-7107-410d-9681-f68823c1144c	t	2	2024-07-18 14:40:23.792994+08	2	2024-07-18 14:40:23.792994+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+a4255038-9d10-46a8-90dd-03f0018dd136	t	2	2024-07-18 14:40:24.62971+08	2	2024-07-18 14:40:24.62971+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+7f2f873c-20ab-4148-9400-740557316598	t	2	2024-07-18 14:40:25.735892+08	2	2024-07-18 14:40:25.735892+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+67183fe4-8750-4e3a-8efe-eed22ffc8ca2	t	2	2024-07-18 14:40:29.277388+08	2	2024-07-18 14:40:29.277388+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+754f9c41-9f3c-4c40-b92c-036b96d64820	t	2	2024-07-18 14:41:14.770982+08	2	2024-07-18 14:41:14.771981+08	/index/	127.0.0.1	2
+7a1a3b87-de8d-4b24-9118-4f43a45bb6fd	t	2	2024-07-18 14:41:15.022281+08	2	2024-07-18 14:41:15.022281+08	/home/	127.0.0.1	2
+c86ffd2d-0707-4203-8c57-52260482e98d	t	2	2024-07-18 14:41:16.3072+08	2	2024-07-18 14:41:16.3072+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e38ccd66-f7bc-4956-932f-985620598345	t	2	2024-07-18 14:43:02.305608+08	2	2024-07-18 14:43:02.305608+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+534592f8-7ff9-4393-96ac-62563468b862	t	2	2024-07-18 14:43:06.757331+08	2	2024-07-18 14:43:06.757331+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+fcf2ce24-b686-4bb7-b029-cc51b884930b	t	2	2024-07-18 14:43:07.812944+08	2	2024-07-18 14:43:07.812944+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+f620d6df-9f0c-4da1-8f82-0d65f9b92d08	t	2	2024-07-18 14:43:11.892554+08	2	2024-07-18 14:43:11.892554+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+b9c374da-fef8-432f-aba1-64e93b1c95c6	t	2	2024-07-18 14:43:15.467757+08	2	2024-07-18 14:43:15.467757+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9d5b641c-ecf9-44ef-b6d5-b6223e02f012	t	2	2024-07-18 15:06:00.086507+08	2	2024-07-18 15:06:00.086507+08	/index/	127.0.0.1	2
+24bf3bb6-d5df-4442-a00f-8c5c690bea77	t	2	2024-07-18 15:06:00.405665+08	2	2024-07-18 15:06:00.405665+08	/home/	127.0.0.1	2
+9ceadeed-ec67-4f4a-abdb-b0722326e43c	t	2	2024-07-18 15:06:01.739508+08	2	2024-07-18 15:06:01.739508+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+2c03841b-ba2d-4f01-b86d-ba6d3b5ec574	t	2	2024-07-18 15:06:28.18558+08	2	2024-07-18 15:06:28.18558+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+84226412-9a5c-4ec6-8a73-6d45cc7c0181	t	2	2024-07-18 15:06:29.296367+08	2	2024-07-18 15:06:29.296367+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+7855387d-a2cf-4781-a601-502f14d8fc16	t	2	2024-07-18 15:06:30.234745+08	2	2024-07-18 15:06:30.234745+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+9674cc3a-0746-4e5c-9e36-fb0b6b6c93c2	t	2	2024-07-18 15:06:34.640592+08	2	2024-07-18 15:06:34.640592+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+85243741-d2d0-42c1-8602-7076d6055af7	t	2	2024-07-18 15:08:15.397765+08	2	2024-07-18 15:08:15.397765+08	/index/	127.0.0.1	2
+a0015a78-a3bc-4fc3-9c81-a9d51fddb22d	t	2	2024-07-18 15:08:15.69025+08	2	2024-07-18 15:08:15.69025+08	/home/	127.0.0.1	2
+bed2347c-9168-4921-8f9e-2593966dedf1	t	2	2024-07-18 15:08:17.06409+08	2	2024-07-18 15:08:17.06409+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+594ce711-4891-4a08-abd6-de4b2eadb68c	t	2	2024-07-18 15:08:18.668765+08	2	2024-07-18 15:08:18.668765+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+974a9755-9d48-4238-8f25-a1a5a89c4706	t	2	2024-07-18 15:08:19.958911+08	2	2024-07-18 15:08:19.958911+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+acbd0aab-8dfa-4954-b742-abbc3bd9878e	t	2	2024-07-18 15:08:24.160765+08	2	2024-07-18 15:08:24.160765+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+6e23c9a3-1103-4953-af0d-18fa420cafb0	t	2	2024-07-18 15:08:27.433214+08	2	2024-07-18 15:08:27.433214+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+f2eff08c-d28b-40d7-b1ea-f59f09d7d5b3	t	2	2024-07-18 15:09:40.157799+08	2	2024-07-18 15:09:40.157799+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+46200cf2-cf9e-42f1-9e4c-3e7ab6dec3be	t	2	2024-07-18 15:09:41.112078+08	2	2024-07-18 15:09:41.112078+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+6261af0f-3243-4f26-bebd-cd8388b39404	t	2	2024-07-18 15:09:45.502885+08	2	2024-07-18 15:09:45.502885+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+f0d20ed9-c67b-4d51-96f9-6622bdc7f432	t	2	2024-07-18 15:11:42.818301+08	2	2024-07-18 15:11:42.818301+08	/index/	127.0.0.1	2
+b5ce2ce7-5e15-4458-b77a-555467e536d0	t	2	2024-07-18 15:11:43.102549+08	2	2024-07-18 15:11:43.102549+08	/home/	127.0.0.1	2
+028f4d8b-10f6-4f05-91bc-bb0331b6c5a4	t	2	2024-07-18 15:11:43.933875+08	2	2024-07-18 15:11:43.933875+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+07ce0d9b-3ac8-4f1d-8c61-aa7745cad7e4	t	2	2024-07-18 15:11:46.178332+08	2	2024-07-18 15:11:46.178332+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+dab06ecd-0c0b-44ff-bd8b-4b6a09cddc38	t	2	2024-07-18 15:12:16.935074+08	2	2024-07-18 15:12:16.935074+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+b580376e-9100-4770-983b-4c869fda7b10	t	2	2024-07-18 15:12:17.892134+08	2	2024-07-18 15:12:17.892134+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+cd85546f-62ce-4bf6-941e-8e6eba338591	t	2	2024-07-18 15:12:18.742103+08	2	2024-07-18 15:12:18.742103+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+32374c08-3964-4a00-957d-6d05878c8e9a	t	2	2024-07-18 15:12:22.897887+08	2	2024-07-18 15:12:22.897887+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+6574e94a-3e6f-4300-b0c3-60db25201b1e	t	2	2024-07-18 15:12:25.584037+08	2	2024-07-18 15:12:25.584037+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+31cee131-a433-4bd8-a9f0-6da900221887	t	2	2024-07-18 15:16:23.528834+08	2	2024-07-18 15:16:23.528834+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+a7412dfd-5dbd-453e-86fe-c0ace465ffd0	t	2	2024-07-18 15:16:24.568121+08	2	2024-07-18 15:16:24.568121+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+506f8073-1665-4216-b724-9ca0c2094339	t	2	2024-07-18 15:16:42.730927+08	2	2024-07-18 15:16:42.730927+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+eb284386-7f4b-4d76-85f9-c3f9b090f7d1	t	2	2024-07-18 15:19:00.391761+08	2	2024-07-18 15:19:00.391761+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+6f442bdf-50bd-41de-a850-e7e8d0a81206	t	2	2024-07-18 15:19:01.487922+08	2	2024-07-18 15:19:01.487922+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+69619093-3dcb-4697-9f2e-e84f2cf337fa	t	2	2024-07-18 15:19:02.476566+08	2	2024-07-18 15:19:02.476566+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+c25f3304-a619-41f3-9517-340587d94cf1	t	2	2024-07-18 15:19:04.717029+08	2	2024-07-18 15:19:04.717029+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+a76dbe89-3987-47df-9ec4-461326128a2b	t	2	2024-07-18 15:19:10.324388+08	2	2024-07-18 15:19:10.324388+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+841c3135-3ace-4840-b7d2-4df4fd535702	t	2	2024-07-18 15:19:48.744607+08	2	2024-07-18 15:19:48.744607+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+f02dc570-ae91-4a16-9e23-8d708ef1b284	t	2	2024-07-18 15:20:05.186829+08	2	2024-07-18 15:20:05.186829+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e7530ade-0f8d-46c2-b369-f9245ca7a44d	t	2	2024-07-18 15:20:06.079704+08	2	2024-07-18 15:20:06.079704+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d446e0f4-38a0-4b35-ae55-77759a1e3236	t	2	2024-07-18 15:20:10.291414+08	2	2024-07-18 15:20:10.291414+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+8fd211a9-b6ae-4bad-9fe9-3d36e2de9236	t	2	2024-07-18 15:21:48.194039+08	2	2024-07-18 15:21:48.194039+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+f6099804-894a-40a8-a65e-3ca42f9c4658	t	2	2024-07-18 15:21:50.05382+08	2	2024-07-18 15:21:50.05382+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+66b57264-f00c-48c1-8084-bda2a78297f0	t	2	2024-07-18 15:21:51.151225+08	2	2024-07-18 15:21:51.151225+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+e5dbf7c0-cb35-4a2a-9e7f-745bce5a36e3	t	2	2024-07-18 15:21:55.010773+08	2	2024-07-18 15:21:55.010773+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+5a176b47-842a-4e5e-84bc-cf263317b151	t	2	2024-07-18 15:21:56.295059+08	2	2024-07-18 15:21:56.295059+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+f9bf8e9d-af92-415a-95e6-cbfa4c8265e8	t	2	2024-07-18 15:28:32.666654+08	2	2024-07-18 15:28:32.667613+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+2e6157cc-8bc9-48fe-8829-90ae9b90ea3a	t	2	2024-07-18 15:28:33.787898+08	2	2024-07-18 15:28:33.787898+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+34321d42-ee4b-48f8-9dc3-4d1aaac72147	t	2	2024-07-18 15:28:35.270173+08	2	2024-07-18 15:28:35.270173+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+53b97c3a-ad7c-4286-8965-5a360418586b	t	2	2024-07-18 15:28:36.163278+08	2	2024-07-18 15:28:36.163278+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+14cfeb17-59d4-400c-9a92-ca43374fdf1f	t	2	2024-07-18 15:28:56.94313+08	2	2024-07-18 15:28:56.94313+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+d843777a-ce28-4ef4-b880-0e1a2d5970df	t	2	2024-07-18 15:28:58.853073+08	2	2024-07-18 15:28:58.853073+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+ac806a63-2cd5-4b75-bf7e-62ed2aae1d82	t	2	2024-07-18 15:39:45.815112+08	2	2024-07-18 15:39:45.815112+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+a947f6d2-3f28-42e1-ac38-73e6a259fe9a	t	2	2024-07-18 15:39:50.977587+08	2	2024-07-18 15:39:50.977587+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+856d3dc6-c1cf-46ee-a384-babea921b068	t	2	2024-07-18 15:39:54.181093+08	2	2024-07-18 15:39:54.181093+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+8f37be18-fbf3-4a1e-b7a6-a80ed48c5683	t	2	2024-07-18 15:46:30.385265+08	2	2024-07-18 15:46:30.385265+08	/index/	127.0.0.1	2
+26f2b4d6-7c8f-43e1-b1f0-1fbf51010240	t	2	2024-07-18 15:46:30.711392+08	2	2024-07-18 15:46:30.711392+08	/home/	127.0.0.1	2
+d765c865-25e7-4d0c-a61d-f2b7e5cd5474	t	2	2024-07-18 15:46:31.515243+08	2	2024-07-18 15:46:31.515243+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+35094680-0f82-49bd-8c7a-efec54ce4cf5	t	2	2024-07-18 15:46:33.667028+08	2	2024-07-18 15:46:33.667028+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+128e8b3a-2153-4579-874a-99aab097deb2	t	2	2024-07-18 15:47:12.314963+08	2	2024-07-18 15:47:12.314963+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+f7b2f7ea-28cf-4506-9c07-c66dd5f535b0	t	2	2024-07-18 15:47:14.024016+08	2	2024-07-18 15:47:14.025014+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+2f4bb66a-21b3-4854-8977-e2602f153e17	t	2	2024-07-18 15:48:11.477651+08	2	2024-07-18 15:48:11.477651+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+10ce77db-c49a-4b7c-a974-bf71c45b9a22	t	2	2024-07-18 15:48:13.177643+08	2	2024-07-18 15:48:13.177643+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+79a179f2-7ef5-4396-85de-46abec9cf5d3	t	2	2024-07-18 15:48:37.874909+08	2	2024-07-18 15:48:37.874909+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4acf2607-7789-4617-9c64-83cb3f5b0e1f	t	2	2024-07-18 15:48:39.175407+08	2	2024-07-18 15:48:39.175407+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+58cd1f26-973e-49a6-9b31-f0290fb16fe4	t	2	2024-07-18 15:49:11.18722+08	2	2024-07-18 15:49:11.18722+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+a4a21be6-f8b0-4995-8221-1b41438335c9	t	2	2024-07-18 15:49:12.14084+08	2	2024-07-18 15:49:12.14084+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+d325482a-47cf-400f-b885-6c38103cbdc3	t	2	2024-07-18 15:49:21.297774+08	2	2024-07-18 15:49:21.297774+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+592bbfc3-0b1e-4139-8746-3cb8bfb5f68e	t	2	2024-07-18 15:49:22.743807+08	2	2024-07-18 15:49:22.743807+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+ea8a42fa-e9e1-4763-9bdc-888a18575673	t	2	2024-07-18 15:49:24.867148+08	2	2024-07-18 15:49:24.867148+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+3d960ba9-04f6-4479-be78-73a8d2621a46	t	2	2024-07-18 15:49:26.226846+08	2	2024-07-18 15:49:26.226846+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+4c1d4e7a-9145-4d4e-8e5a-f6a4eaa02367	t	2	2024-07-18 15:52:33.07432+08	2	2024-07-18 15:52:33.07432+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9494edc8-daf7-4d76-9e01-f7e03ace0d6f	t	2	2024-07-18 15:52:34.432515+08	2	2024-07-18 15:52:34.432515+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+1d048a61-ca7b-4979-ad92-ff1e1e7d857b	t	2	2024-07-18 15:55:31.095327+08	2	2024-07-18 15:55:31.095327+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+01e7d471-a38e-480c-8974-0f6a06f2b48e	t	2	2024-07-18 15:55:32.370015+08	2	2024-07-18 15:55:32.370015+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+6823c5e4-1335-4e68-b633-36c99f33bff0	t	2	2024-07-18 15:56:42.613303+08	2	2024-07-18 15:56:42.613303+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+43adf3fe-3d1b-41b4-bd3e-16eac02530c6	t	2	2024-07-18 15:56:43.719399+08	2	2024-07-18 15:56:43.719399+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+a0ad5921-f746-47aa-9f17-d71f5d22b489	t	2	2024-07-18 15:56:46.728466+08	2	2024-07-18 15:56:46.728466+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+b14d2ec4-1c25-4eef-afcb-431dc72e41e9	t	2	2024-07-18 15:58:53.037593+08	2	2024-07-18 15:58:53.037593+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+deb5a06f-2a6e-4e03-be99-fa040d52965d	t	2	2024-07-18 15:58:54.033242+08	2	2024-07-18 15:58:54.033242+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b174c556-0e0e-4693-9e5f-57db9a15d4fc	t	2	2024-07-18 15:58:55.320034+08	2	2024-07-18 15:58:55.320034+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+0ace50d7-5a36-41c2-a9e2-587afac66d3d	t	2	2024-07-18 15:59:47.152935+08	2	2024-07-18 15:59:47.152935+08	/index/	127.0.0.1	2
+38777b5e-cff8-4157-8d13-5bc8e13cbd4c	t	2	2024-07-18 15:59:47.449023+08	2	2024-07-18 15:59:47.449023+08	/home/	127.0.0.1	2
+5337d33a-c624-4ee3-8d5c-4a97eadec21c	t	2	2024-07-18 15:59:48.286736+08	2	2024-07-18 15:59:48.286736+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+ff628194-6bc2-4ba8-a123-253de9940ade	t	2	2024-07-18 15:59:49.359264+08	2	2024-07-18 15:59:49.359264+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+ec8474f1-06dd-493c-ba83-15e5358b56c1	t	2	2024-07-18 15:59:50.273522+08	2	2024-07-18 15:59:50.273522+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+5b25a582-8f54-45c6-a624-d3e231d0834d	t	2	2024-07-18 16:00:24.621391+08	2	2024-07-18 16:00:24.621391+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4a685685-92be-4bbb-af54-07289f5a016d	t	2	2024-07-18 16:00:25.828348+08	2	2024-07-18 16:00:25.828348+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+a5ef393d-b1b0-4682-bec8-9cb5335b0e19	t	2	2024-07-18 16:00:53.439522+08	2	2024-07-18 16:00:53.439522+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+0e0cdf7e-3740-42a7-86da-c72041ee8839	t	2	2024-07-18 16:00:54.393574+08	2	2024-07-18 16:00:54.393574+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+5692542f-17a5-40f3-8226-f39047464eff	t	2	2024-07-18 16:00:55.425499+08	2	2024-07-18 16:00:55.425499+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+fb8430fb-c4eb-4267-bd7c-09dfd82ca9bb	t	2	2024-07-18 16:01:35.009394+08	2	2024-07-18 16:01:35.009394+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+cc2eeeac-70a0-47fa-beb2-f70a5848cf3a	t	2	2024-07-18 16:01:35.985898+08	2	2024-07-18 16:01:35.985898+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+e7796b26-af31-406c-bbb9-3a675a9d4e5b	t	2	2024-07-18 16:01:37.441317+08	2	2024-07-18 16:01:37.441317+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+54ccc0dd-3785-42f7-827d-23ceaca99eb0	t	2	2024-07-18 16:03:09.467476+08	2	2024-07-18 16:03:09.467476+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+14f771b8-1de0-44bb-961b-7c593b7817c4	t	2	2024-07-18 16:03:10.396386+08	2	2024-07-18 16:03:10.396386+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+cd2626c5-5a9e-4aed-98c4-2190e22457aa	t	2	2024-07-18 16:03:11.287201+08	2	2024-07-18 16:03:11.287201+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+bee233e5-a1d4-48b7-ae53-a977b2f97a6e	t	2	2024-07-18 16:05:06.035831+08	2	2024-07-18 16:05:06.035831+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+c44f207f-0498-4aba-8ceb-3e578d9ff231	t	2	2024-07-18 16:05:07.419956+08	2	2024-07-18 16:05:07.419956+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+1ad96b8b-544a-4e68-9513-0ae3da70a382	t	2	2024-07-18 16:05:08.827619+08	2	2024-07-18 16:05:08.827619+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+35d254a3-7931-4529-9ad3-6147fd5841e5	t	2	2024-07-18 16:07:23.280938+08	2	2024-07-18 16:07:23.280938+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+c58f635d-7e97-408a-af0a-953c13597da4	t	2	2024-07-18 16:07:24.379673+08	2	2024-07-18 16:07:24.379673+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+d6318a71-b894-485e-9b80-09180ac1230a	t	2	2024-07-18 16:07:25.337385+08	2	2024-07-18 16:07:25.337385+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+fa73a475-51bb-4e17-a316-c3f0e8c72730	t	2	2024-07-18 16:10:54.897333+08	2	2024-07-18 16:10:54.897333+08	/index/	127.0.0.1	2
+e52dafc9-befc-4351-a8cf-e8731af1a658	t	2	2024-07-18 16:10:55.255257+08	2	2024-07-18 16:10:55.255257+08	/home/	127.0.0.1	2
+6737a54f-07ee-4ad2-9b5d-76b4374053a8	t	2	2024-07-18 16:10:56.417023+08	2	2024-07-18 16:10:56.418022+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+1dc2290d-60ab-4192-91bb-37a2a10efdeb	t	2	2024-07-18 16:10:57.574941+08	2	2024-07-18 16:10:57.574941+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+a2d66f06-452e-4f31-899c-4b0b39a86ed3	t	2	2024-07-18 16:10:58.455311+08	2	2024-07-18 16:10:58.455311+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+7d91b8fc-04bb-40bf-92e9-a276714892d6	t	2	2024-07-18 16:12:39.228373+08	2	2024-07-18 16:12:39.228373+08	/index/	127.0.0.1	2
+9fb1c076-796e-43f0-ba7e-859d56551b2c	t	2	2024-07-18 16:12:39.535779+08	2	2024-07-18 16:12:39.535779+08	/home/	127.0.0.1	2
+923d7d40-3526-43a3-a667-1707aaa8206d	t	2	2024-07-18 16:12:40.867149+08	2	2024-07-18 16:12:40.867149+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+92c4824c-6240-46d3-bb63-466fb358b445	t	2	2024-07-18 16:12:41.894717+08	2	2024-07-18 16:12:41.894717+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+be5423a2-fe09-45a8-8cf4-7201efe487a7	t	2	2024-07-18 16:12:42.915539+08	2	2024-07-18 16:12:42.915539+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+efc55b72-38a3-48e7-ae19-da1e651f3958	t	2	2024-07-18 16:19:43.37289+08	2	2024-07-18 16:19:43.37289+08	/index/	127.0.0.1	2
+c5a19ab1-c92d-4a17-a3da-8b1009c7c502	t	2	2024-07-18 16:19:43.70899+08	2	2024-07-18 16:19:43.70899+08	/home/	127.0.0.1	2
+b17f553c-22d4-4185-aee5-4fbf3b5a7d91	t	2	2024-07-18 16:19:44.469231+08	2	2024-07-18 16:19:44.469231+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+7c6c97bc-8151-40d9-8fd1-ea2fd247f5a5	t	2	2024-07-18 16:19:45.777361+08	2	2024-07-18 16:19:45.777361+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+27cf87d1-c34a-468c-adf5-50d6aa469f2c	t	2	2024-07-18 16:19:46.827851+08	2	2024-07-18 16:19:46.827851+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+a04a357a-15c0-468d-b103-e05a03930088	t	2	2024-07-18 16:20:51.512846+08	2	2024-07-18 16:20:51.512846+08	/index/	127.0.0.1	2
+d0b1a53b-c3b7-4ac5-a314-2d1decbff98b	t	2	2024-07-18 16:20:51.830174+08	2	2024-07-18 16:20:51.830174+08	/home/	127.0.0.1	2
+7642d66e-5a24-4241-a67f-813c870c8c00	t	2	2024-07-18 16:20:52.829304+08	2	2024-07-18 16:20:52.829304+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+d989ec81-255b-4cc3-a0eb-4dd3ee6fda94	t	2	2024-07-18 16:20:54.697085+08	2	2024-07-18 16:20:54.697085+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+f2d6cc4f-c793-4cda-9077-d3fd9b56a9a7	t	2	2024-07-18 16:20:55.706679+08	2	2024-07-18 16:20:55.706679+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+01641e5e-2168-4451-919c-be6af37e04fc	t	2	2024-07-18 16:26:48.333806+08	2	2024-07-18 16:26:48.333806+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+18aa3e26-6b85-4b08-ba87-1516ee81820c	t	2	2024-07-18 16:26:49.606352+08	2	2024-07-18 16:26:49.606352+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+08895b31-9b9b-4e79-8a8f-f43f685da182	t	2	2024-07-18 16:26:50.432116+08	2	2024-07-18 16:26:50.432116+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+24a70e24-87e4-4605-917c-0ea2d67aabd2	t	2	2024-07-18 16:28:09.919345+08	2	2024-07-18 16:28:09.919345+08	/index/	127.0.0.1	2
+171ffe3f-0850-40c4-8135-9d75228779ab	t	2	2024-07-18 16:28:10.223643+08	2	2024-07-18 16:28:10.223643+08	/home/	127.0.0.1	2
+70d62570-c310-4100-b423-5bddac966439	t	2	2024-07-18 16:28:11.395193+08	2	2024-07-18 16:28:11.395193+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+190e21f3-06fc-43cf-939d-064b8e0f4806	t	2	2024-07-18 16:28:12.745715+08	2	2024-07-18 16:28:12.745715+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b32c52ba-0ca5-4ff3-bdc6-482cdd3df512	t	2	2024-07-18 16:28:13.593936+08	2	2024-07-18 16:28:13.593936+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+4ae49d5b-ddbd-45de-a409-054b994378d2	t	2	2024-07-18 16:29:13.367914+08	2	2024-07-18 16:29:13.367914+08	/index/	127.0.0.1	2
+c1c73db6-2c22-4f27-a348-8f5412493e8d	t	2	2024-07-18 16:29:13.690413+08	2	2024-07-18 16:29:13.690413+08	/home/	127.0.0.1	2
+c6e5d160-f313-4a86-9a60-354b08f4f5ee	t	2	2024-07-18 16:29:14.65843+08	2	2024-07-18 16:29:14.65843+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+8f488633-6930-4fe2-afdb-c1e836839216	t	2	2024-07-18 16:29:17.219735+08	2	2024-07-18 16:29:17.219735+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+88b76e48-156b-467b-827c-59c5bb9f6bce	t	2	2024-07-18 16:29:18.832152+08	2	2024-07-18 16:29:18.833149+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+d5930a0e-52d3-4a56-8b26-4f2b7ed4f4c0	t	2	2024-07-18 16:29:32.082147+08	2	2024-07-18 16:29:32.082147+08	/ld_stock/stock/barcode/add/execute/	127.0.0.1	2
+96ab293f-3dee-4bad-90f0-ea4818c6bb19	t	2	2024-07-18 16:29:33.875224+08	2	2024-07-18 16:29:33.875224+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e55c9013-0f6d-4543-aa41-b8958eaff4b3	t	2	2024-07-18 16:29:37.376675+08	2	2024-07-18 16:29:37.376675+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+2d8498e2-02bc-4e03-98c9-7679fa0d2372	t	2	2024-07-18 16:29:39.212904+08	2	2024-07-18 16:29:39.212904+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e7789617-3958-40d2-8e44-e843a0553cab	t	2	2024-07-18 16:29:40.176257+08	2	2024-07-18 16:29:40.176257+08	/ld_stock/stock/barcode/edit/d36df791-e714-48d5-b132-c7c2777ea74a/	127.0.0.1	2
+ab9c188b-cfea-423c-a2b3-126b7238d517	t	2	2024-07-18 16:30:44.974401+08	2	2024-07-18 16:30:44.974401+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+b92ab542-a3fa-413a-a8b3-f62117167c7d	t	2	2024-07-18 16:30:46.28445+08	2	2024-07-18 16:30:46.28445+08	/ld_stock/stock/barcode/edit/d36df791-e714-48d5-b132-c7c2777ea74a/	127.0.0.1	2
+b4e2aa80-a05f-43e6-b219-1fe972d00508	t	2	2024-07-18 16:30:49.14105+08	2	2024-07-18 16:30:49.14105+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+abb03651-d2bd-4720-ac2a-410384b95d6c	t	2	2024-07-18 16:30:58.943317+08	2	2024-07-18 16:30:58.943317+08	/pp_master/model_code/index/	127.0.0.1	2
+6c4b40df-0cf9-43e9-8b29-68a4e4a62fbf	t	2	2024-07-18 16:31:03.802996+08	2	2024-07-18 16:31:03.802996+08	/pp_master/work_center/index/	127.0.0.1	2
+9196a67f-4c8d-4f06-95ad-a2cdf00945be	t	2	2024-07-18 16:31:06.458811+08	2	2024-07-18 16:31:06.458811+08	/pp_master/warehouse/index/	127.0.0.1	2
+e61b5b0d-27d5-4639-b037-ce94d219e529	t	2	2024-07-18 16:31:08.6236+08	2	2024-07-18 16:31:08.6246+08	/sys_auth/role/index/	127.0.0.1	2
+214d21a0-26eb-4a96-84dd-76579f2bba5f	t	2	2024-07-18 16:31:11.71582+08	2	2024-07-18 16:31:11.71582+08	/sys_auth/user/index/	127.0.0.1	2
+f7b0a7f0-8f29-4a8a-9a53-a5bd65e0c917	t	2	2024-07-18 16:31:15.079597+08	2	2024-07-18 16:31:15.079597+08	/pp_master/machine_code/index/	127.0.0.1	2
+332775c0-b429-4d5d-b403-3f83cae83a9a	t	2	2024-07-18 16:31:40.267586+08	2	2024-07-18 16:31:40.267586+08	/pp_master/work_center/index/	127.0.0.1	2
+334ad4c7-6029-4f80-8849-1fcf1540220d	t	2	2024-07-18 16:31:55.978169+08	2	2024-07-18 16:31:55.978169+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+59a66552-787f-4913-ae96-9fb2e1ec27a3	t	2	2024-07-19 10:06:46.053222+08	2	2024-07-19 10:06:46.053222+08	/index/	127.0.0.1	2
+cea122a0-9cfd-4611-b863-55c235f5f259	t	2	2024-07-19 10:06:46.388314+08	2	2024-07-19 10:06:46.388314+08	/home/	127.0.0.1	2
+7be47e65-22ae-4a29-947f-17fc19eb6f1f	t	2	2024-07-19 10:06:48.113487+08	2	2024-07-19 10:06:48.113487+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+b8809f86-262b-43fa-a467-5d67c6d567e4	t	2	2024-07-19 10:06:49.69801+08	2	2024-07-19 10:06:49.69801+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+cb9d8255-caba-4f94-86d1-da5344a5ed62	t	2	2024-07-19 10:08:46.103186+08	2	2024-07-19 10:08:46.103186+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+fda0f0c6-fb10-47c8-9156-620af4307a45	t	2	2024-07-19 10:08:47.816579+08	2	2024-07-19 10:08:47.816579+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+acfc3005-25e3-4e59-982a-d47cb0851ac7	t	2	2024-07-19 10:11:53.453615+08	2	2024-07-19 10:11:53.453615+08	/index/	127.0.0.1	2
+06ef8da5-810c-44b9-b568-a64b074421bd	t	2	2024-07-19 10:11:53.741681+08	2	2024-07-19 10:11:53.741681+08	/home/	127.0.0.1	2
+3c42f571-f529-45d3-a615-a0ee3666af37	t	2	2024-07-19 10:11:54.638739+08	2	2024-07-19 10:11:54.638739+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+8d714039-23cd-420e-bcf9-a44b3ec6c747	t	2	2024-07-19 10:11:56.244706+08	2	2024-07-19 10:11:56.244706+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+a5c72bdc-d5e7-4569-a136-62085d8263e7	t	2	2024-07-19 10:12:08.787915+08	2	2024-07-19 10:12:08.787915+08	/index/	127.0.0.1	2
+21d80e4b-c5c3-4930-b036-e0d4527fe2d0	t	2	2024-07-19 10:12:09.074271+08	2	2024-07-19 10:12:09.074271+08	/home/	127.0.0.1	2
+447425e9-d1ae-42be-b722-dadb9eec5297	t	2	2024-07-19 10:12:10.311371+08	2	2024-07-19 10:12:10.311371+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+2261cf3c-55f0-4ba9-bec5-28cff30215ac	t	2	2024-07-19 10:12:11.521538+08	2	2024-07-19 10:12:11.521538+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+d5407a21-3c4d-46c0-b068-b1be5524011c	t	2	2024-07-19 10:13:16.038628+08	2	2024-07-19 10:13:16.038628+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4a3ef15d-d23f-4cf0-9e41-a519af9885d8	t	2	2024-07-19 10:13:17.65908+08	2	2024-07-19 10:13:17.65908+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+d94d0ece-f2ba-4693-910f-58a9339aff2a	t	2	2024-07-19 10:13:21.840369+08	2	2024-07-19 10:13:21.840369+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+da8e9d05-6e1d-49bd-b435-172718061212	t	2	2024-07-19 10:13:23.234017+08	2	2024-07-19 10:13:23.234017+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+510c81fc-6dc6-4f2f-ba1a-370ad2b0fa67	t	2	2024-07-19 10:14:47.804365+08	2	2024-07-19 10:14:47.804365+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+19bdc8e1-1554-41e8-90e0-fd9995e31094	t	2	2024-07-19 10:14:49.335518+08	2	2024-07-19 10:14:49.335518+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+c0e08188-b8ab-4034-9b5c-91d17f78aba9	t	2	2024-07-19 10:17:16.464627+08	2	2024-07-19 10:17:16.464627+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+abed4a73-5305-4855-a955-a26bb3dc0f8d	t	2	2024-07-19 10:17:18.116204+08	2	2024-07-19 10:17:18.116204+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+dfd696cd-6619-4832-84eb-7432e80d2053	t	2	2024-07-19 10:17:23.40958+08	2	2024-07-19 10:17:23.40958+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+2cee1c50-920a-43e0-b342-845d38b89123	t	2	2024-07-19 10:17:24.165893+08	2	2024-07-19 10:17:24.165893+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+23579283-e1dd-4356-8ee1-9d770790e3ea	t	2	2024-07-19 10:17:25.397743+08	2	2024-07-19 10:17:25.397743+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+de00affe-1eb3-405c-8510-381bab1e6bd9	t	2	2024-07-19 10:17:59.388454+08	2	2024-07-19 10:17:59.388454+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+96182a2e-224c-4f99-a727-d240eec6cc98	t	2	2024-07-19 10:18:00.77709+08	2	2024-07-19 10:18:00.77709+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+0f2d7a20-ea1d-4c19-b02c-58e165f0f63b	t	2	2024-07-19 10:18:04.570874+08	2	2024-07-19 10:18:04.570874+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+c4aba25d-d47a-4915-8312-a7c3570bbf76	t	2	2024-07-19 10:18:05.919176+08	2	2024-07-19 10:18:05.919176+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+da890d90-6ff4-41f7-a1c6-5ec11269909f	t	2	2024-07-19 10:18:07.174341+08	2	2024-07-19 10:18:07.174341+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+49e7adb6-0624-4a65-b1a1-bd722a577cb0	t	2	2024-07-19 10:19:52.737415+08	2	2024-07-19 10:19:52.737415+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+1bf6b909-d715-4e12-9674-12cc4d1c8b3c	t	2	2024-07-19 10:19:53.886642+08	2	2024-07-19 10:19:53.886642+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+85f2e2e0-5582-43e6-a2d1-92188f868ca6	t	2	2024-07-19 10:20:12.540834+08	2	2024-07-19 10:20:12.540834+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4e968977-25eb-463a-b1db-2067eb85cbdb	t	2	2024-07-19 10:20:13.823174+08	2	2024-07-19 10:20:13.823174+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+9b61212d-0b65-418d-813a-deb6a7a7a645	t	2	2024-07-19 10:20:30.797238+08	2	2024-07-19 10:20:30.797238+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+ddfc59cc-8f50-4e0d-babb-2777c67e5aa5	t	2	2024-07-19 10:20:32.187845+08	2	2024-07-19 10:20:32.187845+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+0b0f8d71-d393-4549-967f-341c1dcb004a	t	2	2024-07-19 10:22:44.578225+08	2	2024-07-19 10:22:44.578225+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+4f61877a-87a3-425a-9afa-6b945868fefb	t	2	2024-07-19 10:22:46.362507+08	2	2024-07-19 10:22:46.362507+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+832810df-5399-431a-84f4-3117fbe638a5	t	2	2024-07-19 10:23:27.901814+08	2	2024-07-19 10:23:27.901814+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+a545881c-ecfe-4634-b3ea-5768cb5b61b4	t	2	2024-07-19 10:23:29.342998+08	2	2024-07-19 10:23:29.342998+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+aa4e4194-c55e-4d41-ab2c-41a2cb27784c	t	2	2024-07-19 10:23:57.705531+08	2	2024-07-19 10:23:57.705531+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+766dd222-284d-4159-bb45-825f87f72871	t	2	2024-07-19 10:23:58.871397+08	2	2024-07-19 10:23:58.871397+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+7b317a29-f580-45ac-85dc-028fda730c9b	t	2	2024-07-19 10:31:26.712264+08	2	2024-07-19 10:31:26.712264+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e4125173-0f18-44a1-b87d-38af0679ef5a	t	2	2024-07-19 10:31:28.240668+08	2	2024-07-19 10:31:28.240668+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+1928621e-d842-4527-aa4b-498490979689	t	2	2024-07-19 10:31:30.25167+08	2	2024-07-19 10:31:30.25167+08	/ld_stock/stock/barcode/get_items/4649f444-fd77-4591-a4f8-eea1dceddb9d	127.0.0.1	2
+6961ea6e-e7c6-4191-b269-63183fcae954	t	2	2024-07-19 10:32:26.58612+08	2	2024-07-19 10:32:26.58612+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e48b2312-82f5-4e4b-95f9-b716f49e6563	t	2	2024-07-19 10:32:28.224728+08	2	2024-07-19 10:32:28.224728+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+7e658586-fff9-4b3f-8fbf-7d2c78032a62	t	2	2024-07-19 10:32:32.274125+08	2	2024-07-19 10:32:32.274125+08	/ld_stock/stock/barcode/get_items/4649f444-fd77-4591-a4f8-eea1dceddb9d	127.0.0.1	2
+d3e6cfac-9a40-44ec-968b-a57fc945553f	t	2	2024-07-19 10:33:19.654878+08	2	2024-07-19 10:33:19.654878+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+45056418-b1c7-4a14-b7c1-e0ce91a45496	t	2	2024-07-19 10:33:20.750495+08	2	2024-07-19 10:33:20.750495+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+79da5f83-8591-4738-9575-363757926d14	t	2	2024-07-19 10:33:22.496405+08	2	2024-07-19 10:33:22.496405+08	/ld_stock/stock/barcode/items/remove/4649f444-fd77-4591-a4f8-eea1dceddb9d	127.0.0.1	2
+0e7ad3a0-8bb0-4de9-b83b-1102a1e09bdc	t	2	2024-07-19 10:36:25.379681+08	2	2024-07-19 10:36:25.379681+08	/index/	127.0.0.1	2
+89ae82a5-7c27-44f2-9833-202db2268177	t	2	2024-07-19 10:36:25.666217+08	2	2024-07-19 10:36:25.666217+08	/home/	127.0.0.1	2
+8030d88e-29af-4bf5-b55c-053f4abe9396	t	2	2024-07-19 10:36:26.485655+08	2	2024-07-19 10:36:26.485655+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+81a95be7-17c6-4d10-9343-112898cc13d4	t	2	2024-07-19 10:36:30.627996+08	2	2024-07-19 10:36:30.627996+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+1dc5421f-afda-42da-884b-c34fca1c3e7a	t	2	2024-07-19 10:36:33.239959+08	2	2024-07-19 10:36:33.239959+08	/ld_stock/stock/barcode/items/remove/4649f444-fd77-4591-a4f8-eea1dceddb9d	127.0.0.1	2
+64795e99-56c7-41d9-bd89-f801986c9cdd	t	2	2024-07-19 10:36:33.442311+08	2	2024-07-19 10:36:33.442311+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+169a3176-fb54-4138-a182-93ac704ed405	t	2	2024-07-19 10:37:41.585447+08	2	2024-07-19 10:37:41.585447+08	/ld_stock/stock/barcode/items/remove/5048b321-a8e5-4efa-99a8-200596dc5c3b	127.0.0.1	2
+d9382d63-8c8a-4a7b-8c4a-3522cc22b385	t	2	2024-07-19 10:37:41.794518+08	2	2024-07-19 10:37:41.794518+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+d29bb355-1fcc-4d05-b656-274bf96dec57	t	2	2024-07-19 10:38:20.378068+08	2	2024-07-19 10:38:20.378068+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+dc29d8d8-a0b1-46ec-a683-e4c3cdbd71dc	t	2	2024-07-19 10:38:29.764758+08	2	2024-07-19 10:38:29.764758+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+ce5c72cf-9bc3-4f7e-9cac-8ccda075a079	t	2	2024-07-19 10:38:42.090066+08	2	2024-07-19 10:38:42.090066+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+bd6208dd-da19-4dcc-9568-3314e81ad239	t	2	2024-07-19 10:38:44.492114+08	2	2024-07-19 10:38:44.492114+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+6a371b10-b747-4f9e-9c83-71df2e20f3a3	t	2	2024-07-19 10:44:13.557003+08	2	2024-07-19 10:44:13.557003+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+c94f2f6f-975c-4086-a7c6-3f38fd99722c	t	2	2024-07-19 10:44:15.014473+08	2	2024-07-19 10:44:15.014473+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+6bbd0b59-e9fa-4a0f-a769-345e36e25e48	t	2	2024-07-19 10:44:19.924008+08	2	2024-07-19 10:44:19.924008+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+89c78fb5-a414-49d9-9adc-509f48e12276	t	2	2024-07-19 10:46:03.317325+08	2	2024-07-19 10:46:03.317325+08	/index/	127.0.0.1	2
+6f2a7663-cb0d-42ec-80d5-ac06b55e77c9	t	2	2024-07-19 10:46:03.580621+08	2	2024-07-19 10:46:03.580621+08	/home/	127.0.0.1	2
+406e0713-6fd7-44c2-a7f3-0682c8bfb85b	t	2	2024-07-19 10:46:04.326785+08	2	2024-07-19 10:46:04.326785+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+6e691e6d-bad9-47a6-a559-b4796e6f76d6	t	2	2024-07-19 10:46:05.86571+08	2	2024-07-19 10:46:05.86571+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+41ebd1d7-d6ba-4395-8730-c0925a80c671	t	2	2024-07-19 10:46:08.862937+08	2	2024-07-19 10:46:08.862937+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+39c37bfd-e87b-4830-b686-1fc1fad401b5	t	2	2024-07-19 10:46:26.986633+08	2	2024-07-19 10:46:26.986633+08	/ld_stock/stock/barcode/items/remove/47579ead-8581-4fab-993b-8bf99ad6447c	127.0.0.1	2
+f3eed088-fe46-4b2a-846c-4e152d81357b	t	2	2024-07-19 10:46:27.182032+08	2	2024-07-19 10:46:27.182032+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+d9f4ecda-b64e-4a11-bd19-06a26d52a5ac	t	2	2024-07-19 11:14:49.027522+08	2	2024-07-19 11:14:49.027522+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+84d81ff0-05dd-454d-97d6-ab488d79e982	t	2	2024-07-19 11:14:50.548717+08	2	2024-07-19 11:14:50.548717+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+36d3cb4d-a0c0-4fcd-830a-bcf34d4a4f28	t	2	2024-07-19 11:14:51.734994+08	2	2024-07-19 11:14:51.734994+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+0c5d33e4-eff3-4330-8875-15eca3b239ef	t	2	2024-07-19 11:14:56.041604+08	2	2024-07-19 11:14:56.041604+08	/ld_stock/stock/barcode/save/execute/	127.0.0.1	2
+abd4589a-9169-4e2e-8d1c-c47d053ab120	t	2	2024-07-19 11:14:57.407172+08	2	2024-07-19 11:14:57.407172+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+a91cd151-bac9-444c-a5ed-00ccd33d7c5e	t	2	2024-07-19 11:15:01.201834+08	2	2024-07-19 11:15:01.201834+08	/ld_stock/stock/barcode/edit/1da9704d-dbfa-4ed4-b925-99f712aaf0c2/	127.0.0.1	2
+4daabc49-bbab-4b2f-970b-4702f9b52d1e	t	2	2024-07-19 11:16:35.839124+08	2	2024-07-19 11:16:35.839124+08	/ld_stock/stock/barcode/items/remove/5769f9cf-ed69-42a9-9a55-b61b52a0cab1	127.0.0.1	2
+ef5d9867-0225-4959-ae30-dc95b0fb7dc7	t	2	2024-07-19 11:16:36.041246+08	2	2024-07-19 11:16:36.041246+08	/ld_stock/stock/barcode/edit/1da9704d-dbfa-4ed4-b925-99f712aaf0c2/	127.0.0.1	2
+cdfa6590-22f0-4137-a2a8-52ecdf950a28	t	2	2024-07-19 11:16:37.485806+08	2	2024-07-19 11:16:37.485806+08	/ld_stock/stock/barcode/items/remove/31cb54ef-4405-461f-9e10-98a3872642cb	127.0.0.1	2
+4581d8c6-ef8e-4df4-a301-afd13f6c8f27	t	2	2024-07-19 11:16:37.69072+08	2	2024-07-19 11:16:37.69072+08	/ld_stock/stock/barcode/edit/1da9704d-dbfa-4ed4-b925-99f712aaf0c2/	127.0.0.1	2
+56e44b56-e944-481e-904c-11d766295945	t	2	2024-07-19 11:18:08.618565+08	2	2024-07-19 11:18:08.618565+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+553264fc-b108-40bb-8320-4a07fab9aaab	t	2	2024-07-19 11:18:10.986114+08	2	2024-07-19 11:18:10.986114+08	/ld_stock/stock/barcode/edit/1da9704d-dbfa-4ed4-b925-99f712aaf0c2/	127.0.0.1	2
+4cb12ccf-35dd-4115-ae5d-c8dff9f123da	t	2	2024-07-19 11:18:17.437354+08	2	2024-07-19 11:18:17.437354+08	/ld_stock/stock/barcode/items/remove/cb5ff87c-0d56-459a-8770-b37ff2b02e8e	127.0.0.1	2
+b64d7275-f6f6-4d1b-beeb-8db1573eaf20	t	2	2024-07-19 11:18:22.106688+08	2	2024-07-19 11:18:22.106688+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+34bad943-0616-469c-b4d1-3ec4a1f69ab9	t	2	2024-07-19 11:18:23.623884+08	2	2024-07-19 11:18:23.623884+08	/ld_stock/stock/barcode/edit/1da9704d-dbfa-4ed4-b925-99f712aaf0c2/	127.0.0.1	2
+174c2ecd-6b78-4728-96bb-21dba69c184d	t	2	2024-07-19 11:18:40.916727+08	2	2024-07-19 11:18:40.916727+08	/ld_stock/stock/barcode/save/execute/	127.0.0.1	2
+277f109c-e735-4377-a66f-9467dab39ea6	t	2	2024-07-19 11:18:43.097673+08	2	2024-07-19 11:18:43.097673+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+517f7295-9800-428b-8ff1-b99b65984548	t	2	2024-07-19 13:41:37.632247+08	2	2024-07-19 13:41:37.632247+08	/index/	127.0.0.1	2
+e54d8d7d-fb73-461f-9fd1-e3bb55b56ae7	t	2	2024-07-19 13:41:37.927089+08	2	2024-07-19 13:41:37.927089+08	/home/	127.0.0.1	2
+c822259a-fe0d-4cf9-babd-fd503e808ea9	t	2	2024-07-19 13:50:52.906538+08	2	2024-07-19 13:50:52.906538+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+9ce3c5e8-2fa5-4f40-8826-36d44d048d65	t	2	2024-07-19 13:50:56.940916+08	2	2024-07-19 13:50:56.940916+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+5dbe4b27-50a5-46a8-94ac-fecc34530bd4	t	2	2024-07-19 13:50:58.132959+08	2	2024-07-19 13:50:58.132959+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+da551419-50d4-4f98-81e7-fbd0a19e2fa1	t	2	2024-07-19 13:51:05.1255+08	2	2024-07-19 13:51:05.1255+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+550879d4-19d5-4d30-aa8f-c6dea8cc024d	t	2	2024-07-19 13:51:13.372627+08	2	2024-07-19 13:51:13.372627+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+a19a8426-3fe4-4c5a-8f94-a1c7a6ea1a58	t	2	2024-07-19 13:51:14.490981+08	2	2024-07-19 13:51:14.490981+08	/ld_stock/stock/barcode/edit/d36df791-e714-48d5-b132-c7c2777ea74a/	127.0.0.1	2
+cca806ee-d1e9-4a63-94f1-4e5614a767aa	t	2	2024-07-19 13:51:19.515885+08	2	2024-07-19 13:51:19.515885+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+7003a799-fc47-4981-bbc4-440ba635580f	t	2	2024-07-19 13:51:21.111393+08	2	2024-07-19 13:51:21.111393+08	/ld_stock/stock/barcode/edit/1da9704d-dbfa-4ed4-b925-99f712aaf0c2/	127.0.0.1	2
+c979839a-81b8-408f-8d11-3acd8a88572e	t	2	2024-07-19 13:58:56.932748+08	2	2024-07-19 13:58:56.932748+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+e5e08daf-3434-4ce5-9c53-2328bc2cb008	t	2	2024-07-19 13:59:20.846989+08	2	2024-07-19 13:59:20.846989+08	/ld_stock/stock/barcode/edit/1da9704d-dbfa-4ed4-b925-99f712aaf0c2/	127.0.0.1	2
+1672580e-447b-4a9b-abf6-1e71da208bc4	t	2	2024-07-19 14:01:41.429111+08	2	2024-07-19 14:01:41.429111+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+c339db67-16a3-4136-ad84-eede91969bd1	t	2	2024-07-19 14:01:42.674155+08	2	2024-07-19 14:01:42.674155+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+010e5ef5-1e1a-4ea8-ba77-acec6c064c11	t	2	2024-07-19 14:01:44.439463+08	2	2024-07-19 14:01:44.439463+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+8579d0e7-b860-4ef2-9f4a-98ba6e4bf517	t	2	2024-07-19 14:05:57.866818+08	2	2024-07-19 14:05:57.866818+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+8a87af9a-2b1a-4fd2-911d-a4ded5fd84bb	t	2	2024-07-19 14:05:59.931913+08	2	2024-07-19 14:05:59.931913+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+c93868f8-6298-4e53-bf50-a0ebe694fc95	t	2	2024-07-19 14:06:00.799699+08	2	2024-07-19 14:06:00.799699+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+aad7a65c-ed04-446e-88a2-326f6e979c58	t	2	2024-07-19 14:10:47.226648+08	2	2024-07-19 14:10:47.226648+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+5ffeaf4a-7ab0-4384-a477-bdfff92489c6	t	2	2024-07-19 14:28:42.467704+08	2	2024-07-19 14:28:42.467704+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+1fa9754d-3413-444b-ac1a-3f01a4e11a15	t	2	2024-07-19 14:38:17.24072+08	2	2024-07-19 14:38:17.24072+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+372b6407-715f-4079-9cde-0c4da95d3c76	t	2	2024-07-19 14:38:18.450821+08	2	2024-07-19 14:38:18.450821+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+7e45f119-f444-4693-b4a6-a5908250f457	t	2	2024-07-19 14:38:22.296405+08	2	2024-07-19 14:38:22.296405+08	/ld_stock/stock/barcode/save/execute/	127.0.0.1	2
+abbd1b3f-8375-406c-b6d0-0b19d3648746	t	2	2024-07-19 14:38:23.455477+08	2	2024-07-19 14:38:23.455477+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+6ab56d74-174b-49a2-906c-15a29ffe8a05	t	2	2024-07-24 14:30:29.824317+08	2	2024-07-24 14:30:29.824317+08	/index/	127.0.0.1	2
+109ed3df-865a-4f07-9208-927a57ea5e3e	t	2	2024-07-24 14:30:30.335914+08	2	2024-07-24 14:30:30.335914+08	/home/	127.0.0.1	2
+c6970ae6-4642-4db6-adad-8cb39d58d94f	t	2	2024-07-24 14:30:32.669605+08	2	2024-07-24 14:30:32.669605+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+1cc91e54-1133-46ee-bd55-4c557ba7e102	t	2	2024-07-24 14:30:35.770233+08	2	2024-07-24 14:30:35.770233+08	/ld_stock/stock/barcode/edit/051c9e6b-1ea7-4610-85fd-456d8d956aab/	127.0.0.1	2
+2895c59a-3ee9-4d82-a353-0fec9ba04af7	t	2	2024-07-24 14:30:38.054254+08	2	2024-07-24 14:30:38.054254+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+1a948beb-74d4-4fcf-aebd-7add3326425e	t	2	2024-07-24 14:31:05.227194+08	2	2024-07-24 14:31:05.227194+08	/ld_stock/stock/index/	127.0.0.1	2
+7be876b3-8da8-42f7-95a8-ee7abb09b8c2	t	2	2024-07-24 14:31:07.516506+08	2	2024-07-24 14:31:07.516506+08	/ld_stock/stock/add/1/	127.0.0.1	2
+b96be836-7564-4d03-97e5-356f2a68103f	t	2	2024-07-24 14:44:45.460441+08	2	2024-07-24 14:44:45.460441+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+ce462d41-e7ba-4e2c-a312-b7d0d87ad199	t	2	2024-07-24 14:44:46.574648+08	2	2024-07-24 14:44:46.574648+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+fd89412f-c4e2-4ba1-8472-8643c2bb1a53	t	2	2024-07-24 14:44:47.630203+08	2	2024-07-24 14:44:47.630203+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+74ac5277-6182-4b4a-a7a2-add121b90cd4	t	2	2024-07-24 14:44:51.875785+08	2	2024-07-24 14:44:51.875785+08	/ld_stock/stock/barcode/save/execute/	127.0.0.1	2
+52045cc8-0753-41ab-9c75-a27de618d717	t	2	2024-07-24 14:44:53.600669+08	2	2024-07-24 14:44:53.600669+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+29db2546-8b9d-4287-b758-56a3b3dbbffb	t	2	2024-07-24 14:45:00.699741+08	2	2024-07-24 14:45:00.699741+08	/ld_stock/stock/barcode/edit/f8fe2281-fdfb-47b0-8627-d247c26b7c00/	127.0.0.1	2
+b6f5ab10-4a1b-41f5-8efd-2385e8dbff33	t	2	2024-07-24 14:45:28.4647+08	2	2024-07-24 14:45:28.4647+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+3e6e23ea-d081-4cd0-a979-7f6fcd2bb501	t	2	2024-07-24 14:45:41.079536+08	2	2024-07-24 14:45:41.079536+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+72b74e19-866f-4d91-be0e-6d5677392046	t	2	2024-07-24 14:46:03.473217+08	2	2024-07-24 14:46:03.473217+08	/ld_stock/stock/barcode/edit/f8fe2281-fdfb-47b0-8627-d247c26b7c00/	127.0.0.1	2
+e6e8bcf9-5082-4914-8864-b0477a5fc6ba	t	2	2024-07-24 14:46:17.429685+08	2	2024-07-24 14:46:17.429685+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+595f0cca-3ace-40d9-92d3-48f8f3dea8d4	t	2	2024-07-24 15:02:08.570807+08	2	2024-07-24 15:02:08.570807+08	/ld_stock/stock/index/	127.0.0.1	2
+80403ad4-524f-4877-8997-c9a2f0fe1bf5	t	2	2024-07-24 15:02:12.530361+08	2	2024-07-24 15:02:12.530361+08	/ld_stock/stock/index	127.0.0.1	2
+7a2056a8-37a5-48ae-9523-5101bec006c6	t	2	2024-07-24 15:02:12.902382+08	2	2024-07-24 15:02:12.902382+08	/ld_stock/stock/index/	127.0.0.1	2
+d0547517-21c4-403c-aac0-cb8db1fd14d7	t	2	2024-07-24 15:02:29.839+08	2	2024-07-24 15:02:29.839+08	/ld_stock/stock/add/2/	127.0.0.1	2
+d8216821-f7a3-4d4c-98b2-a4e5913f3941	t	2	2024-07-24 15:02:43.740139+08	2	2024-07-24 15:02:43.740139+08	/ld_stock/stock/index/	127.0.0.1	2
+d7159b40-c39b-4986-9a41-201f99672bd6	t	2	2024-07-24 15:02:45.384199+08	2	2024-07-24 15:02:45.384199+08	/ld_stock/stock/index	127.0.0.1	2
+957be954-377d-460f-9645-d9257998ec25	t	2	2024-07-24 15:02:45.951498+08	2	2024-07-24 15:02:45.951498+08	/ld_stock/stock/index/	127.0.0.1	2
+3194a275-6977-40cb-8f2d-f6601f4c769d	t	2	2024-07-24 15:50:29.198058+08	2	2024-07-24 15:50:29.198058+08	/index/	127.0.0.1	2
+7e5c7c74-d0cb-4ae7-bdb6-0565640de3e1	t	2	2024-07-24 15:50:29.57875+08	2	2024-07-24 15:50:29.57875+08	/home/	127.0.0.1	2
+dd5416c3-ceaf-4d18-9854-6a9ecd4d0522	t	2	2024-07-24 15:50:31.906192+08	2	2024-07-24 15:50:31.906192+08	/ld_stock/stock/index/	127.0.0.1	2
+33f25423-0f43-494a-9af0-3fd75a960b03	t	2	2024-07-24 15:50:33.720346+08	2	2024-07-24 15:50:33.720346+08	/ld_stock/stock/add/1/	127.0.0.1	2
+20456e45-348b-4586-8f4d-1f5603a506cb	t	2	2024-07-24 15:51:40.447173+08	2	2024-07-24 15:51:40.447173+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+6e40a472-f577-4407-92ed-313e9c6eff32	t	2	2024-07-24 15:51:42.226795+08	2	2024-07-24 15:51:42.226795+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+cf19e5e7-98f6-4ff5-8148-74b7d58c0eb7	t	2	2024-07-24 15:51:43.251806+08	2	2024-07-24 15:51:43.251806+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+e6657cbb-509b-46a5-babe-f0303999d674	t	2	2024-07-24 15:54:38.390781+08	2	2024-07-24 15:54:38.390781+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+a702aa4f-7051-442f-97ad-01eaae9382b1	t	2	2024-07-24 16:04:57.280597+08	2	2024-07-24 16:04:57.280597+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+7c8b584f-61a6-47ec-90fa-7538625dc874	t	2	2024-07-24 16:05:08.360148+08	2	2024-07-24 16:05:08.360148+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+e62f1d51-849e-47c9-bb97-b2347358b1ca	t	2	2024-07-24 16:05:11.258902+08	2	2024-07-24 16:05:11.258902+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+55b8b1f7-cc3a-4a3a-b50c-7d16122ead13	t	2	2024-07-24 16:05:12.849607+08	2	2024-07-24 16:05:12.849607+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+886d5604-5b26-49d5-a272-841bdcb09456	t	2	2024-07-24 16:05:15.594304+08	2	2024-07-24 16:05:15.594304+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+8755b624-238a-46da-907c-ede5eed6cb12	t	2	2024-07-25 09:29:02.248945+08	2	2024-07-25 09:29:02.248945+08	/index/	127.0.0.1	2
+4ed51c0d-7401-4d35-95a8-1f1cc8bee7be	t	2	2024-07-25 09:29:02.558812+08	2	2024-07-25 09:29:02.558812+08	/home/	127.0.0.1	2
+c93bddd7-4c11-44ec-bf2a-d4b71dcf9cf3	t	2	2024-07-25 09:29:05.175134+08	2	2024-07-25 09:29:05.175134+08	/ld_stock/stock/index/	127.0.0.1	2
+09551948-0fe4-4d4f-9432-036187bb5a92	t	2	2024-07-25 09:29:06.868786+08	2	2024-07-25 09:29:06.868786+08	/ld_stock/stock/add/1/	127.0.0.1	2
+ec5c217f-b5b3-4db8-a3df-ad2ccc3d806d	t	2	2024-07-25 09:29:45.627296+08	2	2024-07-25 09:29:45.627296+08	/org_dep/department/index/	127.0.0.1	2
+acbd085a-a216-4912-888b-0f05643470f7	t	2	2024-07-25 09:29:48.886926+08	2	2024-07-25 09:29:48.886926+08	/org_dep/department/add/	127.0.0.1	2
+decb804b-5733-41f0-9130-715c7701d584	t	2	2024-07-25 09:29:52.033602+08	2	2024-07-25 09:29:52.033602+08	/org_dep/department/index/	127.0.0.1	2
+5c047384-f468-4bd6-9653-e50d5fee0929	t	2	2024-07-25 09:30:57.461029+08	2	2024-07-25 09:30:57.461029+08	/ld_stock/stock/index	127.0.0.1	2
+36440375-2db5-473d-825d-c0482d52e1bb	t	2	2024-07-25 09:30:57.687579+08	2	2024-07-25 09:30:57.687579+08	/ld_stock/stock/index/	127.0.0.1	2
+e8f871a6-a97e-485a-95af-7eafcc6858b7	t	2	2024-07-25 09:30:58.786924+08	2	2024-07-25 09:30:58.786924+08	/ld_stock/stock/add/1/	127.0.0.1	2
+1a31e29e-d5b2-4633-8b28-0d7513bbe860	t	2	2024-07-25 09:31:32.191007+08	2	2024-07-25 09:31:32.191007+08	/ld_stock/stock/index/	127.0.0.1	2
+729c9568-fe3b-498f-aa05-042c9cf7ab04	t	2	2024-07-25 09:31:33.266885+08	2	2024-07-25 09:31:33.266885+08	/ld_stock/stock/add/1/	127.0.0.1	2
+2b6f1a48-ab95-4bf8-b9c5-4c228c5475a5	t	2	2024-07-25 09:31:48.638329+08	2	2024-07-25 09:31:48.638329+08	/ld_stock/stock/index/	127.0.0.1	2
+eee376f4-d7fd-4906-b25c-b82c3e82d46a	t	2	2024-07-25 09:31:49.995981+08	2	2024-07-25 09:31:49.995981+08	/ld_stock/stock/add/1/	127.0.0.1	2
+280b9154-347e-403c-91d7-cd2b1581f976	t	2	2024-07-25 09:38:15.541997+08	2	2024-07-25 09:38:15.541997+08	/ld_stock/stock/index/	127.0.0.1	2
+6187bb0d-9006-4824-a363-042f42b7e15c	t	2	2024-07-25 09:38:16.837386+08	2	2024-07-25 09:38:16.837386+08	/ld_stock/stock/add/1/	127.0.0.1	2
+3b007afa-6bc2-4505-a435-c59b515ab7fd	t	2	2024-07-25 09:50:44.758455+08	2	2024-07-25 09:50:44.758455+08	/ld_stock/stock/index/	127.0.0.1	2
+eff554a6-b163-4919-981d-597cc4cac570	t	2	2024-07-25 09:50:45.633344+08	2	2024-07-25 09:50:45.633344+08	/ld_stock/stock/add/1/	127.0.0.1	2
+941b39e7-b3cc-489b-8c19-17332ed522b2	t	2	2024-07-25 09:53:24.89122+08	2	2024-07-25 09:53:24.89122+08	/ld_stock/stock/index/	127.0.0.1	2
+c1353a06-639d-4732-aa1d-48be686b9653	t	2	2024-07-25 09:53:26.085225+08	2	2024-07-25 09:53:26.085225+08	/ld_stock/stock/add/1/	127.0.0.1	2
+e348c3cf-d7cb-4179-ab81-30da7102d8c0	t	2	2024-07-25 09:54:30.440262+08	2	2024-07-25 09:54:30.440262+08	/ld_stock/stock/index/	127.0.0.1	2
+97721f45-1c8a-4614-9aff-b2758a0dab12	t	2	2024-07-25 09:54:31.578336+08	2	2024-07-25 09:54:31.578336+08	/ld_stock/stock/add/1/	127.0.0.1	2
+c80d929f-1683-4cef-affc-e250991cde9a	t	2	2024-07-25 10:00:04.623844+08	2	2024-07-25 10:00:04.623844+08	/ld_stock/stock/index/	127.0.0.1	2
+d0d68502-671a-4d2e-bee5-164f4de1f444	t	2	2024-07-25 10:00:05.901987+08	2	2024-07-25 10:00:05.901987+08	/ld_stock/stock/add/1/	127.0.0.1	2
+57b2de1e-44ad-417b-af49-a8a0997cf286	t	2	2024-07-25 10:01:56.351598+08	2	2024-07-25 10:01:56.352593+08	/ld_stock/stock/index/	127.0.0.1	2
+03c872b2-80fb-4353-b9c0-43382af7194f	t	2	2024-07-25 10:01:57.971313+08	2	2024-07-25 10:01:57.971313+08	/ld_stock/stock/add/1/	127.0.0.1	2
+c2e5d289-48c1-4556-8cab-4b83a5aa199c	t	2	2024-07-25 10:03:52.882437+08	2	2024-07-25 10:03:52.882437+08	/ld_stock/stock/index/	127.0.0.1	2
+78c3a6c8-bdd3-40b1-a33c-9d2a4b809ac7	t	2	2024-07-25 10:03:54.142493+08	2	2024-07-25 10:03:54.142493+08	/ld_stock/stock/add/1/	127.0.0.1	2
+bd770ced-5b4a-47a8-b336-4999727c11b6	t	2	2024-07-25 10:14:13.56845+08	2	2024-07-25 10:14:13.56845+08	/index/	127.0.0.1	2
+ee074b21-d669-4431-9772-425607e215c6	t	2	2024-07-25 10:14:13.89969+08	2	2024-07-25 10:14:13.89969+08	/home/	127.0.0.1	2
+7783aced-344b-4ad8-8f79-2d299bd7ebe6	t	2	2024-07-25 10:14:15.542331+08	2	2024-07-25 10:14:15.542331+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+00791194-1369-4cf7-83ae-62fcb7d85748	t	2	2024-07-25 10:38:15.302718+08	2	2024-07-25 10:38:15.302718+08	/index/	127.0.0.1	2
+4251915b-3887-4903-8688-eb2cc65c6331	t	2	2024-07-25 10:38:15.578868+08	2	2024-07-25 10:38:15.578868+08	/home/	127.0.0.1	2
+69660160-8f82-4226-9a7d-e6c29c1dab96	t	2	2024-07-25 10:38:17.09351+08	2	2024-07-25 10:38:17.09351+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+b6d79acb-342c-45b1-8465-84cbb3dab6a9	t	2	2024-07-25 10:38:18.006301+08	2	2024-07-25 10:38:18.006301+08	/ld_stock/stock/barcode/add/	127.0.0.1	2
+b6df6037-9113-4522-bd1d-630f4dfe9536	t	2	2024-07-25 10:38:19.803117+08	2	2024-07-25 10:38:19.803117+08	/ld_stock/stock/barcode/get_items/	127.0.0.1	2
+592bcd62-7294-40ef-aa95-1638716c3c5a	t	2	2024-07-25 10:38:22.386878+08	2	2024-07-25 10:38:22.386878+08	/ld_stock/stock/barcode/index/	127.0.0.1	2
+19f49322-4ac8-493c-8738-45e7ddea2e22	t	2	2024-07-25 10:38:24.605411+08	2	2024-07-25 10:38:24.605411+08	/ld_stock/stock/barcode/edit/f8fe2281-fdfb-47b0-8627-d247c26b7c00/	127.0.0.1	2
+fe647dc2-85d6-4140-a811-bf05ea96efc5	t	2	2024-07-25 10:39:37.044047+08	2	2024-07-25 10:39:37.044047+08	/index/	10.40.120.177	2
+c702d18b-3b5e-4d0b-9262-60cca3c149dd	t	2	2024-07-25 10:39:38.186086+08	2	2024-07-25 10:39:38.186086+08	/home/	10.40.120.177	2
+42451c61-ad97-48ef-9a3b-f3096fb51ad6	t	2	2024-07-25 10:40:09.550529+08	2	2024-07-25 10:40:09.550529+08	/ld_stock/stock/barcode/index/	10.40.120.177	2
+e4d99a39-b68d-4fe7-98d3-767b602021c7	t	2	2024-07-25 10:40:13.70708+08	2	2024-07-25 10:40:13.70708+08	/ld_stock/stock/barcode/add/	10.40.120.177	2
+cc8fc92b-272b-4322-8ffa-7e7a41625eaf	t	2	2024-07-25 10:40:19.553255+08	2	2024-07-25 10:40:19.553255+08	/ld_stock/stock/barcode/get_items/	10.40.120.177	2
+46951145-20fa-498b-8cc3-81743d7b0e4c	t	2	2024-07-25 10:40:29.632942+08	2	2024-07-25 10:40:29.632942+08	/ld_stock/stock/index/	10.40.120.177	2
+f8d0df72-e1a2-44f1-b921-3c96772d2cd5	t	2	2024-07-25 10:41:09.941213+08	2	2024-07-25 10:41:09.941213+08	/ld_stock/stock/index	10.40.120.177	2
+35bef557-122d-48c9-bc04-23cbb006a36b	t	2	2024-07-25 10:41:11.643854+08	2	2024-07-25 10:41:11.643854+08	/ld_stock/stock/add/1/	10.40.120.177	2
+6edd74c7-a20a-4290-9c5e-ae25f740cf27	t	2	2024-07-25 10:41:15.398524+08	2	2024-07-25 10:41:15.399488+08	/index/	10.40.120.177	2
+fea03bde-664a-4d6a-b038-6e9f982969ba	t	2	2024-07-25 10:41:18.274621+08	2	2024-07-25 10:41:18.274621+08	/ld_stock/stock/add/1/	10.40.120.177	2
+410603e9-8a81-454e-ba3d-808730f929d5	t	2	2024-07-25 10:41:21.879473+08	2	2024-07-25 10:41:21.879473+08	/home/	10.40.120.177	2
+10688bb5-3610-4073-b501-d7ed056b8f2b	t	2	2024-07-25 10:41:36.480023+08	2	2024-07-25 10:41:36.480023+08	/index/	10.40.35.146	2
+cd821400-8d6a-4fb0-a580-d98d594ad81c	t	2	2024-07-25 10:41:36.773715+08	2	2024-07-25 10:41:36.773715+08	/home/	10.40.35.146	2
+70290df0-1783-4425-85b4-f639775a44bc	t	2	2024-07-25 10:41:38.447994+08	2	2024-07-25 10:41:38.447994+08	/ld_stock/stock/barcode/index/	10.40.35.146	2
+0638e6d0-35b7-429d-a226-c973ce150f4c	t	2	2024-07-25 10:41:40.120308+08	2	2024-07-25 10:41:40.120308+08	/ld_stock/stock/add/1/	10.40.120.177	2
+112f1e8f-625d-4d6b-afc3-213bfac51748	t	2	2024-07-25 10:41:40.345453+08	2	2024-07-25 10:41:40.345453+08	/ld_stock/stock/barcode/add/	10.40.35.146	2
+8188babc-128c-4585-8a34-454c477fc395	t	2	2024-07-25 10:41:41.654113+08	2	2024-07-25 10:41:41.654113+08	/ld_stock/stock/barcode/get_items/	10.40.35.146	2
+aaee5240-667e-4551-b068-a2d6bc1ffadd	t	2	2024-07-25 10:41:44.323863+08	2	2024-07-25 10:41:44.323863+08	/ld_stock/stock/barcode/index/	10.40.35.146	2
+52ff028a-ee7b-4c2a-90ae-ad98d1ec9eae	t	2	2024-07-25 10:41:48.022315+08	2	2024-07-25 10:41:48.022315+08	/ld_stock/stock/index/	10.40.35.146	2
+9d407478-8c12-4ccc-a646-0c7454bb3e27	t	2	2024-07-25 10:41:49.274194+08	2	2024-07-25 10:41:49.274194+08	/ld_stock/stock/add/1/	10.40.35.146	2
+be80674f-903d-4a8f-9b3d-3574b7edc57a	t	2	2024-07-25 10:42:12.642149+08	2	2024-07-25 10:42:12.642149+08	/ld_stock/stock/index/	127.0.0.1	2
+32e22cff-7286-4407-a71a-c8175c3a92b6	t	2	2024-07-25 10:42:13.62073+08	2	2024-07-25 10:42:13.62073+08	/ld_stock/stock/add/1/	127.0.0.1	2
+527be3fa-b56c-4a01-94ec-cb9ce4fbc966	t	2	2024-07-25 10:42:30.621561+08	2	2024-07-25 10:42:30.621561+08	/index/	127.0.0.1	2
+bfa8160f-ff98-4c24-8848-df5563c5e0b6	t	2	2024-07-25 10:42:30.878149+08	2	2024-07-25 10:42:30.878149+08	/home/	127.0.0.1	2
+50561ebb-8a0d-44e1-9241-73147efae4bd	t	2	2024-07-25 10:42:33.211828+08	2	2024-07-25 10:42:33.211828+08	/ld_stock/stock/index/	127.0.0.1	2
+08ddda67-1003-430b-b582-52b36647a7c7	t	2	2024-07-25 10:42:34.47616+08	2	2024-07-25 10:42:34.47616+08	/ld_stock/stock/add/1/	127.0.0.1	2
+5cea5ada-1722-4abd-8492-a3bc8dd6ee7e	t	2	2024-07-25 10:42:55.846079+08	2	2024-07-25 10:42:55.846079+08	/ld_stock/stock/index	10.40.35.146	2
+acc39ee2-6f7a-4295-aee3-200cff1ba226	t	2	2024-07-25 10:42:56.056708+08	2	2024-07-25 10:42:56.056708+08	/ld_stock/stock/index/	10.40.35.146	2
+a8b2280e-8be5-4b5c-86cc-05077a4b258a	t	2	2024-07-25 10:43:15.543759+08	2	2024-07-25 10:43:15.543759+08	/index/	10.40.120.177	2
+a2add533-22f5-482f-9441-02436f9ec260	t	2	2024-07-25 10:43:17.731313+08	2	2024-07-25 10:43:17.731313+08	/home/	10.40.120.177	2
+3d23075e-3310-4e02-b1ba-e65ca785196c	t	2	2024-07-25 10:43:35.758921+08	2	2024-07-25 10:43:35.758921+08	/ld_stock/stock/index/	10.40.120.177	2
+67eb2d77-3241-41e9-ad7e-09230128e26a	t	2	2024-07-25 10:43:43.056785+08	2	2024-07-25 10:43:43.056785+08	/ld_stock/stock/add/1/	10.40.120.177	2
+fbcb85a4-4dfa-42f1-aa04-a116340a23cb	t	2	2024-07-25 10:44:11.246136+08	2	2024-07-25 10:44:11.246136+08	/index/	10.40.120.177	2
+6ff009ae-04c0-4ace-b673-51fbf8642d72	t	2	2024-07-25 10:44:13.705209+08	2	2024-07-25 10:44:13.705209+08	/home/	10.40.120.177	2
+01287bcd-3915-4b1e-a2fe-d4226e947d3d	t	2	2024-07-25 10:44:25.60347+08	2	2024-07-25 10:44:25.60347+08	/ld_stock/stock/index/	10.40.120.177	2
+28eca28b-9046-441c-97be-c86e04689695	t	2	2024-07-25 10:44:41.854565+08	2	2024-07-25 10:44:41.854565+08	/ld_stock/stock/add/1/	10.40.120.177	2
+4b8183e4-a313-46b5-b1c7-509e6f1d8dcd	t	2	2024-07-25 10:46:17.727015+08	2	2024-07-25 10:46:17.727015+08	/ld_stock/stock/add/1/	10.40.35.146	2
+f3adcb8a-0aee-40c5-97ca-e8caa5e97fbb	t	2	2024-07-25 10:48:36.921014+08	2	2024-07-25 10:48:36.921014+08	/index/	127.0.0.1	2
+8767be20-3071-40f2-a068-2424dca47854	t	2	2024-07-25 10:48:37.212602+08	2	2024-07-25 10:48:37.212602+08	/home/	127.0.0.1	2
 \.
 
 
@@ -4981,6 +7142,65 @@ b17e9cf6-787f-4437-87c4-65fdfd032f6b	t	1	2024-06-03 16:27:24.243644+08	1	2024-06
 a38ea7c0-1867-4af3-a551-5b9a648a7903	t	2	2024-06-03 16:28:03.025008+08	2	2024-06-03 16:28:03.025008+08	127.0.0.1	2
 1edff97f-21fe-49d7-bb12-44171323c902	t	2	2024-06-05 13:24:22.501071+08	2	2024-06-05 13:24:22.501071+08	127.0.0.1	2
 87eab10d-5972-4821-94d6-d6752fa4fa76	t	2	2024-06-05 15:22:18.467701+08	2	2024-06-05 15:22:18.467701+08	127.0.0.1	2
+0c6d6b9f-f2b4-4705-bc22-dd42f26f5f25	t	2	2024-06-07 10:15:09.253336+08	2	2024-06-07 10:15:09.253336+08	127.0.0.1	2
+7bf77eb4-86ab-4143-9d07-5aeb2cf841e2	t	2	2024-06-07 15:41:29.656741+08	2	2024-06-07 15:41:29.656741+08	127.0.0.1	2
+fccdaa01-dbec-4b2a-9b1b-8b08402d0f2f	t	2	2024-06-07 16:26:48.590628+08	2	2024-06-07 16:26:48.590628+08	127.0.0.1	2
+b2e7aa9f-f5c4-4691-a49a-dd581d5507a6	t	2	2024-06-12 09:53:19.456385+08	2	2024-06-12 09:53:19.456385+08	127.0.0.1	2
+bed2ed84-f0a0-41f8-b08e-48e16536fb08	t	2	2024-06-12 14:09:38.482177+08	2	2024-06-12 14:09:38.482177+08	127.0.0.1	2
+6cc7b7ed-5e76-4dc9-93ff-3064fc2686e1	t	1	2024-06-12 14:10:43.291003+08	1	2024-06-12 14:10:43.291003+08	127.0.0.1	1
+9f548e8a-3a13-4976-90a9-f5af4e9695ae	t	2	2024-06-12 14:12:07.799369+08	2	2024-06-12 14:12:07.799369+08	127.0.0.1	2
+88fa52d0-2f7f-4c25-b982-c45298ac47a6	t	2	2024-06-17 09:50:01.174934+08	2	2024-06-17 09:50:01.174934+08	127.0.0.1	2
+09edb1c3-7b7e-41b2-be0f-c32525c7575c	t	2	2024-06-17 10:35:33.272293+08	2	2024-06-17 10:35:33.272293+08	127.0.0.1	2
+038fb2c9-d51b-4e8b-8981-64e7f64c4dc1	t	2	2024-06-17 13:25:49.956602+08	2	2024-06-17 13:25:49.956602+08	127.0.0.1	2
+efdb451e-5079-472f-be5c-1db1d56bd757	t	2	2024-06-17 14:14:11.099255+08	2	2024-06-17 14:14:11.099255+08	127.0.0.1	2
+577654b9-bc74-4e99-8401-41bb71b4eff2	t	1	2024-06-17 14:23:41.454319+08	1	2024-06-17 14:23:41.454319+08	127.0.0.1	1
+13c7749c-3d37-4d6e-8eb3-3a1969039033	t	1	2024-06-17 14:52:38.542992+08	1	2024-06-17 14:52:38.542992+08	127.0.0.1	1
+7bd000d7-428d-4a15-be75-7b40f1780759	t	2	2024-06-17 15:05:52.714042+08	2	2024-06-17 15:05:52.714042+08	127.0.0.1	2
+4d8eceaa-a04e-4647-8415-a9654a68e1b8	t	2	2024-06-17 16:02:17.099969+08	2	2024-06-17 16:02:17.099969+08	127.0.0.1	2
+8b4a83ec-0c90-461c-ba58-01acf137120e	t	2	2024-06-19 09:46:21.64543+08	2	2024-06-19 09:46:21.64543+08	127.0.0.1	2
+fa3cfe22-e6d8-4d12-a1c3-6857e5948187	t	2	2024-06-19 10:34:00.284196+08	2	2024-06-19 10:34:00.284196+08	127.0.0.1	2
+3bae14ef-788b-491a-a021-6c6072491ba8	t	2	2024-06-19 13:34:08.962427+08	2	2024-06-19 13:34:08.962427+08	127.0.0.1	2
+9ff59295-e66d-4135-96ef-ae3f8efeb681	t	2	2024-06-19 14:05:01.559874+08	2	2024-06-19 14:05:01.559874+08	127.0.0.1	2
+a7f02572-6b19-4a4c-b70d-567373917bf3	t	2	2024-06-20 10:01:28.505378+08	2	2024-06-20 10:01:28.505378+08	127.0.0.1	2
+54fdb913-fda9-4060-a9ec-697a5e3aafe8	t	2	2024-06-20 10:24:35.738262+08	2	2024-06-20 10:24:35.738262+08	127.0.0.1	2
+57d77c00-a7bc-403e-9c9f-020a0c79ca26	t	2	2024-06-20 14:01:16.322582+08	2	2024-06-20 14:01:16.323579+08	127.0.0.1	2
+78b4730f-91c1-43cb-b241-862fde1f93ec	t	2	2024-06-20 15:52:51.997137+08	2	2024-06-20 15:52:51.997137+08	127.0.0.1	2
+f6d238bc-4cab-4133-9abf-06e62b850e8a	t	2	2024-06-21 10:10:20.073531+08	2	2024-06-21 10:10:20.073531+08	127.0.0.1	2
+aa51a335-52e1-47f6-a41f-316ed2955360	t	2	2024-06-26 09:48:07.535113+08	2	2024-06-26 09:48:07.535113+08	127.0.0.1	2
+7594383c-0695-4bbc-b29a-d915c60120c4	t	2	2024-06-26 10:38:33.521443+08	2	2024-06-26 10:38:33.521443+08	127.0.0.1	2
+17a265da-eec0-4960-9a86-b85233777d59	t	2	2024-06-26 14:39:29.667722+08	2	2024-06-26 14:39:29.667722+08	127.0.0.1	2
+6cb46f33-9092-434a-b38d-033c2e17f156	t	2	2024-06-26 15:27:11.709431+08	2	2024-06-26 15:27:11.709431+08	127.0.0.1	2
+52fa0fdd-57ae-4c3a-98d6-822fee4ebd64	t	2	2024-06-26 16:32:04.051607+08	2	2024-06-26 16:32:04.051607+08	127.0.0.1	2
+b0e8e8b1-cf7a-43cb-8f05-b71d3d2b120f	t	2	2024-07-01 10:22:08.537806+08	2	2024-07-01 10:22:08.537806+08	127.0.0.1	2
+d07648e6-8005-4598-95a2-c56c1f076c3d	t	2	2024-07-01 11:29:40.34096+08	2	2024-07-01 11:29:40.34096+08	127.0.0.1	2
+207c6d71-d6ad-4769-98dd-7e9fc35e5a69	t	2	2024-07-01 14:17:41.917801+08	2	2024-07-01 14:17:41.917801+08	127.0.0.1	2
+a9135825-8131-45dc-8ab9-bf64670b700d	t	1	2024-07-01 14:22:15.853177+08	1	2024-07-01 14:22:15.853177+08	127.0.0.1	1
+87b31106-13ac-4b6c-a9e8-ae35d88b1356	t	2	2024-07-01 14:22:46.776232+08	2	2024-07-01 14:22:46.776232+08	127.0.0.1	2
+4d71677c-b2f2-410d-9e80-98c5b40213e1	t	2	2024-07-01 15:40:02.394368+08	2	2024-07-01 15:40:02.394368+08	127.0.0.1	2
+ff40c7fd-8f75-4f03-bb1a-299f191e2a77	t	2	2024-07-01 16:08:47.156727+08	2	2024-07-01 16:08:47.156727+08	127.0.0.1	2
+846a7a95-41aa-4279-9a8d-36209f641784	t	2	2024-07-01 16:11:58.641606+08	2	2024-07-01 16:11:58.641606+08	127.0.0.1	2
+55e692df-6aeb-441e-ae68-7a4ddde9694d	t	2	2024-07-03 14:56:38.742335+08	2	2024-07-03 14:56:38.742335+08	127.0.0.1	2
+c4f8ce7a-be4b-4217-8cc8-b6c54e473a4d	t	2	2024-07-03 16:25:38.153779+08	2	2024-07-03 16:25:38.153779+08	127.0.0.1	2
+6e1d5916-7139-4850-ab20-c1c9e14713a7	t	2	2024-07-04 08:36:51.422371+08	2	2024-07-04 08:36:51.422371+08	127.0.0.1	2
+b86aa26b-a665-4cf0-a42b-767165abfa4d	t	2	2024-07-04 09:20:48.325669+08	2	2024-07-04 09:20:48.325669+08	127.0.0.1	2
+19852e3a-f440-4b85-878e-fe5fdcef5982	t	2	2024-07-04 13:25:47.414028+08	2	2024-07-04 13:25:47.414028+08	127.0.0.1	2
+0ed249d6-96d3-4bc4-83e5-10aeda3324ed	t	2	2024-07-09 14:27:28.662108+08	2	2024-07-09 14:27:28.662108+08	127.0.0.1	2
+3f616e27-ef81-4861-a6bf-e3c94d41edd0	t	2	2024-07-09 16:08:47.737295+08	2	2024-07-09 16:08:47.737295+08	127.0.0.1	2
+afe728d5-1a57-44a7-a54e-c06c89fe6c1c	t	2	2024-07-10 16:31:59.698119+08	2	2024-07-10 16:31:59.698119+08	127.0.0.1	2
+fd0c3ca4-642f-47e1-869d-ab5497859fd6	t	2	2024-07-11 09:33:58.788487+08	2	2024-07-11 09:33:58.788487+08	127.0.0.1	2
+60b419a4-ef67-45a1-9e36-d7528c74a1f8	t	2	2024-07-12 14:04:51.32689+08	2	2024-07-12 14:04:51.32689+08	127.0.0.1	2
+e663fa3f-117e-4897-a9a9-858b0bc19a3c	t	2	2024-07-16 10:56:55.85568+08	2	2024-07-16 10:56:55.85568+08	127.0.0.1	2
+4820f38a-5b76-47c7-9e59-cdb42142dc89	t	2	2024-07-18 13:35:22.123114+08	2	2024-07-18 13:35:22.123114+08	127.0.0.1	2
+1e93d844-21a7-47a4-95aa-082adcf56e98	t	2	2024-07-18 15:08:15.212255+08	2	2024-07-18 15:08:15.212255+08	127.0.0.1	2
+63d4c4f6-ac61-4d6f-a4ca-2e47b74e19f0	t	2	2024-07-19 10:06:45.834165+08	2	2024-07-19 10:06:45.834165+08	127.0.0.1	2
+293ea822-431f-4262-ab5b-24dc85bb400d	t	2	2024-07-19 13:41:37.475298+08	2	2024-07-19 13:41:37.475298+08	127.0.0.1	2
+48dfebdd-23f1-463c-ae0c-99348c7a5e80	t	2	2024-07-24 14:30:29.502121+08	2	2024-07-24 14:30:29.502121+08	127.0.0.1	2
+c9bfcc59-0d7d-4012-bd38-f81b26927c2f	t	2	2024-07-24 15:50:28.954741+08	2	2024-07-24 15:50:28.954741+08	127.0.0.1	2
+3489d937-2473-40cf-95df-442a9c02e348	t	2	2024-07-25 09:29:02.043448+08	2	2024-07-25 09:29:02.043448+08	127.0.0.1	2
+2c4f6253-6d31-4dd8-80dd-2162f24de0af	t	2	2024-07-25 10:38:15.106235+08	2	2024-07-25 10:38:15.106235+08	127.0.0.1	2
+c96547ad-1acd-4858-85a0-4cb2ae5c5fa3	t	2	2024-07-25 10:39:36.701897+08	2	2024-07-25 10:39:36.701897+08	10.40.120.177	2
+0944e71c-71cf-4e1e-b9de-fe2ed825ff65	t	2	2024-07-25 10:41:36.303172+08	2	2024-07-25 10:41:36.303172+08	10.40.35.146	2
+dcf459ae-672b-4b91-a38d-db750522c68d	t	2	2024-07-25 10:48:36.737246+08	2	2024-07-25 10:48:36.737246+08	127.0.0.1	2
 \.
 
 
@@ -5003,6 +7223,9 @@ e3cce14f-8b6e-41c4-a604-649489badf9b	t	1	2024-05-21 15:11:54.66909+08	\N	2024-05
 37e84859-62dc-4af5-a4a7-426651d55133	t	1	2024-05-21 15:10:27.428077+08	2	2024-05-23 14:36:02.500608+08	Option基本	PP005	pp_master:option_basics	bi bi-ui-checks-grid	Option基本信息
 901a43bc-7fce-4a40-8370-94521659ebb9	t	1	2024-05-21 15:08:48.301789+08	2	2024-05-24 10:39:29.847096+08	机种信息	PP003	pp_master:machinecodes	bi bi-gear-wide	机种信息
 0a9dea51-fd48-4173-a161-689a72d4519e	t	2	2024-06-03 16:27:14.834929+08	\N	2024-06-03 16:27:14.834929+08	仓库管理	PP007	pp_master:warehouses	bi bi-house-door	仓库管理
+fa168f19-dcc5-469f-98de-2f9b32a5937f	t	2	2024-06-12 14:10:31.937857+08	\N	2024-06-12 14:10:31.937857+08	配件管理	PP008	pp_master:components	bi bi-ubuntu	配件管理
+7312d4e7-f970-4dd2-9d95-8dd111b59bd1	t	2	2024-06-17 10:03:24.976342+08	2	2024-07-01 14:19:05.322175+08	出入库	LD001	ld_stock:stocks	bi bi-house-gear	出入库管理
+b9c886e4-532c-4ece-a8f9-44ce82258213	t	2	2024-07-01 14:21:55.140735+08	\N	2024-07-01 14:21:55.140735+08	BARCODE	LD002	ld_stock:barcodes	bi bi-upc-scan	BARCODE管理
 \.
 
 
@@ -5011,20 +7234,23 @@ e3cce14f-8b6e-41c4-a604-649489badf9b	t	1	2024-05-21 15:11:54.66909+08	\N	2024-05
 --
 
 COPY public.sys_rencent_used_menu (id, active, created_by, created_on, updated_by, updated_on, menu_id, role_id, user_id) FROM stdin;
-30a9c6da-bae0-4ba3-8c1e-79994e26e1a8	t	\N	2024-05-21 15:19:13.795893+08	\N	2024-05-24 15:49:24.255558+08	51bda1b6-d738-44c4-b1e7-80ff8441c89d	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-65304b08-52ea-41d3-ac76-113e6e936bc6	t	\N	2024-05-21 15:39:53.022277+08	\N	2024-05-29 15:45:40.741713+08	4e74c25d-b6d5-4664-aeeb-6748e76be621	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-86e9986d-5a83-487d-8569-e685ac691ddb	t	\N	2024-05-21 15:19:26.828315+08	\N	2024-06-03 16:27:15.064316+08	e3cce14f-8b6e-41c4-a604-649489badf9b	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-af98bdd5-98a1-4e8a-b0fd-318dcb606791	t	\N	2024-05-21 15:19:59.323211+08	\N	2024-05-23 16:05:26.246829+08	37e84859-62dc-4af5-a4a7-426651d55133	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-d4b20137-e26b-4ac6-9030-dcf354bd3698	t	\N	2024-05-22 09:24:02.732905+08	\N	2024-06-05 13:55:02.197176+08	7d42d8b8-816b-4d99-afc6-8554ab0d415a	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-56d0419b-aa6a-4ca5-90b5-e2b748b9c9c4	t	\N	2024-05-21 15:19:11.301053+08	\N	2024-05-22 16:28:44.079187+08	6d91a3a3-e4f9-4a4a-83b5-4e16b0b1e740	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-58b6e419-8f76-427b-85ee-b137b30cd497	t	\N	2024-05-21 15:40:19.860457+08	\N	2024-05-23 10:56:47.692183+08	1cc0b988-5138-4ec7-b488-71cab81106a4	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-6bd51317-cdb3-4afc-9bff-af766715fa85	t	\N	2024-05-21 15:40:22.908069+08	\N	2024-05-23 10:57:41.672118+08	901a43bc-7fce-4a40-8370-94521659ebb9	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-1f477ffb-351d-4ea9-a94a-6311c10d840f	t	\N	2024-05-21 15:40:28.424282+08	\N	2024-05-23 10:57:52.033948+08	13fc4528-4c99-4ac2-a7a2-6d8683ada499	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-6ca89cf2-afd6-4bc9-834f-7fb73ce46972	t	\N	2024-05-23 14:36:52.111234+08	\N	2024-05-23 16:30:44.383356+08	91bc865c-7004-4d14-bd1e-740057c9eeb7	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-b6f540ff-4a29-40be-a51b-23c916489f8a	t	\N	2024-05-21 15:19:15.872636+08	\N	2024-05-24 14:09:29.997195+08	94002f0c-50cf-4415-9a75-f33d197c83da	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-0257b951-8521-4f3d-ba91-b7576e6200c6	t	\N	2024-06-03 16:28:08.802304+08	\N	2024-06-05 15:23:15.716005+08	0a9dea51-fd48-4173-a161-689a72d4519e	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-8726a39c-0633-45e7-a8cd-d27a9eb76813	t	\N	2024-05-21 15:40:25.877388+08	\N	2024-05-27 10:30:17.628242+08	bfe651c4-75e3-44a0-bf7b-489b054305ff	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
-64de89d0-a4b4-45f3-8213-ccfb642f338d	t	\N	2024-05-27 10:58:41.537821+08	\N	2024-05-27 10:58:41.537821+08	b0143c31-b65b-4425-a03e-cf2258e42cdb	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+64de89d0-a4b4-45f3-8213-ccfb642f338d	t	\N	2024-05-27 10:58:41.537821+08	\N	2024-07-18 16:31:08.59917+08	b0143c31-b65b-4425-a03e-cf2258e42cdb	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+65304b08-52ea-41d3-ac76-113e6e936bc6	t	\N	2024-05-21 15:39:53.022277+08	\N	2024-07-18 16:31:11.676996+08	4e74c25d-b6d5-4664-aeeb-6748e76be621	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+6bd51317-cdb3-4afc-9bff-af766715fa85	t	\N	2024-05-21 15:40:22.908069+08	\N	2024-07-18 16:31:15.034086+08	901a43bc-7fce-4a40-8370-94521659ebb9	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+8726a39c-0633-45e7-a8cd-d27a9eb76813	t	\N	2024-05-21 15:40:25.877388+08	\N	2024-07-18 16:31:40.187043+08	bfe651c4-75e3-44a0-bf7b-489b054305ff	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+af98bdd5-98a1-4e8a-b0fd-318dcb606791	t	\N	2024-05-21 15:19:59.323211+08	\N	2024-06-17 11:01:16.790436+08	37e84859-62dc-4af5-a4a7-426651d55133	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+86e9986d-5a83-487d-8569-e685ac691ddb	t	\N	2024-05-21 15:19:26.828315+08	\N	2024-07-01 14:21:55.347999+08	e3cce14f-8b6e-41c4-a604-649489badf9b	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+56d0419b-aa6a-4ca5-90b5-e2b748b9c9c4	t	\N	2024-05-21 15:19:11.301053+08	\N	2024-06-17 11:01:42.026146+08	6d91a3a3-e4f9-4a4a-83b5-4e16b0b1e740	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+30a9c6da-bae0-4ba3-8c1e-79994e26e1a8	t	\N	2024-05-21 15:19:13.795893+08	\N	2024-07-25 09:29:51.992704+08	51bda1b6-d738-44c4-b1e7-80ff8441c89d	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+6ca89cf2-afd6-4bc9-834f-7fb73ce46972	t	\N	2024-05-23 14:36:52.111234+08	\N	2024-06-17 11:02:03.461704+08	91bc865c-7004-4d14-bd1e-740057c9eeb7	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+b6f540ff-4a29-40be-a51b-23c916489f8a	t	\N	2024-05-21 15:19:15.872636+08	\N	2024-06-17 11:02:15.266517+08	94002f0c-50cf-4415-9a75-f33d197c83da	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+09b57d34-f870-46c7-a523-67587f199673	t	\N	2024-06-12 14:12:12.872172+08	\N	2024-07-01 16:18:03.483986+08	fa168f19-dcc5-469f-98de-2f9b32a5937f	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+1f477ffb-351d-4ea9-a94a-6311c10d840f	t	\N	2024-05-21 15:40:28.424282+08	\N	2024-07-11 11:20:37.127403+08	13fc4528-4c99-4ac2-a7a2-6d8683ada499	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+527102e0-34fc-4498-adc2-266fb2c99fd3	t	\N	2024-07-01 16:12:10.27186+08	\N	2024-07-25 10:41:44.300681+08	b9c886e4-532c-4ece-a8f9-44ce82258213	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+9a49544d-6d06-4ffa-99b8-a3170b71bd6a	t	\N	2024-06-17 15:11:35.983415+08	\N	2024-07-25 10:44:25.585107+08	7312d4e7-f970-4dd2-9d95-8dd111b59bd1	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+d4b20137-e26b-4ac6-9030-dcf354bd3698	t	\N	2024-05-22 09:24:02.732905+08	\N	2024-06-26 09:58:03.522304+08	7d42d8b8-816b-4d99-afc6-8554ab0d415a	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+58b6e419-8f76-427b-85ee-b137b30cd497	t	\N	2024-05-21 15:40:19.860457+08	\N	2024-07-18 16:30:58.885628+08	1cc0b988-5138-4ec7-b488-71cab81106a4	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
+0257b951-8521-4f3d-ba91-b7576e6200c6	t	\N	2024-06-03 16:28:08.802304+08	\N	2024-07-18 16:31:06.433954+08	0a9dea51-fd48-4173-a161-689a72d4519e	f87bde32-ea25-419a-858d-d6d50dbc94cd	2
 \.
 
 
@@ -5042,20 +7268,23 @@ f87bde32-ea25-419a-858d-d6d50dbc94cd	t	1	2024-05-21 15:14:13.493966+08	\N	2024-0
 --
 
 COPY public.sys_role_menus (id, role_id, menu_id) FROM stdin;
-26	f87bde32-ea25-419a-858d-d6d50dbc94cd	6d91a3a3-e4f9-4a4a-83b5-4e16b0b1e740
-27	f87bde32-ea25-419a-858d-d6d50dbc94cd	51bda1b6-d738-44c4-b1e7-80ff8441c89d
-28	f87bde32-ea25-419a-858d-d6d50dbc94cd	94002f0c-50cf-4415-9a75-f33d197c83da
-29	f87bde32-ea25-419a-858d-d6d50dbc94cd	bfe651c4-75e3-44a0-bf7b-489b054305ff
-30	f87bde32-ea25-419a-858d-d6d50dbc94cd	1cc0b988-5138-4ec7-b488-71cab81106a4
-31	f87bde32-ea25-419a-858d-d6d50dbc94cd	b0143c31-b65b-4425-a03e-cf2258e42cdb
-32	f87bde32-ea25-419a-858d-d6d50dbc94cd	e3cce14f-8b6e-41c4-a604-649489badf9b
-33	f87bde32-ea25-419a-858d-d6d50dbc94cd	4e74c25d-b6d5-4664-aeeb-6748e76be621
-34	f87bde32-ea25-419a-858d-d6d50dbc94cd	7d42d8b8-816b-4d99-afc6-8554ab0d415a
-35	f87bde32-ea25-419a-858d-d6d50dbc94cd	13fc4528-4c99-4ac2-a7a2-6d8683ada499
-36	f87bde32-ea25-419a-858d-d6d50dbc94cd	91bc865c-7004-4d14-bd1e-740057c9eeb7
-37	f87bde32-ea25-419a-858d-d6d50dbc94cd	37e84859-62dc-4af5-a4a7-426651d55133
-38	f87bde32-ea25-419a-858d-d6d50dbc94cd	901a43bc-7fce-4a40-8370-94521659ebb9
-39	f87bde32-ea25-419a-858d-d6d50dbc94cd	0a9dea51-fd48-4173-a161-689a72d4519e
+71	f87bde32-ea25-419a-858d-d6d50dbc94cd	6d91a3a3-e4f9-4a4a-83b5-4e16b0b1e740
+72	f87bde32-ea25-419a-858d-d6d50dbc94cd	51bda1b6-d738-44c4-b1e7-80ff8441c89d
+73	f87bde32-ea25-419a-858d-d6d50dbc94cd	94002f0c-50cf-4415-9a75-f33d197c83da
+74	f87bde32-ea25-419a-858d-d6d50dbc94cd	bfe651c4-75e3-44a0-bf7b-489b054305ff
+75	f87bde32-ea25-419a-858d-d6d50dbc94cd	1cc0b988-5138-4ec7-b488-71cab81106a4
+76	f87bde32-ea25-419a-858d-d6d50dbc94cd	b0143c31-b65b-4425-a03e-cf2258e42cdb
+77	f87bde32-ea25-419a-858d-d6d50dbc94cd	e3cce14f-8b6e-41c4-a604-649489badf9b
+78	f87bde32-ea25-419a-858d-d6d50dbc94cd	4e74c25d-b6d5-4664-aeeb-6748e76be621
+79	f87bde32-ea25-419a-858d-d6d50dbc94cd	7d42d8b8-816b-4d99-afc6-8554ab0d415a
+80	f87bde32-ea25-419a-858d-d6d50dbc94cd	13fc4528-4c99-4ac2-a7a2-6d8683ada499
+81	f87bde32-ea25-419a-858d-d6d50dbc94cd	91bc865c-7004-4d14-bd1e-740057c9eeb7
+82	f87bde32-ea25-419a-858d-d6d50dbc94cd	37e84859-62dc-4af5-a4a7-426651d55133
+83	f87bde32-ea25-419a-858d-d6d50dbc94cd	901a43bc-7fce-4a40-8370-94521659ebb9
+84	f87bde32-ea25-419a-858d-d6d50dbc94cd	0a9dea51-fd48-4173-a161-689a72d4519e
+85	f87bde32-ea25-419a-858d-d6d50dbc94cd	fa168f19-dcc5-469f-98de-2f9b32a5937f
+86	f87bde32-ea25-419a-858d-d6d50dbc94cd	7312d4e7-f970-4dd2-9d95-8dd111b59bd1
+87	f87bde32-ea25-419a-858d-d6d50dbc94cd	b9c886e4-532c-4ece-a8f9-44ce82258213
 \.
 
 
@@ -5086,7 +7315,7 @@ SELECT pg_catalog.setval('public.auth_group_permissions_id_seq', 1, false);
 -- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mes
 --
 
-SELECT pg_catalog.setval('public.auth_permission_id_seq', 120, true);
+SELECT pg_catalog.setval('public.auth_permission_id_seq', 144, true);
 
 
 --
@@ -5128,14 +7357,14 @@ SELECT pg_catalog.setval('public.django_apscheduler_djangojobexecution_id_seq', 
 -- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mes
 --
 
-SELECT pg_catalog.setval('public.django_content_type_id_seq', 30, true);
+SELECT pg_catalog.setval('public.django_content_type_id_seq', 36, true);
 
 
 --
 -- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mes
 --
 
-SELECT pg_catalog.setval('public.django_migrations_id_seq', 40, true);
+SELECT pg_catalog.setval('public.django_migrations_id_seq', 57, true);
 
 
 --
@@ -5156,7 +7385,7 @@ SELECT pg_catalog.setval('public.pp_option_code_model_styles_id_seq', 1, false);
 -- Name: sys_role_menus_id_seq; Type: SEQUENCE SET; Schema: public; Owner: mes
 --
 
-SELECT pg_catalog.setval('public.sys_role_menus_id_seq', 39, true);
+SELECT pg_catalog.setval('public.sys_role_menus_id_seq', 87, true);
 
 
 --
@@ -5324,6 +7553,38 @@ ALTER TABLE ONLY public.django_session
 
 ALTER TABLE ONLY public.employee_work_center_change_list
     ADD CONSTRAINT employee_work_center_change_list_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ld_stock_barcode_list ld_stock_barcode_list_pkey; Type: CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_barcode_list
+    ADD CONSTRAINT ld_stock_barcode_list_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ld_stock_barcode ld_stock_barcode_pkey; Type: CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_barcode
+    ADD CONSTRAINT ld_stock_barcode_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ld_stock_bill ld_stock_bill_pkey; Type: CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_bill
+    ADD CONSTRAINT ld_stock_bill_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ld_stock_items ld_stock_items_pkey; Type: CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_items
+    ADD CONSTRAINT ld_stock_items_pkey PRIMARY KEY (id);
 
 
 --
@@ -5706,6 +7967,83 @@ CREATE INDEX employee_work_center_change_list_employee_id_c05da51e ON public.emp
 --
 
 CREATE INDEX employee_work_center_change_list_work_center_id_3781da26 ON public.employee_work_center_change_list USING btree (work_center_id);
+
+
+--
+-- Name: ld_stock_barcode_facility_id_cf279ede; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_barcode_facility_id_cf279ede ON public.ld_stock_barcode USING btree (facility_id);
+
+
+--
+-- Name: ld_stock_barcode_list_barcode_id_da9bd0f2; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_barcode_list_barcode_id_da9bd0f2 ON public.ld_stock_barcode_list USING btree (barcode_id);
+
+
+--
+-- Name: ld_stock_barcode_list_component_id_1be73c58; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_barcode_list_component_id_1be73c58 ON public.ld_stock_barcode_list USING btree (component_id);
+
+
+--
+-- Name: ld_stock_bill_bill_type_id_2ac9f771; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_bill_bill_type_id_2ac9f771 ON public.ld_stock_bill USING btree (bill_type_id);
+
+
+--
+-- Name: ld_stock_bill_facility_id_b4356544; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_bill_facility_id_b4356544 ON public.ld_stock_bill USING btree (facility_id);
+
+
+--
+-- Name: ld_stock_bill_in_out_by_id_980b7c52; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_bill_in_out_by_id_980b7c52 ON public.ld_stock_bill USING btree (in_out_by_id);
+
+
+--
+-- Name: ld_stock_bill_in_out_type_id_229b0b6e; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_bill_in_out_type_id_229b0b6e ON public.ld_stock_bill USING btree (in_out_type_id);
+
+
+--
+-- Name: ld_stock_items_bill_id_4572439f; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_items_bill_id_4572439f ON public.ld_stock_items USING btree (bill_id);
+
+
+--
+-- Name: ld_stock_items_component_id_a68bbf14; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_items_component_id_a68bbf14 ON public.ld_stock_items USING btree (component_id);
+
+
+--
+-- Name: ld_stock_items_location_id_fe12f1fb; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_items_location_id_fe12f1fb ON public.ld_stock_items USING btree (location_id);
+
+
+--
+-- Name: ld_stock_items_warehouse_id_5db43a97; Type: INDEX; Schema: public; Owner: mes
+--
+
+CREATE INDEX ld_stock_items_warehouse_id_5db43a97 ON public.ld_stock_items USING btree (warehouse_id);
 
 
 --
@@ -6124,6 +8462,94 @@ ALTER TABLE ONLY public.employee_work_center_change_list
 
 ALTER TABLE ONLY public.employee_work_center_change_list
     ADD CONSTRAINT employee_work_center_work_center_id_3781da26_fk_pp_work_c FOREIGN KEY (work_center_id) REFERENCES public.pp_work_center(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_barcode ld_stock_barcode_facility_id_cf279ede_fk_org_company_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_barcode
+    ADD CONSTRAINT ld_stock_barcode_facility_id_cf279ede_fk_org_company_id FOREIGN KEY (facility_id) REFERENCES public.org_company(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_barcode_list ld_stock_barcode_lis_barcode_id_da9bd0f2_fk_ld_stock_; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_barcode_list
+    ADD CONSTRAINT ld_stock_barcode_lis_barcode_id_da9bd0f2_fk_ld_stock_ FOREIGN KEY (barcode_id) REFERENCES public.ld_stock_barcode(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_barcode_list ld_stock_barcode_list_component_id_1be73c58_fk_pp_component_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_barcode_list
+    ADD CONSTRAINT ld_stock_barcode_list_component_id_1be73c58_fk_pp_component_id FOREIGN KEY (component_id) REFERENCES public.pp_component(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_bill ld_stock_bill_bill_type_id_2ac9f771_fk_sys_enum_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_bill
+    ADD CONSTRAINT ld_stock_bill_bill_type_id_2ac9f771_fk_sys_enum_id FOREIGN KEY (bill_type_id) REFERENCES public.sys_enum(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_bill ld_stock_bill_facility_id_b4356544_fk_org_company_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_bill
+    ADD CONSTRAINT ld_stock_bill_facility_id_b4356544_fk_org_company_id FOREIGN KEY (facility_id) REFERENCES public.org_company(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_bill ld_stock_bill_in_out_by_id_980b7c52_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_bill
+    ADD CONSTRAINT ld_stock_bill_in_out_by_id_980b7c52_fk_auth_user_id FOREIGN KEY (in_out_by_id) REFERENCES public.auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_bill ld_stock_bill_in_out_type_id_229b0b6e_fk_sys_enum_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_bill
+    ADD CONSTRAINT ld_stock_bill_in_out_type_id_229b0b6e_fk_sys_enum_id FOREIGN KEY (in_out_type_id) REFERENCES public.sys_enum(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_items ld_stock_items_bill_id_4572439f_fk_ld_stock_bill_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_items
+    ADD CONSTRAINT ld_stock_items_bill_id_4572439f_fk_ld_stock_bill_id FOREIGN KEY (bill_id) REFERENCES public.ld_stock_bill(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_items ld_stock_items_component_id_a68bbf14_fk_pp_component_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_items
+    ADD CONSTRAINT ld_stock_items_component_id_a68bbf14_fk_pp_component_id FOREIGN KEY (component_id) REFERENCES public.pp_component(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_items ld_stock_items_location_id_fe12f1fb_fk_pp_location_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_items
+    ADD CONSTRAINT ld_stock_items_location_id_fe12f1fb_fk_pp_location_id FOREIGN KEY (location_id) REFERENCES public.pp_location(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- Name: ld_stock_items ld_stock_items_warehouse_id_5db43a97_fk_pp_warehouse_id; Type: FK CONSTRAINT; Schema: public; Owner: mes
+--
+
+ALTER TABLE ONLY public.ld_stock_items
+    ADD CONSTRAINT ld_stock_items_warehouse_id_5db43a97_fk_pp_warehouse_id FOREIGN KEY (warehouse_id) REFERENCES public.pp_warehouse(id) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
