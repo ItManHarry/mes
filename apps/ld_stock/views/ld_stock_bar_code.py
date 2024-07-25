@@ -20,7 +20,7 @@ class StockBarcodeIndexView(View):
     @method_decorator(check_menu_used('LD002'))
     def get(self, request, *args, **kwargs):
         facility_id = request.session['company_id']
-        all_bars = StockBarCode.objects.filter(facility=facility_id).all().order_by('code')
+        all_bars = StockBarCode.objects.filter(facility=facility_id).all().order_by('-created_on')
         paginator = Paginator(all_bars, settings.PAGE_ITEMS)
         page_num = request.GET.get('page', 1)
         page = paginator.page(page_num)

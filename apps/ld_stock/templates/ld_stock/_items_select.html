@@ -1,0 +1,49 @@
+<!-- Barcode choose Modal -->
+<div class="modal fade" id="bar_code_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="bar_code_modal_label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered  modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="bar_code_modal_label">Barcode选择</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <ol class="list-group list-group-numbered">
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Subheading</div>
+              Content for list item
+            </div>
+            <span class="badge text-bg-primary rounded-pill">14</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Subheading</div>
+              Content for list item
+            </div>
+            <span class="badge text-bg-primary rounded-pill">14</span>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Subheading</div>
+              Content for list item
+            </div>
+            <span class="badge text-bg-primary rounded-pill">14</span>
+          </li>
+        </ol>
+      </div>
+<!--      <div class="modal-footer">-->
+<!--        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>-->
+<!--        <button type="button" class="btn btn-primary">Understood</button>-->
+<!--      </div>-->
+    </div>
+  </div>
+</div>
+<script>
+    const barcode_modal = document.getElementById('bar_code_modal')
+    barcode_modal.addEventListener('show.bs.modal', event => {
+        alert('Modal to be Opened!')
+    })
+    barcode_modal.addEventListener('hide.bs.modal', event => {
+        alert('Modal to be Closed!')
+    })
+</script>

@@ -32,9 +32,13 @@ SECRET_KEY = 'django-insecure-v=$3))p1*6co6#t+cwg%_sy)z^2r^#x&53%(!vye+j5s@@l4yx
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 ALLOWED_HOSTS = []
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 # 生产环境关闭Debug模式
 # DEBUG = False
 # ALLOWED_HOSTS = ['*']
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_URL = '/static/'
 # 允许iframe显示在app页面中
 X_FRAME_OPTIONS = 'ALLOWALL url'
 # Application definition
@@ -136,14 +140,6 @@ TIME_ZONE = 'Asia/Shanghai'
 USE_I18N = True
 
 USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

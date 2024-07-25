@@ -64,7 +64,7 @@
     </div><br>
     <div class="row">
         <div class="col text-end">
-            <button class="btn btn-outline-primary btn-sm"><i class="bi bi-plus-lg"></i>&nbsp;添加</button>
+            <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#bar_code_modal" type="button"><i class="bi bi-upc-scan"></i></button>
         </div>
     </div>
     <div class="row">
@@ -92,6 +92,7 @@
         </div>
     </div>
 </form>
+{%include './_items_select.html'%}
 {%endblock%}
 {%block assets%}
 {{block.super}}
