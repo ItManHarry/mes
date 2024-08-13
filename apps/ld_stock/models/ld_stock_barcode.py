@@ -19,9 +19,6 @@ class StockBarCode(BaseModel):
 class StockBarCodeList(BaseModel):
     barcode = models.ForeignKey(StockBarCode, on_delete=models.CASCADE, related_name='items')
     component = models.ForeignKey(Component, on_delete=models.CASCADE)
-    '''
-    数量和入库数量相等是，active设置为False，即当前明细对应的部品入库完毕
-    '''
     amount = models.IntegerField(default=1)         # 数量
     amount_in = models.IntegerField(default=0)      # 已入库数量
 
@@ -29,6 +26,10 @@ class StockBarCodeList(BaseModel):
     @property
     def in_executed(self):
         return self.amount_in > 0
+    # 是否入库完成
+    @property
+    def in_finished(self):
+        return self.amount == self.amount_in
 
     class Meta(BaseModel.Meta):
         db_table = 'ld_stock_barcode_list'

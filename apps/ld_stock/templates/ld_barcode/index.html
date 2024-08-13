@@ -10,10 +10,11 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th width="25%">工厂</th>
-            <th width="25%">BARCODE号</th>
-            <th width="20%">创建人员</th>
-            <th width="20%">创建日期</th>
+            <th width="18%">工厂</th>
+            <th width="18%">BARCODE号</th>
+            <th width="18%">入库完成</th>
+            <th width="18%">创建人员</th>
+            <th width="18%">创建日期</th>
             <th width="10%" class="text-end">Action</th>
         </tr>
     </thead>
@@ -23,6 +24,7 @@
         <tr>
             <td>{{bar.facility}}</td>
             <td>{{bar.code}}</td>
+            <td>{%if bar.in_finished%}<span class="text-success">Y</span>{%else%}<span class="text-danger">N</span>{%endif%}</td>
             <td>{{bar.created_name}}</td>
             <td>{{bar.created_on}}</td>
             <td class="text-end">
