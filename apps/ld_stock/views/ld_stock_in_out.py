@@ -17,7 +17,13 @@ def get_io_select_items(request, stock_type):
     print('Facility id is :', facility_id)
     if stock_type == 1:     # 入库
         bar_codes = StockBarCode.objects.filter(facility=facility_id).filter(active=True).order_by('-code')
-        items = [{'code': bar_code.code, 'amount': 1} for bar_code in bar_codes]
+        items = []
+        for bar_code in bar_codes:
+            sum = 0
+            for item in bar_code.items.all():
+                if item.amount != item.amount_in:
+                    sum += item.amount - item.amount_in     # 总数量和已入库数量差即为可入库数量
+            items.append({'code': bar_code.code, 'amount': sum})
     else:                   # 出库
         items = [
             {'name': 'C1', 'code': '001', 'amount': 2},
