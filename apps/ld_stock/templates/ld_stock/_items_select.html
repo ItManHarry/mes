@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-dialog-centered  modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="bar_code_modal_label">Barcode选择---{{stock_type}}</h1>
+        <h1 class="modal-title fs-5" id="bar_code_modal_label">Barcode选择</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="components_for_stock"></div>
@@ -13,10 +13,9 @@
 <script>
     const barcode_modal = document.getElementById('bar_code_modal')
     barcode_modal.addEventListener('show.bs.modal', event => {
-        alert('Modal to be Opened!'+'/ld_stock/stock/io/get_io_select_items/{{stock_type}}/')
+        //alert('Modal to be Opened!'+'/ld_stock/stock/io/get_io_select_items/{{stock_type}}/')
         $.post('/ld_stock/stock/io/get_io_select_items/{{stock_type}}/', function(data){
-          alert('OK')
-            //$('#components_for_stock').html(data)
+          $('#components_for_stock').html(data)
         }, 'html')
     })
     barcode_modal.addEventListener('hide.bs.modal', event => {
