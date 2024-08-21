@@ -7,18 +7,54 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="components_for_stock"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i>&nbsp;&nbsp;关闭</button>
+        <button type="button" class="btn btn-outline-primary" onclick="select()"><i class="bi bi-check2"></i>&nbsp;&nbsp;选择</button>
+      </div>
     </div>
   </div>
 </div>
 <script>
     const barcode_modal = document.getElementById('bar_code_modal')
+    let selected = false
     barcode_modal.addEventListener('show.bs.modal', event => {
-        //alert('Modal to be Opened!'+'/ld_stock/stock/io/get_io_select_items/{{stock_type}}/')
+        selected = false
         $.post('/ld_stock/stock/io/get_io_select_items/{{stock_type}}/', function(data){
           $('#components_for_stock').html(data)
         }, 'html')
     })
-    barcode_modal.addEventListener('hide.bs.modal', event => {
-        alert('Modal to be Closed!')
-    })
+    /*barcode_modal.addEventListener('hide.bs.modal', event => {
+        if(selected){
+            alert('Barcode selected, modal is going to be Closed! Add components !')
+        }else{
+            alert('Barcode selected, modal is going to be Closed! Do nothing!')
+        }
+    })*/
+    function set_select(){
+      selected = false
+      $('#components_for_stock').find(':checkbox').each(function(){
+          if($(this).prop('checked'))
+            selected = true
+      })
+    }
+    function select(){
+      if(selected){
+        bar_code_ids = []
+        $('#components_for_stock').find(':checkbox').each(function(){
+          if($(this).prop('checked'))
+            bar_code_ids.push($(this).val())
+        })
+        alert(bar_code_ids.join(','))
+        $('#bar_code_modal').modal('hide')
+      }else{
+        $.alert({
+           type:'red',
+           title:'系统提示',
+           content: '请选择Barcode！',
+           onClose:function(){
+
+           }
+        })
+      }
+    }
 </script>

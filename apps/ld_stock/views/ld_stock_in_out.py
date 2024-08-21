@@ -23,7 +23,7 @@ def get_io_select_items(request, stock_type):
             for item in bar_code.items.all():
                 if item.amount != item.amount_in:
                     sum += item.amount - item.amount_in     # 总数量和已入库数量差即为可入库数量
-            items.append({'code': bar_code.code, 'amount': sum})
+            items.append({'code': bar_code.code, 'amount': sum, 'id': bar_code.id})
     else:                   # 出库
         items = [
             {'name': 'C1', 'code': '001', 'amount': 2},
