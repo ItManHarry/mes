@@ -39,12 +39,16 @@
     }
     function select(){
       if(selected){
-        bar_code_ids = []
+        barcode_ids = []
         $('#components_for_stock').find(':checkbox').each(function(){
           if($(this).prop('checked'))
-            bar_code_ids.push($(this).val())
+            barcode_ids.push($(this).val())
         })
-        alert(bar_code_ids.join(','))
+        // alert(JSON.stringify(barcode_ids))
+        var params = {params: JSON.stringify({search_str: '000', page: 1})}
+        $.post('/ld_stock/stock/io/set_selected_items/', {barcode_ids: JSON.stringify(barcode_ids)}, function(data){
+            $('#items').html(data)
+        }, 'html')
         $('#bar_code_modal').modal('hide')
       }else{
         $.alert({

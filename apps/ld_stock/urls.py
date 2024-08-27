@@ -1,5 +1,5 @@
 from django.urls import path
-from .views.ld_stock_in_out import StockIndexView,  StockEditView, StockAddView, get_io_select_items
+from .views.ld_stock_in_out import StockIndexView,  StockEditView, StockAddView, get_io_select_items, set_selected_items
 from .views.ld_stock_bar_code import StockBarcodeIndexView, barcode_add, barcode_edit, get_items, execute_save_barcode, \
     barcode_item_remove
 app_name = 'ld_stock'
@@ -14,4 +14,5 @@ urlpatterns = [
     path('stock/barcode/get_items/', get_items, name='stock_barcode_get_items'),
     path('stock/barcode/items/remove/<item_id>', barcode_item_remove, name='barcode_item_remove'),
     path('stock/io/get_io_select_items/<int:stock_type>/', get_io_select_items, name='stock_io_get_items'),
+    path('stock/io/set_selected_items/', set_selected_items, name='set_selected_items'),
 ]

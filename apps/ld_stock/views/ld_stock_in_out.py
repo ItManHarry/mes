@@ -10,7 +10,9 @@ from ..models import StockBill, StockItems, StockBarCode
 from sys_dict.models import SysEnum
 from django.db.models import Q
 from ..forms.stock import StockForm
+import json
 from pp_master.models.pp_component import Component, ComponentAmount
+from pp_master.models.pp_warehouse import Warehouse
 @login_required
 def get_io_select_items(request, stock_type):
     facility_id = request.session['company_id']
@@ -33,6 +35,18 @@ def get_io_select_items(request, stock_type):
             {'name': 'C5', 'code': '005', 'amount': 9},
         ]
     return render(request, 'ld_stock/_items_select_list.html', dict(items=items))
+@login_required
+def set_selected_items(request):
+    barcode_ids = json.loads(request.POST.get('barcode_ids'))
+    print('Barcode ids :\t', barcode_ids)
+    barcodes = StockBarCode.objects.filter(id__in=barcode_ids).all().order_by('code')
+    items = []
+    for barcode in barcodes:
+        for item in barcode.items.all():
+            items.append(item)
+    facility_id = request.session['company_id']
+    warehouses = Warehouse.objects.filter(facility=facility_id).order_by('code')
+    return render(request, 'ld_stock/_items.html', dict(items=items, warehouses=warehouses))
 class StockIndexView(View):
     template_name = 'ld_stock/index.html'
     @method_decorator(check_menu_used('LD001'))

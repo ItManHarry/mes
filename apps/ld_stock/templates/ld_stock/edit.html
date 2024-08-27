@@ -66,19 +66,19 @@
         <div class="col text-end">
             <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#bar_code_modal" type="button"><i class="bi bi-upc-scan"></i></button>
         </div>
-    </div>
+    </div><br>
     <div class="row">
         <div class="col">
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th width="5%">#</th>
-                        <th width="20%">品名</th>
-                        <th width="20%">品号</th>
-                        <th width="20%">仓库</th>
-                        <th width="20%">库位</th>
-                        <th width="10%">{%if stock_type is 1%}入库{%else%}出库{%endif%}数量</th>
-                        <th width="5%">&nbsp;</th>
+                        <th width="5%" class="text-center">#</th>
+                        <th width="25%">品名</th>
+                        <th width="25%">品号</th>
+                        <th width="15%" class="text-center">仓库</th>
+                        <th width="15%" class="text-center">库位</th>
+                        <th width="10%" class="text-center">{%if stock_type is 1%}入库{%else%}出库{%endif%}数量</th>
+                        <th width="5%" class="text-center">Action</th>
                     </tr>
                 </thead>
                 <tbody id="items"></tbody>
