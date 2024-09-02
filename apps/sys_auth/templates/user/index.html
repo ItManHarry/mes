@@ -11,10 +11,11 @@
     <thead>
         <tr>
             <th width="10%">登录账号</th>
-            <th width="20%">用户姓名</th>
-            <th width="20%">邮箱地址</th>
+            <th width="15%">用户姓名</th>
+            <th width="15%">邮箱地址</th>
             <th width="10%">电话号码</th>
             <th width="10%" class="text-center">超级管理员</th>
+            <th width="10%" class="text-center">全职雇员</th>
             <th width="10%" class="text-center">状态</th>
             <th width="20%" class="text-center">Action</th>
         </tr>
@@ -27,11 +28,12 @@
             <td>{%if user.is_staff%}{{user.employee.name}}{%else%}{{user.last_name}}{{user.first_name}}{%endif%}</td>
             <td>{{user.email}}</td>
             <td>{%if user.is_staff%}{{user.employee.phone}}{%else%}-{%endif%}</td>
-            <td class="text-center">{%if user.is_superuser%}<span class="text-warning">Y</span>{%else%}<span class="text-success">N</span>{%endif%}</td>
+            <td class="text-center">{%if user.is_superuser%}<span class="text-success"><i class="bi bi-check-lg"></i></span>{%else%}<span class="text-danger"><i class="bi bi-x"></i></span>{%endif%}</td>
+            <td class="text-center">{%if user.employee%}<span class="text-success"><i class="bi bi-check-lg"></i></span>{%else%}<span class="text-danger"><i class="bi bi-x"></i></span>{%endif%}</td>
             <td class="text-center">{%if user.is_active%}<span class="text-success">在用</span>{%else%}<span class="text-danger">停用</span>{%endif%}</td>
             <td class="text-center">
-                <a href="{%url 'sys_auth:user_edit' user.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
-                <button class="btn btn-link text-success" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="权限" onclick="auth({{user.id}})"><i class="bi bi-mortarboard"></i></button>
+                <a href="{%url 'sys_auth:user_edit' user.id%}" class="btn btn-link text-info {%if user.is_superuser%}disabled{%endif%}" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+                <button class="btn btn-link text-success" {%if user.is_superuser%}disabled{%endif%} data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="权限" onclick="auth({{user.id}})"><i class="bi bi-mortarboard"></i></button>
                 <button class="btn btn-link text-warning" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="重置密码" onclick="reset_pwd({{user.id}})" {%if not user.is_active%}disabled{%endif%}><i class="bi bi-unlock"></i></button>
                 <button class="btn btn-link text-danger {%if not user.is_active or user.username == 'admin' or user.username == request.session.username%}disabled{%endif%}" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="停用" onclick="status('{{user.id}}', 0)"><i class="bi bi-x-circle"></i></button>&nbsp;
                 <button class="btn btn-link text-success {%if user.is_active or user.username == 'admin' or user.username == request.session.username%}disabled{%endif%}" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="启用" onclick="status('{{user.id}}', 1)"><i class="bi bi-check-circle"></i></button>
