@@ -51,7 +51,7 @@
          <tr>
             <th width="40%">库位代码</th>
             <th width="40%">库位名称</th>
-            <th width="10%">默认库位</th>
+            <th width="10%" class="text-center">默认库位</th>
             <th width="10%" class="text-center">Action</th>
         </tr>
     </thead>
@@ -61,7 +61,7 @@
         <tr>
             <td>{{location.code}}</td>
             <td>{{location.name}}</td>
-            <td>{%if location.default%}<span class="text-success">Y</span>{%else%}<span class="text-secondary">N</span>{%endif%}</td>
+            <td class="text-center">{%if location.default%}<span class="text-success"><i class="bi bi-check2"></i></span>{%else%}<span class="text-secondary">-</span>{%endif%}</td>
             <td class="text-center">
                 <a href="{%url 'pp_master:location_edit' warehouse_id=warehouse.id location_id=location.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
             </td>
