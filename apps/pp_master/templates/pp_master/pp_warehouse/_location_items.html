@@ -1,0 +1,7 @@
+{%if locations%}
+    {%for location in locations%}
+    <option value="{{location.id}}" {%if location.default%}selected{%endif%}>{{location.name}}[{{location.code}}]</option>
+    {%endfor%}
+{%else%}
+    <option value="0" class="text-danger">---请维护对应的库位信息！---</option>
+{%endif%}

@@ -5,14 +5,23 @@
             <td>{{item.component.name}}</td>
             <td>{{item.component.code}}</td>
             <td class="text-center">
-                <select class="form-select form-select-sm">
-                    <option value="0">---------请选择---------</option>
+                <select class="form-select form-select-sm" onchange="reset_locations(this)" id="wh{{item.component.id}}">
                     {%for warehouse in warehouses%}
-                    <option value="{{warehouse.id}}">{{warehouse.name}}[{{warehouse.code}}]</option>
+                    <option value="{{warehouse.id}}" {%if warehouse.default%}selected{%endif%}>{{warehouse.name}}[{{warehouse.code}}]</option>
                     {%endfor%}
                 </select>
             </td>
-            <td class="text-center"><select class="form-select form-select-sm"><option value="0">---------请选择---------</option></select></td>
+            <td class="text-center">
+                <select class="form-select form-select-sm" id="lc{{item.component.id}}">
+                    {%if locations%}
+                        {%for location in locations%}
+                        <option value="{{location.id}}" {%if location.default%}selected{%endif%}>{{location.name}}[{{location.code}}]</option>
+                        {%endfor%}
+                    {%else%}
+                        <option value="0" class="text-danger">---请维护对应的库位信息！---</option>
+                    {%endif%}
+                </select>
+            </td>
             <td class="text-center">{{item.amount}}</td>
             <td class="text-center">
                 <button class="btn btn-link btn-sm text-danger" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="移除"><i class='bi bi-trash'></i></button>

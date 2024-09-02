@@ -47,6 +47,14 @@
         </div>
     </div><br>
     <div class="row">
+        <div class="col-2">
+            <div class="form-check">
+            {{form.default}}&nbsp;
+            {{form.default.label_tag}}
+            </div>
+        </div>
+    </div><br>
+    <div class="row">
         <div class="col text-end">
             <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
             <a class="btn btn-outline-secondary" href="{%url 'pp_master:warehouses'%}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>

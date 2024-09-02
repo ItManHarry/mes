@@ -9,16 +9,18 @@ class LocationForm(forms.ModelForm):
         self.fields['warehouse'].initial = warehouse_id     # 设置默认值
     class Meta:
         model = Location
-        fields = ['id', 'code', 'name', 'warehouse']
+        fields = ['id', 'code', 'name', 'warehouse', 'default']
         labels = {
             'code': '库位代码',
             'name': '库位名称',
+            'default': '默认库位',
         }
         widgets = {
             'id': forms.HiddenInput(),
             'warehouse': forms.HiddenInput(),
             'code': forms.TextInput(attrs={'class': 'form-control'}),
             'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'default': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
     def clean(self):
         data = super().clean()
@@ -41,12 +43,13 @@ class WarehouseForm(forms.ModelForm):
             self.fields['facility'].queryset = Company.objects.all().order_by('name')
     class Meta:
         model = Warehouse
-        fields = ['id', 'code', 'name', 'address', 'facility']
+        fields = ['id', 'code', 'name', 'address', 'facility', 'default']
         labels = {
             'code': '仓库代码',
             'name': '仓库名称',
             'address': '仓库地点',
             'facility': '所属工厂',
+            'default': '默认仓库',
         }
         widgets = {
             'id': forms.HiddenInput(),
@@ -54,6 +57,7 @@ class WarehouseForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'facility': forms.Select(attrs={'class': 'form-select'}),
+            'default': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
     def clean(self):
         data = super().clean()

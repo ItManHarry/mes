@@ -8,7 +8,7 @@
     {{form.id}}
     {{form.warehouse}}
     <div class="row">
-        <div class="col-6">
+        <div class="col-5">
             {{form.code.label_tag}}
             {{form.code}}
             {%if form.code.errors%}
@@ -17,7 +17,7 @@
                 {%endfor%}
             {%endif%}
         </div>
-        <div class="col-6">
+        <div class="col-5">
             {{form.name.label_tag}}
             {{form.name}}
             {%if form.name.errors%}
@@ -26,26 +26,12 @@
                 {%endfor%}
             {%endif%}
         </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-6">
-            {{form.facility.label_tag}}
-            {{form.facility}}
-            {%if form.facility.errors%}
-                {%for error in form.facility.errors%}
-                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
-                {%endfor%}
-            {%endif%}
-        </div>
-        <div class="col-6">
-            {{form.address.label_tag}}
-            {{form.address}}
-            {%if form.address.errors%}
-                {%for error in form.address.errors%}
-                <small class="text-danger"><i class="bi bi-exclamation-circle"></i>&nbsp;{{error|escape}}</small>
-                {%endfor%}
-            {%endif%}
+        <div class="col-2">
+            <br>
+            <div class="form-check">
+            {{form.default}}&nbsp;
+            {{form.default.label_tag}}
+            </div>
         </div>
     </div><br>
     <div class="row">
@@ -63,8 +49,9 @@
             </th>
         </tr>
          <tr>
-            <th width="45%">库位代码</th>
-            <th width="45%">库位名称</th>
+            <th width="40%">库位代码</th>
+            <th width="40%">库位名称</th>
+            <th width="10%">默认库位</th>
             <th width="10%" class="text-center">Action</th>
         </tr>
     </thead>
@@ -74,6 +61,7 @@
         <tr>
             <td>{{location.code}}</td>
             <td>{{location.name}}</td>
+            <td>{%if location.default%}<span class="text-success">Y</span>{%else%}<span class="text-secondary">N</span>{%endif%}</td>
             <td class="text-center">
                 <a href="{%url 'pp_master:location_edit' warehouse_id=warehouse.id location_id=location.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
             </td>
@@ -81,7 +69,7 @@
     {%endfor%}
     {%else%}
     <tr>
-        <td colspan="3" class="text-info text-center">没有数据！</td>
+        <td colspan="4" class="text-info text-center">没有数据！</td>
     </tr>
     {%endif%}
     </tbody>

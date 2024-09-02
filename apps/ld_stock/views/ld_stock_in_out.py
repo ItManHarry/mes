@@ -46,7 +46,9 @@ def set_selected_items(request):
             items.append(item)
     facility_id = request.session['company_id']
     warehouses = Warehouse.objects.filter(facility=facility_id).order_by('code')
-    return render(request, 'ld_stock/_items.html', dict(items=items, warehouses=warehouses))
+    default_warehouse = Warehouse.objects.filter(Q(facility=facility_id) & Q(default=True)).first()
+    locations = default_warehouse.locations.all()
+    return render(request, 'ld_stock/_items.html', dict(items=items, warehouses=warehouses, locations=locations))
 class StockIndexView(View):
     template_name = 'ld_stock/index.html'
     @method_decorator(check_menu_used('LD001'))
