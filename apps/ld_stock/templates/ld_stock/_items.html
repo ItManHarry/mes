@@ -6,9 +6,13 @@
             <td>{{item.component.code}}</td>
             <td class="text-center">
                 <select class="form-select form-select-sm" onchange="reset_locations(this)" id="wh{{item.component.id}}">
-                    {%for warehouse in warehouses%}
-                    <option value="{{warehouse.id}}" {%if warehouse.default%}selected{%endif%}>{{warehouse.name}}[{{warehouse.code}}]</option>
-                    {%endfor%}
+                    {%if warehouses%}
+                        {%for warehouse in warehouses%}
+                        <option value="{{warehouse.id}}" {%if warehouse.default%}selected{%endif%}>{{warehouse.name}}[{{warehouse.code}}]</option>
+                        {%endfor%}
+                    {%else%}
+                        <option value="0" class="text-danger">---请维护仓库信息！---</option>
+                    {%endif%}
                 </select>
             </td>
             <td class="text-center">
