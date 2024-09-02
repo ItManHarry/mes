@@ -117,7 +117,12 @@ function init_date(id){
     }).datepicker("setDate",'now')
 }
 function reset_locations(e){
-    alert('Warehouse id is : ' + $(e).val())
-
+    let warehouse_id = $(e).val()
+    let id = $(e).prop('id')
+<!--    alert('Warehouse id is : ' + warehouse_id)-->
+<!--    alert('Component id is : ' + $(e).prop('id'))-->
+    $.post('/pp_master/warehouse/get_locations/'+warehouse_id+'/', function(data){
+        $('#'+id.replace('wh', 'lc')).html(data)
+    }, 'html')
 }
 {%endblock%}

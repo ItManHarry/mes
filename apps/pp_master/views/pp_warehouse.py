@@ -165,8 +165,7 @@ class LocationEditView(View):
         return render(request, self.template_name, dict(form=form, warehouse=warehouse, locations=warehouse.locations.all()))
 
 @login_required
-def get_locations(request):
-    warehouse_id = request.POST.get('warehouse_id')
+def get_locations(request, warehouse_id):
     warehouse = Warehouse.objects.get(pk=warehouse_id)
     locations = warehouse.locations.all()
     return render(request, 'pp_master/pp_warehouse/_location_items.html', dict(locations=locations))
