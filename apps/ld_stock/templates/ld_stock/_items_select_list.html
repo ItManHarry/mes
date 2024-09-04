@@ -2,7 +2,14 @@
   {%for item in items%}
   <li class="list-group-item d-flex justify-content-between align-items-start">
     <div class="ms-2 me-auto">
-      <div class="fw-bold"><input onclick="set_select()" type="checkbox" class="form-check-input" value="{{item.id}}"/>&nbsp;&nbsp;&nbsp;&nbsp;{{item.code}}</div>
+      <div class="fw-bold">
+        <div class="form-check">
+          <input id="{{item.id}}" onclick="set_select()" type="checkbox" class="form-check-input" value="{{item.id}}"/>&nbsp;
+          <label class="form-check-label" for="{{item.id}}">
+            {{item.code}}
+          </label>
+        </div>
+      </div>
     </div>
     <span class="badge text-bg-primary rounded-pill">{{item.amount}}</span>
   </li>

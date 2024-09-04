@@ -11,7 +11,7 @@
     {% csrf_token %}
     {{form.id}}
     {{form.facility}}
-    {{form.tmp_bill_id}}
+    {{form.items}}
     <div class="row">
         <div class="col">
             <ul class="nav nav-tabs">
@@ -87,7 +87,7 @@
     </div><br>
     <div class="row">
         <div class="col text-end">
-            <button type="submit" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
+            <button type="button" onclick="do_submit()" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
             <a class="btn btn-outline-secondary" href="/ld_stock/stock/index?bill_type={{stock_type}}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
         </div>
     </div>
@@ -124,5 +124,66 @@ function reset_locations(e){
     $.post('/pp_master/warehouse/get_locations/'+warehouse_id+'/', function(data){
         $('#'+id.replace('wh', 'lc')).html(data)
     }, 'html')
+}
+function remove_com(e){
+    $(e).parent().parent().remove()
+    // 重写序号
+    for(let i = 0; i < $('#items').children().length; i++){
+        $('#items').children().eq(i).children().eq(0).text(i+1)
+    }
+}
+function do_submit(){
+    // alert('Do submit!')
+    if(!$('#id_in_out_type').val()){
+        $.alert({
+           type:'red',
+           title:'系统提示',
+           content: '请选择出入库类型！',
+           onClose:function(){
+
+           }
+        })
+    }else{
+        if($('#items').children().length == 0){
+            $.alert({
+               type:'red',
+               title:'系统提示',
+               content: '部品明细为空！',
+               onClose:function(){
+
+               }
+            })
+        }else{
+            let component_ids = [], warehouses = [], locations = [], amounts = []
+            for(let i = 0; i < $('#items').children().length; i++){
+                component_ids.push($('#items').children().eq(i).prop('id'))
+                warehouses.push($('#items').children().eq(i).find('select:eq(0)').val())
+                locations.push($('#items').children().eq(i).find('select:eq(1)').val())
+                amounts.push($('#items').children().eq(i).children().eq(5).text())
+            }
+            if($.inArray('0', warehouses) >= 0){
+                $.alert({
+                   type:'red',
+                   title:'系统提示',
+                   content: '请选择仓库！',
+                   onClose:function(){
+
+                   }
+                })
+            }else if($.inArray('0', locations) >= 0){
+                $.alert({
+                   type:'red',
+                   title:'系统提示',
+                   content: '请选择库位！',
+                   onClose:function(){
+
+                   }
+                })
+            }else{
+                $('#id_items').val(JSON.stringify([component_ids, warehouses, locations, amounts]))
+                $('form').submit()
+            }
+        }
+    }
 }
 {%endblock%}

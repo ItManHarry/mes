@@ -1,6 +1,6 @@
 {%if items%}
     {%for item in items%}
-        <tr>
+        <tr id="{{item.component.id}}">
             <td class="text-center">{{forloop.counter}}</td>
             <td>{{item.component.name}}</td>
             <td>{{item.component.code}}</td>
@@ -28,7 +28,7 @@
             </td>
             <td class="text-center">{{item.amount}}</td>
             <td class="text-center">
-                <button class="btn btn-link btn-sm text-danger" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="移除"><i class='bi bi-trash'></i></button>
+                <button onclick="remove_com(this)" class="btn btn-link btn-sm text-danger" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="移除"><i class='bi bi-trash'></i></button>
             </td>
         </tr>
     {%endfor%}

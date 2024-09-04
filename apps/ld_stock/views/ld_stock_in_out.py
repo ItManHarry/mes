@@ -11,8 +11,10 @@ from sys_dict.models import SysEnum
 from django.db.models import Q
 from ..forms.stock import StockForm
 import json
-from pp_master.models.pp_component import Component, ComponentAmount
+from pp_master.models.pp_component import ComponentInOutList, ComponentAmount
 from pp_master.models.pp_warehouse import Warehouse
+from datetime import datetime
+import random
 @login_required
 def get_io_select_items(request, stock_type):
     facility_id = request.session['company_id']
@@ -70,9 +72,39 @@ class StockAddView(View):
     def get(self, request, *args, **kwargs):
         facility_id = request.session['company_id']
         stock_type = kwargs['stock_type']
-        # print(f'Stock type is {stock_type}')
+        # print(f'Stock type is : {stock_type}')
         form = self.form_class(facility_id, stock_type)
         # print(f'Facility id is {form.facility_id} , stock type is {form.stock_type}')
+        return render(request, self.template_name, dict(form=form, stock_type=stock_type))
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        facility_id = request.session['company_id']
+        stock_type = kwargs['stock_type']
+        form = self.form_class(facility_id, stock_type, request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            component_ids, warehouses, locations, amounts = json.loads(data['items'])
+            dict_warehouse = dict(zip(component_ids, warehouses))
+            dict_locations = dict(zip(component_ids, locations))
+            dict_amounts = dict(zip(component_ids, amounts))
+            for k, v in dict_warehouse.items():
+                print(f'Component id : {k}, warehouse is {v}')
+            for k, v in dict_locations.items():
+                print(f'Component id : {k}, location is {v}')
+            for k, v in dict_amounts.items():
+                print(f'Component id : {k}, amount is {int(v)}')
+            # 执行保存
+            bill = form.save(commit=False)
+            bill.bill_no = 'IN'+datetime.now().strftime('%Y%m%d%H%M%S')+str(random.randint(10, 99))
+            user = request.user
+            if user:
+                bill.created_by = user.id
+            bill.save()
+            # 生产出入库明细
+
+            # 计算库存余额
+
+            return redirect(reverse('ld_stock:stocks'))
         return render(request, self.template_name, dict(form=form, stock_type=stock_type))
 class StockEditView(View):
     pass

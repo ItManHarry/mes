@@ -9,6 +9,7 @@ class StockForm(forms.ModelForm):
         self.facility_id = facility_id  # 出入库单工厂所属
         self.stock_type = stock_type    # 订单区分1：入库单 2： 出库单
         super(StockForm, self).__init__(*args, **kwargs)
+        self.fields['facility'].initial = facility_id
         self.fields['in_out_type'].queryset = SysEnum.objects.filter(~Q(code='000') & Q(sys_dict__code='D007')).order_by('code') if self.stock_type == 1 else SysEnum.objects.filter(~Q(code='000') & Q(sys_dict__code='D008')).order_by('code')
     class Meta:
         model = StockBill
@@ -25,6 +26,6 @@ class StockForm(forms.ModelForm):
             'in_out_type': forms.Select(attrs={'class': 'form-select'}),
             'facility': forms.HiddenInput(),
         }
-    tmp_bill_id = forms.UUIDField(initial=uuid.uuid4, widget=forms.HiddenInput())
+    items = forms.CharField(widget=forms.HiddenInput(), required=False)
     def clean(self):
         data = super().clean()
