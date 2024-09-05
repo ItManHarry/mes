@@ -92,12 +92,11 @@ class StockAddView(View):
             dict_amounts = dict(zip(component_ids, amounts))
             # 执行保存
             bill = form.save(commit=False)
-            bill.bill_type_id = '4e3f702d-5773-429e-9372-c492287e3dc9'
+            bill.bill_type = SysEnum.objects.filter(Q(sys_dict__code='D009') & Q(code='1')).first() if stock_type == 1 else SysEnum.objects.filter(Q(sys_dict__code='D009') & Q(code='2')).first()
             bill.bill_no = ('IN' if stock_type else 'OUT')+datetime.now().strftime('%Y%m%d%H%M%S')+str(random.randint(10, 99))
             user = request.user
-            if user:
-                bill.created_by = user.id
-                bill.in_out_by_id = user.id
+            bill.created_by = user.id
+            bill.in_out_by_id = user.id
             bill.save()
             # 出入库明细&库存余额
             for component_id, warehouse_id in dict_warehouse.items():
@@ -110,7 +109,7 @@ class StockAddView(View):
                                           quantity=int(dict_amounts[component_id]),
                                           inout_type=data['in_out_type'])
                 item.save()
-                if stock_type:
+                if stock_type == 1:
                     # 更新barcode item入库数量
                     barcode_item = StockBarCodeList.objects.get(pk=dict_barcode_items[component_id])
                     barcode_item.amount_in = int(dict_amounts[component_id])
