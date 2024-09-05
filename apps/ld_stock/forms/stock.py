@@ -1,5 +1,5 @@
 from django import forms
-from ..models import StockBill
+from ..models.ld_stock import StockBill
 from org_com.models import Company
 from sys_dict.models import SysEnum
 from django.db.models import Q

@@ -31,12 +31,12 @@
     {%for bill in bills%}
         <tr>
             <td>{{bill.facility}}</td>
-            <td>{{bill.name}}</td>
-            <td>{{bill.code}}</td>
-            <td>{{bill.safe_storage}}</td>
+            <td>{{bill.bill_no}}</td>
+            <td>{{bill.in_out_type}}</td>
+            <td>{{bill.bill_date}}</td>
             <td>{{bill.created_name}}</td>
             <td class="text-end">
-                <a href="{%url 'ld_stock:in_out_edit' bill.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
+                <a href="{%url 'ld_stock:stock_edit' bill.id%}" class="btn btn-link text-info" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="编辑"><i class="bi bi-pencil-square"></i></a>
             </td>
         </tr>
     {%endfor%}

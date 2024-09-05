@@ -1,7 +1,7 @@
 {%if items%}
     {%for item in items%}
         <tr id="{{item.component.id}}">
-            <td class="text-center">{{forloop.counter}}</td>
+            <td id="{{item.id}}" class="text-center">{{forloop.counter}}</td>
             <td>{{item.component.name}}</td>
             <td>{{item.component.code}}</td>
             <td class="text-center">

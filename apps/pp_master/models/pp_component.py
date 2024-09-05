@@ -2,6 +2,7 @@ from mes.sys.db import BaseModel, models
 from org_com.models import Company
 from .pp_warehouse import Warehouse, Location
 from sys_dict.models import SysEnum
+from ld_stock.models.ld_stock import StockBill
 '''
 部品主数据
 '''
@@ -32,6 +33,7 @@ class ComponentAmount(BaseModel):
 部品出入库履历
 '''
 class ComponentInOutList(BaseModel):
+    bill = models.ForeignKey(StockBill, on_delete=models.CASCADE, related_name='items')
     component = models.ForeignKey(Component, on_delete=models.CASCADE, related_name='inouts')
     sign = models.IntegerField(default=1)       # 出入库标识 1:入 0:出 默认为入库1
     quantity = models.IntegerField(default=0)   # 出/入库数量
