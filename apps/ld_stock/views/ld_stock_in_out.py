@@ -98,6 +98,7 @@ class StockAddView(View):
             bill.created_by = user.id
             bill.in_out_by_id = user.id
             bill.save()
+            user = request.user
             # 出入库明细&库存余额
             for component_id, warehouse_id in dict_warehouse.items():
                 # 生成出入库明细
@@ -107,24 +108,30 @@ class StockAddView(View):
                                           warehouse_id=warehouse_id,
                                           location_id=dict_locations[component_id],
                                           quantity=int(dict_amounts[component_id]),
-                                          inout_type=data['in_out_type'])
+                                          inout_type=data['in_out_type'],
+                                          created_by=user.id)
                 item.save()
                 if stock_type == 1:
                     # 更新barcode item入库数量
                     barcode_item = StockBarCodeList.objects.get(pk=dict_barcode_items[component_id])
                     barcode_item.amount_in = int(dict_amounts[component_id])
+                    barcode_item.updated_by = user.id
+                    barcode_item.updated_on = timezone.now()
                     barcode_item.save()
                     # 入库计算库存余额
                     c_amount = ComponentAmount.objects.filter(Q(component_id=component_id) & Q(warehouse_id=warehouse_id) & Q(location_id=dict_locations[component_id])).first()
                     if c_amount:
                         # 存在则更新
                         c_amount.quantity += int(dict_amounts[component_id])
+                        c_amount.updated_by = user.id
+                        c_amount.updated_on = timezone.now()
                     else:
                         # 不存在则新增
                         c_amount = ComponentAmount(component_id=component_id,
                                                    warehouse_id=warehouse_id,
                                                    location_id=dict_locations[component_id],
-                                                   quantity=int(dict_amounts[component_id]))
+                                                   quantity=int(dict_amounts[component_id]),
+                                                   created_by=user.id)
                     c_amount.save()
                 else:
                     # 出库计算库存余额
@@ -132,6 +139,8 @@ class StockAddView(View):
                         Q(component_id=component_id) & Q(warehouse_id=warehouse_id) & Q(
                             location_id=dict_locations[component_id])).first()
                     c_amount.quantity -= int(dict_amounts[component_id])
+                    c_amount.updated_by = user.id
+                    c_amount.updated_on = timezone.now()
                     c_amount.save()
             return redirect(reverse('ld_stock:stocks'))
         return render(request, self.template_name, dict(form=form, stock_type=stock_type))
