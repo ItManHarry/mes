@@ -1,0 +1,64 @@
+<!-- Parts choose Modal 配件出库 -->
+<div class="modal fade" id="parts_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="bar_code_modal_label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered  modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="bar_code_modal_label">配件选择</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="parts_for_out"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" onclick="parts_select()"><i class="bi bi-check2"></i>&nbsp;&nbsp;选择</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="bi bi-x-lg"></i>&nbsp;&nbsp;关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    const parts_modal = document.getElementById('parts_modal')
+    let parts_selected = false
+    parts_modal.addEventListener('show.bs.modal', event => {
+        parts_selected = false
+        $.post('/ld_stock/stock/io/get_io_select_items/{{stock_type}}/', function(data){
+          $('#parts_for_out').html(data)
+        }, 'html')
+    })
+    /*parts_modal.addEventListener('hide.bs.modal', event => {
+        if(parts_selected){
+            alert('Barcode parts_selected, modal is going to be Closed! Add components !')
+        }else{
+            alert('Barcode parts_selected, modal is going to be Closed! Do nothing!')
+        }
+    })*/
+    function set_parts_select(){
+      parts_selected = false
+      $('#parts_for_out').find(':checkbox').each(function(){
+          if($(this).prop('checked'))
+            parts_selected = true
+      })
+    }
+    function parts_select(){
+      if(parts_selected){
+        barcode_ids = []
+        $('#parts_for_out').find(':checkbox').each(function(){
+          if($(this).prop('checked'))
+            barcode_ids.push($(this).val())
+        })
+        // alert(JSON.stringify(barcode_ids))
+        var params = {params: JSON.stringify({search_str: '000', page: 1})}
+        $.post('/ld_stock/stock/io/set_selected_items/', {barcode_ids: JSON.stringify(barcode_ids)}, function(data){
+            $('#items').html(data)
+        }, 'html')
+        $('#parts_modal').modal('hide')
+      }else{
+        $.alert({
+           type:'red',
+           title:'系统提示',
+           content: '请选择Barcode！',
+           onClose:function(){
+
+           }
+        })
+      }
+    }
+</script>

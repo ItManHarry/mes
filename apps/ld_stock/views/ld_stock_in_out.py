@@ -38,7 +38,7 @@ def get_io_select_items(request, stock_type):
             {'name': 'C4', 'code': '004', 'amount': 8},
             {'name': 'C5', 'code': '005', 'amount': 9},
         ]
-    return render(request, 'ld_stock/_items_select_list.html', dict(items=items))
+    return render(request, 'ld_stock/_items_select_list.html', dict(items=items, stock_type=stock_type))
 @login_required
 def set_selected_items(request):
     barcode_ids = json.loads(request.POST.get('barcode_ids'))
@@ -62,7 +62,7 @@ class StockIndexView(View):
         facility_id = request.session['company_id']
         bill_type_code = int(request.GET.get('bill_type', 1))
         bill_type = SysEnum.objects.filter(Q(sys_dict__code='D009') & Q(code=str(bill_type_code))).first()
-        bills = StockBill.objects.filter(Q(bill_type=bill_type.id) & Q(facility=facility_id)).all().order_by('bill_no')
+        bills = StockBill.objects.filter(Q(bill_type=bill_type.id) & Q(facility=facility_id)).all().order_by('-bill_no')
         paginator = Paginator(bills, settings.PAGE_ITEMS)
         page_num = request.GET.get('page', 1)
         page = paginator.page(page_num)
