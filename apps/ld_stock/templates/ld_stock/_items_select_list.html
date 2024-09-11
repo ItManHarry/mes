@@ -4,7 +4,7 @@
     <div class="ms-2 me-auto">
       <div class="fw-bold">
         <div class="form-check">
-          <input id="{{item.id}}" onclick="set_select()" type="checkbox" class="form-check-input" value="{{item.id}}"/>&nbsp;
+          <input id="{{item.id}}" onclick="{%if stock_in%}set_select(){%else%}set_parts_select(){%endif%}" type="checkbox" class="form-check-input" value="{{item.id}}"/>&nbsp;
           <label class="form-check-label" for="{{item.id}}">
             {{item.code}}
           </label>

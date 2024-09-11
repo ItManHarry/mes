@@ -19,10 +19,10 @@ import random
 @login_required
 def get_io_select_items(request, stock_type):
     facility_id = request.session['company_id']
+    items = []
     print('Facility id is :', facility_id)
     if stock_type == 1:     # 入库
         bar_codes = StockBarCode.objects.filter(facility=facility_id).filter(active=True).order_by('-code')
-        items = []
         for bar_code in bar_codes:
             sum = 0
             for item in bar_code.items.all():
@@ -31,14 +31,21 @@ def get_io_select_items(request, stock_type):
             if sum:
                 items.append({'code': bar_code.code, 'amount': sum, 'id': bar_code.id})
     else:                   # 出库
-        items = [
-            {'name': 'C1', 'code': '001', 'amount': 2},
-            {'name': 'C2', 'code': '002', 'amount': 5},
-            {'name': 'C3', 'code': '003', 'amount': 3},
-            {'name': 'C4', 'code': '004', 'amount': 8},
-            {'name': 'C5', 'code': '005', 'amount': 9},
-        ]
-    return render(request, 'ld_stock/_items_select_list.html', dict(items=items, stock_type=stock_type))
+        # 查询库存余额
+        com_amounts = ComponentAmount.objects.all().order_by('component')
+        components = {}
+        for com_amount in com_amounts:
+            if com_amount.component.id in components:
+                components[com_amount.component.id].append(com_amount)
+            else:
+                components[com_amount.component.id] = [com_amount]
+        for component, amounts in components.items():
+            print(f'Component is {component}, amounts {amounts}')
+            total = 0
+            for amount in amounts:
+                total += amount.quantity
+            items.append({'code': amounts[0].component, 'amount': total, 'id': component})
+    return render(request, 'ld_stock/_items_select_list.html', dict(items=items, stock_in=True if stock_type == 1 else False))
 @login_required
 def set_selected_items(request):
     barcode_ids = json.loads(request.POST.get('barcode_ids'))
