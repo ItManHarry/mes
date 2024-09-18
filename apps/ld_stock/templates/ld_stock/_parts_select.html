@@ -39,14 +39,14 @@
     }
     function parts_select(){
       if(parts_selected){
-        barcode_ids = []
+        ids = []
         $('#parts_for_out').find(':checkbox').each(function(){
           if($(this).prop('checked'))
-            barcode_ids.push($(this).val())
+            ids.push($(this).val())
         })
-        // alert(JSON.stringify(barcode_ids))
+        alert('Stock out : '+JSON.stringify(ids))
         var params = {params: JSON.stringify({search_str: '000', page: 1})}
-        $.post('/ld_stock/stock/io/set_selected_items/', {barcode_ids: JSON.stringify(barcode_ids)}, function(data){
+        $.post('/ld_stock/stock/io/set_selected_items/', {ids: JSON.stringify(ids), stock_type: $('#stock_type').val()}, function(data){
             $('#items').html(data)
         }, 'html')
         $('#parts_modal').modal('hide')

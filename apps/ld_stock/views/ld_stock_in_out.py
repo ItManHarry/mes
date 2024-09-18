@@ -48,18 +48,25 @@ def get_io_select_items(request, stock_type):
     return render(request, 'ld_stock/_items_select_list.html', dict(items=items, stock_in=True if stock_type == 1 else False))
 @login_required
 def set_selected_items(request):
-    barcode_ids = json.loads(request.POST.get('barcode_ids'))
-    print('Barcode ids :\t', barcode_ids)
-    barcodes = StockBarCode.objects.filter(id__in=barcode_ids).all().order_by('code')
-    items = []
-    for barcode in barcodes:
-        for item in barcode.items.all():
-            items.append(item)
-    facility_id = request.session['company_id']
-    warehouses = Warehouse.objects.filter(facility=facility_id).order_by('code')
-    default_warehouse = Warehouse.objects.filter(Q(facility=facility_id) & Q(default=True)).first()
-    locations = default_warehouse.locations.all()
-    return render(request, 'ld_stock/_items.html', dict(items=items, warehouses=warehouses, locations=locations))
+    stock_type = int(request.POST.get('stock_type'))
+    print(f'Stock type is : {stock_type}')
+    ids = json.loads(request.POST.get('ids'))
+    if stock_type == 1:
+        print('Barcode ids :\t', ids)
+        barcodes = StockBarCode.objects.filter(id__in=ids).all().order_by('code')
+        items = []
+        for barcode in barcodes:
+            for item in barcode.items.all():
+                items.append(item)
+        facility_id = request.session['company_id']
+        warehouses = Warehouse.objects.filter(facility=facility_id).order_by('code')
+        default_warehouse = Warehouse.objects.filter(Q(facility=facility_id) & Q(default=True)).first()
+        locations = default_warehouse.locations.all()
+    else:
+        items = [1, 2, 3, 4, 5, 6]
+        warehouses = []
+        locations = []
+    return render(request, 'ld_stock/_items.html', dict(items=items, warehouses=warehouses, locations=locations, stock_type=stock_type))
 class StockIndexView(View):
     template_name = 'ld_stock/index.html'
     @method_decorator(check_menu_used('LD001'))

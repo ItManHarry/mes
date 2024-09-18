@@ -1,35 +1,43 @@
 {%if items%}
-    {%for item in items%}
-        <tr id="{{item.component.id}}">
-            <td id="{{item.id}}" class="text-center">{{forloop.counter}}</td>
-            <td>{{item.component.name}}</td>
-            <td>{{item.component.code}}</td>
-            <td class="text-center">
-                <select class="form-select form-select-sm" onchange="reset_locations(this)" id="wh{{item.component.id}}">
-                    {%if warehouses%}
-                        {%for warehouse in warehouses%}
-                        <option value="{{warehouse.id}}" {%if warehouse.default%}selected{%endif%}>{{warehouse.name}}[{{warehouse.code}}]</option>
-                        {%endfor%}
-                    {%else%}
-                        <option value="0" class="text-danger">---请维护仓库信息！---</option>
-                    {%endif%}
-                </select>
-            </td>
-            <td class="text-center">
-                <select class="form-select form-select-sm" id="lc{{item.component.id}}">
-                    {%if locations%}
-                        {%for location in locations%}
-                        <option value="{{location.id}}" {%if location.default%}selected{%endif%}>{{location.name}}[{{location.code}}]</option>
-                        {%endfor%}
-                    {%else%}
-                        <option value="0" class="text-danger">---请维护库位信息！---</option>
-                    {%endif%}
-                </select>
-            </td>
-            <td class="text-center">{{item.amount}}</td>
-            <td class="text-center">
-                <button onclick="remove_com(this)" class="btn btn-link btn-sm text-danger" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="移除"><i class='bi bi-trash'></i></button>
-            </td>
-        </tr>
-    {%endfor%}
+    {%if stock_type is 1%}<!-- 入库 -->
+        {%for item in items%}
+            <tr id="{{item.component.id}}">
+                <td id="{{item.id}}" class="text-center">{{forloop.counter}}</td>
+                <td>{{item.component.name}}</td>
+                <td>{{item.component.code}}</td>
+                <td class="text-center">
+                    <select class="form-select form-select-sm" onchange="reset_locations(this)" id="wh{{item.component.id}}">
+                        {%if warehouses%}
+                            {%for warehouse in warehouses%}
+                            <option value="{{warehouse.id}}" {%if warehouse.default%}selected{%endif%}>{{warehouse.name}}[{{warehouse.code}}]</option>
+                            {%endfor%}
+                        {%else%}
+                            <option value="0" class="text-danger">---请维护仓库信息！---</option>
+                        {%endif%}
+                    </select>
+                </td>
+                <td class="text-center">
+                    <select class="form-select form-select-sm" id="lc{{item.component.id}}">
+                        {%if locations%}
+                            {%for location in locations%}
+                            <option value="{{location.id}}" {%if location.default%}selected{%endif%}>{{location.name}}[{{location.code}}]</option>
+                            {%endfor%}
+                        {%else%}
+                            <option value="0" class="text-danger">---请维护库位信息！---</option>
+                        {%endif%}
+                    </select>
+                </td>
+                <td class="text-center">{{item.amount}}</td>
+                <td class="text-center">
+                    <button onclick="remove_com(this)" class="btn btn-link btn-sm text-danger" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="left" data-bs-content="移除"><i class='bi bi-trash'></i></button>
+                </td>
+            </tr>
+        {%endfor%}
+    {%else%}<!-- 出库 -->
+<!--        {%for item in items%}-->
+            <tr id="A">
+                 <td id="B" class="text-center">{{forloop.counter}}</td>
+            </tr>
+<!--        {%endfor%}-->
+    {%endif%}
 {%endif%}
