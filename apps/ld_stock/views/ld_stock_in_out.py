@@ -32,7 +32,7 @@ def get_io_select_items(request, stock_type):
                 items.append({'code': bar_code.code, 'amount': sum, 'id': bar_code.id})
     else:                   # 出库
         # 查询库存余额
-        com_amounts = ComponentAmount.objects.all().order_by('component')
+        com_amounts = ComponentAmount.objects.filter(component__facility=facility_id).all().order_by('component')
         components = {}
         for com_amount in com_amounts:
             if com_amount.component.id in components:
@@ -48,9 +48,11 @@ def get_io_select_items(request, stock_type):
     return render(request, 'ld_stock/_items_select_list.html', dict(items=items, stock_in=True if stock_type == 1 else False))
 @login_required
 def set_selected_items(request):
+    facility_id = request.session['company_id']
     stock_type = int(request.POST.get('stock_type'))
     print(f'Stock type is : {stock_type}')
     ids = json.loads(request.POST.get('ids'))
+    warehouses, locations = [], []
     if stock_type == 1:
         print('Barcode ids :\t', ids)
         barcodes = StockBarCode.objects.filter(id__in=ids).all().order_by('code')
@@ -58,15 +60,13 @@ def set_selected_items(request):
         for barcode in barcodes:
             for item in barcode.items.all():
                 items.append(item)
-        facility_id = request.session['company_id']
         warehouses = Warehouse.objects.filter(facility=facility_id).order_by('code')
         default_warehouse = Warehouse.objects.filter(Q(facility=facility_id) & Q(default=True)).first()
         locations = default_warehouse.locations.all()
     else:
-        items = [1, 2, 3, 4, 5, 6]
-        warehouses = []
-        locations = []
-    return render(request, 'ld_stock/_items.html', dict(items=items, warehouses=warehouses, locations=locations, stock_type=stock_type))
+        print('Component ids :\t', ids)
+        items = [amount for amount in ComponentAmount.objects.filter(component__id__in=ids).all().order_by('component')]
+    return render(request, 'ld_stock/_items.html', dict(stock_type=stock_type, items=items, warehouses=warehouses, locations=locations))
 class StockIndexView(View):
     template_name = 'ld_stock/index.html'
     @method_decorator(check_menu_used('LD001'))

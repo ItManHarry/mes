@@ -44,7 +44,7 @@
           if($(this).prop('checked'))
             ids.push($(this).val())
         })
-        alert('Stock out : '+JSON.stringify(ids))
+        // alert('Stock out : '+JSON.stringify(ids))
         var params = {params: JSON.stringify({search_str: '000', page: 1})}
         $.post('/ld_stock/stock/io/set_selected_items/', {ids: JSON.stringify(ids), stock_type: $('#stock_type').val()}, function(data){
             $('#items').html(data)
@@ -54,7 +54,7 @@
         $.alert({
            type:'red',
            title:'系统提示',
-           content: '请选择Barcode！',
+           content: '请选择配件！',
            onClose:function(){
 
            }
