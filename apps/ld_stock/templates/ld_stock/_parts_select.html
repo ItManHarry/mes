@@ -19,7 +19,12 @@
     let parts_selected = false
     parts_modal.addEventListener('show.bs.modal', event => {
         parts_selected = false
-        $.post('/ld_stock/stock/io/get_io_select_items/{{stock_type}}/', function(data){
+        let tr_ids = [] // 已选择的amount IDS
+        $('#items').children().each(function(){
+          tr_ids.push($(this).prop('id'))
+        })
+        // alert('Selected out : '+JSON.stringify(tr_ids))
+        $.post('/ld_stock/stock/io/get_io_select_items/{{stock_type}}/', {ids: JSON.stringify(tr_ids)}, function(data){
           $('#parts_for_out').html(data)
         }, 'html')
     })
@@ -39,15 +44,19 @@
     }
     function parts_select(){
       if(parts_selected){
-        ids = []
+        ids = []    // 选择的amount  component IDS
         $('#parts_for_out').find(':checkbox').each(function(){
           if($(this).prop('checked'))
             ids.push($(this).val())
         })
         // alert('Stock out : '+JSON.stringify(ids))
-        var params = {params: JSON.stringify({search_str: '000', page: 1})}
         $.post('/ld_stock/stock/io/set_selected_items/', {ids: JSON.stringify(ids), stock_type: $('#stock_type').val()}, function(data){
-            $('#items').html(data)
+            // 追加
+            $('#items').append(data)
+            // 重新编号
+            for(let i = 0; i < $('#items').children().length; i++){
+                $('#items').children().eq(i).children().eq(0).text(i+1)
+            }
         }, 'html')
         $('#parts_modal').modal('hide')
       }else{

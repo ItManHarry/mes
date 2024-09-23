@@ -32,7 +32,8 @@ def get_io_select_items(request, stock_type):
                 items.append({'code': bar_code.code, 'amount': sum, 'id': bar_code.id})
     else:                   # 出库
         # 查询库存余额
-        com_amounts = ComponentAmount.objects.filter(component__facility=facility_id).all().order_by('component')
+        ids = json.loads(request.POST.get('ids'))   # 已选择的剔除掉
+        com_amounts = ComponentAmount.objects.filter(~Q(id__in=ids) & Q(component__facility=facility_id)).all().order_by('component')
         components = {}
         for com_amount in com_amounts:
             if com_amount.component.id in components:
@@ -107,7 +108,7 @@ class StockAddView(View):
             # 执行保存
             bill = form.save(commit=False)
             bill.bill_type = SysEnum.objects.filter(Q(sys_dict__code='D009') & Q(code='1')).first() if stock_type == 1 else SysEnum.objects.filter(Q(sys_dict__code='D009') & Q(code='2')).first()
-            bill.bill_no = ('IN' if stock_type else 'OUT')+datetime.now().strftime('%Y%m%d%H%M%S')+str(random.randint(10, 99))
+            bill.bill_no = ('IN' if stock_type == 1 else 'OUT')+datetime.now().strftime('%Y%m%d%H%M%S')+str(random.randint(10, 99))
             user = request.user
             bill.created_by = user.id
             bill.in_out_by_id = user.id
