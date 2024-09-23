@@ -105,6 +105,11 @@ class StockAddView(View):
             dict_barcode_items = dict(zip(component_ids, barcode_items))
             dict_locations = dict(zip(component_ids, locations))
             dict_amounts = dict(zip(component_ids, amounts))
+            print('Component ids : ', component_ids)
+            print('Barcode dictionary : ', dict_barcode_items)
+            print('Warehouse dictionary : ', dict_warehouse)
+            print('Location dictionary : ', dict_locations)
+            print('Amount dictionary : ', dict_amounts)
             # 执行保存
             bill = form.save(commit=False)
             bill.bill_type = SysEnum.objects.filter(Q(sys_dict__code='D009') & Q(code='1')).first() if stock_type == 1 else SysEnum.objects.filter(Q(sys_dict__code='D009') & Q(code='2')).first()
@@ -113,7 +118,6 @@ class StockAddView(View):
             bill.created_by = user.id
             bill.in_out_by_id = user.id
             bill.save()
-            user = request.user
             # 出入库明细&库存余额
             for component_id, warehouse_id in dict_warehouse.items():
                 # 生成出入库明细
@@ -157,7 +161,7 @@ class StockAddView(View):
                     c_amount.updated_by = user.id
                     c_amount.updated_on = timezone.now()
                     c_amount.save()
-            return redirect(reverse('ld_stock:stocks'))
+            return redirect('/ld_stock/stock/index/?bill_type='+str(stock_type))
         return render(request, self.template_name, dict(form=form, stock_type=stock_type))
 class StockEditView(View):
     pass

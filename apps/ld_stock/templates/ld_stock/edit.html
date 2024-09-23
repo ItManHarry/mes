@@ -166,7 +166,10 @@ function do_submit(){
                 barcode_items.push($('#items').children().eq(i).children().eq(0).prop('id'))
                 warehouses.push($('#items').children().eq(i).find('select:eq(0)').val())
                 locations.push($('#items').children().eq(i).find('select:eq(1)').val())
-                amounts.push($('#items').children().eq(i).children().eq(5).text())
+                if($('#stock_type').val() == 1)
+                    amounts.push($('#items').children().eq(i).children().eq(5).text())
+                else
+                    amounts.push($('#items').children().eq(i).children().eq(5).find(':input').val())
             }
             if($.inArray('0', warehouses) >= 0){
                 $.alert({

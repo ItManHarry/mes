@@ -19,12 +19,12 @@
     let parts_selected = false
     parts_modal.addEventListener('show.bs.modal', event => {
         parts_selected = false
-        let tr_ids = [] // 已选择的amount IDS
+        let ids = [] // 已选择的amount IDS
         $('#items').children().each(function(){
-          tr_ids.push($(this).prop('id'))
+          ids.push($(this).children().eq(0).prop('id'))
         })
         // alert('Selected out : '+JSON.stringify(tr_ids))
-        $.post('/ld_stock/stock/io/get_io_select_items/{{stock_type}}/', {ids: JSON.stringify(tr_ids)}, function(data){
+        $.post('/ld_stock/stock/io/get_io_select_items/{{stock_type}}/', {ids: JSON.stringify(ids)}, function(data){
           $('#parts_for_out').html(data)
         }, 'html')
     })
