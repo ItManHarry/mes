@@ -24,7 +24,7 @@
         <tr>
             <td>{{bar.facility}}</td>
             <td>{{bar.code}}</td>
-            <td>{%if bar.in_finished%}<span class="text-success">Y</span>{%else%}<span class="text-danger">N</span>{%endif%}</td>
+            <td>{%if not bar.active%}<span class="text-success">Y</span>{%else%}<span class="text-danger">N</span>{%endif%}</td>
             <td>{{bar.created_name}}</td>
             <td>{{bar.created_on}}</td>
             <td class="text-end">

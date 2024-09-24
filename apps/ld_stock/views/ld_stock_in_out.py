@@ -23,6 +23,7 @@ def get_io_select_items(request, stock_type):
     print('Facility id is :', facility_id)
     if stock_type == 1:     # 入库
         bar_codes = StockBarCode.objects.filter(facility=facility_id).filter(active=True).order_by('-code')
+        # items = [{'code': bar_code.code, 'amount': sum, 'id': bar_code.id} for bar_code in bar_codes]
         for bar_code in bar_codes:
             sum = 0
             for item in bar_code.items.all():
@@ -66,7 +67,7 @@ def set_selected_items(request):
         locations = default_warehouse.locations.all()
     else:
         print('Component ids :\t', ids)
-        items = [amount for amount in ComponentAmount.objects.filter(component__id__in=ids).all().order_by('component')]
+        items = [amount for amount in ComponentAmount.objects.filter(~Q(quantity=0) & Q(component__id__in=ids)).all().order_by('component')]
     return render(request, 'ld_stock/_items.html', dict(stock_type=stock_type, items=items, warehouses=warehouses, locations=locations))
 class StockIndexView(View):
     template_name = 'ld_stock/index.html'
@@ -137,6 +138,18 @@ class StockAddView(View):
                     barcode_item.updated_by = user.id
                     barcode_item.updated_on = timezone.now()
                     barcode_item.save()
+                    # 判断对应的Barcode是否全部入库完毕
+                    sum = 0
+                    bar_code = barcode_item.barcode
+                    # print(f'Bar code is {bar_code}')
+                    for i in bar_code.items.all():
+                        if i.amount != i.amount_in:
+                            sum += i.amount - i.amount_in  # 总数量和已入库数量差即为可入库数量
+                    # 将Barcode置为入库完成
+                    # print(f'Sum is {sum}')
+                    if not sum:
+                        bar_code.active = False
+                        bar_code.save()
                     # 入库计算库存余额
                     c_amount = ComponentAmount.objects.filter(Q(component_id=component_id) & Q(warehouse_id=warehouse_id) & Q(location_id=dict_locations[component_id])).first()
                     if c_amount:
