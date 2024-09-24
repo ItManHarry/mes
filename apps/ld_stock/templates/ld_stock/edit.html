@@ -160,9 +160,9 @@ function do_submit(){
                }
             })
         }else{
-            let component_ids = [], barcode_items = [], warehouses = [], locations = [], amounts = []
+            let item_ids = [], barcode_items = [], warehouses = [], locations = [], amounts = []
             for(let i = 0; i < $('#items').children().length; i++){
-                component_ids.push($('#items').children().eq(i).prop('id'))
+                item_ids.push($('#items').children().eq(i).prop('id'))
                 barcode_items.push($('#items').children().eq(i).children().eq(0).prop('id'))
                 warehouses.push($('#items').children().eq(i).find('select:eq(0)').val())
                 locations.push($('#items').children().eq(i).find('select:eq(1)').val())
@@ -190,7 +190,7 @@ function do_submit(){
                    }
                 })
             }else{
-                $('#id_items').val(JSON.stringify([component_ids, barcode_items, warehouses, locations, amounts]))
+                $('#id_items').val(JSON.stringify([item_ids, barcode_items, warehouses, locations, amounts]))
                 $('form').submit()
             }
         }

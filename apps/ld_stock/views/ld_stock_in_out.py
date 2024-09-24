@@ -101,12 +101,12 @@ class StockAddView(View):
         form = self.form_class(facility_id, stock_type, request.POST)
         if form.is_valid():
             data = form.cleaned_data
-            component_ids, barcode_items, warehouses, locations, amounts = json.loads(data['items'])
-            dict_warehouse = dict(zip(component_ids, warehouses))
-            dict_barcode_items = dict(zip(component_ids, barcode_items))
-            dict_locations = dict(zip(component_ids, locations))
-            dict_amounts = dict(zip(component_ids, amounts))
-            print('Component ids : ', component_ids)
+            item_ids, barcode_items, warehouses, locations, amounts = json.loads(data['items'])
+            dict_warehouse = dict(zip(item_ids, warehouses))
+            dict_barcode_items = dict(zip(item_ids, barcode_items))
+            dict_locations = dict(zip(item_ids, locations))
+            dict_amounts = dict(zip(item_ids, amounts))
+            print('Item ids : ', item_ids)
             print('Barcode dictionary : ', dict_barcode_items)
             print('Warehouse dictionary : ', dict_warehouse)
             print('Location dictionary : ', dict_locations)
@@ -120,21 +120,27 @@ class StockAddView(View):
             bill.in_out_by_id = user.id
             bill.save()
             # 出入库明细&库存余额
-            for component_id, warehouse_id in dict_warehouse.items():
+            for item_id, warehouse_id in dict_warehouse.items():
+                if stock_type == 1:     # 入库item_id即为component_id
+                    component_id = item_id
+                else:                   # 出库时item对应的ComponentAmount
+                    component_amount = ComponentAmount.objects.get(pk=item_id)
+                    component_id = component_amount.component.id
                 # 生成出入库明细
                 print(f'Component id : {component_id}, warehouse is {warehouse_id}')
                 item = ComponentInOutList(bill=bill,
                                           component_id=component_id,
                                           warehouse_id=warehouse_id,
-                                          location_id=dict_locations[component_id],
-                                          quantity=int(dict_amounts[component_id]),
+                                          location_id=dict_locations[item_id],
+                                          quantity=int(dict_amounts[item_id]),
                                           inout_type=data['in_out_type'],
+                                          sign=1 if stock_type == 1 else 0,
                                           created_by=user.id)
                 item.save()
                 if stock_type == 1:
                     # 更新barcode item入库数量
-                    barcode_item = StockBarCodeList.objects.get(pk=dict_barcode_items[component_id])
-                    barcode_item.amount_in = int(dict_amounts[component_id])
+                    barcode_item = StockBarCodeList.objects.get(pk=dict_barcode_items[item_id])
+                    barcode_item.amount_in = int(dict_amounts[item_id])
                     barcode_item.updated_by = user.id
                     barcode_item.updated_on = timezone.now()
                     barcode_item.save()
@@ -151,26 +157,26 @@ class StockAddView(View):
                         bar_code.active = False
                         bar_code.save()
                     # 入库计算库存余额
-                    c_amount = ComponentAmount.objects.filter(Q(component_id=component_id) & Q(warehouse_id=warehouse_id) & Q(location_id=dict_locations[component_id])).first()
+                    c_amount = ComponentAmount.objects.filter(Q(component_id=component_id) & Q(warehouse_id=warehouse_id) & Q(location_id=dict_locations[item_id])).first()
                     if c_amount:
                         # 存在则更新
-                        c_amount.quantity += int(dict_amounts[component_id])
+                        c_amount.quantity += int(dict_amounts[item_id])
                         c_amount.updated_by = user.id
                         c_amount.updated_on = timezone.now()
                     else:
                         # 不存在则新增
                         c_amount = ComponentAmount(component_id=component_id,
                                                    warehouse_id=warehouse_id,
-                                                   location_id=dict_locations[component_id],
-                                                   quantity=int(dict_amounts[component_id]),
+                                                   location_id=dict_locations[item_id],
+                                                   quantity=int(dict_amounts[item_id]),
                                                    created_by=user.id)
                     c_amount.save()
                 else:
                     # 出库计算库存余额
                     c_amount = ComponentAmount.objects.filter(
                         Q(component_id=component_id) & Q(warehouse_id=warehouse_id) & Q(
-                            location_id=dict_locations[component_id])).first()
-                    c_amount.quantity -= int(dict_amounts[component_id])
+                            location_id=dict_locations[item_id])).first()
+                    c_amount.quantity -= int(dict_amounts[item_id])
                     c_amount.updated_by = user.id
                     c_amount.updated_on = timezone.now()
                     c_amount.save()
