@@ -183,4 +183,16 @@ class StockAddView(View):
             return redirect('/ld_stock/stock/index/?bill_type='+str(stock_type))
         return render(request, self.template_name, dict(form=form, stock_type=stock_type))
 class StockEditView(View):
-    pass
+    template_name = 'ld_stock/edit.html'
+    form_class = StockForm
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        facility_id = request.session['company_id']
+        stock_type = kwargs['stock_type']
+        print(f'Stock type is : {stock_type}')
+        bill_id = kwargs['bill_id']
+        print(f'Bill ID is : {bill_id}')
+        bill = StockBill.objects.get(pk=bill_id)
+        form = self.form_class(facility_id, stock_type, instance=bill)
+        print(f'Facility id is {form.facility_id} , stock type is {form.stock_type}')
+        return render(request, self.template_name, dict(form=form, stock_type=stock_type, items=bill.items.all()))

@@ -63,6 +63,7 @@
             </ul>
         </div>
     </div><br>
+    {%if not items%}
     <div class="row">
         <div class="col text-end">
             {%if stock_type is 1%}
@@ -72,6 +73,7 @@
             {%endif%}
         </div>
     </div><br>
+    {%endif%}
     <div class="row">
         <div class="col">
             <table class="table table-hover">
@@ -86,13 +88,27 @@
                         <th width="5%" class="text-center">Action</th>
                     </tr>
                 </thead>
-                <tbody id="items"></tbody>
+                <tbody id="items">
+                    {%if items%}
+                        {%for item in items%}
+                            <tr id="{{item.component.id}}">
+                            <td id="{{item.id}}" class="text-center">{{forloop.counter}}</td>
+                            <td>{{item.component.name}}</td>
+                            <td>{{item.component.code}}</td>
+                            <td class="text-center">{{item.warehouse}}</td>
+                            <td class="text-center">{{item.location}}</td>
+                            <td class="text-center">{{item.quantity}}</td>
+                            <td class="text-center">-</td>
+                        </tr>
+                        {%endfor%}
+                    {%endif%}
+                </tbody>
             </table>
         </div>
     </div><br>
     <div class="row">
         <div class="col text-end">
-            <button type="button" onclick="do_submit()" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;
+            {%if not items%}<button type="button" onclick="do_submit()" class="btn btn-outline-primary"><i class="bi bi-save"></i>&nbsp;保存</button>&nbsp;&nbsp;{%endif%}
             <a class="btn btn-outline-secondary" href="/ld_stock/stock/index?bill_type={{stock_type}}"><i class="bi bi-arrow-left"></i>&nbsp;返回</a>
         </div>
     </div>
